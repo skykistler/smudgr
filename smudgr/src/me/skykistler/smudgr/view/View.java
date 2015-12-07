@@ -2,6 +2,7 @@ package me.skykistler.smudgr.view;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.FileNotFoundException;
 
 import me.skykistler.smudgr.Smudge;
 import processing.core.PApplet;
@@ -12,12 +13,12 @@ public class View extends PApplet {
 	private int displayWidth;
 	private int displayHeight;
 
-	public View(Smudge smudge) {
-		op = smudge;
+	public void init() {
+		runSketch(new String[] { "--present" });
 	}
 
-	public void init() {
-		PApplet.main(new String[] { "--present", getClass().getName() });
+	public void setSmudge(Smudge smudge) {
+		op = smudge;
 	}
 
 	public void settings() {
@@ -28,25 +29,57 @@ public class View extends PApplet {
 		size(displayWidth, displayHeight);
 	}
 
-	public void draw() {
-		PImage img = op.render();
+	public void setup() {
+		if (op != null)
+			try {
+				op.init();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+	}
 
-		fitToScreen(img);
-		centerDrawImage(img);
+	public void draw() {
+		if (op != null) {
+			PImage img = op.render();
+
+			fitToScreen(img);
+			centerDrawImage(img);
+		}
 	}
 
 	// TODO write our own resize method for different interpolations
 	private void fitToScreen(PImage img) {
-		if (img.height < displayHeight && img.width < displayWidth) {
-			if (img.height > img.width) {
-				int h = displayHeight;
-				int w = (int) (img.width * ((double) displayHeight / img.height));
-				img.resize(w, h);
+		// Scale down
+		if (img.height > displayHeight || img.width > displayWidth) {
+			int w;
+			int h;
+
+			if (img.width > img.height) {
+				w = displayWidth;
+				h = (int) (img.height * ((double) displayWidth / img.width));
 			} else {
-				int w = displayWidth;
-				int h = (int) (img.height * ((double) displayWidth / img.width));
-				img.resize(w, h);
+				h = displayHeight;
+				w = (int) (img.width * ((double) displayHeight / img.height));
 			}
+
+			img.resize(w, h);
+		}
+
+		// Scale up
+		if (img.height < displayHeight && img.width < displayWidth) {
+			int w;
+			int h;
+
+			if (img.height > img.width) {
+				h = displayHeight;
+				w = (int) (img.width * ((double) displayHeight / img.height));
+			} else {
+				w = displayWidth;
+				h = (int) (img.height * ((double) displayWidth / img.width));
+			}
+
+			img.resize(w, h);
 		}
 	}
 
