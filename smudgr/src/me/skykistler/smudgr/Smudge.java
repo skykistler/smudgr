@@ -47,6 +47,8 @@ public class Smudge {
 		algorithms.add(alg);
 	}
 
+	boolean saved = false;
+
 	public PImage render() {
 		frame = source.copy();
 
@@ -56,6 +58,9 @@ public class Smudge {
 		}
 		frame.updatePixels();
 
+		if (!saved)
+			saveFrame();
+
 		return frame;
 	}
 
@@ -63,5 +68,6 @@ public class Smudge {
 		String output = "output/" + name + "_" + System.currentTimeMillis() + ".png";
 		System.out.println("Saving smudge to " + output);
 		frame.save(new File(output).getAbsolutePath());
+		saved = true;
 	}
 }

@@ -23,7 +23,7 @@ public class PixelSort implements Algorithm {
 	int blackValue = -10000000;
 	int brigthnessValue = 60;
 	int whiteValue = -6000000;
-	float lumaValue = 120;
+	float lumaValue = 40;
 
 	int row = 0;
 	int column = 0;

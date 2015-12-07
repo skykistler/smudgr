@@ -7,10 +7,10 @@ import processing.core.PImage;
 
 public class CubicMarbeler implements Algorithm {
 
-	int x = 10;
+	int x = 6;
 	int n = 4;
-	double mod = 1;
-	double offsetXY = .5;
+	double mod = .5;
+	double offsetXY = .75;
 	double offsetX = 0;
 	double offsetY = 0;
 	double loop = 100;

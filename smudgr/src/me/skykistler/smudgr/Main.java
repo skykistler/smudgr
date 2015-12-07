@@ -10,9 +10,9 @@ public class Main {
 	public static void main(String[] args) {
 		View view = new View();
 
-		Smudge smudge = new Smudge(view, "lilly.png");
-		smudge.addAlgorithm(new CubicMarbeler());
+		Smudge smudge = new Smudge(view, "house1.png");
 		smudge.addAlgorithm(new PixelSort(SortType.LUMA));
+		smudge.addAlgorithm(new CubicMarbeler());
 
 		view.setSmudge(smudge);
 		view.init();
