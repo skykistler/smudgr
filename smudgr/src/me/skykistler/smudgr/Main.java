@@ -10,7 +10,7 @@ public class Main {
 	public static void main(String[] args) {
 		View view = new View();
 
-		Smudge smudge = new Smudge(view, "galaxies.jpg");
+		Smudge smudge = new Smudge(view, "lilly.png");
 		smudge.addAlgorithm(new CubicMarbeler());
 		smudge.addAlgorithm(new PixelSort(SortType.LUMA));
 

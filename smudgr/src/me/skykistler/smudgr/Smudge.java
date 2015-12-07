@@ -60,6 +60,8 @@ public class Smudge {
 	}
 
 	public void saveFrame() {
-		frame.save("output/" + name + "_" + System.currentTimeMillis() + ".png");
+		String output = "output/" + name + "_" + System.currentTimeMillis() + ".png";
+		System.out.println("Saving smudge to " + output);
+		frame.save(new File(output).getAbsolutePath());
 	}
 }
