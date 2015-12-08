@@ -30,6 +30,8 @@ public class View extends PApplet {
 	}
 
 	public void setup() {
+		frameRate(30);
+
 		if (op != null)
 			try {
 				op.init();

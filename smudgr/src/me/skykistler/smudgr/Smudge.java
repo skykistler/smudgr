@@ -47,7 +47,7 @@ public class Smudge {
 		algorithms.add(alg);
 	}
 
-	boolean saved = false;
+	boolean saved = true;
 
 	public PImage render() {
 		frame = source.copy();
@@ -62,6 +62,10 @@ public class Smudge {
 			saveFrame();
 
 		return frame;
+	}
+
+	public void save() {
+		saved = false;
 	}
 
 	public void saveFrame() {

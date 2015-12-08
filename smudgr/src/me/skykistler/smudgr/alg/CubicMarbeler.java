@@ -25,9 +25,9 @@ public class CubicMarbeler implements Algorithm {
 		horizontal = false;
 
 		if (autoScroll) {
-			offsetX += 1 / loop;
-			offsetX = offsetX >= 1 ? 0 : offsetX;
-			offsetX = offsetX < 0 ? 1 : offsetX;
+			offsetXY += 1 / loop;
+			offsetXY = offsetXY >= 1 ? 0 : offsetXY;
+			offsetXY = offsetXY < 0 ? 1 : offsetXY;
 		}
 
 		for (int i = 0; i < n; i++) {
