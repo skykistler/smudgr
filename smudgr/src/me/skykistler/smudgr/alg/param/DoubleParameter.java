@@ -30,7 +30,12 @@ public class DoubleParameter extends Parameter {
 		this.step = step;
 	}
 
-	public void midiSet(int midi) {
+	public void setValue(Object o) {
+		value = (double) o;
+		enforce();
+	}
+
+	public void midiValue(int midi) {
 		double m;
 		if (reverse)
 			m = (127 - midi) / 127.0;
@@ -38,11 +43,6 @@ public class DoubleParameter extends Parameter {
 			m = midi / 127.0;
 
 		setValue(m * (max - min));
-	}
-
-	public void setValue(double val) {
-		value = val;
-		enforce();
 	}
 
 	public double getValue() {

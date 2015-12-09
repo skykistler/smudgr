@@ -116,7 +116,7 @@ public class Controller implements DeviceObserver {
 				ArrayList<Parameter> bound = getBound(key);
 				if (bound != null)
 					for (Parameter p : bound) {
-						p.midiSet(value);
+						p.midiValue(value);
 					}
 			}
 

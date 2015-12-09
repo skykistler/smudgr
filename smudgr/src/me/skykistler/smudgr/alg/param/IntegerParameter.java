@@ -30,19 +30,19 @@ public class IntegerParameter extends Parameter {
 		this.step = step;
 	}
 
-	public void midiSet(int midi) {
+	public void setValue(Object o) {
+		value = (int) o;
+		enforce();
+	}
+
+	public void midiValue(int midi) {
 		double m;
 		if (reverse)
 			m = (127 - midi) / 127.0;
 		else
 			m = midi / 127.0;
 
-		setValue((int) (m * (max - min)));
-	}
-
-	public void setValue(int val) {
-		value = val;
-		enforce();
+		setValue(m * (max - min));
 	}
 
 	public int getValue() {

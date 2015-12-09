@@ -26,7 +26,9 @@ public abstract class Parameter {
 		return getName();
 	}
 
-	public abstract void midiSet(int midiValue);
+	public abstract void setValue(Object o);
+
+	public abstract void midiValue(int midiValue);
 
 	public abstract void increment();
 

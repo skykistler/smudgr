@@ -1,7 +1,6 @@
 package me.skykistler.smudgr;
 
 import me.skykistler.smudgr.alg.LumaSort;
-import me.skykistler.smudgr.alg.param.DoubleParameter;
 import me.skykistler.smudgr.controller.Controller;
 
 public class EricMain {
@@ -15,8 +14,8 @@ public class EricMain {
 		LumaSort lumaSort = new LumaSort();
 		lumaSort.listParameters();
 
-		// Set some values, this is a little messy right now
-		((DoubleParameter) lumaSort.getParameter("Luma Threshold X")).setValue(40);
+		// Set some values
+		lumaSort.getParameter("Luma Threshold X").setValue(40);
 
 		smudge.addAlgorithm(lumaSort);
 

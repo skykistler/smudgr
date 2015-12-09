@@ -14,12 +14,12 @@ public class BooleanParameter extends Parameter {
 		value = initial;
 	}
 
-	public void midiSet(int midi) {
-		setValue(midi > 0);
+	public void setValue(Object o) {
+		value = (boolean) o;
 	}
 
-	public void setValue(boolean val) {
-		value = val;
+	public void midiValue(int midi) {
+		setValue(midi > 0);
 	}
 
 	public boolean getValue() {
