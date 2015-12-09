@@ -1,4 +1,4 @@
-package me.skykistler.smudgr.controller;
+package me.skykistler.smudgr.controller.device;
 
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiDevice.Info;
@@ -50,6 +50,10 @@ public class Device {
 			}
 	}
 
+	public String toString() {
+		return device.getDeviceInfo().getName();
+	}
+
 	public class DeviceReceiver implements Receiver {
 
 		@Override
@@ -85,4 +89,5 @@ public class Device {
 			}
 		}
 	}
+
 }

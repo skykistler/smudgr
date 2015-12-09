@@ -2,33 +2,40 @@ package me.skykistler.smudgr.alg;
 
 import java.util.Random;
 
+import me.skykistler.smudgr.alg.param.DoubleParameter;
+import me.skykistler.smudgr.alg.param.IntegerParameter;
 import me.skykistler.smudgr.view.View;
 import processing.core.PImage;
 
-public class CubicMarbeler implements Algorithm {
+public class CubicMarbeler extends Algorithm {
 
-	int x = 6;
-	int n = 4;
-	double mod = .5;
-	double offsetXY = .75;
-	double offsetX = 0;
-	double offsetY = 0;
-	double loop = 100;
+	IntegerParameter freq = new IntegerParameter(this, "Frequency", 5, 1, 128);
+	IntegerParameter iterations = new IntegerParameter(this, "Iterations", 4, 0, 32, 1);
+	DoubleParameter mod = new DoubleParameter(this, "Strength", .3, 0, 1);
+	IntegerParameter seed = new IntegerParameter(this, "Seed", 0, 1, 128, 0);
+	DoubleParameter offsetXY = new DoubleParameter(this, "Offset - X/Y", .75, 0, 1);
+	DoubleParameter offsetX = new DoubleParameter(this, "Offset - X", 0, 0, 1);
+	DoubleParameter offsetY = new DoubleParameter(this, "Offset - Y", 0, 0, 1);
 	boolean autoScroll = false;
 
 	boolean horizontal = false;
 	Random rand;
 
+	public String getName() {
+		return "Cubic Marbeler";
+	}
+
 	@Override
 	public void execute(View processor, PImage img) {
-		rand = new Random(0);
+		rand = new Random(seed.getValue());
 		horizontal = false;
 
 		if (autoScroll) {
-			offsetXY += 1 / loop;
-			offsetXY = offsetXY >= 1 ? 0 : offsetXY;
-			offsetXY = offsetXY < 0 ? 1 : offsetXY;
+			offsetXY.increment();
 		}
+
+		int n = iterations.getValue();
+		int x = freq.getValue();
 
 		for (int i = 0; i < n; i++) {
 			double[] points = new double[x];
@@ -76,9 +83,9 @@ public class CubicMarbeler implements Algorithm {
 
 	public void pushPixels(PImage img, int j, double amount) {
 		int k = horizontal ? img.height : img.width - 1;
-		double o = horizontal ? offsetY : offsetX;
+		double o = horizontal ? offsetY.getValue() : offsetX.getValue();
 
-		int offset = (int) Math.abs(Math.floor(k * (this.offsetXY + o + amount * mod)));
+		int offset = (int) Math.abs(Math.floor(k * (this.offsetXY.getValue() + o + amount * mod.getValue())));
 		int[] row = new int[k];
 
 		for (int l = 0; l < k; l++) {

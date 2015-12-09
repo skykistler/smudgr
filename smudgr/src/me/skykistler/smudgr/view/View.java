@@ -9,7 +9,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 public class View extends PApplet {
-	private Smudge op;
+	private Smudge smudge;
 	private int displayWidth;
 	private int displayHeight;
 
@@ -18,7 +18,7 @@ public class View extends PApplet {
 	}
 
 	public void setSmudge(Smudge smudge) {
-		op = smudge;
+		this.smudge = smudge;
 	}
 
 	public void settings() {
@@ -32,9 +32,9 @@ public class View extends PApplet {
 	public void setup() {
 		frameRate(30);
 
-		if (op != null)
+		if (smudge != null)
 			try {
-				op.init();
+				smudge.init(this);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 				System.exit(1);
@@ -42,8 +42,8 @@ public class View extends PApplet {
 	}
 
 	public void draw() {
-		if (op != null) {
-			PImage img = op.render();
+		if (smudge != null) {
+			PImage img = smudge.render();
 
 			fitToScreen(img);
 			centerDrawImage(img);

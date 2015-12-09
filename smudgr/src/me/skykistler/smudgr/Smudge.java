@@ -17,16 +17,18 @@ public class Smudge {
 
 	private PImage frame;
 
-	public Smudge(View view, String filename) {
-		processor = view;
+	private int downsample = 1;
 
+	public Smudge(String filename) {
 		this.filename = filename;
 		name = filename.substring(0, filename.lastIndexOf("."));
 
 		algorithms = new ArrayList<Algorithm>();
 	}
 
-	public void init() throws FileNotFoundException {
+	public void init(View view) throws FileNotFoundException {
+		processor = view;
+
 		System.out.println("Initializing smudge...");
 
 		if (!(new File("data/" + filename).exists())) {
@@ -34,17 +36,25 @@ public class Smudge {
 		}
 
 		source = processor.loadImage("../data/" + filename);
+
+		if (downsample > 1)
+			source.resize(source.width / downsample, source.height / downsample);
+
 		source.loadPixels();
 
 		System.out.println("Smudge initialized.");
 	}
 
 	public void downsample(int amount) {
-		source.resize(source.width / amount, source.height / amount);
+		downsample = amount;
 	}
 
 	public void addAlgorithm(Algorithm alg) {
 		algorithms.add(alg);
+	}
+
+	public ArrayList<Algorithm> getAlgorithms() {
+		return algorithms;
 	}
 
 	boolean saved = true;
@@ -52,9 +62,8 @@ public class Smudge {
 	public PImage render() {
 		frame = source.copy();
 
-		frame.loadPixels();
-		for (Algorithm alg : algorithms) {
-			alg.execute(processor, frame);
+		for (int i = 0; i < algorithms.size(); i++) {
+			algorithms.get(i).execute(processor, frame);
 		}
 		frame.updatePixels();
 
