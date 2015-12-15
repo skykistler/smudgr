@@ -39,10 +39,10 @@ public class LumaSort extends Algorithm {
 		this.img = img;
 
 		row_start = (int) (rowStart.getValue() * img.height);
-		row_end = (int) (rowEnd.getValue() * img.width);
+		row_end = (int) (rowEnd.getValue() * img.height);
 
 		column_start = (int) (columnStart.getValue() * img.width);
-		column_end = (int) (columnEnd.getValue() * img.height);
+		column_end = (int) (columnEnd.getValue() * img.width);
 
 		for (int i = 0; i < loops; i++) {
 			if (sortColumns.getValue())
@@ -51,6 +51,7 @@ public class LumaSort extends Algorithm {
 					column_start++;
 				}
 
+			column_start = (int) (columnStart.getValue() * img.width);
 			if (sortRows.getValue())
 				while (row_start < row_end - 1) {
 					sortRow();
