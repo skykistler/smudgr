@@ -5,7 +5,6 @@ import java.util.Comparator;
 
 import me.skykistler.smudgr.alg.param.BooleanParameter;
 import me.skykistler.smudgr.alg.param.DoubleParameter;
-import me.skykistler.smudgr.alg.param.IntegerParameter;
 import me.skykistler.smudgr.view.View;
 import processing.core.PImage;
 
@@ -15,18 +14,17 @@ public class LumaSort extends Algorithm {
 	BooleanParameter sortColumns = new BooleanParameter(this, "Sort Columns", true);
 	DoubleParameter lumaThreshX = new DoubleParameter(this, "Luma Threshold X", 127, -1, 256, 1);
 	DoubleParameter lumaThreshY = new DoubleParameter(this, "Luma Threshold Y", 127, -1, 256, 1);
-	IntegerParameter rowStart = new IntegerParameter(this, "Starting Row Bound", 0);
-	IntegerParameter rowEnd = new IntegerParameter(this, "Ending Row Bound", 1);
-	IntegerParameter columnStart = new IntegerParameter(this, "Starting Column Bound", 0);
-	IntegerParameter columnEnd = new IntegerParameter(this, "Ending Column Bound", 1);
+	DoubleParameter rowStart = new DoubleParameter(this, "Starting Row Bound", 0, 0, 1);
+	DoubleParameter rowEnd = new DoubleParameter(this, "Ending Row Bound", 1, 0, 1);
+	DoubleParameter columnStart = new DoubleParameter(this, "Starting Column Bound", 0, 0, 1);
+	DoubleParameter columnEnd = new DoubleParameter(this, "Ending Column Bound", 1, 0, 1);
 
 	int loops = 1;
 
-	int row = 0;
-	int column = 0;
-
-	int width = 0;
-	int height = 0;
+	int row_start = 0;
+	int row_end = 0;
+	int column_start = 0;
+	int column_end = 0;
 
 	PImage img = null;
 	View processor = null;
@@ -39,67 +37,34 @@ public class LumaSort extends Algorithm {
 		this.processor = processor;
 
 		this.img = img;
-		width = img.width;
-		height = img.height;
 
-		//Prevents negative array access by flipping values if in backwards order
-		//Not really sure if this is a good solution though when using it in real-time...
-		if (rowStart.getValue() > rowEnd.getValue()) {
-			int temp = rowStart.getValue();
-			rowStart.setValue(rowEnd.getValue());
-			rowEnd.setValue(temp);
-		}
-		if (columnStart.getValue() > columnEnd.getValue()) {
-			int temp = columnStart.getValue();
-			columnStart.setValue(columnEnd.getValue());
-			columnEnd.setValue(temp);
-		}
+		row_start = (int) (rowStart.getValue() * img.height);
+		row_end = (int) (rowEnd.getValue() * img.width);
 
-		if (rowStart.getValue() > img.height)
-			rowStart.setValue(img.height);
-		if (rowStart.getValue() < 0)
-			rowStart.setValue(0);
-		if (rowEnd.getValue() > img.height)
-			rowEnd.setValue(img.height);
-		if (rowEnd.getValue() < 1)
-			rowEnd.setValue(1);
-
-		if (columnStart.getValue() > img.width)
-			columnStart.setValue(img.width);
-		if (columnStart.getValue() < 0)
-			columnStart.setValue(0);
-		if (columnEnd.getValue() > img.width)
-			columnEnd.setValue(img.width);
-		if (columnEnd.getValue() < 1)
-			columnEnd.setValue(1);
-
-		row = rowStart.getValue();
-		column = columnStart.getValue();
-
-		width = columnEnd.getValue();
-		height = rowEnd.getValue();
+		column_start = (int) (columnStart.getValue() * img.width);
+		column_end = (int) (columnEnd.getValue() * img.height);
 
 		for (int i = 0; i < loops; i++) {
 			if (sortColumns.getValue())
-				while (column < width - 1) {
+				while (column_start < column_end - 1) {
 					sortColumn();
-					column++;
+					column_start++;
 				}
 
 			if (sortRows.getValue())
-				while (row < height - 1) {
+				while (row_start < row_end - 1) {
 					sortRow();
-					row++;
+					row_start++;
 				}
 		}
 	}
 
 	public void sortRow() {
-		int x = column;
-		int y = row;
+		int x = column_start;
+		int y = row_start;
 		int xend = 0;
 
-		while (xend < width - 1) {
+		while (xend < column_end - 1) {
 			x = getFirstNotLumaX(x, y);
 			xend = getNextLumaX(x, y);
 
@@ -136,11 +101,11 @@ public class LumaSort extends Algorithm {
 	}
 
 	public void sortColumn() {
-		int x = column;
-		int y = row;
+		int x = column_start;
+		int y = row_start;
 		int yend = 0;
 
-		while (yend < height - 1) {
+		while (yend < row_end - 1) {
 			y = getFirstNotLumaY(x, y);
 			yend = getNextLumaY(x, y);
 
@@ -180,7 +145,7 @@ public class LumaSort extends Algorithm {
 	int getFirstNotLumaX(int x, int y) {
 		while (luma(img.pixels[x + y * img.width]) < lumaThreshX.getValue()) {
 			x++;
-			if (x >= width)
+			if (x >= column_end)
 				return -1;
 		}
 		return x;
@@ -190,18 +155,18 @@ public class LumaSort extends Algorithm {
 		int x = _x + 1;
 		while (luma(img.pixels[x + y * img.width]) > lumaThreshX.getValue()) {
 			x++;
-			if (x >= width)
-				return width - 1;
+			if (x >= column_end)
+				return column_end - 1;
 		}
 		return x - 1;
 	}
 
 	// LUMA
 	int getFirstNotLumaY(int x, int y) {
-		if (y < height) {
+		if (y < row_end) {
 			while (luma(img.pixels[x + y * img.width]) < lumaThreshY.getValue()) {
 				y++;
-				if (y >= height)
+				if (y >= row_end)
 					return -1;
 			}
 		}
@@ -210,11 +175,11 @@ public class LumaSort extends Algorithm {
 
 	int getNextLumaY(int x, int _y) {
 		int y = _y + 1;
-		if (y < height) {
+		if (y < row_end) {
 			while (luma(img.pixels[x + y * img.width]) > lumaThreshY.getValue()) {
 				y++;
-				if (y >= height)
-					return height - 1;
+				if (y >= row_end)
+					return row_end - 1;
 			}
 		}
 		return y - 1;
