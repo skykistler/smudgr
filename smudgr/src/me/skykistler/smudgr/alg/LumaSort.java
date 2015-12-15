@@ -13,15 +13,15 @@ public class LumaSort extends Algorithm {
 
 	BooleanParameter sortRows = new BooleanParameter(this, "Sort Rows", true);
 	BooleanParameter sortColumns = new BooleanParameter(this, "Sort Columns", true);
-	DoubleParameter lumaThreshX = new DoubleParameter(this, "Luma Threshold X", 256, 0, 256, -1);
-	DoubleParameter lumaThreshY = new DoubleParameter(this, "Luma Threshold Y", 265, 0, 256, -1);
+	DoubleParameter lumaThreshX = new DoubleParameter(this, "Luma Threshold X", 127, -1, 256, 1);
+	DoubleParameter lumaThreshY = new DoubleParameter(this, "Luma Threshold Y", 127, -1, 256, 1);
 	IntegerParameter rowStart = new IntegerParameter(this, "Starting Row Bound", 0);
 	IntegerParameter rowEnd = new IntegerParameter(this, "Ending Row Bound", 1);
 	IntegerParameter columnStart = new IntegerParameter(this, "Starting Column Bound", 0);
 	IntegerParameter columnEnd = new IntegerParameter(this, "Ending Column Bound", 1);
-			
+
 	int loops = 1;
-	
+
 	int row = 0;
 	int column = 0;
 
@@ -41,34 +41,41 @@ public class LumaSort extends Algorithm {
 		this.img = img;
 		width = img.width;
 		height = img.height;
-		
+
 		//Prevents negative array access by flipping values if in backwards order
 		//Not really sure if this is a good solution though when using it in real-time...
-		if(rowStart.getValue() > rowEnd.getValue()){
+		if (rowStart.getValue() > rowEnd.getValue()) {
 			int temp = rowStart.getValue();
 			rowStart.setValue(rowEnd.getValue());
 			rowEnd.setValue(temp);
 		}
-		if(columnStart.getValue() > columnEnd.getValue()){
+		if (columnStart.getValue() > columnEnd.getValue()) {
 			int temp = columnStart.getValue();
 			columnStart.setValue(columnEnd.getValue());
 			columnEnd.setValue(temp);
 		}
-		
-		if(rowStart.getValue() > img.height) rowStart.setValue(img.height);
-		if(rowStart.getValue() < 0) rowStart.setValue(0);
-		if(rowEnd.getValue() > img.height) rowEnd.setValue(img.height);
-		if(rowEnd.getValue() < 1) rowEnd.setValue(1);
-		
-		if(columnStart.getValue() > img.width) columnStart.setValue(img.width);
-		if(columnStart.getValue() < 0) columnStart.setValue(0);
-		if(columnEnd.getValue() > img.width) columnEnd.setValue(img.width);
-		if(columnEnd.getValue() < 1) columnEnd.setValue(1);
-		
-		
+
+		if (rowStart.getValue() > img.height)
+			rowStart.setValue(img.height);
+		if (rowStart.getValue() < 0)
+			rowStart.setValue(0);
+		if (rowEnd.getValue() > img.height)
+			rowEnd.setValue(img.height);
+		if (rowEnd.getValue() < 1)
+			rowEnd.setValue(1);
+
+		if (columnStart.getValue() > img.width)
+			columnStart.setValue(img.width);
+		if (columnStart.getValue() < 0)
+			columnStart.setValue(0);
+		if (columnEnd.getValue() > img.width)
+			columnEnd.setValue(img.width);
+		if (columnEnd.getValue() < 1)
+			columnEnd.setValue(1);
+
 		row = rowStart.getValue();
 		column = columnStart.getValue();
-		
+
 		width = columnEnd.getValue();
 		height = rowEnd.getValue();
 
