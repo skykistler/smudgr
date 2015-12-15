@@ -42,6 +42,19 @@ public class LumaSort extends Algorithm {
 		width = img.width;
 		height = img.height;
 		
+		//Prevents negative array access by flipping values if in backwards order
+		//Not really sure if this is a good solution though when using it in real-time...
+		if(rowStart.getValue() > rowEnd.getValue()){
+			int temp = rowStart.getValue();
+			rowStart.setValue(rowEnd.getValue());
+			rowEnd.setValue(temp);
+		}
+		if(columnStart.getValue() > columnEnd.getValue()){
+			int temp = columnStart.getValue();
+			columnStart.setValue(columnEnd.getValue());
+			columnEnd.setValue(temp);
+		}
+		
 		if(rowStart.getValue() > img.height) rowStart.setValue(img.height);
 		if(rowStart.getValue() < 0) rowStart.setValue(0);
 		if(rowEnd.getValue() > img.height) rowEnd.setValue(img.height);
@@ -51,7 +64,7 @@ public class LumaSort extends Algorithm {
 		if(columnStart.getValue() < 0) columnStart.setValue(0);
 		if(columnEnd.getValue() > img.width) columnEnd.setValue(img.width);
 		if(columnEnd.getValue() < 1) columnEnd.setValue(1);
-
+		
 		
 		row = rowStart.getValue();
 		column = columnStart.getValue();

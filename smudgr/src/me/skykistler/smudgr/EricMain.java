@@ -19,8 +19,8 @@ public class EricMain {
 		lumaSort.getParameter("Sort Columns").setValue(false);
 		lumaSort.getParameter("Starting Row Bound").setValue(300);
 		lumaSort.getParameter("Ending Row Bound").setValue(1000);
-		lumaSort.getParameter("Starting Column Bound").setValue(300);
-		lumaSort.getParameter("Ending Column Bound").setValue(400);
+		lumaSort.getParameter("Starting Column Bound").setValue(600);
+		lumaSort.getParameter("Ending Column Bound").setValue(100);
 		smudge.addAlgorithm(lumaSort);
 
 		// Start smudge using the controller
