@@ -21,6 +21,10 @@ public class Smudge {
 
 	private int downsample = 1;
 
+	public Smudge(String filename) {
+		this(filename, filename);
+	}
+
 	public Smudge(String smudgename, String filename) {
 		this.filename = filename;
 		name = smudgename;
