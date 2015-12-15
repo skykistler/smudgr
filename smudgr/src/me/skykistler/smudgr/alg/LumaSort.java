@@ -75,7 +75,7 @@ public class LumaSort extends Algorithm {
 	}
 
 	public void sortRow() {
-		int x = columnStart.getValue();
+		int x = column;
 		int y = row;
 		int xend = 0;
 
@@ -117,7 +117,7 @@ public class LumaSort extends Algorithm {
 
 	public void sortColumn() {
 		int x = column;
-		int y = rowStart.getValue();
+		int y = row;
 		int yend = 0;
 
 		while (yend < height - 1) {
