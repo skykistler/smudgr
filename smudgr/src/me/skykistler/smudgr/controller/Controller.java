@@ -8,6 +8,7 @@ import javax.sound.midi.MidiMessage;
 import me.skykistler.smudgr.Smudge;
 import me.skykistler.smudgr.alg.Algorithm;
 import me.skykistler.smudgr.alg.param.Parameter;
+import me.skykistler.smudgr.controller.controls.Controllable;
 import me.skykistler.smudgr.controller.device.Device;
 import me.skykistler.smudgr.controller.device.DeviceObserver;
 import me.skykistler.smudgr.view.View;
@@ -34,11 +35,11 @@ public class Controller implements DeviceObserver {
 	private Smudge smudge;
 	private View view;
 	private Device input;
-	private HashMap<Integer, ArrayList<Parameter>> midiMap;
+	private HashMap<Integer, ArrayList<Controllable>> midiMap;
 
 	public Controller() {
 		view = new View();
-		midiMap = new HashMap<Integer, ArrayList<Parameter>>();
+		midiMap = new HashMap<Integer, ArrayList<Controllable>>();
 	}
 
 	public void setSmudge(Smudge s) {
@@ -66,17 +67,29 @@ public class Controller implements DeviceObserver {
 	}
 
 	private void bindParameters() {
+		ArrayList<Controllable> alreadyBound = new ArrayList<Controllable>();
+
 		for (Algorithm a : smudge.getAlgorithms()) {
 			for (Parameter p : a.getParameters()) {
 				if (p.isBindRequested()) {
 					System.out.println("Binding " + p + " for " + p.getParent() + "... please touch a MIDI key...");
-					bindParameter(p);
+					bindControl(p);
+					alreadyBound.add(p);
+				}
+			}
+		}
+
+		for (Controllable c : Controllable.getControls()) {
+			if (!alreadyBound.contains(c)) {
+				if (c.isBindRequested()) {
+					System.out.println("Please touch a MIDI key to bind: " + c);
+					bindControl(c);
 				}
 			}
 		}
 	}
 
-	private void bindParameter(Parameter p) {
+	private void bindControl(Controllable c) {
 		lastKeyPressed = -1;
 		waitingForKey = true;
 
@@ -88,17 +101,17 @@ public class Controller implements DeviceObserver {
 			}
 		}
 
-		ArrayList<Parameter> parameters = getBound(lastKeyPressed);
-		if (parameters == null) {
-			midiMap.put(lastKeyPressed, new ArrayList<Parameter>());
-			getBound(lastKeyPressed).add(p);
+		ArrayList<Controllable> controls = getBound(lastKeyPressed);
+		if (controls == null) {
+			midiMap.put(lastKeyPressed, new ArrayList<Controllable>());
+			getBound(lastKeyPressed).add(c);
 			waitingForKey = false;
 		} else {
-			bindParameter(p);
+			bindControl(c);
 		}
 	}
 
-	public ArrayList<Parameter> getBound(int key) {
+	public ArrayList<Controllable> getBound(int key) {
 		return midiMap.get(key);
 	}
 
@@ -106,27 +119,53 @@ public class Controller implements DeviceObserver {
 	private int lastKeyPressed = -1;
 
 	public void midiInput(MidiMessage message) {
-		byte[] digest = message.getMessage();
+		synchronized (smudge) {
+			byte[] digest = message.getMessage();
 
-		if (!waitingForKey)
-			if (message.getLength() == 3) {
-				int key = digest[1];
-				int value = digest[2];
+			int status = digest[0];
+			// If not control value, note on, or note off, skip it
+			if (!(status == -80 || status == -112 || status == -128))
+				return;
 
-				ArrayList<Parameter> bound = getBound(key);
-				if (bound != null)
-					for (Parameter p : bound) {
-						p.midiValue(value);
-					}
-			}
+			if (!waitingForKey)
+				if (message.getLength() == 3) {
+					int key = digest[1];
+					int value = digest[2];
 
-		if (message.getLength() > 1)
-			lastKeyPressed = digest[1];
+					ArrayList<Controllable> bound = getBound(key);
+					if (bound != null)
+						for (Controllable c : bound) {
+							// If control value change
+							if (status == -80) {
+								// Twist up
+								if (value > 64)
+									c.increment();
+								// Twist down
+								else if (value < 64)
+									c.decrement();
+							} else {
+								// If note on
+								if (status == -112)
+									c.noteOn(key);
 
-		if (waitingForKey)
-			synchronized (this) {
-				notify();
-			}
+								// Velocity, or whatever else
+								c.midiValue(value);
+
+								// If note off
+								if (status == -128)
+									c.noteOff(key);
+							}
+						}
+				}
+
+			if (message.getLength() > 1)
+				lastKeyPressed = digest[1];
+
+			if (waitingForKey)
+				synchronized (this) {
+					notify();
+				}
+		}
 	}
 
 }

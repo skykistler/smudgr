@@ -12,7 +12,7 @@ public class CubicMarbeler extends Algorithm {
 	IntegerParameter freq = new IntegerParameter(this, "Frequency", 5, 1, 128);
 	IntegerParameter iterations = new IntegerParameter(this, "Iterations", 4, 0, 32, 1);
 	DoubleParameter mod = new DoubleParameter(this, "Strength", .3, 0, 1);
-	IntegerParameter seed = new IntegerParameter(this, "Seed", 0, 1, 128, 0);
+	IntegerParameter seed = new IntegerParameter(this, "Seed", 0);
 	DoubleParameter offsetXY = new DoubleParameter(this, "Offset - X/Y", .75, 0, 1);
 	DoubleParameter offsetX = new DoubleParameter(this, "Offset - X", 0, 0, 1);
 	DoubleParameter offsetY = new DoubleParameter(this, "Offset - Y", 0, 0, 1);

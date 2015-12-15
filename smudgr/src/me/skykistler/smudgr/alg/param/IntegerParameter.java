@@ -7,8 +7,6 @@ public class IntegerParameter extends Parameter {
 	private int min;
 	private int max;
 	private int step;
-	private boolean continuous = false;
-	private boolean reverse = false;
 
 	public IntegerParameter(Algorithm parent, String name) {
 		this(parent, name, 0);
@@ -35,6 +33,10 @@ public class IntegerParameter extends Parameter {
 		enforce();
 	}
 
+	public int getValue() {
+		return value;
+	}
+
 	public void midiValue(int midi) {
 		double m;
 		if (reverse)
@@ -45,32 +47,42 @@ public class IntegerParameter extends Parameter {
 		setValue(m * (max - min));
 	}
 
-	public int getValue() {
-		return value;
+	public void noteOn(int note) {
+		setValue(reverse ? min : max);
 	}
 
-	public void setContinuous(boolean cont) {
-		continuous = cont;
-	}
-
-	public void setReverse(boolean rev) {
-		reverse = rev;
+	public void noteOff(int note) {
+		setValue(reverse ? max : min);
 	}
 
 	public void increment() {
-		value += step;
-		if (continuous && value > max)
-			value = min + (max - value);
+		if (reverse)
+			dec();
+		else
+			inc();
 
 		enforce();
 	}
 
 	public void decrement() {
+		if (reverse) {
+			inc();
+		} else
+			dec();
+
+		enforce();
+	}
+
+	private void inc() {
+		value += step;
+		if (continuous && value > max)
+			value = min + (max - value);
+	}
+
+	private void dec() {
 		value -= step;
 		if (continuous && value < min)
 			value = max - (min - value);
-
-		enforce();
 	}
 
 	private void enforce() {

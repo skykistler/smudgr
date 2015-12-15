@@ -18,16 +18,26 @@ public class BooleanParameter extends Parameter {
 		value = (boolean) o;
 	}
 
-	public void midiValue(int midi) {
-		setValue(midi > 0);
-	}
-
 	public boolean getValue() {
 		return value;
 	}
 
-	public void setReverse(boolean rev) {
+	public void midiValue(int midi) {
+		setValue(midi > 0);
+	}
 
+	public void noteOn(int note) {
+		if (reverse)
+			setValue(false);
+		else
+			setValue(true);
+	}
+
+	public void noteOff(int note) {
+		if (reverse)
+			setValue(true);
+		else
+			setValue(false);
 	}
 
 	public void increment() {
