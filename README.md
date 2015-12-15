@@ -1,1 +1,3 @@
 # smudgr
+
+Smudge the pixels
