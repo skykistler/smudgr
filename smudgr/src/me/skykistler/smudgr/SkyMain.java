@@ -10,7 +10,7 @@ public class SkyMain {
 
 	public static void main(String[] args) {
 		Smudge smudge = new Smudge("city test", "city/manhole.png");
-		//		smudge.downsample(2);
+		smudge.downsample(2);
 
 		SaveControl save = new SaveControl(smudge);
 		save.requestBind();
@@ -22,11 +22,11 @@ public class SkyMain {
 		downsampler.requestBind();
 
 		LumaSort lumaSort = new LumaSort();
-		lumaSort.bind("Luma Threshold X");
 		lumaSort.getParameter("Luma Threshold X").setReverse(true);
-		lumaSort.bind("Luma Threshold Y");
 		lumaSort.getParameter("Luma Threshold Y").setReverse(true);
 
+		lumaSort.bind("Luma Threshold X");
+		lumaSort.bind("Luma Threshold Y");
 		lumaSort.bind("Starting Row Bound");
 		lumaSort.bind("Starting Column Bound");
 		lumaSort.bind("Ending Column Bound");

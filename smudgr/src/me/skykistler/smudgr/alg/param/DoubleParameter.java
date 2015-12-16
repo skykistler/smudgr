@@ -29,7 +29,10 @@ public class DoubleParameter extends Parameter {
 	}
 
 	public void setValue(Object o) {
-		value = (double) o;
+		if (o instanceof Integer)
+			value = (double) (int) o;
+		else
+			value = (double) o;
 		enforce();
 	}
 

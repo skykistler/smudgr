@@ -45,13 +45,11 @@ public class View extends PApplet {
 		if (smudge != null) {
 			PImage img = smudge.render();
 
-			fitToScreen(img);
-			centerDrawImage(img);
+			centerDrawImage(fitToScreen(img));
 		}
 	}
 
-	// TODO write our own resize method for different interpolations
-	private void fitToScreen(PImage img) {
+	private PImage fitToScreen(PImage img) {
 		// Scale down
 		if (img.height > displayHeight || img.width > displayWidth) {
 			int w;
@@ -81,8 +79,34 @@ public class View extends PApplet {
 				h = (int) (img.height * ((double) displayWidth / img.width));
 			}
 
-			img.resize(w, h);
+			img = scaleUp(img, w, h);
 		}
+
+		return img;
+	}
+
+	private PImage scaleUp(PImage img, int width, int height) {
+		if (width < img.width || height < img.height)
+			return null;
+
+		double width_factor = (double) img.width / width;
+		double height_factor = (double) img.height / height;
+
+		PImage scaled = new PImage(width, height);
+
+		for (int i = 0; i < width; i++)
+			for (int j = 0; j < height; j++) {
+				int mx = (int) Math.floor(i * width_factor);
+				int my = (int) Math.floor(j * height_factor);
+				int index = mx + my * img.width;
+				if (index >= img.pixels.length)
+					continue;
+				scaled.pixels[i + j * width] = img.pixels[index];
+			}
+
+		scaled.updatePixels();
+
+		return scaled;
 	}
 
 	private void centerDrawImage(PImage img) {
