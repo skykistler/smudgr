@@ -12,3 +12,4 @@ various ideas
 + seam-carving-esque algorithms that make use of "pixel walking"
 + Sort on lowest-energy or highest-energy walks from seam-carving(different ways of finding intervals to plug into Generic Pixel Sort)
 + randomly stretch and map stuff, broken nearest neighbor interpolation
++ Use animated GIF as source
