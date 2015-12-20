@@ -12,6 +12,8 @@ public class LumaSort extends Algorithm {
 
 	BooleanParameter sortRows = new BooleanParameter(this, "Sort Rows", true);
 	BooleanParameter sortColumns = new BooleanParameter(this, "Sort Columns", true);
+	BooleanParameter reverseColumns = new BooleanParameter(this, "Reverse Sort Columns", true);
+	BooleanParameter reverseRows = new BooleanParameter(this, "Reverse Sort Rows", true);
 	DoubleParameter lumaThreshX = new DoubleParameter(this, "Luma Threshold X", 127, -1, 256, 1);
 	DoubleParameter lumaThreshY = new DoubleParameter(this, "Luma Threshold Y", 127, -1, 256, 1);
 	DoubleParameter rowStart = new DoubleParameter(this, "Starting Row Bound", 0, 0, 1);
@@ -70,7 +72,7 @@ public class LumaSort extends Algorithm {
 			xend = getNextLumaX(x, y);
 
 			if (x < 0)
-				break;
+				break; 
 
 			int sortLength = xend - x;
 
@@ -85,10 +87,17 @@ public class LumaSort extends Algorithm {
 				public int compare(Integer o1, Integer o2) {
 					float o1l = luma((int) o1);
 					float o2l = luma((int) o2);
-					if (o1l > o2l)
-						return 1;
-					if (o1l < o2l)
-						return -1;
+					if (reverseRows.getValue() ) {
+						if (o1l > o2l)
+							return 1;
+						if (o1l < o2l)
+							return -1;
+					} else {
+						if (o1l < o2l)
+							return 1;
+						if (o1l > o2l)
+							return -1;
+					}
 					return 0;
 				}
 			});
@@ -126,10 +135,17 @@ public class LumaSort extends Algorithm {
 				public int compare(Integer o1, Integer o2) {
 					float o1l = luma((int) o1);
 					float o2l = luma((int) o2);
-					if (o1l > o2l)
-						return 1;
-					if (o1l < o2l)
-						return -1;
+					if (reverseColumns.getValue() ) {
+						if (o1l > o2l)
+							return 1;
+						if (o1l < o2l)
+							return -1;
+					} else {
+						if (o1l < o2l)
+							return 1;
+						if (o1l > o2l)
+							return -1;
+					} 
 					return 0;
 				}
 			});
@@ -185,7 +201,7 @@ public class LumaSort extends Algorithm {
 		}
 		return y - 1;
 	}
-
+	
 	float luma(int color) {
 		float red = processor.red(color);
 		float blue = processor.blue(color);
