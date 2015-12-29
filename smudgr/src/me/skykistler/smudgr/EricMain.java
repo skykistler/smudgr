@@ -1,32 +1,82 @@
 package me.skykistler.smudgr;
 
+import me.skykistler.smudgr.alg.CubicMarbeler;
 import me.skykistler.smudgr.alg.LumaSort;
+import me.skykistler.smudgr.alg.RadialPixelSort;
+import me.skykistler.smudgr.alg.Shift;
 import me.skykistler.smudgr.controller.Controller;
+import me.skykistler.smudgr.controller.controls.DownsampleControl;
+import me.skykistler.smudgr.controller.controls.ImageSwitcherControl;
+import me.skykistler.smudgr.controller.controls.SaveControl;
 
 public class EricMain {
 	public static void main(String[] args) {
-		// Make a new smudge pointing at a file name
-		Smudge smudge = new Smudge("house1.png");
-		// optionally downsample
-		// smudge.downsample(2);
 
-		// Make a new algorithm instance and list it's parameters
-		LumaSort lumaSort = new LumaSort();
-		lumaSort.listParameters();
+		Smudge smudge = new Smudge("smudgr test", "/teststop/forest.jpg");
+		//		smudge.downsample(2);
 
-		// Set some values
-		lumaSort.getParameter("Luma Threshold X").setValue(20.0);
-		lumaSort.getParameter("Sort Columns").setValue(false);
-		lumaSort.getParameter("Starting Row Bound").setValue(300);
-		lumaSort.getParameter("Ending Row Bound").setValue(1000);
-		lumaSort.getParameter("Starting Column Bound").setValue(600);
-		lumaSort.getParameter("Ending Column Bound").setValue(100);
-		smudge.addAlgorithm(lumaSort);
+		SaveControl save = new SaveControl(smudge);
+		save.requestBind();
 
-		// Start smudge using the controller
-		Controller.startSmudge(smudge);
+		ImageSwitcherControl imageSwitcher = new ImageSwitcherControl(smudge, "test");
+		imageSwitcher.requestBind();
 
-		// Save the first frame
-		// smudge.save();
+		DownsampleControl downsampler = new DownsampleControl(smudge);
+		downsampler.requestBind();
+
+//		CubicMarbeler marbeler = new CubicMarbeler();
+//		marbeler.bind("Frequency");
+//		marbeler.bind("Iterations");
+//		marbeler.bind("Strength");
+//		marbeler.bind("Seed");
+//		marbeler.bind("Offset - X/Y");
+//		
+//		smudge.addAlgorithm(marbeler);
+//		
+//		LumaSort lumaSort = new LumaSort();
+//		lumaSort.bind("Luma Threshold X");
+//		lumaSort.getParameter("Luma Threshold X").setReverse(true);
+//		lumaSort.bind("Luma Threshold Y");
+//		lumaSort.getParameter("Luma Threshold Y").setReverse(true);
+//		lumaSort.bind("Reverse Sort Columns");
+//		lumaSort.bind("Reverse Sort Rows");
+//		lumaSort.bind("Starting Row Bound");
+//		lumaSort.bind("Starting Column Bound");
+//		lumaSort.bind("Ending Column Bound");
+//		lumaSort.bind("Ending Row Bound");
+//		lumaSort.bind("Degree of Rotation");
+//
+//		smudge.addAlgorithm(lumaSort);
+//		
+//		Shift shifter = new Shift();
+//		shifter.getParameter("Shift Rows").setValue(false);
+//		//shifter.bind("Pixel Shift X");
+//		shifter.bind("Pixel Shift Y");
+//		shifter.bind("x0");
+//		shifter.bind("y0");
+//		shifter.bind("x1");
+//		shifter.bind("y1");
+//		shifter.bind("Amount of X intervals");
+//		//shifter.bind("Amount of Y intervals");
+//		shifter.bind("Scale for Y");
+//		shifter.bind("Direction for Y");
+//		
+//		smudge.addAlgorithm(shifter);
+		
+		RadialPixelSort radialSort = new RadialPixelSort();
+		radialSort.bind("Luma Threshold");
+		radialSort.getParameter("Luma Threshold").setReverse(true);
+		radialSort.bind("Reverse Sort");
+		radialSort.bind("Starting Row Bound");
+		radialSort.bind("Starting Column Bound");
+		radialSort.bind("Ending Column Bound");
+		radialSort.bind("Ending Row Bound");
+		radialSort.bind("Inner Radius");
+
+		smudge.addAlgorithm(radialSort);
+		
+		
+		
+		Controller.startSmudge(smudge, "Arturia BeatStep");
 	}
 }
