@@ -34,7 +34,7 @@ public class SkyMain {
 
 		smudge.addAlgorithm(lumaSort);
 
-		Controller.startSmudge(smudge, "Arturia BeatStep");
+		Controller.startSmudge(smudge, "Arturia Beatstep Pro");
 	}
 
 }

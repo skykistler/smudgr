@@ -1,8 +1,12 @@
 sky's todo
 ========
-This weekend
-+ Generalized pixel sort using strategy pattern
+Sometime soon
++ Generalized pixel sort using strategy pattern for different sort and threshold functions
++ Generalized marbeler using strategy for different interpolation functions
 + Reverse sort option
 + Toggle sorting rows or columns first
-+ Strategy pattern on the marbeler for different interpolations
 + Nearest-neighbor upscale on save
+
+Eric points
++ How should we generalize to stay compatible with radial sort
++ How were going to handle bounds
