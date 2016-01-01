@@ -1,6 +1,6 @@
-package me.skykistler.smudgr.alg.param;
+package io.smudgr.alg.param;
 
-import me.skykistler.smudgr.alg.Algorithm;
+import io.smudgr.alg.Algorithm;
 
 public class IntegerParameter extends Parameter {
 	private int value;

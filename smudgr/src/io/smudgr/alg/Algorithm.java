@@ -1,10 +1,10 @@
-package me.skykistler.smudgr.alg;
+package io.smudgr.alg;
 
 import java.util.Collection;
 import java.util.HashMap;
 
-import me.skykistler.smudgr.alg.param.Parameter;
-import me.skykistler.smudgr.view.View;
+import io.smudgr.alg.param.Parameter;
+import io.smudgr.view.View;
 import processing.core.PImage;
 
 public abstract class Algorithm {

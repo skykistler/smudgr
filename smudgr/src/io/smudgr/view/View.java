@@ -1,10 +1,10 @@
-package me.skykistler.smudgr.view;
+package io.smudgr.view;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.FileNotFoundException;
 
-import me.skykistler.smudgr.Smudge;
+import io.smudgr.Smudge;
 import processing.core.PApplet;
 import processing.core.PImage;
 

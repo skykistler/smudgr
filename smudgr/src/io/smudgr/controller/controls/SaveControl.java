@@ -1,6 +1,6 @@
-package me.skykistler.smudgr.controller.controls;
+package io.smudgr.controller.controls;
 
-import me.skykistler.smudgr.Smudge;
+import io.smudgr.Smudge;
 
 public class SaveControl extends Controllable {
 

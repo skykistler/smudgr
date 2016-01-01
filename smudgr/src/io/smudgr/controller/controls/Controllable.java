@@ -1,4 +1,4 @@
-package me.skykistler.smudgr.controller.controls;
+package io.smudgr.controller.controls;
 
 import java.util.ArrayList;
 

@@ -1,10 +1,10 @@
-package me.skykistler.smudgr;
+package io.smudgr;
 
-import me.skykistler.smudgr.alg.LumaSort;
-import me.skykistler.smudgr.controller.Controller;
-import me.skykistler.smudgr.controller.controls.DownsampleControl;
-import me.skykistler.smudgr.controller.controls.ImageSwitcherControl;
-import me.skykistler.smudgr.controller.controls.SaveControl;
+import io.smudgr.alg.LumaSort;
+import io.smudgr.controller.Controller;
+import io.smudgr.controller.controls.DownsampleControl;
+import io.smudgr.controller.controls.ImageSwitcherControl;
+import io.smudgr.controller.controls.SaveControl;
 
 public class SkyMain {
 

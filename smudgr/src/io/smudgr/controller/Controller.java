@@ -1,17 +1,17 @@
-package me.skykistler.smudgr.controller;
+package io.smudgr.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.sound.midi.MidiMessage;
 
-import me.skykistler.smudgr.Smudge;
-import me.skykistler.smudgr.alg.Algorithm;
-import me.skykistler.smudgr.alg.param.Parameter;
-import me.skykistler.smudgr.controller.controls.Controllable;
-import me.skykistler.smudgr.controller.device.Device;
-import me.skykistler.smudgr.controller.device.DeviceObserver;
-import me.skykistler.smudgr.view.View;
+import io.smudgr.Smudge;
+import io.smudgr.alg.Algorithm;
+import io.smudgr.alg.param.Parameter;
+import io.smudgr.controller.controls.Controllable;
+import io.smudgr.controller.device.Device;
+import io.smudgr.controller.device.DeviceObserver;
+import io.smudgr.view.View;
 
 public class Controller implements DeviceObserver {
 

@@ -1,10 +1,10 @@
-package me.skykistler.smudgr.alg;
+package io.smudgr.alg;
 
 import java.util.Random;
 
-import me.skykistler.smudgr.alg.param.DoubleParameter;
-import me.skykistler.smudgr.alg.param.IntegerParameter;
-import me.skykistler.smudgr.view.View;
+import io.smudgr.alg.param.DoubleParameter;
+import io.smudgr.alg.param.IntegerParameter;
+import io.smudgr.view.View;
 import processing.core.PImage;
 
 public class CubicMarbeler extends Algorithm {

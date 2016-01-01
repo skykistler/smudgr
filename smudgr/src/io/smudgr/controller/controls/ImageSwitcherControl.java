@@ -1,10 +1,10 @@
-package me.skykistler.smudgr.controller.controls;
+package io.smudgr.controller.controls;
 
 import java.io.File;
 import java.util.ArrayList;
 
-import me.skykistler.smudgr.Smudge;
-import me.skykistler.smudgr.view.View;
+import io.smudgr.Smudge;
+import io.smudgr.view.View;
 import processing.core.PImage;
 
 public class ImageSwitcherControl extends Controllable {

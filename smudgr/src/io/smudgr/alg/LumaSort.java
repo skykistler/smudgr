@@ -1,11 +1,11 @@
-package me.skykistler.smudgr.alg;
+package io.smudgr.alg;
 
 import java.util.Arrays;
 import java.util.Comparator;
 
-import me.skykistler.smudgr.alg.param.BooleanParameter;
-import me.skykistler.smudgr.alg.param.DoubleParameter;
-import me.skykistler.smudgr.view.View;
+import io.smudgr.alg.param.BooleanParameter;
+import io.smudgr.alg.param.DoubleParameter;
+import io.smudgr.view.View;
 import processing.core.PImage;
 
 public class LumaSort extends Algorithm {

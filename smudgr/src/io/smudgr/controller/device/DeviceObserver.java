@@ -1,4 +1,4 @@
-package me.skykistler.smudgr.controller.device;
+package io.smudgr.controller.device;
 
 import javax.sound.midi.MidiMessage;
 

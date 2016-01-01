@@ -1,7 +1,7 @@
-package me.skykistler.smudgr.alg.param;
+package io.smudgr.alg.param;
 
-import me.skykistler.smudgr.alg.Algorithm;
-import me.skykistler.smudgr.controller.controls.Controllable;
+import io.smudgr.alg.Algorithm;
+import io.smudgr.controller.controls.Controllable;
 
 public abstract class Parameter extends Controllable {
 	private Algorithm alg;

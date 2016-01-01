@@ -1,9 +1,9 @@
-package me.skykistler.smudgr;
+package io.smudgr;
 
 import javax.sound.midi.MidiMessage;
 
-import me.skykistler.smudgr.controller.device.Device;
-import me.skykistler.smudgr.controller.device.DeviceObserver;
+import io.smudgr.controller.device.Device;
+import io.smudgr.controller.device.DeviceObserver;
 
 public class DeviceTest implements DeviceObserver {
 

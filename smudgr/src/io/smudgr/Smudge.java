@@ -1,12 +1,12 @@
-package me.skykistler.smudgr;
+package io.smudgr;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-import me.skykistler.smudgr.alg.Algorithm;
-import me.skykistler.smudgr.controller.controls.Controllable;
-import me.skykistler.smudgr.view.View;
+import io.smudgr.alg.Algorithm;
+import io.smudgr.controller.controls.Controllable;
+import io.smudgr.view.View;
 import processing.core.PImage;
 
 public class Smudge {
