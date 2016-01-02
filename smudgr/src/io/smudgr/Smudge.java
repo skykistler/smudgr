@@ -47,6 +47,10 @@ public class Smudge {
 		for (Controllable c : Controllable.getControls())
 			c.init();
 
+		System.out.println("Setting up " + algorithms.size() + " algorithms...");
+		for (Algorithm a : algorithms)
+			a.init(view);
+
 		System.out.println("Smudge initialized.");
 	}
 
@@ -79,8 +83,11 @@ public class Smudge {
 		synchronized (this) {
 			frame = source.copy();
 
-			for (int i = 0; i < algorithms.size(); i++) {
-				algorithms.get(i).execute(processor, frame);
+			for (Algorithm a : algorithms) {
+				PImage mix = frame.copy();
+				a.execute(mix);
+				frame = a.mask(frame, mix, a.getMask());
+
 			}
 			frame.updatePixels();
 
@@ -106,5 +113,12 @@ public class Smudge {
 
 	public View getView() {
 		return processor;
+	}
+
+	public void setView(View view) {
+		processor = view;
+		for (Algorithm a : algorithms) {
+			a.setView(view);
+		}
 	}
 }

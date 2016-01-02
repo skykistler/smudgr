@@ -35,9 +35,7 @@ public class LumaSort extends Algorithm {
 		return "Luma Sort";
 	}
 
-	public void execute(View processor, PImage img) {
-		this.processor = processor;
-
+	public void execute(PImage img) {
 		this.img = img;
 
 		row_start = (int) (rowStart.getValue() * img.height);
@@ -72,7 +70,7 @@ public class LumaSort extends Algorithm {
 			xend = getNextLumaX(x, y);
 
 			if (x < 0)
-				break; 
+				break;
 
 			int sortLength = xend - x;
 
@@ -87,7 +85,7 @@ public class LumaSort extends Algorithm {
 				public int compare(Integer o1, Integer o2) {
 					float o1l = luma((int) o1);
 					float o2l = luma((int) o2);
-					if (reverseRows.getValue() ) {
+					if (reverseRows.getValue()) {
 						if (o1l > o2l)
 							return 1;
 						if (o1l < o2l)
@@ -135,7 +133,7 @@ public class LumaSort extends Algorithm {
 				public int compare(Integer o1, Integer o2) {
 					float o1l = luma((int) o1);
 					float o2l = luma((int) o2);
-					if (reverseColumns.getValue() ) {
+					if (reverseColumns.getValue()) {
 						if (o1l > o2l)
 							return 1;
 						if (o1l < o2l)
@@ -145,7 +143,7 @@ public class LumaSort extends Algorithm {
 							return 1;
 						if (o1l > o2l)
 							return -1;
-					} 
+					}
 					return 0;
 				}
 			});
@@ -201,7 +199,7 @@ public class LumaSort extends Algorithm {
 		}
 		return y - 1;
 	}
-	
+
 	float luma(int color) {
 		float red = processor.red(color);
 		float blue = processor.blue(color);

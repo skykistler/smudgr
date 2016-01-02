@@ -50,7 +50,7 @@ public class View extends PApplet {
 	}
 
 	private PImage fitToScreen(PImage img) {
-		// Scale down
+		// Scale down if needed
 		if (img.height > displayHeight || img.width > displayWidth) {
 			int w;
 			int h;
@@ -64,9 +64,8 @@ public class View extends PApplet {
 			}
 
 			img.resize(w, h);
-		}
-
-		// Scale up
+		} else
+		// Scale up if needed
 		if (img.height < displayHeight && img.width < displayWidth) {
 			int w;
 			int h;

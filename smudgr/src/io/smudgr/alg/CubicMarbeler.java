@@ -4,7 +4,6 @@ import java.util.Random;
 
 import io.smudgr.alg.param.DoubleParameter;
 import io.smudgr.alg.param.IntegerParameter;
-import io.smudgr.view.View;
 import processing.core.PImage;
 
 public class CubicMarbeler extends Algorithm {
@@ -26,7 +25,7 @@ public class CubicMarbeler extends Algorithm {
 	}
 
 	@Override
-	public void execute(View processor, PImage img) {
+	public void execute(PImage img) {
 		rand = new Random(seed.getValue());
 		horizontal = false;
 
