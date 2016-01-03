@@ -87,9 +87,12 @@ public class View extends PApplet {
 		return img;
 	}
 
-	private PImage scaleUp(PImage img, int width, int height) {
+	public PImage scaleUp(PImage img, int width, int height) {
 		if (width < img.width || height < img.height)
-			return null;
+			return img;
+
+		if (width == img.width && height == img.height)
+			return img;
 
 		double width_factor = (double) img.width / width;
 		double height_factor = (double) img.height / height;

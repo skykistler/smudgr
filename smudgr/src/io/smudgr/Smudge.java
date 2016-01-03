@@ -99,7 +99,10 @@ public class Smudge {
 	private void outputFrame() {
 		String output = "output/" + name + "_" + System.currentTimeMillis() + ".png";
 		System.out.println("Saving smudge to " + output);
-		frame.save(new File(output).getAbsolutePath());
+
+		PImage toSave = processor.scaleUp(frame, originalSource.width, originalSource.height);
+		toSave.save(new File(output).getAbsolutePath());
+
 		saveNextRender = false;
 	}
 

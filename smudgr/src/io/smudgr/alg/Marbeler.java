@@ -2,11 +2,14 @@ package io.smudgr.alg;
 
 import java.util.Random;
 
+import io.smudgr.alg.math.CubicInterpolator;
+import io.smudgr.alg.math.Interpolator;
+import io.smudgr.alg.param.BooleanParameter;
 import io.smudgr.alg.param.DoubleParameter;
 import io.smudgr.alg.param.IntegerParameter;
 import processing.core.PImage;
 
-public class CubicMarbeler extends Algorithm {
+public class Marbeler extends Algorithm {
 
 	IntegerParameter freq = new IntegerParameter(this, "Frequency", 5, 1, 128);
 	IntegerParameter iterations = new IntegerParameter(this, "Iterations", 4, 0, 32, 1);
@@ -15,7 +18,9 @@ public class CubicMarbeler extends Algorithm {
 	DoubleParameter offsetXY = new DoubleParameter(this, "Offset - X/Y", .75, 0, 1);
 	DoubleParameter offsetX = new DoubleParameter(this, "Offset - X", 0, 0, 1);
 	DoubleParameter offsetY = new DoubleParameter(this, "Offset - Y", 0, 0, 1);
-	boolean autoScroll = false;
+	BooleanParameter autoScroll = new BooleanParameter(this, "Auto-Scroll", false);
+
+	Interpolator intplt = new CubicInterpolator();
 
 	boolean horizontal = false;
 	Random rand;
@@ -29,7 +34,7 @@ public class CubicMarbeler extends Algorithm {
 		rand = new Random(seed.getValue());
 		horizontal = false;
 
-		if (autoScroll) {
+		if (autoScroll.getValue()) {
 			offsetXY.increment();
 		}
 
@@ -55,7 +60,7 @@ public class CubicMarbeler extends Algorithm {
 				double v1 = points[p];
 				double v2 = points[(p + 1) % x];
 				double v3 = points[(p + 2) % x];
-				offsets[j] = Math.max(interpolate(v0, v1, v2, v3, percentage), 0);
+				offsets[j] = Math.max(intplt.interpolate(v0, v1, v2, v3, percentage), 0);
 			}
 
 			for (int j = 0; j < offsets.length; j++) {
@@ -64,20 +69,6 @@ public class CubicMarbeler extends Algorithm {
 
 			horizontal = !horizontal;
 		}
-	}
-
-	// v0 = the point before a
-	// v1 = the point a
-	// v2 = the point b
-	// v3 = the point after b
-	// x = the percentage of how close to interpolate to point a
-	public double interpolate(double v0, double v1, double v2, double v3, double x) {
-		double P = (v3 - v2) - (v0 - v1);
-		double Q = (v0 - v1) - P;
-		double R = v2 - v0;
-		double S = v1;
-
-		return P * Math.pow(x, 3) + Q * Math.pow(x, 2) + R * x + S;
 	}
 
 	public void pushPixels(PImage img, int j, double amount) {
