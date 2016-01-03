@@ -39,7 +39,6 @@ public class PixelSort extends Algorithm {
 			coordFunction.setImage(img);
 			coordFunction.update();
 		}
-
 		this.img = img;
 
 		for (ArrayList<Integer> coords : coordFunction.getCoordSet())
