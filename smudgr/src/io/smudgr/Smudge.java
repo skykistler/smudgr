@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import io.smudgr.alg.Algorithm;
-import io.smudgr.controller.controls.Controllable;
 import io.smudgr.view.View;
 import processing.core.PImage;
 
@@ -14,7 +13,6 @@ public class Smudge {
 	private String filename;
 	private String name;
 	private PImage originalSource;
-	private PImage source;
 	private View processor;
 
 	private PImage frame;
@@ -35,17 +33,13 @@ public class Smudge {
 	public void init(View view) throws FileNotFoundException {
 		processor = view;
 
-		System.out.println("\nInitializing smudge...");
+		System.out.println("Initializing smudge...");
 
 		if (!(new File("data/" + filename).exists())) {
 			throw new FileNotFoundException("Could not find file: data/" + filename);
 		}
 
 		setSource(processor.loadImage("../data/" + filename));
-
-		System.out.println("Setting up controls...");
-		for (Controllable c : Controllable.getControls())
-			c.init();
 
 		System.out.println("Setting up " + algorithms.size() + " algorithms...");
 		for (Algorithm a : algorithms)
@@ -58,10 +52,10 @@ public class Smudge {
 		downsample = amount;
 
 		if (originalSource != null) {
-			source = originalSource.copy();
-			source.resize(source.width / downsample, source.height / downsample);
+			frame = originalSource.copy();
+			frame.resize(frame.width / downsample, frame.height / downsample);
 
-			source.loadPixels();
+			frame.loadPixels();
 		}
 	}
 
@@ -81,8 +75,6 @@ public class Smudge {
 
 	public PImage render() {
 		synchronized (this) {
-			frame = source.copy();
-
 			for (Algorithm a : algorithms) {
 				PImage mix = frame.copy();
 				a.execute(mix);

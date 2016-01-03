@@ -15,32 +15,35 @@ import processing.core.PImage;
 
 public class PixelSort extends Algorithm {
 
+	DoubleParameter thresh = new DoubleParameter(this, "Threshold", .2, -.01, 1, .01);
+	BooleanParameter reverse = new BooleanParameter(this, "Reverse Direction", false);
+
 	UnivariateFunction thresholdFunction = new LumaFunction();
 	UnivariateFunction sortFunction = new LumaFunction();
 	CoordFunction coordFunction = new ColumnCoords();
-	DoubleParameter thresh = new DoubleParameter(this, "Threshold", .5, -.01, 1, .01);
-	BooleanParameter reverseSort = new BooleanParameter(this, "Reverse Sort Direction", false);
 
 	public String getName() {
 		return "Pixel Sort";
 	}
 
-	ArrayList<ArrayList<Integer>> coordSet;
 	PImage img = null;
 
 	public void init(View processor) {
 		super.init(processor);
 
 		coordFunction.setBound(getMask());
-		coordSet = coordFunction.getCoordSet();
 	}
 
 	public void execute(PImage img) {
+		if (this.img == null || (img.width != this.img.width || img.height != this.img.height)) {
+			coordFunction.setImage(img);
+			coordFunction.update();
+		}
+
 		this.img = img;
 
-		for (int i = 0; i < 1; i++) {
-			sort(null);
-		}
+		for (ArrayList<Integer> coords : coordFunction.getCoordSet())
+			sort(coords);
 	}
 
 	public void sort(ArrayList<Integer> coords) {
@@ -67,7 +70,7 @@ public class PixelSort extends Algorithm {
 				@Override
 				public int compare(Integer o1, Integer o2) {
 					double o1l = sortFunction.calculate(o1);
-					double o2l = sortFunction.calculate(o1);
+					double o2l = sortFunction.calculate(o2);
 
 					int ret = 0;
 					if (o1l < o2l)
@@ -75,7 +78,7 @@ public class PixelSort extends Algorithm {
 					if (o1l > o2l)
 						ret = -1;
 
-					if (reverseSort.getValue())
+					if (reverse.getValue())
 						ret *= -1;
 
 					return ret;

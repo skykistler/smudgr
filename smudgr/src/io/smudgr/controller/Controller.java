@@ -16,7 +16,7 @@ import io.smudgr.view.View;
 public class Controller implements DeviceObserver {
 
 	public static Controller startSmudge(Smudge s) {
-		Controller c = new Controller();
+		Controller c = getInstance();
 		c.setSmudge(s);
 		c.start();
 
@@ -24,7 +24,7 @@ public class Controller implements DeviceObserver {
 	}
 
 	public static Controller startSmudge(Smudge s, String deviceName) {
-		Controller c = new Controller();
+		Controller c = getInstance();
 		c.setSmudge(s);
 		c.bindDevice(deviceName);
 		c.start();
@@ -32,19 +32,31 @@ public class Controller implements DeviceObserver {
 		return c;
 	}
 
+	public static Controller getInstance() {
+		return SingletonHolder.INSTANCE;
+	}
+
 	private Smudge smudge;
 	private View view;
 	private Device input;
 	private HashMap<Integer, ArrayList<Controllable>> midiMap;
+	private ArrayList<Controllable> controls = new ArrayList<Controllable>();
 
-	public Controller() {
-		view = new View();
+	protected Controller() {
+		view = new View(this);
 		midiMap = new HashMap<Integer, ArrayList<Controllable>>();
+
+		System.out.println("Setting up controls...");
+		for (Controllable c : controls)
+			c.init();
+	}
+
+	public Smudge getSmudge() {
+		return smudge;
 	}
 
 	public void setSmudge(Smudge s) {
 		smudge = s;
-		view.setSmudge(smudge);
 	}
 
 	public void start() {
@@ -79,7 +91,7 @@ public class Controller implements DeviceObserver {
 			}
 		}
 
-		for (Controllable c : Controllable.getControls()) {
+		for (Controllable c : controls) {
 			if (!alreadyBound.contains(c)) {
 				if (c.isBindRequested()) {
 					System.out.println("Please touch a MIDI key to bind: " + c);
@@ -101,17 +113,21 @@ public class Controller implements DeviceObserver {
 			}
 		}
 
-		ArrayList<Controllable> controls = getBound(lastKeyPressed);
+		ArrayList<Controllable> controls = getKeyBinds(lastKeyPressed);
 		if (controls == null) {
 			midiMap.put(lastKeyPressed, new ArrayList<Controllable>());
-			getBound(lastKeyPressed).add(c);
+			getKeyBinds(lastKeyPressed).add(c);
 			waitingForKey = false;
 		} else {
 			bindControl(c);
 		}
 	}
 
-	public ArrayList<Controllable> getBound(int key) {
+	public void addControl(Controllable c) {
+		controls.add(c);
+	}
+
+	public ArrayList<Controllable> getKeyBinds(int key) {
 		return midiMap.get(key);
 	}
 
@@ -132,7 +148,7 @@ public class Controller implements DeviceObserver {
 					int key = digest[1];
 					int value = digest[2];
 
-					ArrayList<Controllable> bound = getBound(key);
+					ArrayList<Controllable> bound = getKeyBinds(key);
 					if (bound != null)
 						for (Controllable c : bound) {
 							// If control value change
@@ -166,6 +182,10 @@ public class Controller implements DeviceObserver {
 					notify();
 				}
 		}
+	}
+
+	private static class SingletonHolder {
+		private static final Controller INSTANCE = new Controller();
 	}
 
 }

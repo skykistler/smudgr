@@ -5,20 +5,21 @@ import java.awt.Toolkit;
 import java.io.FileNotFoundException;
 
 import io.smudgr.Smudge;
+import io.smudgr.controller.Controller;
 import processing.core.PApplet;
 import processing.core.PImage;
 
 public class View extends PApplet {
-	private Smudge smudge;
+	private Controller controller;
 	private int displayWidth;
 	private int displayHeight;
 
-	public void init() {
-		runSketch(new String[] { "--present" });
+	public View(Controller controller) {
+		this.controller = controller;
 	}
 
-	public void setSmudge(Smudge smudge) {
-		this.smudge = smudge;
+	public void init() {
+		runSketch(new String[] { "--present" });
 	}
 
 	public void settings() {
@@ -32,6 +33,7 @@ public class View extends PApplet {
 	public void setup() {
 		frameRate(30);
 
+		Smudge smudge = controller.getSmudge();
 		if (smudge != null)
 			try {
 				smudge.init(this);
@@ -42,6 +44,7 @@ public class View extends PApplet {
 	}
 
 	public void draw() {
+		Smudge smudge = controller.getSmudge();
 		if (smudge != null) {
 			PImage img = smudge.render();
 

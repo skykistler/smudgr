@@ -1,21 +1,14 @@
 package io.smudgr.controller.controls;
 
-import java.util.ArrayList;
+import io.smudgr.controller.Controller;
 
 public abstract class Controllable {
-	private static ArrayList<Controllable> controls = new ArrayList<Controllable>();
-
-	public static ArrayList<Controllable> getControls() {
-		return controls;
-	}
-
 	private String name;
 	private boolean bindRequested = false;
 
 	public Controllable(String name) {
 		this.name = name;
-
-		controls.add(this);
+		Controller.getInstance().addControl(this);
 	}
 
 	public String getName() {

@@ -6,11 +6,51 @@ import io.smudgr.alg.bound.Bound;
 import processing.core.PImage;
 
 public abstract class CoordFunction {
-	ArrayList<ArrayList<Integer>> coordSet = null;
 	private PImage image;
 	private Bound bound;
 
+	protected ArrayList<ArrayList<Integer>> coordSet = null;
+	private ArrayList<Integer> currentSet = null;
+
+	public void update() {
+		generate();
+	}
+
 	protected abstract void generate();
+
+	protected void nextSet() {
+		// If our total set of coords doesn't exist yet, make it
+		if (coordSet == null)
+			coordSet = new ArrayList<ArrayList<Integer>>();
+
+		// If a current set was being generated, add it if not empty
+		if (currentSet != null && currentSet.size() > 0)
+			coordSet.add(currentSet);
+
+		// Finally, reset the current set and our in-bound flag
+		currentSet = new ArrayList<Integer>();
+		wasInBound = false;
+	}
+
+	private boolean wasInBound = false;
+
+	protected void nextPoint(int x, int y) {
+		// If we haven't started generating, make the first set
+		if (currentSet == null)
+			nextSet();
+
+		// If point is in bound, add it's index
+		if (bound.containsPoint(image, x, y)) {
+			int index = x + y * image.width;
+			currentSet.add(index);
+			wasInBound = true;
+		}
+		// Else, if we were just in bound, break the set and set our flag
+		else if (wasInBound) {
+			nextSet();
+			wasInBound = false;
+		}
+	}
 
 	public ArrayList<ArrayList<Integer>> getCoordSet() {
 		return coordSet;
@@ -22,8 +62,6 @@ public abstract class CoordFunction {
 
 	public void setBound(Bound bound) {
 		this.bound = bound;
-		coordSet = new ArrayList<ArrayList<Integer>>();
-		generate();
 	}
 
 	public PImage getImage() {
@@ -32,8 +70,6 @@ public abstract class CoordFunction {
 
 	public void setImage(PImage image) {
 		this.image = image;
-		coordSet = new ArrayList<ArrayList<Integer>>();
-		generate();
 	}
 
 }
