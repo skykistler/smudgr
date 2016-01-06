@@ -68,18 +68,10 @@ public class View extends PApplet {
 
 			img.resize(w, h);
 		} else
-		// Scale up if needed
-		if (img.height < displayHeight && img.width < displayWidth) {
-			int w;
-			int h;
-
-			if (img.height > img.width) {
-				h = displayHeight;
-				w = (int) (img.width * ((double) displayHeight / img.height));
-			} else {
-				w = displayWidth;
-				h = (int) (img.height * ((double) displayWidth / img.width));
-			}
+			// Scale up if needed
+			if (img.height < displayHeight && img.width < displayWidth) {
+			int w = (int) (img.width * ((double) displayHeight / img.height));
+			int h = displayHeight;
 
 			img = scaleUp(img, w, h);
 		}
