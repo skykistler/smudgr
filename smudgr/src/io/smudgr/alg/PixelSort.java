@@ -10,8 +10,7 @@ import io.smudgr.alg.math.LumaFunction;
 import io.smudgr.alg.math.UnivariateFunction;
 import io.smudgr.alg.param.BooleanParameter;
 import io.smudgr.alg.param.DoubleParameter;
-import io.smudgr.view.View;
-import processing.core.PImage;
+import io.smudgr.model.Frame;
 
 public class PixelSort extends Algorithm {
 
@@ -26,16 +25,16 @@ public class PixelSort extends Algorithm {
 		return "Pixel Sort";
 	}
 
-	PImage img = null;
+	Frame img = null;
 
-	public void init(View processor) {
-		super.init(processor);
+	public void init() {
+		super.init();
 
 		coordFunction.setBound(getMask());
 	}
 
-	public void execute(PImage img) {
-		if (this.img == null || (img.width != this.img.width || img.height != this.img.height)) {
+	public void execute(Frame img) {
+		if (this.img == null || (img.getWidth() != this.img.getWidth() || img.getHeight() != this.img.getHeight())) {
 			coordFunction.setImage(img);
 			coordFunction.update();
 		}

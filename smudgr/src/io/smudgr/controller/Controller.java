@@ -15,26 +15,22 @@ import io.smudgr.view.View;
 
 public class Controller implements DeviceObserver {
 
-	public static Controller startSmudge(Smudge s) {
-		Controller c = getInstance();
-		c.setSmudge(s);
-		c.start();
-
-		return c;
-	}
-
-	public static Controller startSmudge(Smudge s, String deviceName) {
-		Controller c = getInstance();
-		c.setSmudge(s);
-		c.bindDevice(deviceName);
-		c.start();
-
-		return c;
-	}
-
-	public static Controller getInstance() {
-		return SingletonHolder.INSTANCE;
-	}
+	// public static Controller startSmudge(Smudge s) {
+	// Controller c = new Controller;
+	// c.setSmudge(s);
+	// c.start();
+	//
+	// return c;
+	// }
+	//
+	// public static Controller startSmudge(Smudge s, String deviceName) {
+	// Controller c = new Controller();
+	// c.setSmudge(s);
+	// c.bindDevice(deviceName);
+	// c.start();
+	//
+	// return c;
+	// }
 
 	private Smudge smudge;
 	private View view;
@@ -42,8 +38,7 @@ public class Controller implements DeviceObserver {
 	private HashMap<Integer, ArrayList<Controllable>> midiMap;
 	private ArrayList<Controllable> controls = new ArrayList<Controllable>();
 
-	protected Controller() {
-		view = new View(this);
+	public Controller() {
 		midiMap = new HashMap<Integer, ArrayList<Controllable>>();
 
 		System.out.println("Setting up controls...");
@@ -59,7 +54,16 @@ public class Controller implements DeviceObserver {
 		smudge = s;
 	}
 
+	public View getView() {
+		return view;
+	}
+
+	public void setView(View view) {
+		this.view = view;
+	}
+
 	public void start() {
+		smudge.init();
 		view.init();
 	}
 
@@ -182,10 +186,6 @@ public class Controller implements DeviceObserver {
 					notify();
 				}
 		}
-	}
-
-	private static class SingletonHolder {
-		private static final Controller INSTANCE = new Controller();
 	}
 
 }

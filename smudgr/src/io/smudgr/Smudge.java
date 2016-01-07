@@ -1,21 +1,17 @@
 package io.smudgr;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import io.smudgr.alg.Algorithm;
-import io.smudgr.view.View;
-import processing.core.PImage;
+import io.smudgr.model.Frame;
 
 public class Smudge {
 	private ArrayList<Algorithm> algorithms;
 	private String filename;
 	private String name;
-	private PImage originalSource;
-	private View processor;
+	private Frame originalSource;
 
-	private PImage frame;
+	private Frame frame;
 
 	private int downsample = 1;
 
@@ -30,20 +26,14 @@ public class Smudge {
 		algorithms = new ArrayList<Algorithm>();
 	}
 
-	public void init(View view) throws FileNotFoundException {
-		processor = view;
-
+	public void init() {
 		System.out.println("Initializing smudge...");
 
-		if (!(new File("data/" + filename).exists())) {
-			throw new FileNotFoundException("Could not find file: data/" + filename);
-		}
-
-		setSource(processor.loadImage("../data/" + filename));
+		setSource(new Frame("../data/" + filename));
 
 		System.out.println("Setting up " + algorithms.size() + " algorithms...");
 		for (Algorithm a : algorithms)
-			a.init(view);
+			a.init();
 
 		System.out.println("Smudge initialized.");
 	}
@@ -53,9 +43,7 @@ public class Smudge {
 
 		if (originalSource != null) {
 			frame = originalSource.copy();
-			frame.resize(frame.width / downsample, frame.height / downsample);
-
-			frame.loadPixels();
+			frame.resize(frame.getWidth() / downsample, frame.getWidth() / downsample);
 		}
 	}
 
@@ -67,21 +55,20 @@ public class Smudge {
 		return algorithms;
 	}
 
-	public void setSource(PImage image) {
+	public void setSource(Frame image) {
 		originalSource = image;
 
 		downsample(downsample);
 	}
 
-	public PImage render() {
+	public Frame render() {
 		synchronized (this) {
 			for (Algorithm a : algorithms) {
-				PImage mix = frame.copy();
+				Frame mix = frame.copy();
 				a.execute(mix);
 				frame = a.mask(frame, mix, a.getMask());
 
 			}
-			frame.updatePixels();
 
 			if (saveNextRender)
 				outputFrame();
@@ -100,20 +87,11 @@ public class Smudge {
 		String output = "output/" + name + "_" + System.currentTimeMillis() + ".png";
 		System.out.println("Saving smudge to " + output);
 
-		PImage toSave = processor.scaleUp(frame, originalSource.width, originalSource.height);
-		toSave.save(new File(output).getAbsolutePath());
+		Frame toSave = frame.copy();
+		toSave.resize(originalSource.getWidth(), originalSource.getHeight());
+		toSave.save(output);
 
 		saveNextRender = false;
 	}
 
-	public View getView() {
-		return processor;
-	}
-
-	public void setView(View view) {
-		processor = view;
-		for (Algorithm a : algorithms) {
-			a.setView(view);
-		}
-	}
 }

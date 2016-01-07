@@ -4,15 +4,14 @@ import java.io.File;
 import java.util.ArrayList;
 
 import io.smudgr.Smudge;
-import io.smudgr.view.View;
-import processing.core.PImage;
+import io.smudgr.model.Frame;
 
 public class ImageSwitcherControl extends Controllable {
 
 	private Smudge smudge;
 	private int curImage = 0;
 	private ArrayList<String> files = new ArrayList<String>();;
-	private ArrayList<PImage> images = new ArrayList<PImage>();;
+	private ArrayList<Frame> images = new ArrayList<Frame>();;
 
 	public ImageSwitcherControl(Smudge smudge, String location) {
 		super("Image Switcher");
@@ -34,14 +33,14 @@ public class ImageSwitcherControl extends Controllable {
 	}
 
 	public void init() {
-		loadImages(smudge.getView());
+		loadImages();
 	}
 
-	public void loadImages(View processor) {
+	public void loadImages() {
 		System.out.println("Loading " + files.size() + " source files...");
 
 		for (int i = 0; i < files.size(); i++) {
-			PImage image = processor.loadImage("../data/" + files.get(i));
+			Frame image = new Frame("../data/" + files.get(i));
 			if (image != null)
 				images.add(image);
 		}

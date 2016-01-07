@@ -1,6 +1,6 @@
 package io.smudgr.alg.bound;
 
-import processing.core.PImage;
+import io.smudgr.model.Frame;
 
 public class Bound {
 	private double offsetX;
@@ -18,14 +18,14 @@ public class Bound {
 			fullBound = true;
 	}
 
-	public boolean containsPoint(PImage img, int x, int y) {
+	public boolean containsPoint(Frame img, int x, int y) {
 		// If fullbound, skip check
 		if (fullBound)
 			return true;
 
 		// Transform x and y coordinates to percentages
-		double bX = (double) x / img.width;
-		double bY = (double) y / img.height;
+		double bX = (double) x / img.getWidth();
+		double bY = (double) y / img.getHeight();
 
 		if (bX < width && x >= offsetX)
 			if (bY < height && y >= offsetY)
@@ -38,8 +38,8 @@ public class Bound {
 		return offsetX;
 	}
 
-	public int getTranslatedX(PImage image) {
-		return (int) Math.floor(offsetX * image.width);
+	public int getTranslatedX(Frame image) {
+		return (int) Math.floor(offsetX * image.getWidth());
 	}
 
 	public void setOffsetX(double offsetX) {
@@ -54,8 +54,8 @@ public class Bound {
 		return offsetY;
 	}
 
-	public int getTranslatedY(PImage image) {
-		return (int) Math.floor(offsetY * image.height);
+	public int getTranslatedY(Frame image) {
+		return (int) Math.floor(offsetY * image.getHeight());
 	}
 
 	public void setOffsetY(double offsetY) {
@@ -70,8 +70,8 @@ public class Bound {
 		return width;
 	}
 
-	public int getTranslatedWidth(PImage image) {
-		return (int) Math.floor(width * image.width);
+	public int getTranslatedWidth(Frame image) {
+		return (int) Math.floor(width * image.getHeight());
 	}
 
 	public void setWidth(double width) {
@@ -86,8 +86,8 @@ public class Bound {
 		return height;
 	}
 
-	public int getTranslatedHeight(PImage image) {
-		return (int) Math.floor(height * image.height);
+	public int getTranslatedHeight(Frame image) {
+		return (int) Math.floor(height * image.getHeight());
 	}
 
 	public void setHeight(double height) {

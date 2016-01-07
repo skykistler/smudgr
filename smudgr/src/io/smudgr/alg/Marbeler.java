@@ -7,7 +7,7 @@ import io.smudgr.alg.math.Interpolator;
 import io.smudgr.alg.param.BooleanParameter;
 import io.smudgr.alg.param.DoubleParameter;
 import io.smudgr.alg.param.IntegerParameter;
-import processing.core.PImage;
+import io.smudgr.model.Frame;
 
 public class Marbeler extends Algorithm {
 
@@ -30,7 +30,7 @@ public class Marbeler extends Algorithm {
 	}
 
 	@Override
-	public void execute(PImage img) {
+	public void execute(Frame img) {
 		rand = new Random(seed.getValue());
 		horizontal = false;
 
@@ -48,7 +48,7 @@ public class Marbeler extends Algorithm {
 				points[j] = (p + 1) / 3;
 			}
 
-			double[] offsets = new double[horizontal ? img.width : img.height];
+			double[] offsets = new double[horizontal ? img.getWidth() : img.getHeight()];
 			double r = (double) offsets.length / x;
 			for (int j = 0; j < offsets.length; j++) {
 				int p = (int) Math.floor(x * j / offsets.length);
@@ -71,8 +71,8 @@ public class Marbeler extends Algorithm {
 		}
 	}
 
-	public void pushPixels(PImage img, int j, double amount) {
-		int k = horizontal ? img.height : img.width - 1;
+	public void pushPixels(Frame img, int j, double amount) {
+		int k = horizontal ? img.getWidth() : img.getWidth() - 1;
 		double o = horizontal ? offsetY.getValue() : offsetX.getValue();
 
 		int offset = (int) Math.abs(Math.floor(k * (this.offsetXY.getValue() + o + amount * mod.getValue())));
@@ -80,18 +80,18 @@ public class Marbeler extends Algorithm {
 
 		for (int l = 0; l < k; l++) {
 			if (horizontal)
-				row[l] = img.pixels[j + l * img.width];
+				row[l] = img.pixels[j + l * img.getWidth()];
 			else
-				row[l] = img.pixels[l + j * img.width];
+				row[l] = img.pixels[l + j * img.getWidth()];
 		}
 
 		for (int l = 0; l < k; l++) {
 			try {
 				int index = (l + offset) % k;
 				if (horizontal)
-					img.pixels[j + l * img.width] = row[index];
+					img.pixels[j + l * img.getWidth()] = row[index];
 				else
-					img.pixels[l + j * img.width] = row[index];
+					img.pixels[l + j * img.getWidth()] = row[index];
 			} catch (Exception e) {
 				System.out.println(offset);
 			}

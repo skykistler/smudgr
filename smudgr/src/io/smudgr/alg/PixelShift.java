@@ -5,7 +5,7 @@ import io.smudgr.alg.math.LinearFunction;
 import io.smudgr.alg.math.UnivariateFunction;
 import io.smudgr.alg.param.DoubleParameter;
 import io.smudgr.alg.param.IntegerParameter;
-import processing.core.PImage;
+import io.smudgr.model.Frame;
 
 public class PixelShift extends Algorithm {
 
@@ -15,17 +15,17 @@ public class PixelShift extends Algorithm {
 
 	UnivariateFunction scale = new LinearFunction();
 
-	PImage img = null;
+	Frame img = null;
 
-	public void execute(PImage img) {
+	public void execute(Frame img) {
 		this.img = img;
 
 		Bound b = getMask();
 
-		int intervalWidth = (int) Math.floor(img.width / intervals.getValue());
+		int intervalWidth = (int) Math.floor(img.getWidth() / intervals.getValue());
 		for (int n = 0; n < intervals.getValue(); n++) {
-			int start = n * intervalWidth + (int) (b.getOffsetX() * img.width);
-			int end = start + (int) (b.getWidth() * img.width);
+			int start = n * intervalWidth + (int) (b.getOffsetX() * img.getWidth());
+			int end = start + (int) (b.getWidth() * img.getWidth());
 
 			for (int x = start; x < end; x++) {
 				shift(x, n);
@@ -37,9 +37,9 @@ public class PixelShift extends Algorithm {
 		int boundY = getMask().getTranslatedY(img);
 		int boundHeight = getMask().getTranslatedHeight(img);
 		for (int y = boundY; y < boundHeight; y++) {
-			int color = img.pixels[x + ((y + amount) % boundHeight) * img.width];
+			int color = img.pixels[x + ((y + amount) % boundHeight) * img.getWidth()];
 
-			img.pixels[x + y * img.width] = color;
+			img.pixels[x + y * img.getWidth()] = color;
 		}
 	}
 

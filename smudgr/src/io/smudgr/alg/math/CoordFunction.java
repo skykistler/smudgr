@@ -3,10 +3,10 @@ package io.smudgr.alg.math;
 import java.util.ArrayList;
 
 import io.smudgr.alg.bound.Bound;
-import processing.core.PImage;
+import io.smudgr.model.Frame;
 
 public abstract class CoordFunction {
-	private PImage image;
+	private Frame image;
 	private Bound bound;
 
 	protected ArrayList<ArrayList<Integer>> coordSet = null;
@@ -41,7 +41,7 @@ public abstract class CoordFunction {
 
 		// If point is in bound, add it's index
 		if (bound.containsPoint(image, x, y)) {
-			int index = x + y * image.width;
+			int index = x + y * image.getWidth();
 			currentSet.add(index);
 			wasInBound = true;
 		}
@@ -64,11 +64,11 @@ public abstract class CoordFunction {
 		this.bound = bound;
 	}
 
-	public PImage getImage() {
+	public Frame getImage() {
 		return image;
 	}
 
-	public void setImage(PImage image) {
+	public void setImage(Frame image) {
 		this.image = image;
 	}
 

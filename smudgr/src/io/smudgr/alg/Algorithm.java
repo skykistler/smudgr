@@ -5,32 +5,28 @@ import java.util.HashMap;
 
 import io.smudgr.alg.bound.Bound;
 import io.smudgr.alg.param.Parameter;
-import io.smudgr.view.View;
-import processing.core.PImage;
+import io.smudgr.model.Frame;
 
 public abstract class Algorithm {
 	private HashMap<String, Parameter> parameters = new HashMap<String, Parameter>();
-	private View processor;
 	private Bound bound;
 
-	public void init(View processor) {
-		this.setView(processor);
-
+	public void init() {
 		if (bound == null)
 			applyMask(new Bound(1, 1));
 	};
 
-	public abstract void execute(PImage img);
+	public abstract void execute(Frame img);
 
-	public PImage mask(PImage frame, PImage mix, Bound mask) {
+	public Frame mask(Frame frame, Frame mix, Bound mask) {
 		if (mask == null)
 			return mix;
 
-		for (int i = 0; i < mix.width; i++)
-			for (int j = 0; j < mix.height; j++)
+		for (int i = 0; i < mix.getWidth(); i++)
+			for (int j = 0; j < mix.getHeight(); j++)
 				// If the pixel is within the mask, overwrite the frame pixel
 				if (mask.containsPoint(mix, i, j)) {
-					int index = i + j * mix.width;
+					int index = i + j * mix.getWidth();
 					frame.pixels[index] = mix.pixels[index];
 				}
 
@@ -73,14 +69,6 @@ public abstract class Algorithm {
 
 	public String toString() {
 		return getName();
-	}
-
-	public View getView() {
-		return processor;
-	}
-
-	public void setView(View processor) {
-		this.processor = processor;
 	}
 
 }

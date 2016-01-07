@@ -8,8 +8,7 @@ import io.smudgr.alg.math.CoordFunction;
 import io.smudgr.alg.math.LumaFunction;
 import io.smudgr.alg.math.UnivariateFunction;
 import io.smudgr.alg.param.IntegerParameter;
-import io.smudgr.view.View;
-import processing.core.PImage;
+import io.smudgr.model.Frame;
 
 public class SpectralShift extends Algorithm {
 
@@ -19,7 +18,7 @@ public class SpectralShift extends Algorithm {
 	UnivariateFunction function = new LumaFunction();
 	CoordFunction coordFunction = new ColumnCoords();
 
-	PImage img = null;
+	Frame img = null;
 
 	int centerX, centerY;
 
@@ -27,14 +26,13 @@ public class SpectralShift extends Algorithm {
 	public int[] values;
 	public int[] counters;
 
-	public void init(View processor) {
-		super.init(processor);
-
+	public void init() {
+		super.init();
 		coordFunction.setBound(getMask());
 	}
 
-	public void execute(PImage img) {
-		if (this.img == null || (img.width != this.img.width || img.height != this.img.height)) {
+	public void execute(Frame img) {
+		if (this.img == null || (img.getWidth() != this.img.getWidth() || img.getHeight() != this.img.getHeight())) {
 			coordFunction.setImage(img);
 			coordFunction.update();
 		}

@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import io.smudgr.alg.math.LumaFunction;
+import io.smudgr.alg.math.UnivariateFunction;
 import io.smudgr.alg.param.BooleanParameter;
 import io.smudgr.alg.param.DoubleParameter;
-import io.smudgr.view.View;
-import processing.core.PImage;
+import io.smudgr.model.Frame;
 
 public class RadialPixelSort extends Algorithm {
 
@@ -19,6 +20,9 @@ public class RadialPixelSort extends Algorithm {
 	DoubleParameter columnStart = new DoubleParameter(this, "Starting Column Bound", 0.4, 0, 1);
 	DoubleParameter columnEnd = new DoubleParameter(this, "Ending Column Bound", 0.6, 0, 1);
 	DoubleParameter degree = new DoubleParameter(this, "Degree of Rotation", 0, 0, 360, 1);
+
+	UnivariateFunction sortFunction = new LumaFunction();
+	UnivariateFunction thresholdFunction = new LumaFunction();
 
 	int loops = 1;
 
@@ -37,17 +41,16 @@ public class RadialPixelSort extends Algorithm {
 
 	ArrayList<Integer> coords; // = new ArrayList<Integer>();
 
-	PImage img = null;
-	View processor = null;
+	Frame img = null;
 
-	public void execute(PImage img) {
+	public void execute(Frame img) {
 		this.img = img;
 
-		row_start = (int) (rowStart.getValue() * img.height) + 1;
-		row_end = (int) (rowEnd.getValue() * img.height) - 1;
+		row_start = (int) (rowStart.getValue() * img.getHeight()) + 1;
+		row_end = (int) (rowEnd.getValue() * img.getHeight()) - 1;
 
-		column_start = (int) (columnStart.getValue() * img.width) + 1;
-		column_end = (int) (columnEnd.getValue() * img.width) - 1;
+		column_start = (int) (columnStart.getValue() * img.getWidth()) + 1;
+		column_end = (int) (columnEnd.getValue() * img.getWidth()) - 1;
 
 		centerY = row_start + (row_end - row_start) / 2;
 		centerX = column_start + (column_end - column_start) / 2;
@@ -61,14 +64,14 @@ public class RadialPixelSort extends Algorithm {
 		int _radiusX = radiusX;
 		for (int i = 0; i < innerR; i++) {
 			coords = bresenham(_radiusX, _radiusY);
-			//Collections.sort(coords);
+			// Collections.sort(coords);
 			sort();
 			_radiusX--;
 			_radiusY--;
 		}
 	}
 
-	//This function will return a list of coordinates
+	// This function will return a list of coordinates
 	public ArrayList<Integer> bresenham(int radiusX, int radiusY) {
 
 		ArrayList<Integer> coords = new ArrayList<Integer>();
@@ -82,7 +85,7 @@ public class RadialPixelSort extends Algorithm {
 		ArrayList<Integer> c7 = new ArrayList<Integer>();
 		ArrayList<Integer> c8 = new ArrayList<Integer>();
 
-		//first set of points
+		// first set of points
 		int x, y;
 
 		int twoASquare = 2 * radiusX * radiusX;
@@ -96,22 +99,22 @@ public class RadialPixelSort extends Algorithm {
 		x = radiusX;
 		y = 0;
 		while (stoppingX >= stoppingY) {
-			//			coords.add( (centerX+x) + ((centerY+y)*img.width) );
-			//			coords.add( (centerX-1+x) + ((centerY-1+y)*img.width) );
-			//			coords.add( (centerX-2+x) + ((centerY-2+y)*img.width) );
-			//			coords.add( (centerX-x) + ((centerY+y)*img.width) );
-			//			coords.add( (centerX-1-x) + ((centerY-1+y)*img.width) );
-			//			coords.add( (centerX-2-x) + ((centerY-2+y)*img.width) );
-			//			coords.add( (centerX-x) + ((centerY-y)*img.width) );
-			//			coords.add( (centerX-1-x) + ((centerY-1-y)*img.width) );
-			//			coords.add( (centerX-2-x) + ((centerY-2-y)*img.width) );
-			//			coords.add( (centerX+x) + ((centerY-y)*img.width) );
-			//			coords.add( (centerX-1+x) + ((centerY-1-y)*img.width) );
-			//			coords.add( (centerX-2+x) + ((centerY-2-y)*img.width) );
-			c1.add((centerX + x) + ((centerY + y) * img.width));
-			c4.add(0, (centerX - x) + ((centerY + y) * img.width));
-			c5.add((centerX - x) + ((centerY - y) * img.width));
-			c8.add(0, (centerX + x) + ((centerY - y) * img.width));
+			// coords.add( (centerX+x) + ((centerY+y)*img.width) );
+			// coords.add( (centerX-1+x) + ((centerY-1+y)*img.width) );
+			// coords.add( (centerX-2+x) + ((centerY-2+y)*img.width) );
+			// coords.add( (centerX-x) + ((centerY+y)*img.width) );
+			// coords.add( (centerX-1-x) + ((centerY-1+y)*img.width) );
+			// coords.add( (centerX-2-x) + ((centerY-2+y)*img.width) );
+			// coords.add( (centerX-x) + ((centerY-y)*img.width) );
+			// coords.add( (centerX-1-x) + ((centerY-1-y)*img.width) );
+			// coords.add( (centerX-2-x) + ((centerY-2-y)*img.width) );
+			// coords.add( (centerX+x) + ((centerY-y)*img.width) );
+			// coords.add( (centerX-1+x) + ((centerY-1-y)*img.width) );
+			// coords.add( (centerX-2+x) + ((centerY-2-y)*img.width) );
+			c1.add((centerX + x) + ((centerY + y) * img.getWidth()));
+			c4.add(0, (centerX - x) + ((centerY + y) * img.getWidth()));
+			c5.add((centerX - x) + ((centerY - y) * img.getWidth()));
+			c8.add(0, (centerX + x) + ((centerY - y) * img.getWidth()));
 
 			y++;
 			stoppingY += twoASquare;
@@ -125,7 +128,7 @@ public class RadialPixelSort extends Algorithm {
 			}
 		}
 
-		//second set of points
+		// second set of points
 
 		dx = radiusY * radiusY;
 		dy = radiusX * radiusX * (1 - 2 * radiusY);
@@ -135,10 +138,10 @@ public class RadialPixelSort extends Algorithm {
 		x = 0;
 		y = radiusY;
 		while (stoppingX <= stoppingY) {
-			c2.add(0, (centerX + x) + ((centerY + y) * img.width));
-			c3.add((centerX - x) + ((centerY + y) * img.width));
-			c6.add(0, (centerX - x) + ((centerY - y) * img.width));
-			c7.add((centerX + x) + ((centerY - y) * img.width));
+			c2.add(0, (centerX + x) + ((centerY + y) * img.getWidth()));
+			c3.add((centerX - x) + ((centerY + y) * img.getWidth()));
+			c6.add(0, (centerX - x) + ((centerY - y) * img.getWidth()));
+			c7.add((centerX + x) + ((centerY - y) * img.getWidth()));
 
 			x++;
 			stoppingX += twoBSquare;
@@ -188,8 +191,8 @@ public class RadialPixelSort extends Algorithm {
 			Arrays.sort(toSort, new Comparator<Integer>() {
 				@Override
 				public int compare(Integer o1, Integer o2) {
-					float o1l = luma((int) o1);
-					float o2l = luma((int) o2);
+					double o1l = sortFunction.calculate(o1);
+					double o2l = sortFunction.calculate(o2);
 					if (reverse.getValue()) {
 						if (o1l > o2l)
 							return 1;
@@ -216,7 +219,7 @@ public class RadialPixelSort extends Algorithm {
 	int getFirstNotLuma(int start) {
 		int run = start;
 		if (start < coords.size()) {
-			while (luma(img.pixels[coords.get(run)]) < lumaThresh.getValue()) {
+			while (thresholdFunction.calculate(img.pixels[coords.get(run)]) < lumaThresh.getValue()) {
 				run++;
 				if (run >= coords.size())
 					return -1;
@@ -227,20 +230,12 @@ public class RadialPixelSort extends Algorithm {
 
 	int getNextLuma(int start) {
 		int run = start;
-		while (luma(img.pixels[coords.get(run)]) > lumaThresh.getValue()) {
+		while (thresholdFunction.calculate(img.pixels[coords.get(run)]) > lumaThresh.getValue()) {
 			run++;
 			if (run >= coords.size())
 				return coords.size() - 1;
 		}
 		return run;
-	}
-
-	float luma(int color) {
-		float red = processor.red(color);
-		float blue = processor.blue(color);
-		float green = processor.green(color);
-
-		return .299f * red + .587f * green + .114f * blue;
 	}
 
 	int rotateX(int x, int y) {
@@ -255,7 +250,7 @@ public class RadialPixelSort extends Algorithm {
 		dx = (int) (secondX - centerX);
 		dy = (int) (secondY - centerY);
 		int finalX = (int) (Math.round(dx - dy * tan + centerX));
-		//int finalY = (int)(Math.round(dy + centerY));
+		// int finalY = (int)(Math.round(dy + centerY));
 
 		return finalX;
 	}
@@ -271,7 +266,7 @@ public class RadialPixelSort extends Algorithm {
 		double secondY = Math.round(sin * dx + dy + centerY);
 		dx = (int) (secondX - centerX);
 		dy = (int) (secondY - centerY);
-		//int finalX = (int)(Math.round(dx - dy*tan + centerX));
+		// int finalX = (int)(Math.round(dx - dy*tan + centerX));
 		int finalY = (int) (Math.round(dy + centerY));
 		return finalY;
 	}

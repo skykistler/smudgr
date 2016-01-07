@@ -1,14 +1,14 @@
 package io.smudgr.alg.math;
 
 import io.smudgr.alg.bound.Bound;
-import processing.core.PImage;
+import io.smudgr.model.Frame;
 
 public class ColumnCoords extends CoordFunction {
 
 	@Override
 	public void generate() {
 		Bound b = getBound();
-		PImage img = getImage();
+		Frame img = getImage();
 
 		int boundWidth = b.getTranslatedWidth(img);
 		int boundHeight = b.getTranslatedHeight(img);
