@@ -16,6 +16,8 @@ public class PView extends PApplet implements View {
 
 	public PView(Controller controller) {
 		this.controller = controller;
+
+		controller.setView(this);
 	}
 
 	public void init() {
@@ -39,42 +41,14 @@ public class PView extends PApplet implements View {
 		if (smudge != null) {
 			Frame img = smudge.render();
 
-			PImage frame = new PImage(img.getWidth(), img.getHeight());
-			for (int i = 0; i < frame.width; i++)
-				for (int j = 0; j < frame.height; j++) {
-					int index = i + j * frame.width;
-					frame.pixels[index] = img.pixels[index];
-				}
+			img = img.fitToSize(displayWidth, displayHeight);
 
-			centerDrawImage(fitToScreen(frame));
+			PImage frame = createImage(img.getWidth(), img.getHeight(), ARGB);
+			frame.pixels = img.pixels;
+			frame.updatePixels();
+
+			centerDrawImage(frame);
 		}
-	}
-
-	private PImage fitToScreen(PImage img) {
-		// Scale down if needed
-		if (img.height > displayHeight || img.width > displayWidth) {
-			int w;
-			int h;
-
-			if (img.width > img.height) {
-				w = displayWidth;
-				h = (int) (img.height * ((double) displayWidth / img.width));
-			} else {
-				h = displayHeight;
-				w = (int) (img.width * ((double) displayHeight / img.height));
-			}
-
-			img.resize(w, h);
-		} else
-			// Scale up if needed
-			if (img.height < displayHeight && img.width < displayWidth) {
-			int w = (int) (img.width * ((double) displayHeight / img.height));
-			int h = displayHeight;
-
-			// img = scaleUp(img, w, h);
-		}
-
-		return img;
 	}
 
 	private void centerDrawImage(PImage img) {

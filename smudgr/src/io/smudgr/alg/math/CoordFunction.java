@@ -13,6 +13,12 @@ public abstract class CoordFunction {
 	private ArrayList<Integer> currentSet = null;
 
 	public void update() {
+		if (coordSet != null)
+			coordSet.clear();
+
+		if (currentSet != null)
+			currentSet.clear();
+
 		generate();
 	}
 

@@ -1,20 +1,30 @@
 package io.smudgr.controller.controls;
 
-import io.smudgr.Smudge;
+import io.smudgr.controller.Controller;
 
 public class DownsampleControl extends Controllable {
 
-	private Smudge smudge;
-	private int downsample = 1;
+	private int downsample;
 
-	public DownsampleControl(Smudge s) {
-		super("Downsampler");
-		smudge = s;
+	public DownsampleControl(Controller c) {
+		this(c, 1);
+	}
+
+	public DownsampleControl(Controller c, int initial) {
+		super(c, "Downsampler");
+		downsample = initial;
+
+		requestBind();
+	}
+
+	public void init() {
+		getController().getSmudge().downsample(downsample);
 	}
 
 	public void increment() {
 		downsample++;
-		smudge.downsample(downsample);
+
+		getController().getSmudge().downsample(downsample);
 	}
 
 	public void decrement() {
@@ -22,18 +32,18 @@ public class DownsampleControl extends Controllable {
 		if (downsample < 1)
 			downsample = 1;
 
-		smudge.downsample(downsample);
+		getController().getSmudge().downsample(downsample);
 	}
 
-	public void midiValue(int value) {
-
-	}
-
-	public void noteOn(int note) {
+	public void inputValue(int value) {
 
 	}
 
-	public void noteOff(int note) {
+	public void inputOn(int value) {
+
+	}
+
+	public void inputOff(int value) {
 
 	}
 

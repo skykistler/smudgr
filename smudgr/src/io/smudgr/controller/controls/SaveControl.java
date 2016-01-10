@@ -1,24 +1,27 @@
 package io.smudgr.controller.controls;
 
-import io.smudgr.Smudge;
+import io.smudgr.controller.Controller;
 
 public class SaveControl extends Controllable {
 
-	private Smudge smudge;
+	public SaveControl(Controller c) {
+		super(c, "Save Frame");
 
-	public SaveControl(Smudge smudge) {
-		super("Save Frame");
-		this.smudge = smudge;
+		requestBind();
 	}
 
-	public void midiValue(int value) {
+	public void init() {
+
 	}
 
-	public void noteOn(int note) {
-		smudge.save();
+	public void inputValue(int value) {
 	}
 
-	public void noteOff(int note) {
+	public void inputOn(int value) {
+		getController().getSmudge().save();
+	}
+
+	public void inputOff(int value) {
 	}
 
 	public void increment() {

@@ -5,5 +5,4 @@ public interface View {
 	public void init();
 
 	public void draw();
-
 }

@@ -38,10 +38,6 @@ public class Bound {
 		return offsetX;
 	}
 
-	public int getTranslatedX(Frame image) {
-		return (int) Math.floor(offsetX * image.getWidth());
-	}
-
 	public void setOffsetX(double offsetX) {
 		if (offsetX < 0)
 			offsetX = 0;
@@ -52,10 +48,6 @@ public class Bound {
 
 	public double getOffsetY() {
 		return offsetY;
-	}
-
-	public int getTranslatedY(Frame image) {
-		return (int) Math.floor(offsetY * image.getHeight());
 	}
 
 	public void setOffsetY(double offsetY) {
@@ -70,10 +62,6 @@ public class Bound {
 		return width;
 	}
 
-	public int getTranslatedWidth(Frame image) {
-		return (int) Math.floor(width * image.getHeight());
-	}
-
 	public void setWidth(double width) {
 		if (width < 0)
 			width = 0;
@@ -86,16 +74,28 @@ public class Bound {
 		return height;
 	}
 
-	public int getTranslatedHeight(Frame image) {
-		return (int) Math.floor(height * image.getHeight());
-	}
-
 	public void setHeight(double height) {
 		if (height < 0)
 			height = 0;
 		if (height > 1)
 			height = 1;
 		this.height = height;
+	}
+
+	public int getTranslatedX(Frame image) {
+		return (int) Math.floor(offsetX * image.getWidth());
+	}
+
+	public int getTranslatedY(Frame image) {
+		return (int) Math.floor(offsetY * image.getHeight());
+	}
+
+	public int getTranslatedWidth(Frame image) {
+		return (int) Math.floor(width * image.getWidth());
+	}
+
+	public int getTranslatedHeight(Frame image) {
+		return (int) Math.floor(height * image.getHeight());
 	}
 
 }

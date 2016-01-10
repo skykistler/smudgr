@@ -13,8 +13,19 @@ public class ColorHelper {
 	 *            blue component 0-255
 	 * @return color as single integer
 	 */
-	public static int color(int r, int g, int b) {
-		return (r << 16) | (g << 8) | b;
+	public static int color(int a, int r, int g, int b) {
+		return (a << 24) | (r << 16) | (g << 8) | b;
+	}
+
+	/**
+	 * Get the alpha of an integer color
+	 * 
+	 * @param color
+	 *            as single integer
+	 * @return alpha double value 0-255
+	 */
+	public static double alpha(int color) {
+		return (color >> 24) & 0xff;
 	}
 
 	/**

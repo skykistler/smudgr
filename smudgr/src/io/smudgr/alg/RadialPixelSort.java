@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import io.smudgr.Smudge;
 import io.smudgr.alg.math.LumaFunction;
 import io.smudgr.alg.math.UnivariateFunction;
 import io.smudgr.alg.param.BooleanParameter;
@@ -42,6 +43,10 @@ public class RadialPixelSort extends Algorithm {
 	ArrayList<Integer> coords; // = new ArrayList<Integer>();
 
 	Frame img = null;
+
+	public RadialPixelSort(Smudge s) {
+		super(s);
+	}
 
 	public void execute(Frame img) {
 		this.img = img;

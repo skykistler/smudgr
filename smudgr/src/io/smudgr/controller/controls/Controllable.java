@@ -1,11 +1,21 @@
 package io.smudgr.controller.controls;
 
+import io.smudgr.controller.Controller;
+
 public abstract class Controllable {
+	private Controller controller;
 	private String name;
 	private boolean bindRequested = false;
 
-	public Controllable(String name) {
+	public Controllable(Controller controller, String name) {
+		this.controller = controller;
 		this.name = name;
+
+		controller.addControl(this);
+	}
+
+	public Controller getController() {
+		return controller;
 	}
 
 	public String getName() {
@@ -16,15 +26,13 @@ public abstract class Controllable {
 		return getName();
 	}
 
-	public void init() {
+	public abstract void init();
 
-	}
+	public abstract void inputValue(int value);
 
-	public abstract void midiValue(int value);
+	public abstract void inputOn(int value);
 
-	public abstract void noteOn(int note);
-
-	public abstract void noteOff(int note);
+	public abstract void inputOff(int value);
 
 	public abstract void increment();
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import io.smudgr.Smudge;
 import io.smudgr.alg.math.ColumnCoords;
 import io.smudgr.alg.math.CoordFunction;
 import io.smudgr.alg.math.LumaFunction;
@@ -20,6 +21,10 @@ public class PixelSort extends Algorithm {
 	UnivariateFunction thresholdFunction = new LumaFunction();
 	UnivariateFunction sortFunction = new LumaFunction();
 	CoordFunction coordFunction = new ColumnCoords();
+
+	public PixelSort(Smudge s) {
+		super(s);
+	}
 
 	public String getName() {
 		return "Pixel Sort";

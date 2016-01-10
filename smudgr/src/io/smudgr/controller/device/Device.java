@@ -51,7 +51,10 @@ public class Device {
 	}
 
 	public String toString() {
-		return device.getDeviceInfo().getName();
+		if (device == null)
+			return "no device";
+		else
+			return device.getDeviceInfo().getName();
 	}
 
 	public class DeviceReceiver implements Receiver {
@@ -88,6 +91,8 @@ public class Device {
 					device.close();
 			}
 		}
+
+		System.out.println();
 	}
 
 }

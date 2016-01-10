@@ -9,7 +9,7 @@ public abstract class Parameter extends Controllable {
 	protected boolean continuous;
 
 	public Parameter(Algorithm parent, String name) {
-		super(name);
+		super(parent.getParent().getController(), name);
 		alg = parent;
 
 		alg.addParameter(this);

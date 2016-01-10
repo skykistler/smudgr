@@ -3,6 +3,7 @@ package io.smudgr.alg;
 import java.util.ArrayList;
 import java.util.Random;
 
+import io.smudgr.Smudge;
 import io.smudgr.alg.math.ColumnCoords;
 import io.smudgr.alg.math.CoordFunction;
 import io.smudgr.alg.math.LumaFunction;
@@ -25,6 +26,10 @@ public class SpectralShift extends Algorithm {
 	Random rand = new Random();
 	public int[] values;
 	public int[] counters;
+
+	public SpectralShift(Smudge s) {
+		super(s);
+	}
 
 	public void init() {
 		super.init();

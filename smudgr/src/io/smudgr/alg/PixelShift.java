@@ -1,5 +1,6 @@
 package io.smudgr.alg;
 
+import io.smudgr.Smudge;
 import io.smudgr.alg.bound.Bound;
 import io.smudgr.alg.math.LinearFunction;
 import io.smudgr.alg.math.UnivariateFunction;
@@ -16,6 +17,10 @@ public class PixelShift extends Algorithm {
 	UnivariateFunction scale = new LinearFunction();
 
 	Frame img = null;
+
+	public PixelShift(Smudge s) {
+		super(s);
+	}
 
 	public void execute(Frame img) {
 		this.img = img;

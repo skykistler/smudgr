@@ -3,9 +3,12 @@ package io.smudgr;
 import java.util.ArrayList;
 
 import io.smudgr.alg.Algorithm;
+import io.smudgr.controller.Controller;
 import io.smudgr.model.Frame;
 
 public class Smudge {
+	private Controller controller;
+
 	private ArrayList<Algorithm> algorithms;
 	private String filename;
 	private String name;
@@ -14,6 +17,10 @@ public class Smudge {
 	private Frame frame;
 
 	private int downsample = 1;
+
+	private boolean showFPS = true;
+	private int frameCount;
+	private long lastSecond;
 
 	public Smudge(String filename) {
 		this(filename, filename);
@@ -38,12 +45,24 @@ public class Smudge {
 		System.out.println("Smudge initialized.");
 	}
 
+	public Controller getController() {
+		return controller;
+	}
+
+	public void setController(Controller c) {
+		controller = c;
+
+		if (controller.getSmudge() != this)
+			controller.setSmudge(this);
+	}
+
 	public void downsample(int amount) {
 		downsample = amount;
 
 		if (originalSource != null) {
-			frame = originalSource.copy();
-			frame.resize(frame.getWidth() / downsample, frame.getWidth() / downsample);
+			int w = originalSource.getWidth() / downsample;
+			int h = originalSource.getHeight() / downsample;
+			frame = originalSource.resize(w, h);
 		}
 	}
 
@@ -62,19 +81,36 @@ public class Smudge {
 	}
 
 	public Frame render() {
+		if (lastSecond == 0)
+			lastSecond = System.nanoTime();
+
+		Frame toRender;
 		synchronized (this) {
-			for (Algorithm a : algorithms) {
-				Frame mix = frame.copy();
-				a.execute(mix);
-				frame = a.mask(frame, mix, a.getMask());
-
-			}
-
-			if (saveNextRender)
-				outputFrame();
+			toRender = frame.copy();
 		}
 
-		return frame;
+		for (Algorithm a : algorithms) {
+			// Frame mix = frame.copy();
+			// a.execute(mix);
+			// frame = a.mask(frame, mix, a.getMask());
+
+			a.execute(toRender);
+		}
+
+		frameCount++;
+
+		if (System.nanoTime() - lastSecond > 1000000000) {
+			if (showFPS)
+				System.out.println(frameCount + "fps");
+
+			lastSecond = 0;
+			frameCount = 0;
+		}
+
+		if (saveNextRender)
+			outputFrame(toRender);
+
+		return toRender;
 	}
 
 	boolean saveNextRender = false;
@@ -83,12 +119,11 @@ public class Smudge {
 		saveNextRender = true;
 	}
 
-	private void outputFrame() {
+	private void outputFrame(Frame f) {
 		String output = "output/" + name + "_" + System.currentTimeMillis() + ".png";
 		System.out.println("Saving smudge to " + output);
 
-		Frame toSave = frame.copy();
-		toSave.resize(originalSource.getWidth(), originalSource.getHeight());
+		Frame toSave = f.resize(originalSource.getWidth(), originalSource.getHeight());
 		toSave.save(output);
 
 		saveNextRender = false;

@@ -3,18 +3,26 @@ package io.smudgr.alg;
 import java.util.Collection;
 import java.util.HashMap;
 
+import io.smudgr.Smudge;
 import io.smudgr.alg.bound.Bound;
 import io.smudgr.alg.param.Parameter;
 import io.smudgr.model.Frame;
 
 public abstract class Algorithm {
+	private Smudge parent;
 	private HashMap<String, Parameter> parameters = new HashMap<String, Parameter>();
 	private Bound bound;
+
+	public Algorithm(Smudge s) {
+		parent = s;
+
+		parent.addAlgorithm(this);
+	}
 
 	public void init() {
 		if (bound == null)
 			applyMask(new Bound(1, 1));
-	};
+	}
 
 	public abstract void execute(Frame img);
 
@@ -31,6 +39,10 @@ public abstract class Algorithm {
 				}
 
 		return frame;
+	}
+
+	public Smudge getParent() {
+		return parent;
 	}
 
 	public void addParameter(Parameter p) {

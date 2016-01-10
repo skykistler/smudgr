@@ -5,7 +5,6 @@ import io.smudgr.model.Frame;
 
 public class ColumnCoords extends CoordFunction {
 
-	@Override
 	public void generate() {
 		Bound b = getBound();
 		Frame img = getImage();

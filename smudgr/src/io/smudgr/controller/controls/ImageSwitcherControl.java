@@ -3,19 +3,17 @@ package io.smudgr.controller.controls;
 import java.io.File;
 import java.util.ArrayList;
 
-import io.smudgr.Smudge;
+import io.smudgr.controller.Controller;
 import io.smudgr.model.Frame;
 
 public class ImageSwitcherControl extends Controllable {
 
-	private Smudge smudge;
 	private int curImage = 0;
 	private ArrayList<String> files = new ArrayList<String>();;
 	private ArrayList<Frame> images = new ArrayList<Frame>();;
 
-	public ImageSwitcherControl(Smudge smudge, String location) {
-		super("Image Switcher");
-		this.smudge = smudge;
+	public ImageSwitcherControl(Controller c, String location) {
+		super(c, "Image Switcher");
 
 		if (!location.endsWith("/"))
 			location += "/";
@@ -30,6 +28,8 @@ public class ImageSwitcherControl extends Controllable {
 		for (int i = 0; i < list.length; i++) {
 			files.add(location + list[i]);
 		}
+
+		requestBind();
 	}
 
 	public void init() {
@@ -53,7 +53,7 @@ public class ImageSwitcherControl extends Controllable {
 		if (curImage >= images.size())
 			curImage = 0;
 
-		smudge.setSource(images.get(curImage));
+		getController().getSmudge().setSource(images.get(curImage));
 	}
 
 	public void decrement() {
@@ -61,16 +61,16 @@ public class ImageSwitcherControl extends Controllable {
 		if (curImage < 0)
 			curImage = images.size() - 1;
 
-		smudge.setSource(images.get(curImage));
+		getController().getSmudge().setSource(images.get(curImage));
 	}
 
-	public void midiValue(int value) {
+	public void inputValue(int value) {
 	}
 
-	public void noteOn(int note) {
+	public void inputOn(int value) {
 	}
 
-	public void noteOff(int note) {
+	public void inputOff(int value) {
 	}
 
 }

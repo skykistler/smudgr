@@ -3,6 +3,7 @@ package io.smudgr.alg.param;
 import io.smudgr.alg.Algorithm;
 
 public class BooleanParameter extends Parameter {
+	private boolean initial;
 	private boolean value;
 
 	public BooleanParameter(Algorithm parent, String name) {
@@ -11,7 +12,11 @@ public class BooleanParameter extends Parameter {
 
 	public BooleanParameter(Algorithm parent, String name, boolean initial) {
 		super(parent, name);
-		value = initial;
+		this.initial = initial;
+	}
+
+	public void init() {
+		setValue(initial);
 	}
 
 	public void setValue(Object o) {
@@ -22,18 +27,18 @@ public class BooleanParameter extends Parameter {
 		return value;
 	}
 
-	public void midiValue(int midi) {
+	public void inputValue(int midi) {
 		setValue(midi > 0);
 	}
 
-	public void noteOn(int note) {
+	public void inputOn(int value) {
 		if (reverse)
 			setValue(false);
 		else
 			setValue(true);
 	}
 
-	public void noteOff(int note) {
+	public void inputOff(int value) {
 		if (reverse)
 			setValue(true);
 		else

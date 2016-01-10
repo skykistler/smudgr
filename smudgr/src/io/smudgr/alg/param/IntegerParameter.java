@@ -3,6 +3,7 @@ package io.smudgr.alg.param;
 import io.smudgr.alg.Algorithm;
 
 public class IntegerParameter extends Parameter {
+	private int initial;
 	private int value;
 	private int min;
 	private int max;
@@ -22,10 +23,14 @@ public class IntegerParameter extends Parameter {
 
 	public IntegerParameter(Algorithm parent, String name, int initial, int minimum, int maximum, int step) {
 		super(parent, name);
-		value = initial;
+		this.initial = initial;
 		min = minimum;
 		max = maximum;
 		this.step = step;
+	}
+
+	public void init() {
+		setValue(initial);
 	}
 
 	public void setValue(Object o) {
@@ -37,21 +42,21 @@ public class IntegerParameter extends Parameter {
 		return value;
 	}
 
-	public void midiValue(int midi) {
+	public void inputValue(int value) {
 		double m;
 		if (reverse)
-			m = (127 - midi) / 127.0;
+			m = (127 - value) / 127.0;
 		else
-			m = midi / 127.0;
+			m = value / 127.0;
 
 		setValue(m * (max - min));
 	}
 
-	public void noteOn(int note) {
+	public void inputOn(int value) {
 		setValue(reverse ? min : max);
 	}
 
-	public void noteOff(int note) {
+	public void inputOff(int value) {
 		setValue(reverse ? max : min);
 	}
 
