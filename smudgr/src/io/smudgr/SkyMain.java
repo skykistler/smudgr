@@ -1,6 +1,6 @@
 package io.smudgr;
 
-import io.smudgr.alg.PixelSort;
+import io.smudgr.alg.PixelShift;
 import io.smudgr.controller.controls.DownsampleControl;
 import io.smudgr.controller.device.MidiController;
 import io.smudgr.view.JView;
@@ -17,17 +17,20 @@ public class SkyMain {
 		// Set smudge before doing anything
 		controller.setSmudge(smudge);
 
-		PixelSort sort = new PixelSort(smudge);
-		sort.bind("Threshold");
-		sort.bind("Reverse");
+		//		PixelSort sort = new PixelSort(smudge);
+		//		sort.bind("Threshold");
+		//		sort.bind("Reverse");
+
+		PixelShift shift = new PixelShift(smudge);
+		shift.getParameter("Amount").setValue(.5);
 
 		// Declare your controls
-		new DownsampleControl(controller, 1);
+		new DownsampleControl(controller, 2);
 
 		// Declare your view
 		new JView(controller);
 
-		controller.bindDevice("Arturia BeatStep Pro");
+		//		controller.bindDevice("Arturia BeatStep Pro");
 		controller.start();
 	}
 
