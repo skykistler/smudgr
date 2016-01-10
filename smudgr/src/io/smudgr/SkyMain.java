@@ -17,7 +17,8 @@ public class SkyMain {
 		// Set smudge before doing anything
 		controller.setSmudge(smudge);
 
-		new PixelSort(smudge);
+		PixelSort sort = new PixelSort(smudge);
+		sort.bind("Threshold");
 
 		// Declare your controls
 		new DownsampleControl(controller, 1);
