@@ -9,38 +9,46 @@ import io.smudgr.model.Frame;
 
 public class PixelShift extends Algorithm {
 
-	DoubleParameter amount = new DoubleParameter(this, "Amount", 0, 1, 0.01);
-	IntegerParameter intervals = new IntegerParameter(this, "Intervals", 30, 1, 30, 1);
+	DoubleParameter amount = new DoubleParameter(this, "Amount", 0, 0, 1, 0.005);
+	IntegerParameter intervals = new IntegerParameter(this, "Intervals", 5, 1, 255, 1);
 	IntegerParameter direction = new IntegerParameter(this, "Direction", 1, -1, 1);
 
 	UnivariateFunction scale = new LinearFunction();
 
-	Frame img = null;
+	Frame orig;
+	Frame shifted;
 
 	public PixelShift(Smudge s) {
 		super(s);
+		amount.setContinuous(true);
 	}
 
 	public void execute(Frame img) {
-		this.img = img;
+		orig = img.copy();
+		shifted = img.copy();
+		int shift = (int) (amount.getValue() * img.getHeight());
+		float ints = intervals.getValue();
 
-		int intervalWidth = (int) Math.floor(img.getWidth() / intervals.getValue());
-		for (int n = 0; n < intervals.getValue(); n++) {
-			int start = n * intervalWidth;
+		float intervalWidth = orig.getWidth() / ints;
+		for (int n = 0; n < ints; n++) {
+			float start = n * intervalWidth;
 
 			for (int x = 0; x < intervalWidth; x++) {
-				shift(start + x, n * 50);
+				shift((int) (start + x), n * shift);
 			}
 		}
+
+		img.pixels = shifted.pixels;
 	}
 
 	public void shift(int x, int amount) {
-		for (int y = 0; y < img.getHeight(); y++) {
-			int shift = y + amount;
-			shift %= img.getHeight() - 1;
+		if (x < orig.getWidth())
+			for (int y = 0; y < orig.getHeight(); y++) {
+				int shift = y + amount;
+				shift %= orig.getHeight() - 1;
 
-			img.set(x, y, img.get(x, shift));
-		}
+				shifted.set(x, y, orig.get(x, shift));
+			}
 	}
 
 	public String getName() {

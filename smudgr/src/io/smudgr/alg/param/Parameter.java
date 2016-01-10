@@ -19,6 +19,8 @@ public abstract class Parameter extends Controllable {
 		return alg;
 	}
 
+	public abstract void setInitial(Object o);
+
 	public abstract void setValue(Object o);
 
 	public void setReverse(boolean rev) {

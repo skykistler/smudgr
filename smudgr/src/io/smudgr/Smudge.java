@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import io.smudgr.alg.Algorithm;
 import io.smudgr.controller.Controller;
+import io.smudgr.controller.controls.Controllable;
 import io.smudgr.model.Frame;
 
 public class Smudge {
@@ -81,6 +82,9 @@ public class Smudge {
 	}
 
 	public Frame render() {
+		for (Controllable c : controller.getControls())
+			c.update();
+
 		if (lastSecond == 0)
 			lastSecond = System.nanoTime();
 

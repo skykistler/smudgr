@@ -26,7 +26,13 @@ public abstract class Controllable {
 		return getName();
 	}
 
-	public abstract void init();
+	public void init() {
+
+	}
+
+	public void update() {
+
+	}
 
 	public abstract void inputValue(int value);
 

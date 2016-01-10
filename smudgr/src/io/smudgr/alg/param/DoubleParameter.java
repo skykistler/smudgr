@@ -23,7 +23,7 @@ public class DoubleParameter extends Parameter {
 
 	public DoubleParameter(Algorithm parent, String name, double initial, double minimum, double maximum, double step) {
 		super(parent, name);
-		this.initial = initial;
+		setInitial(initial);
 		min = minimum;
 		max = maximum;
 		this.step = step;
@@ -33,11 +33,19 @@ public class DoubleParameter extends Parameter {
 		setValue(initial);
 	}
 
+	public void setInitial(Object o) {
+		if (o instanceof Double)
+			initial = (double) o;
+		else
+			initial = Double.parseDouble(o.toString());
+	}
+
 	public void setValue(Object o) {
 		if (o instanceof Double)
 			value = (double) o;
-		else value = Double.parseDouble(o.toString());
-		
+		else
+			value = Double.parseDouble(o.toString());
+
 		enforce();
 	}
 

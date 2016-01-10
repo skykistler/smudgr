@@ -23,7 +23,7 @@ public class IntegerParameter extends Parameter {
 
 	public IntegerParameter(Algorithm parent, String name, int initial, int minimum, int maximum, int step) {
 		super(parent, name);
-		this.initial = initial;
+		setInitial(initial);
 		min = minimum;
 		max = maximum;
 		this.step = step;
@@ -31,6 +31,10 @@ public class IntegerParameter extends Parameter {
 
 	public void init() {
 		setValue(initial);
+	}
+
+	public void setInitial(Object o) {
+		initial = (int) o;
 	}
 
 	public void setValue(Object o) {

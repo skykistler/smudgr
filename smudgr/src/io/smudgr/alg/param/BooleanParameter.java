@@ -19,6 +19,10 @@ public class BooleanParameter extends Parameter {
 		setValue(initial);
 	}
 
+	public void setInitial(Object o) {
+		initial = (boolean) o;
+	}
+
 	public void setValue(Object o) {
 		value = (boolean) o;
 	}
