@@ -79,6 +79,7 @@ public class JView implements View, Runnable, KeyListener {
 		strategy.getDrawGraphics().dispose();
 		window.dispose();
 
+		System.exit(0);
 	}
 
 	public void keyPressed(KeyEvent arg0) {
