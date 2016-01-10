@@ -19,6 +19,7 @@ public class SkyMain {
 
 		PixelSort sort = new PixelSort(smudge);
 		sort.bind("Threshold");
+		sort.bind("Reverse");
 
 		// Declare your controls
 		new DownsampleControl(controller, 1);

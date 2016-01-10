@@ -16,7 +16,7 @@ import io.smudgr.model.Frame;
 public class PixelSort extends Algorithm {
 
 	DoubleParameter thresh = new DoubleParameter(this, "Threshold", .2, -.01, 1, .01);
-	BooleanParameter reverse = new BooleanParameter(this, "Reverse Direction", false);
+	BooleanParameter reverse = new BooleanParameter(this, "Reverse", false);
 
 	UnivariateFunction thresholdFunction = new LumaFunction();
 	UnivariateFunction sortFunction = new LumaFunction();
@@ -35,6 +35,7 @@ public class PixelSort extends Algorithm {
 	public void init() {
 		super.init();
 
+		thresh.setReverse(true);
 		coordFunction.setBound(getMask());
 	}
 
