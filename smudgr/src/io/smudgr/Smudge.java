@@ -98,7 +98,7 @@ public class Smudge {
 			// a.execute(mix);
 			// frame = a.mask(frame, mix, a.getMask());
 
-			a.execute(toRender);
+			a.apply(toRender);
 		}
 
 		frameCount++;

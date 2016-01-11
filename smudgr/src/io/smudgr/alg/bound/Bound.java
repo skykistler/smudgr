@@ -8,27 +8,28 @@ public class Bound {
 	private double width;
 	private double height;
 
-	private boolean fullBound;
-
 	public Bound(double width, int height) {
 		setWidth(width);
 		setHeight(height);
-
-		if (width == 1 && height == 1)
-			fullBound = true;
 	}
 
 	public boolean containsPoint(Frame img, int x, int y) {
-		// If fullbound, skip check
-		if (fullBound)
+		int w = img.getWidth();
+		int h = img.getHeight();
+
+		boolean inImage = x >= 0 && y >= 0 && x < w && y < h;
+		if (!inImage)
+			return false;
+
+		if (offsetX == 0 && offsetY == 0 && width == 1 && height == 1)
 			return true;
 
 		// Transform x and y coordinates to percentages
-		double bX = (double) x / img.getWidth();
-		double bY = (double) y / img.getHeight();
+		double bX = (double) x / w;
+		double bY = (double) y / h;
 
-		if (bX < width && x >= offsetX)
-			if (bY < height && y >= offsetY)
+		if (bX < offsetX + width && x >= offsetX)
+			if (bY < offsetY + height && y >= offsetY)
 				return true;
 
 		return false;

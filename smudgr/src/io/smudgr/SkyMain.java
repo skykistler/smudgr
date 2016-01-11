@@ -15,8 +15,7 @@ public class SkyMain {
 		MidiController controller = new MidiController(11);
 
 		// Make a smudge
-		//		Smudge smudge = new Smudge("test", "planes statue of liberty.png");
-		Smudge smudge = new Smudge("test", "lilly.png");
+		Smudge smudge = new Smudge("test", "lilly2.png");
 
 		// Set smudge before doing anything
 		controller.setSmudge(smudge);
@@ -26,7 +25,7 @@ public class SkyMain {
 		sort.bind("Reverse");
 
 		PixelShift shift = new PixelShift(smudge);
-		shift.getParameter("Intervals").setInitial(70);
+		shift.getParameter("Intervals").setInitial(3);
 		shift.bind("Intervals");
 		shift.getParameter("Amount").setInitial(.2);
 		new AnimationControl(controller, shift.getParameter("Amount"));
@@ -34,14 +33,16 @@ public class SkyMain {
 		SpectralShift spectral = new SpectralShift(smudge);
 		spectral.getParameter("Colors").setInitial(120);
 		spectral.getParameter("Sort").setInitial(true);
+		spectral.bind("Colors");
+		spectral.bind("Sort");
 		new AnimationControl(controller, spectral.getParameter("Shift"));
 
-		new DownsampleControl(controller, 2);
+		new DownsampleControl(controller, 3);
 
 		// Declare your view
 		new JView(controller);
 
-		controller.bindDevice("Arturia BeatStepPro");
+		//		controller.bindDevice("Arturia BeatStepPro");
 		controller.start();
 	}
 

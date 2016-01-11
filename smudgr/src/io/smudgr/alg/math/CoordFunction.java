@@ -2,6 +2,7 @@ package io.smudgr.alg.math;
 
 import java.util.ArrayList;
 
+import io.smudgr.alg.Algorithm;
 import io.smudgr.alg.bound.Bound;
 import io.smudgr.model.Frame;
 
@@ -10,16 +11,26 @@ public abstract class CoordFunction {
 	private Bound bound;
 
 	protected ArrayList<ArrayList<Integer>> coordSet = null;
-	private ArrayList<Integer> currentSet = null;
+	protected ArrayList<Integer> currentSet = null;
+
+	public void init(Algorithm alg) {
+
+	}
 
 	public void update() {
+		reset();
+
+		generate();
+		nextSet();
+	}
+
+	private void reset() {
 		if (coordSet != null)
 			coordSet.clear();
-
 		if (currentSet != null)
 			currentSet.clear();
 
-		generate();
+		nextSet();
 	}
 
 	protected abstract void generate();
@@ -76,6 +87,12 @@ public abstract class CoordFunction {
 
 	public void setImage(Frame image) {
 		this.image = image;
+	}
+
+	public abstract String getName();
+
+	public String toString() {
+		return getName();
 	}
 
 }

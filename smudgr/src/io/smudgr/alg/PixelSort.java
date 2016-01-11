@@ -6,7 +6,6 @@ import java.util.Comparator;
 
 import io.smudgr.Smudge;
 import io.smudgr.alg.math.ColumnCoords;
-import io.smudgr.alg.math.CoordFunction;
 import io.smudgr.alg.math.LumaFunction;
 import io.smudgr.alg.math.UnivariateFunction;
 import io.smudgr.alg.param.BooleanParameter;
@@ -20,7 +19,6 @@ public class PixelSort extends Algorithm {
 
 	UnivariateFunction thresholdFunction = new LumaFunction();
 	UnivariateFunction sortFunction = new LumaFunction();
-	CoordFunction coordFunction = new ColumnCoords();
 
 	public PixelSort(Smudge s) {
 		super(s);
@@ -30,23 +28,17 @@ public class PixelSort extends Algorithm {
 		return "Pixel Sort";
 	}
 
-	Frame img = null;
-
 	public void init() {
 		super.init();
 
 		thresh.setReverse(true);
-		coordFunction.setBound(getMask());
+
+		if (getCoordFunction() == null)
+			setCoordFunction(new ColumnCoords());
 	}
 
 	public void execute(Frame img) {
-		if (this.img == null || (img.getWidth() != this.img.getWidth() || img.getHeight() != this.img.getHeight())) {
-			coordFunction.setImage(img);
-			coordFunction.update();
-		}
-		this.img = img;
-
-		for (ArrayList<Integer> coords : coordFunction.getCoordSet())
+		for (ArrayList<Integer> coords : getCoordFunction().getCoordSet())
 			sort(coords);
 	}
 

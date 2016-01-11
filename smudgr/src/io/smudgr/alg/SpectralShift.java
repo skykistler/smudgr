@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import io.smudgr.Smudge;
-import io.smudgr.alg.math.ColumnCoords;
-import io.smudgr.alg.math.CoordFunction;
+import io.smudgr.alg.math.AllCoords;
 import io.smudgr.alg.math.LumaFunction;
 import io.smudgr.alg.math.UnivariateFunction;
 import io.smudgr.alg.param.BooleanParameter;
@@ -19,9 +18,7 @@ public class SpectralShift extends Algorithm {
 	BooleanParameter sort = new BooleanParameter(this, "Sort", false);
 
 	UnivariateFunction function = new LumaFunction();
-	CoordFunction coordFunction = new ColumnCoords();
 
-	Frame img = null;
 	int buckets;
 
 	public SpectralShift(Smudge s) {
@@ -32,22 +29,17 @@ public class SpectralShift extends Algorithm {
 		super.init();
 		shift.setContinuous(true);
 
-		coordFunction.setBound(getMask());
+		if (getCoordFunction() == null)
+			setCoordFunction(new AllCoords());
 	}
 
 	public void execute(Frame img) {
-		if (this.img == null || (img.getWidth() != this.img.getWidth() || img.getHeight() != this.img.getHeight())) {
-			coordFunction.setImage(img);
-			coordFunction.update();
-		}
-		this.img = img;
-
 		buckets = colors.getValue();
 
 		int[] values = new int[buckets];
 		int[] counters = new int[buckets];
 
-		for (ArrayList<Integer> coords : coordFunction.getCoordSet())
+		for (ArrayList<Integer> coords : getCoordFunction().getCoordSet())
 			for (Integer coord : coords) {
 				int i = getBucket(img.pixels[coord]);
 
@@ -60,7 +52,7 @@ public class SpectralShift extends Algorithm {
 
 		int shift_amount = shift.getValue() % buckets;
 
-		for (ArrayList<Integer> coords : coordFunction.getCoordSet())
+		for (ArrayList<Integer> coords : getCoordFunction().getCoordSet())
 			for (Integer coord : coords) {
 				int val = getBucket(img.pixels[coord]);
 				int index = (val + shift_amount) % buckets;

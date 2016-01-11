@@ -3,14 +3,12 @@ package io.smudgr.alg.math;
 import io.smudgr.alg.bound.Bound;
 import io.smudgr.model.Frame;
 
-public class ColumnCoords extends CoordFunction {
-
+public class AllCoords extends CoordFunction {
 	public String getName() {
-		return "Columns";
+		return "";
 	}
 
 	protected void generate() {
-		System.out.println("test");
 		Bound b = getBound();
 		Frame img = getImage();
 
@@ -20,8 +18,6 @@ public class ColumnCoords extends CoordFunction {
 		int boundY = b.getTranslatedY(img);
 
 		for (int i = 0; i < boundWidth; i++) {
-			nextSet();
-
 			for (int j = 0; j < boundHeight; j++) {
 				int x = boundX + i;
 				int y = boundY + j;
@@ -29,6 +25,7 @@ public class ColumnCoords extends CoordFunction {
 				nextPoint(x, y);
 			}
 		}
+
 	}
 
 }

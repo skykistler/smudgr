@@ -5,6 +5,8 @@ import java.util.HashMap;
 
 import io.smudgr.Smudge;
 import io.smudgr.alg.bound.Bound;
+import io.smudgr.alg.math.CoordFunction;
+import io.smudgr.alg.param.DoubleParameter;
 import io.smudgr.alg.param.Parameter;
 import io.smudgr.model.Frame;
 
@@ -13,15 +15,58 @@ public abstract class Algorithm {
 	private HashMap<String, Parameter> parameters = new HashMap<String, Parameter>();
 	private Bound bound;
 
+	private DoubleParameter boundX;
+	private DoubleParameter boundY;
+	private DoubleParameter boundW;
+	private DoubleParameter boundH;
+	private CoordFunction coordFunction;
+
+	protected Frame img;
+
 	public Algorithm(Smudge s) {
 		parent = s;
-
 		parent.addAlgorithm(this);
+
+		boundX = new DoubleParameter(this, "Bound X", 0, 0, 1, 0.005);
+		boundY = new DoubleParameter(this, "Bound Y", 0, 0, 1, 0.005);
+		boundW = new DoubleParameter(this, "Bound Width", 1, 0, 1, 0.005);
+		boundH = new DoubleParameter(this, "Bound Height", 1, 0, 1, 0.005);
 	}
 
 	public void init() {
 		if (bound == null)
 			applyMask(new Bound(1, 1));
+
+		if (coordFunction != null)
+			coordFunction.setBound(bound);
+	}
+
+	public void apply(Frame img) {
+		double x = boundX.getValue();
+		double y = boundY.getValue();
+		double w = boundW.getValue();
+		double h = boundH.getValue();
+
+		boolean boundChanged = false;
+		if (x != bound.getOffsetX() || y != bound.getOffsetY() || w != bound.getWidth() || h != bound.getHeight()) {
+			bound.setOffsetX(x);
+			bound.setOffsetY(y);
+			bound.setWidth(w);
+			bound.setHeight(h);
+			boundChanged = true;
+		}
+
+		boolean imgSizeChanged = this.img == null || (img.getWidth() != this.img.getWidth() || img.getHeight() != this.img.getHeight());
+		if (coordFunction != null)
+			if (boundChanged || imgSizeChanged) {
+				coordFunction.setBound(bound);
+				coordFunction.setImage(img);
+				coordFunction.update();
+			}
+
+		this.img = img;
+
+		execute(img);
 	}
 
 	public abstract void execute(Frame img);
@@ -77,10 +122,20 @@ public abstract class Algorithm {
 		return bound;
 	}
 
+	public void setCoordFunction(CoordFunction cf) {
+		coordFunction = cf;
+		coordFunction.setBound(bound);
+		coordFunction.init(this);
+	}
+
+	public CoordFunction getCoordFunction() {
+		return coordFunction;
+	}
+
 	public abstract String getName();
 
 	public String toString() {
-		return getName();
+		return (coordFunction == null ? "" : coordFunction + " ") + getName();
 	}
 
 }
