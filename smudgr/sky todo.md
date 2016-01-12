@@ -1,9 +1,13 @@
 sky's todo
 ========
+By Saturday
++ Different shift colors
++ Set min/max/step on parameters for smoother animation
++ gif output
++ Function parameter to change coord/univariate functions
+
 Sometime soon
-+ Organize and merge Eric's Shift algorithms
-+ Reimplement luma and radial sort using general sort
-+ Generalized marbeler using strategy for different interpolation functions
++ Generalized marbeler using strategy for different interpolation functions, different coord functions
 + Nearest-neighbor upscale on save
 
 + Math functions to add:
