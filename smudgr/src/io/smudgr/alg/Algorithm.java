@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import io.smudgr.Smudge;
 import io.smudgr.alg.bound.Bound;
-import io.smudgr.alg.math.CoordFunction;
+import io.smudgr.alg.coord.CoordFunction;
 import io.smudgr.alg.param.DoubleParameter;
 import io.smudgr.alg.param.Parameter;
 import io.smudgr.model.Frame;

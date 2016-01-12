@@ -3,8 +3,8 @@ package io.smudgr.alg;
 import java.util.ArrayList;
 
 import io.smudgr.Smudge;
-import io.smudgr.alg.math.ColumnCoords;
-import io.smudgr.alg.math.CoordFunction;
+import io.smudgr.alg.coord.ColumnCoords;
+import io.smudgr.alg.coord.CoordFunction;
 import io.smudgr.alg.math.LinearFunction;
 import io.smudgr.alg.math.UnivariateFunction;
 import io.smudgr.alg.param.DoubleParameter;

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import io.smudgr.Smudge;
-import io.smudgr.alg.math.AllCoords;
+import io.smudgr.alg.coord.AllCoords;
 import io.smudgr.alg.math.LumaFunction;
 import io.smudgr.alg.math.UnivariateFunction;
 import io.smudgr.alg.param.BooleanParameter;

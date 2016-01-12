@@ -1,4 +1,4 @@
-package io.smudgr.alg.math;
+package io.smudgr.alg.coord;
 
 import io.smudgr.alg.Algorithm;
 import io.smudgr.alg.bound.Bound;

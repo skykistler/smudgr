@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import io.smudgr.Smudge;
-import io.smudgr.alg.math.ColumnCoords;
+import io.smudgr.alg.coord.ColumnCoords;
 import io.smudgr.alg.math.LumaFunction;
 import io.smudgr.alg.math.UnivariateFunction;
 import io.smudgr.alg.param.BooleanParameter;
