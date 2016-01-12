@@ -1,9 +1,10 @@
 sky's todo
 ========
 By Saturday
++ Video input
++ gif output
 + Different shift colors
 + Set min/max/step on parameters for smoother animation
-+ gif output
 + Function parameter to change coord/univariate functions
 
 Sometime soon
