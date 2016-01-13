@@ -10,7 +10,6 @@ public class ColumnCoords extends CoordFunction {
 	}
 
 	protected void generate() {
-		System.out.println("test");
 		Bound b = getBound();
 		Frame img = getImage();
 

@@ -46,7 +46,7 @@ public class JView implements View, Runnable, KeyListener {
 
 		window.setVisible(true);
 
-		window.createBufferStrategy(2);
+		window.createBufferStrategy(1);
 		strategy = window.getBufferStrategy();
 
 		Thread renderThread = new Thread(this);
@@ -64,7 +64,7 @@ public class JView implements View, Runnable, KeyListener {
 		Graphics g = strategy.getDrawGraphics();
 		g.setColor(Color.black);
 		g.fillRect(0, 0, window.getWidth(), window.getHeight());
-		g.drawImage(frame.getImage(), x, y, null);
+		g.drawImage(frame.getBufferedImage(), x, y, null);
 		g.dispose();
 
 		strategy.show();

@@ -32,6 +32,10 @@ public class Frame {
 		init();
 	}
 
+	public Frame(BufferedImage image) {
+		setBufferedImage(image);
+	}
+
 	private void load(String path) throws IOException {
 		BufferedImage loaded = ImageIO.read(new File(path));
 
@@ -39,17 +43,23 @@ public class Frame {
 		height = loaded.getHeight();
 
 		init();
-
-		// Convert to INT ARGB pixels by drawing to a new image
-		Graphics g = image.getGraphics();
-		g.drawImage(loaded, 0, 0, null);
-		g.dispose();
-
+		convert(loaded);
 	}
 
 	private void init() {
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		grabPixels();
+	}
+
+	private void grabPixels() {
 		pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+	}
+
+	private void convert(BufferedImage other) {
+		// Convert to INT ARGB pixels by drawing to a new image
+		Graphics g = image.getGraphics();
+		g.drawImage(other, 0, 0, null);
+		g.dispose();
 	}
 
 	public int get(int x, int y) {
@@ -160,8 +170,8 @@ public class Frame {
 
 			return scaleDown(w, h);
 		} else
-			// Scale up if needed
-			if (height < sizeH && width < sizeW) {
+		// Scale up if needed
+		if (height < sizeH && width < sizeW) {
 			int w = (int) (width * ((double) sizeH / height));
 			int h = sizeH;
 
@@ -180,7 +190,22 @@ public class Frame {
 		}
 	}
 
-	public BufferedImage getImage() {
+	public void setBufferedImage(BufferedImage img) {
+		width = img.getWidth();
+		height = img.getHeight();
+
+		int type = img.getType();
+
+		if (type != BufferedImage.TYPE_INT_RGB || type != BufferedImage.TYPE_INT_ARGB) {
+			init();
+			convert(img);
+		} else {
+			image = img;
+			grabPixels();
+		}
+	}
+
+	public BufferedImage getBufferedImage() {
 		return image;
 	}
 

@@ -7,5 +7,7 @@
 			<attribute name="javadoc_location" value="https://processing.googlecode.com/svn/trunk/processing/build/javadoc/core/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="jcodec-javase-0.1.9.jar"/>
+	<classpathentry kind="lib" path="jcodec-0.1.9.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
