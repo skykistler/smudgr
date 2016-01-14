@@ -1,7 +1,7 @@
 sky's todo
 ========
 By Saturday
-+ Video input
++ Buffer video input
 + gif output
 + Different shift colors
 + Set min/max/step on parameters for smoother animation
