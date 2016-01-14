@@ -7,6 +7,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
@@ -46,7 +47,7 @@ public class JView implements View, Runnable, KeyListener {
 
 		window.setVisible(true);
 
-		window.createBufferStrategy(1);
+		window.createBufferStrategy(2);
 		strategy = window.getBufferStrategy();
 
 		Thread renderThread = new Thread(this);
@@ -56,18 +57,34 @@ public class JView implements View, Runnable, KeyListener {
 	public void draw() {
 		Smudge smudge = controller.getSmudge();
 
-		frame = smudge.render().fitToSize(displayWidth, displayHeight);
-
-		int x = displayWidth / 2 - frame.getWidth() / 2;
-		int y = displayHeight / 2 - frame.getHeight() / 2;
-
 		Graphics g = strategy.getDrawGraphics();
 		g.setColor(Color.black);
 		g.fillRect(0, 0, window.getWidth(), window.getHeight());
-		g.drawImage(frame.getBufferedImage(), x, y, null);
+
+		frame = smudge.render().copy();
+		drawFittedImage(g, frame.getBufferedImage());
+
 		g.dispose();
 
 		strategy.show();
+	}
+
+	public void drawFittedImage(Graphics g, BufferedImage image) {
+		int height = image.getHeight();
+		int width = image.getWidth();
+
+		if (height > displayHeight || width > displayWidth) {
+			width = (int) (width * ((double) displayHeight / height));
+			height = displayHeight;
+		} else if (height < displayHeight && width < displayWidth) {
+			width = (int) (width * ((double) displayHeight / height));
+			height = displayHeight;
+		}
+
+		int x = displayWidth / 2 - width / 2;
+		int y = displayHeight / 2 - height / 2;
+
+		g.drawImage(image, x, y, width, height, null);
 	}
 
 	public void run() {
@@ -76,7 +93,6 @@ public class JView implements View, Runnable, KeyListener {
 		}
 
 		window.setVisible(false);
-		strategy.getDrawGraphics().dispose();
 		window.dispose();
 
 		System.exit(0);

@@ -4,19 +4,19 @@ import java.util.ArrayList;
 
 import io.smudgr.alg.Algorithm;
 import io.smudgr.alg.bound.Bound;
-import io.smudgr.alg.param.DoubleParameter;
+import io.smudgr.alg.param.NumberParameter;
 import io.smudgr.model.Frame;
 
 public class RadialCoordFunction extends CoordFunction {
 
-	private DoubleParameter innerRadius;
+	private NumberParameter innerRadius;
 
 	public String getName() {
 		return "Radial";
 	}
 
 	public void init(Algorithm a) {
-		innerRadius = new DoubleParameter(a, "Inner Radius", .5, 0, 1, 0.005);
+		innerRadius = new NumberParameter(a, "Inner Radius", .5, 0, 1, 0.005);
 	}
 
 	protected void generate() {

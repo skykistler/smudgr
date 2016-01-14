@@ -4,6 +4,7 @@ import io.smudgr.alg.bound.Bound;
 import io.smudgr.model.Frame;
 
 public class AllCoords extends CoordFunction {
+
 	public String getName() {
 		return "";
 	}

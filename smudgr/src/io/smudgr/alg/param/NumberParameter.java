@@ -2,26 +2,26 @@ package io.smudgr.alg.param;
 
 import io.smudgr.alg.Algorithm;
 
-public class IntegerParameter extends Parameter {
-	private int initial;
-	private int value;
-	private int min;
-	private int max;
-	private int step;
+public class NumberParameter extends Parameter {
+	private double initial;
+	private double value;
+	private double min;
+	private double max;
+	private double step;
 
-	public IntegerParameter(Algorithm parent, String name) {
+	public NumberParameter(Algorithm parent, String name) {
 		this(parent, name, 0);
 	}
 
-	public IntegerParameter(Algorithm parent, String name, int initial) {
-		this(parent, name, initial, Integer.MIN_VALUE, Integer.MAX_VALUE, 1);
+	public NumberParameter(Algorithm parent, String name, double initial) {
+		this(parent, name, initial, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 1);
 	}
 
-	public IntegerParameter(Algorithm parent, String name, int initial, int minimum, int maximum) {
-		this(parent, name, initial, minimum, maximum, 1);
+	public NumberParameter(Algorithm parent, String name, double initial, double minimum, double maximum) {
+		this(parent, name, initial, minimum, maximum, (maximum - minimum) / 127);
 	}
 
-	public IntegerParameter(Algorithm parent, String name, int initial, int minimum, int maximum, int step) {
+	public NumberParameter(Algorithm parent, String name, double initial, double minimum, double maximum, double step) {
 		super(parent, name);
 		setInitial(initial);
 		min = minimum;
@@ -34,24 +34,35 @@ public class IntegerParameter extends Parameter {
 	}
 
 	public void setInitial(Object o) {
-		initial = (int) o;
+		if (o instanceof Double)
+			initial = (double) o;
+		else
+			initial = Double.parseDouble(o.toString());
 	}
 
 	public void setValue(Object o) {
-		value = (int) o;
+		if (o instanceof Double)
+			value = (double) o;
+		else
+			value = Double.parseDouble(o.toString());
+
 		enforce();
 	}
 
-	public int getValue() {
+	public double getValue() {
 		return value;
 	}
 
-	public void inputValue(int value) {
+	public int getIntValue() {
+		return (int) value;
+	}
+
+	public void inputValue(int midi) {
 		double m;
 		if (reverse)
-			m = (127 - value) / 127.0;
+			m = (127 - midi) / 127.0;
 		else
-			m = value / 127.0;
+			m = midi / 127.0;
 
 		setValue(m * (max - min));
 	}

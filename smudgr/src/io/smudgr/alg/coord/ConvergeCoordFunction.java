@@ -2,21 +2,21 @@ package io.smudgr.alg.coord;
 
 import io.smudgr.alg.Algorithm;
 import io.smudgr.alg.bound.Bound;
-import io.smudgr.alg.param.DoubleParameter;
+import io.smudgr.alg.param.NumberParameter;
 import io.smudgr.model.Frame;
 
 public class ConvergeCoordFunction extends CoordFunction {
 
-	private DoubleParameter centerX;
-	private DoubleParameter centerY;
+	private NumberParameter centerX;
+	private NumberParameter centerY;
 
 	public String getName() {
 		return "Gravity";
 	}
 
 	public void init(Algorithm a) {
-		centerX = new DoubleParameter(a, "Gravity Center X", .5, 0, 1, 0.005);
-		centerY = new DoubleParameter(a, "Gravity Center Y", .5, 0, 1, 0.005);
+		centerX = new NumberParameter(a, "Gravity Center X", .5, 0, 1, 0.005);
+		centerY = new NumberParameter(a, "Gravity Center Y", .5, 0, 1, 0.005);
 	}
 
 	protected void generate() {

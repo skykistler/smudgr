@@ -9,12 +9,12 @@ import io.smudgr.alg.coord.ColumnCoords;
 import io.smudgr.alg.math.LumaFunction;
 import io.smudgr.alg.math.UnivariateFunction;
 import io.smudgr.alg.param.BooleanParameter;
-import io.smudgr.alg.param.DoubleParameter;
+import io.smudgr.alg.param.NumberParameter;
 import io.smudgr.model.Frame;
 
 public class PixelSort extends Algorithm {
 
-	DoubleParameter thresh = new DoubleParameter(this, "Threshold", .2, -.01, 1, .01);
+	NumberParameter thresh = new NumberParameter(this, "Threshold", .2, -.01, 1, .01);
 	BooleanParameter reverse = new BooleanParameter(this, "Reverse", false);
 
 	UnivariateFunction thresholdFunction = new LumaFunction();

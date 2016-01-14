@@ -59,12 +59,6 @@ public class Smudge {
 
 	public void downsample(int amount) {
 		downsample = amount;
-
-		if (originalSource != null) {
-			int w = originalSource.getWidth() / downsample;
-			int h = originalSource.getHeight() / downsample;
-			frame = originalSource.resize(w, h);
-		}
 	}
 
 	public void addAlgorithm(Algorithm alg) {
@@ -76,34 +70,40 @@ public class Smudge {
 	}
 
 	public void setSource(Frame image) {
-		originalSource = image;
-
-		downsample(downsample);
+		originalSource = frame = image;
 	}
 
 	public Frame render() {
-		for (Controllable c : controller.getControls())
-			c.update();
-
-		if (lastSecond == 0)
-			lastSecond = System.nanoTime();
-
-		Frame toRender;
 		synchronized (this) {
-			toRender = frame.copy();
-		}
+			for (Controllable c : controller.getControls())
+				c.update();
 
-		for (Algorithm a : algorithms) {
-			// Frame mix = frame.copy();
-			// a.execute(mix);
-			// frame = a.mask(frame, mix, a.getMask());
+			if (originalSource != null) {
+				int w = Math.max(originalSource.getWidth() / downsample, 1);
+				int h = Math.max(originalSource.getHeight() / downsample, 1);
 
-			a.apply(toRender);
+				if (frame == null || frame.getWidth() != w || frame.getHeight() != h) {
+					frame = originalSource.resize(w, h);
+				}
+			}
+
+			if (lastSecond == 0)
+				lastSecond = System.nanoTime();
+
+			for (Algorithm a : algorithms) {
+				// Frame mix = frame.copy();
+				// a.execute(mix);
+				// frame = a.mask(frame, mix, a.getMask());
+
+				a.apply(frame);
+			}
 		}
 
 		frameCount++;
 
-		if (System.nanoTime() - lastSecond > 1000000000) {
+		if (System.nanoTime() - lastSecond > 1000000000)
+
+		{
 			if (showFPS)
 				System.out.println(frameCount + "fps");
 
@@ -112,9 +112,10 @@ public class Smudge {
 		}
 
 		if (saveNextRender)
-			outputFrame(toRender);
 
-		return toRender;
+			outputFrame(frame);
+
+		return frame;
 	}
 
 	boolean saveNextRender = false;

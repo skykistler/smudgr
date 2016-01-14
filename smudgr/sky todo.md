@@ -1,15 +1,14 @@
 sky's todo
 ========
 By Saturday
-+ Buffer video input
-+ gif output
-+ Different shift colors
 + Set min/max/step on parameters for smoother animation
 + Function parameter to change coord/univariate functions
++ Buffer video input
++ Different shift colors
 
 Sometime soon
 + Generalized marbeler using strategy for different interpolation functions, different coord functions
-+ Nearest-neighbor upscale on save
++ gif output
 
 + Math functions to add:
   + Log

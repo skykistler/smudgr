@@ -6,19 +6,18 @@ import io.smudgr.Smudge;
 import io.smudgr.alg.math.CubicInterpolator;
 import io.smudgr.alg.math.Interpolator;
 import io.smudgr.alg.param.BooleanParameter;
-import io.smudgr.alg.param.DoubleParameter;
-import io.smudgr.alg.param.IntegerParameter;
+import io.smudgr.alg.param.NumberParameter;
 import io.smudgr.model.Frame;
 
 public class Marbeler extends Algorithm {
 
-	IntegerParameter freq = new IntegerParameter(this, "Frequency", 5, 1, 128);
-	IntegerParameter iterations = new IntegerParameter(this, "Iterations", 4, 0, 32, 1);
-	DoubleParameter mod = new DoubleParameter(this, "Strength", .3, 0, 1);
-	IntegerParameter seed = new IntegerParameter(this, "Seed", 0);
-	DoubleParameter offsetXY = new DoubleParameter(this, "Offset - X/Y", .75, 0, 1);
-	DoubleParameter offsetX = new DoubleParameter(this, "Offset - X", 0, 0, 1);
-	DoubleParameter offsetY = new DoubleParameter(this, "Offset - Y", 0, 0, 1);
+	NumberParameter freq = new NumberParameter(this, "Frequency", 5, 1, 128);
+	NumberParameter iterations = new NumberParameter(this, "Iterations", 4, 0, 32, 1);
+	NumberParameter mod = new NumberParameter(this, "Strength", .3, 0, 1);
+	NumberParameter seed = new NumberParameter(this, "Seed", 0);
+	NumberParameter offsetXY = new NumberParameter(this, "Offset - X/Y", .75, 0, 1);
+	NumberParameter offsetX = new NumberParameter(this, "Offset - X", 0, 0, 1);
+	NumberParameter offsetY = new NumberParameter(this, "Offset - Y", 0, 0, 1);
 	BooleanParameter autoScroll = new BooleanParameter(this, "Auto-Scroll", false);
 
 	Interpolator intplt = new CubicInterpolator();
@@ -36,15 +35,15 @@ public class Marbeler extends Algorithm {
 
 	@Override
 	public void execute(Frame img) {
-		rand = new Random(seed.getValue());
+		rand = new Random(seed.getIntValue());
 		horizontal = false;
 
 		if (autoScroll.getValue()) {
 			offsetXY.increment();
 		}
 
-		int n = iterations.getValue();
-		int x = freq.getValue();
+		int n = iterations.getIntValue();
+		int x = freq.getIntValue();
 
 		for (int i = 0; i < n; i++) {
 			double[] points = new double[x];

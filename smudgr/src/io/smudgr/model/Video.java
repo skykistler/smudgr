@@ -3,8 +3,8 @@ package io.smudgr.model;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import org.jcodec.api.JCodecException;
 import org.jcodec.api.awt.FrameGrab;
@@ -18,7 +18,9 @@ public class Video {
 
 	private BufferThread bufferer;
 	private final int bufferCap = 1000;
-	private volatile BlockingQueue<Frame> buffer;
+	private volatile Queue<Frame> buffer;
+
+	private Frame lastFrame;
 
 	public Video(String filename) {
 		this(filename, 0);
@@ -37,14 +39,10 @@ public class Video {
 	}
 
 	public Frame getFrame() {
-		if (bufferer != null && bufferer.started) {
-			try {
-				return buffer.take();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+		if (bufferer != null && bufferer.started && buffer.size() > 0) {
+			return lastFrame = buffer.poll();
 		}
-		return new Frame(width, height);
+		return lastFrame == null ? lastFrame = new Frame(width, height) : lastFrame;
 	}
 
 	class BufferThread implements Runnable {
@@ -53,7 +51,7 @@ public class Video {
 		private boolean started;
 
 		public BufferThread() {
-			buffer = new LinkedBlockingQueue<Frame>();
+			buffer = new LinkedList<Frame>();
 		}
 
 		public void start() {

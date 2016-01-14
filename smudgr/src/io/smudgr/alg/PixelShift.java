@@ -7,14 +7,13 @@ import io.smudgr.alg.coord.ColumnCoords;
 import io.smudgr.alg.coord.CoordFunction;
 import io.smudgr.alg.math.LinearFunction;
 import io.smudgr.alg.math.UnivariateFunction;
-import io.smudgr.alg.param.DoubleParameter;
-import io.smudgr.alg.param.IntegerParameter;
+import io.smudgr.alg.param.NumberParameter;
 import io.smudgr.model.Frame;
 
 public class PixelShift extends Algorithm {
 
-	private DoubleParameter amount = new DoubleParameter(this, "Amount", 0, 0, 1, 0.005);
-	private IntegerParameter intervals = new IntegerParameter(this, "Intervals", 5, 1, 255, 1);
+	private NumberParameter amount = new NumberParameter(this, "Amount", 0, 0, 1, 0.005);
+	private NumberParameter intervals = new NumberParameter(this, "Intervals", 5, 1, 255, 1);
 
 	UnivariateFunction scale = new LinearFunction();
 
@@ -39,7 +38,7 @@ public class PixelShift extends Algorithm {
 
 		CoordFunction cf = getCoordFunction();
 		double shift = amount.getValue();
-		int ints = intervals.getValue();
+		int ints = intervals.getIntValue();
 
 		int intervalWidth = (int) Math.ceil(cf.getCoordSet().size() / (double) ints);
 		for (int n = 0; n < ints; n++) {
