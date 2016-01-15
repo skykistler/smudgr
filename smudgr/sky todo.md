@@ -1,8 +1,6 @@
 sky's todo
 ========
 By Saturday
-+ Set min/max/step on parameters for smoother animation
-+ Get gravity/radial sort working
 
 + Function parameter to change coord/univariate functions
 + Different shift colors

@@ -39,10 +39,7 @@ public abstract class Algorithm {
 
 	public void init() {
 		if (bound == null)
-			applyMask(new Bound(1, 1));
-
-		if (coordFunction != null)
-			coordFunction.setBound(bound);
+			setBound(new Bound(1, 1));
 	}
 
 	public void apply(Frame img) {
@@ -121,11 +118,16 @@ public abstract class Algorithm {
 			p.requestBind();
 	}
 
-	public void applyMask(Bound bound) {
+	public void setBound(Bound bound) {
 		this.bound = bound;
+
+		if (coordFunction != null) {
+			coordFunction.setBound(bound);
+			coordFunction.update();
+		}
 	}
 
-	public Bound getMask() {
+	public Bound getBound() {
 		return bound;
 	}
 

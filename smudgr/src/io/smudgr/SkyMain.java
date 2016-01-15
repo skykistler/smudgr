@@ -18,7 +18,7 @@ public class SkyMain {
 
 		// Make a smudge
 		Smudge smudge = new Smudge("test", "lilly.png");
-		new VideoControl(controller, "hackers.mp4", 3000);
+		new VideoControl(controller, "acrosstheuniverse.mp4", 3000);
 
 		// Set smudge before doing anything
 		controller.setSmudge(smudge);
@@ -37,19 +37,19 @@ public class SkyMain {
 		new AnimationControl(controller, shift.getParameter("Amount"));
 
 		SpectralShift spectral = new SpectralShift(smudge);
-		spectral.getParameter("Colors").setInitial(50);
+		spectral.getParameter("Colors").setInitial(10);
 		spectral.getParameter("Sort").setInitial(true);
 		spectral.bind("Colors");
 		spectral.bind("Sort");
 		spectral.bind("Enable");
 		new AnimationControl(controller, spectral.getParameter("Shift"));
 
-		new DownsampleControl(controller, 3);
+		new DownsampleControl(controller, 1);
 
 		// Declare your view
 		new JView(controller);
 
-		controller.bindDevice("Arturia BeatStep Pro");
+		//		controller.bindDevice("Arturia BeatStep Pro");
 		controller.start();
 	}
 
