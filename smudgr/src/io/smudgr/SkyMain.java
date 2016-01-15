@@ -31,6 +31,7 @@ public class SkyMain {
 		shift.getParameter("Intervals").setInitial(3);
 		shift.bind("Intervals");
 		shift.getParameter("Amount").setInitial(.2);
+		shift.bind("Enable");
 		new AnimationControl(controller, shift.getParameter("Amount"));
 
 		SpectralShift spectral = new SpectralShift(smudge);
@@ -38,6 +39,7 @@ public class SkyMain {
 		spectral.getParameter("Sort").setInitial(true);
 		spectral.bind("Colors");
 		spectral.bind("Sort");
+		spectral.bind("Enable");
 		new AnimationControl(controller, spectral.getParameter("Shift"));
 
 		new DownsampleControl(controller, 3);
