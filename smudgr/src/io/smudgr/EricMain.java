@@ -1,68 +1,62 @@
 package io.smudgr;
 
+import io.smudgr.alg.ChromaShift;
+import io.smudgr.alg.PixelShift;
+import io.smudgr.alg.PixelSort;
+import io.smudgr.alg.SpectralShift;
+import io.smudgr.alg.coord.RowCoords;
+import io.smudgr.controller.controls.AnimationControl;
+import io.smudgr.controller.controls.DownsampleControl;
+import io.smudgr.controller.controls.VideoControl;
+import io.smudgr.controller.device.MidiController;
+import io.smudgr.view.JView;
+
 public class EricMain {
 	public static void main(String[] args) {
+		// Declare your controller
+		MidiController controller = new MidiController(11);
 
-		Smudge smudge = new Smudge("smudgr test", "/teststop/forest.jpg");
-		// smudge.downsample(2);
+		// Make a smudge
+		Smudge smudge = new Smudge("test", "emma.jpg");
+		//new VideoControl(controller, "acrosstheuniverse.mp4", 3000);
 
-		// SaveControl save = new SaveControl(smudge);
+		// Set smudge before doing anything
+		controller.setSmudge(smudge);
 
-		// ImageSwitcherControl imageSwitcher = new ImageSwitcherControl(smudge, "test");
+//		PixelSort sort = new PixelSort(smudge);
+//		sort.setCoordFunction(new RowCoords());
+//		sort.bind("Threshold");
+//		sort.bind("Reverse");
+//		sort.bind("Enable");
 
-		// DownsampleControl downsampler = new DownsampleControl(smudge);
+		ChromaShift shift = new ChromaShift(smudge);
+		shift.bind("Layer 1 X");
+		shift.bind("Layer 1 Y");
+		shift.bind("Layer 2 X");
+		shift.bind("Layer 2 Y");
+		shift.bind("Layer 3 X");
+		shift.bind("Layer 3 Y");
+		shift.bind("Bound X");
+		shift.bind("Bound Y");
+		shift.bind("Bound Width");
+		shift.bind("Bound Height");
+		
+		//new AnimationControl(controller, shift.getParameter("Amount"));
 
-		// CubicMarbeler marbeler = new CubicMarbeler();
-		// marbeler.bind("Frequency");
-		// marbeler.bind("Iterations");
-		// marbeler.bind("Strength");
-		// marbeler.bind("Seed");
-		// marbeler.bind("Offset - X/Y");
-		//
-		// smudge.addAlgorithm(marbeler);
-		//
-		// LumaSort lumaSort = new LumaSort();
-		// lumaSort.bind("Luma Threshold X");
-		// lumaSort.getParameter("Luma Threshold X").setReverse(true);
-		// lumaSort.bind("Luma Threshold Y");
-		// lumaSort.getParameter("Luma Threshold Y").setReverse(true);
-		// lumaSort.bind("Reverse Sort Columns");
-		// lumaSort.bind("Reverse Sort Rows");
-		// lumaSort.bind("Starting Row Bound");
-		// lumaSort.bind("Starting Column Bound");
-		// lumaSort.bind("Ending Column Bound");
-		// lumaSort.bind("Ending Row Bound");
-		// lumaSort.bind("Degree of Rotation");
-		//
-		// smudge.addAlgorithm(lumaSort);
-		//
-		// Shift shifter = new Shift();
-		// shifter.getParameter("Shift Rows").setValue(false);
-		// //shifter.bind("Pixel Shift X");
-		// shifter.bind("Pixel Shift Y");
-		// shifter.bind("x0");
-		// shifter.bind("y0");
-		// shifter.bind("x1");
-		// shifter.bind("y1");
-		// shifter.bind("Amount of X intervals");
-		// //shifter.bind("Amount of Y intervals");
-		// shifter.bind("Scale for Y");
-		// shifter.bind("Direction for Y");
-		//
-		// smudge.addAlgorithm(shifter);
+//		SpectralShift spectral = new SpectralShift(smudge);
+//		spectral.getParameter("Colors").setInitial(10);
+//		spectral.getParameter("Sort").setInitial(true);
+//		spectral.bind("Colors");
+//		spectral.bind("Sort");
+//		spectral.bind("Enable");
+//		new AnimationControl(controller, spectral.getParameter("Shift"));
 
-		// RadialPixelSort radialSort = new RadialPixelSort();
-		// radialSort.bind("Luma Threshold");
-		// radialSort.getParameter("Luma Threshold").setReverse(true);
-		// radialSort.bind("Reverse Sort");
-		// radialSort.bind("Starting Row Bound");
-		// radialSort.bind("Starting Column Bound");
-		// radialSort.bind("Ending Column Bound");
-		// radialSort.bind("Ending Row Bound");
-		// radialSort.bind("Inner Radius");
-		//
-		// smudge.addAlgorithm(radialSort);
+		new DownsampleControl(controller, 1);
 
-		// Controller.startSmudge(smudge, "Arturia BeatStep");
+		// Declare your view
+		new JView(controller);
+
+		controller.bindDevice("Arturia BeatStep Pro");
+		controller.start();
 	}
 }
