@@ -25,6 +25,7 @@ public class SkyMain {
 		PixelSort sort = new PixelSort(smudge);
 		sort.bind("Threshold");
 		sort.bind("Reverse");
+		sort.bind("Enable");
 
 		PixelShift shift = new PixelShift(smudge);
 		shift.getParameter("Intervals").setInitial(3);

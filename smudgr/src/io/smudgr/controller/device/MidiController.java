@@ -58,7 +58,7 @@ public class MidiController extends Controller implements DeviceObserver {
 		for (Algorithm a : getSmudge().getAlgorithms()) {
 			for (Parameter p : a.getParameters()) {
 				if (p.isBindRequested()) {
-					System.out.println("Binding " + p + " for " + p.getParent() + "... please touch a MIDI key...");
+					System.out.println("Binding: " + p + " - " + p.getParent() + "... please touch a MIDI key...");
 					bindControl(p);
 					alreadyBound.add(p);
 				}
