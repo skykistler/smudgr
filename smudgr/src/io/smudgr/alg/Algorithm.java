@@ -22,7 +22,7 @@ public abstract class Algorithm {
 	private NumberParameter boundY;
 	private NumberParameter boundW;
 	private NumberParameter boundH;
-	private CoordFunction coordFunction;
+	private CoordFunction coordFunction = new AllCoords();
 
 	protected Frame img;
 
@@ -35,11 +35,12 @@ public abstract class Algorithm {
 		boundY = new NumberParameter(this, "Bound Y", 0, 0, 1, 0.005);
 		boundW = new NumberParameter(this, "Bound Width", 1, 0, 1, 0.005);
 		boundH = new NumberParameter(this, "Bound Height", 1, 0, 1, 0.005);
+
+		setBound(new Bound(1, 1));
 	}
 
 	public void init() {
-		if (bound == null)
-			setBound(new Bound(1, 1));
+
 	}
 
 	public void apply(Frame img) {
@@ -74,21 +75,6 @@ public abstract class Algorithm {
 	}
 
 	public abstract void execute(Frame img);
-
-	public Frame mask(Frame frame, Frame mix, Bound mask) {
-		if (mask == null)
-			return mix;
-
-		for (int i = 0; i < mix.getWidth(); i++)
-			for (int j = 0; j < mix.getHeight(); j++)
-				// If the pixel is within the mask, overwrite the frame pixel
-				if (mask.containsPoint(mix, i, j)) {
-					int index = i + j * mix.getWidth();
-					frame.pixels[index] = mix.pixels[index];
-				}
-
-		return frame;
-	}
 
 	public Smudge getParent() {
 		return parent;

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import io.smudgr.Smudge;
-import io.smudgr.alg.coord.AllCoords;
 import io.smudgr.alg.math.LumaFunction;
 import io.smudgr.alg.math.UnivariateFunction;
 import io.smudgr.alg.param.BooleanParameter;
@@ -23,14 +22,7 @@ public class SpectralShift extends Algorithm {
 
 	public SpectralShift(Smudge s) {
 		super(s);
-	}
-
-	public void init() {
-		super.init();
 		shift.setContinuous(true);
-
-		if (getCoordFunction() == null)
-			setCoordFunction(new AllCoords());
 	}
 
 	public void execute(Frame img) {

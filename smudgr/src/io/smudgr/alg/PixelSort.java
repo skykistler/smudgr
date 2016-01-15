@@ -22,19 +22,12 @@ public class PixelSort extends Algorithm {
 
 	public PixelSort(Smudge s) {
 		super(s);
+		setCoordFunction(new ColumnCoords());
+		thresh.setReverse(true);
 	}
 
 	public String getName() {
 		return "Pixel Sort";
-	}
-
-	public void init() {
-		super.init();
-
-		thresh.setReverse(true);
-
-		if (getCoordFunction() == null)
-			setCoordFunction(new ColumnCoords());
 	}
 
 	public void execute(Frame img) {

@@ -23,13 +23,11 @@ public class PixelShift extends Algorithm {
 	public PixelShift(Smudge s) {
 		super(s);
 		amount.setContinuous(true);
+		setCoordFunction(new ColumnCoords());
 	}
 
 	public void init() {
 		super.init();
-
-		if (getCoordFunction() == null)
-			setCoordFunction(new ColumnCoords());
 	}
 
 	public void execute(Frame img) {
