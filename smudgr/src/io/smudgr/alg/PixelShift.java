@@ -13,7 +13,7 @@ import io.smudgr.model.Frame;
 public class PixelShift extends Algorithm {
 
 	private NumberParameter amount = new NumberParameter(this, "Amount", 0, 0, 1, 0.005);
-	private NumberParameter intervals = new NumberParameter(this, "Intervals", 5, 1, 255, 1);
+	private NumberParameter intervals = new NumberParameter(this, "Intervals", 5, 1, 1000, 1);
 
 	UnivariateFunction scale = new LinearFunction();
 
@@ -33,19 +33,24 @@ public class PixelShift extends Algorithm {
 	}
 
 	public void execute(Frame img) {
+		int size = getCoordFunction().getCoordSet().size();
+
+		if (intervals.getMax() != size)
+			intervals.setMax(size);
+
 		orig = img.copy();
 		shifted = img.copy();
 
 		CoordFunction cf = getCoordFunction();
 		double shift = amount.getValue();
-		int ints = intervals.getIntValue();
+		double ints = intervals.getValue();
 
-		int intervalWidth = (int) Math.ceil(cf.getCoordSet().size() / (double) ints);
+		double intervalWidth = size / ints;
 		for (int n = 0; n < ints; n++) {
-			int interval = n * intervalWidth;
+			double interval = n * intervalWidth;
 
 			for (int i = 0; i < intervalWidth; i++) {
-				int index = interval + i;
+				int index = (int) (interval + i);
 				if (index < cf.getCoordSet().size()) {
 					ArrayList<Integer> coords = cf.getCoordSet().get(index);
 					shift(coords, n * shift);

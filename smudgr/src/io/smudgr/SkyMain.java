@@ -2,6 +2,7 @@ package io.smudgr;
 
 import io.smudgr.alg.PixelShift;
 import io.smudgr.alg.PixelSort;
+import io.smudgr.alg.SpectralShift;
 import io.smudgr.controller.controls.AnimationControl;
 import io.smudgr.controller.controls.DownsampleControl;
 import io.smudgr.controller.controls.VideoControl;
@@ -16,7 +17,7 @@ public class SkyMain {
 
 		// Make a smudge
 		Smudge smudge = new Smudge("test", "lilly.png");
-		new VideoControl(controller, "hackers.mp4", 1000);
+		new VideoControl(controller, "hackers.mp4", 3000);
 
 		// Set smudge before doing anything
 		controller.setSmudge(smudge);
@@ -31,12 +32,12 @@ public class SkyMain {
 		shift.getParameter("Amount").setInitial(.2);
 		new AnimationControl(controller, shift.getParameter("Amount"));
 
-		// SpectralShift spectral = new SpectralShift(smudge);
-		// spectral.getParameter("Colors").setInitial(50);
-		// spectral.getParameter("Sort").setInitial(true);
-		// spectral.bind("Colors");
-		// spectral.bind("Sort");
-		// new AnimationControl(controller, spectral.getParameter("Shift"));
+		SpectralShift spectral = new SpectralShift(smudge);
+		spectral.getParameter("Colors").setInitial(50);
+		spectral.getParameter("Sort").setInitial(true);
+		spectral.bind("Colors");
+		spectral.bind("Sort");
+		new AnimationControl(controller, spectral.getParameter("Shift"));
 
 		new DownsampleControl(controller, 3);
 

@@ -26,7 +26,7 @@ public class NumberParameter extends Parameter {
 		setInitial(initial);
 		min = minimum;
 		max = maximum;
-		this.step = step;
+		setStep(step);
 	}
 
 	public void init() {
@@ -47,6 +47,41 @@ public class NumberParameter extends Parameter {
 			value = Double.parseDouble(o.toString());
 
 		enforce();
+	}
+
+	public void setMin(double m) {
+		if (m >= min)
+			return;
+
+		double ratio = (value - min) / (max - min);
+		min = m;
+		value = ratio * (max - min) + min;
+	}
+
+	public double getMin() {
+		return min;
+	}
+
+	public void setMax(double m) {
+		if (m <= min)
+			return;
+		double ratio = (value - min) / (max - min);
+		max = m;
+		value = ratio * (max - min) + min;
+	}
+
+	public double getMax() {
+		return max;
+	}
+
+	public void setStep(double s) {
+		s = s > max - min ? max - min : s;
+		s = s < 0 ? 0 : s;
+		step = s;
+	}
+
+	public double getStep() {
+		return step;
 	}
 
 	public double getValue() {

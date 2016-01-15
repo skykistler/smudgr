@@ -42,7 +42,7 @@ public class Video {
 		if (bufferer != null && bufferer.started && buffer.size() > 0) {
 			return lastFrame = buffer.poll();
 		}
-		return lastFrame == null ? lastFrame = new Frame(width, height) : lastFrame;
+		return lastFrame;
 	}
 
 	class BufferThread implements Runnable {

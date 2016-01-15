@@ -7,6 +7,7 @@ import io.smudgr.Smudge;
 import io.smudgr.alg.bound.Bound;
 import io.smudgr.alg.coord.AllCoords;
 import io.smudgr.alg.coord.CoordFunction;
+import io.smudgr.alg.param.BooleanParameter;
 import io.smudgr.alg.param.NumberParameter;
 import io.smudgr.alg.param.Parameter;
 import io.smudgr.model.Frame;
@@ -16,6 +17,7 @@ public abstract class Algorithm {
 	private HashMap<String, Parameter> parameters = new HashMap<String, Parameter>();
 	private Bound bound;
 
+	private BooleanParameter enable;
 	private NumberParameter boundX;
 	private NumberParameter boundY;
 	private NumberParameter boundW;
@@ -28,6 +30,7 @@ public abstract class Algorithm {
 		parent = s;
 		parent.addAlgorithm(this);
 
+		enable = new BooleanParameter(this, "Enable", true);
 		boundX = new NumberParameter(this, "Bound X", 0, 0, 1, 0.005);
 		boundY = new NumberParameter(this, "Bound Y", 0, 0, 1, 0.005);
 		boundW = new NumberParameter(this, "Bound Width", 1, 0, 1, 0.005);
@@ -43,6 +46,9 @@ public abstract class Algorithm {
 	}
 
 	public void apply(Frame img) {
+		if (!enable.getValue())
+			return;
+
 		double x = boundX.getValue();
 		double y = boundY.getValue();
 		double w = boundW.getValue();

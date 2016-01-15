@@ -2,13 +2,15 @@ sky's todo
 ========
 By Saturday
 + Set min/max/step on parameters for smoother animation
++ Get gravity/radial sort working
+
 + Function parameter to change coord/univariate functions
-+ Buffer video input
 + Different shift colors
 
 Sometime soon
 + Generalized marbeler using strategy for different interpolation functions, different coord functions
 + gif output
++ Smooth video input
 
 + Math functions to add:
   + Log

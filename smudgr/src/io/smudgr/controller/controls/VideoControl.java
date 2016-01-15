@@ -30,7 +30,8 @@ public class VideoControl extends Controllable {
 		if (!paused) {
 			lastFrame = video.getFrame();
 
-			getController().getSmudge().setSource(lastFrame);
+			if (lastFrame != null)
+				getController().getSmudge().setSource(lastFrame);
 		}
 	}
 

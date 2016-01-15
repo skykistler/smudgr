@@ -1,5 +1,6 @@
 package io.smudgr.controller.controls;
 
+import io.smudgr.alg.param.NumberParameter;
 import io.smudgr.alg.param.Parameter;
 import io.smudgr.controller.Controller;
 
@@ -7,28 +8,22 @@ public class AnimationControl extends Controllable {
 
 	private Parameter parameter;
 	private boolean run = true;
-	private int wait = 1;
-	private int loop = 0;
-	private int counter = 0;
+
+	private double initialStep, divider = 1;
 
 	public AnimationControl(Controller controller, Parameter p) {
 		super(controller, p.toString() + " Animator");
 		parameter = p;
 
+		if (parameter instanceof NumberParameter)
+			initialStep = ((NumberParameter) parameter).getStep();
+
 		requestBind();
 	}
 
 	public void update() {
-		if (run) {
-			if (wait < 1) {
-				for (int i = 0; i < loop; i++) {
-					parameter.increment();
-				}
-			} else if (counter % wait == 0)
-				parameter.increment();
-
-			counter++;
-		}
+		if (run)
+			parameter.increment();
 	}
 
 	public void inputValue(int value) {
@@ -44,15 +39,28 @@ public class AnimationControl extends Controllable {
 	}
 
 	public void increment() {
-		wait--;
-		if (wait < 1)
-			loop++;
+		if (parameter instanceof NumberParameter) {
+
+			NumberParameter p = (NumberParameter) parameter;
+
+			double curStep = p.getStep();
+			if (curStep < initialStep) {
+				p.setStep(initialStep / --divider);
+			} else
+				p.setStep(curStep + initialStep);
+		}
 	}
 
 	public void decrement() {
-		wait++;
-		if (wait < 1)
-			loop--;
+		if (parameter instanceof NumberParameter) {
+			NumberParameter p = (NumberParameter) parameter;
+
+			double curStep = p.getStep();
+			if (curStep <= initialStep) {
+				p.setStep(initialStep / ++divider);
+			} else
+				p.setStep(curStep - initialStep);
+		}
 	}
 
 }

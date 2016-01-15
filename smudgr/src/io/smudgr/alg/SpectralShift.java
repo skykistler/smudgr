@@ -35,6 +35,7 @@ public class SpectralShift extends Algorithm {
 
 	public void execute(Frame img) {
 		buckets = colors.getIntValue();
+		shift.setMax(buckets - 1);
 
 		int[] values = new int[buckets];
 		int[] counters = new int[buckets];
