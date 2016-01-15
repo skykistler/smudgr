@@ -3,6 +3,7 @@ package io.smudgr;
 import io.smudgr.alg.PixelShift;
 import io.smudgr.alg.PixelSort;
 import io.smudgr.alg.SpectralShift;
+import io.smudgr.alg.coord.RowCoords;
 import io.smudgr.controller.controls.AnimationControl;
 import io.smudgr.controller.controls.DownsampleControl;
 import io.smudgr.controller.controls.VideoControl;
@@ -23,6 +24,7 @@ public class SkyMain {
 		controller.setSmudge(smudge);
 
 		PixelSort sort = new PixelSort(smudge);
+		sort.setCoordFunction(new RowCoords());
 		sort.bind("Threshold");
 		sort.bind("Reverse");
 		sort.bind("Enable");
