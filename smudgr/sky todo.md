@@ -2,6 +2,7 @@ sky's todo
 ========
 By Saturday
 
++ Model switcher
 + Function parameter to change coord/univariate functions
 + Different shift colors
 
