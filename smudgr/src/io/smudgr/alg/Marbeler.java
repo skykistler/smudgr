@@ -5,7 +5,6 @@ import java.util.Random;
 import io.smudgr.Smudge;
 import io.smudgr.alg.math.CubicInterpolator;
 import io.smudgr.alg.math.Interpolator;
-import io.smudgr.alg.param.BooleanParameter;
 import io.smudgr.alg.param.NumberParameter;
 import io.smudgr.model.Frame;
 
@@ -18,7 +17,6 @@ public class Marbeler extends Algorithm {
 	NumberParameter offsetXY = new NumberParameter(this, "Offset - X/Y", .75, 0, 1);
 	NumberParameter offsetX = new NumberParameter(this, "Offset - X", 0, 0, 1);
 	NumberParameter offsetY = new NumberParameter(this, "Offset - Y", 0, 0, 1);
-	BooleanParameter autoScroll = new BooleanParameter(this, "Auto-Scroll", false);
 
 	Interpolator intplt = new CubicInterpolator();
 
@@ -37,10 +35,6 @@ public class Marbeler extends Algorithm {
 	public void execute(Frame img) {
 		rand = new Random(seed.getIntValue());
 		horizontal = false;
-
-		if (autoScroll.getValue()) {
-			offsetXY.increment();
-		}
 
 		int n = iterations.getIntValue();
 		int x = freq.getIntValue();
