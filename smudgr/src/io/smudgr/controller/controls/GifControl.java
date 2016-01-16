@@ -24,9 +24,12 @@ public class GifControl extends Controllable {
 		gif = new Gif(filename);
 	}
 
+	int i = 0;
+
 	public void update() {
 		if (!paused) {
-			lastFrame = gif.getFrame();
+			if (i++ < 5)
+				lastFrame = gif.getFrame();
 
 			if (lastFrame != null)
 				getController().getSmudge().setSource(lastFrame);

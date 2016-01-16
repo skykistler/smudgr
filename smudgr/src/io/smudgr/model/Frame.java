@@ -170,8 +170,8 @@ public class Frame {
 
 			return scaleDown(w, h);
 		} else
-			// Scale up if needed
-			if (height < sizeH && width < sizeW) {
+		// Scale up if needed
+		if (height < sizeH && width < sizeW) {
 			int w = (int) (width * ((double) sizeH / height));
 			int h = sizeH;
 

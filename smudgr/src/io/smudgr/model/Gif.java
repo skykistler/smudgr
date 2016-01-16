@@ -128,7 +128,7 @@ public class Gif {
 					try {
 						image = reader.read(frameIndex);
 					} catch (IndexOutOfBoundsException e) {
-						System.out.println("Finished loading animated GIF");
+						System.out.println("Finished loading gif");
 						break;
 					}
 

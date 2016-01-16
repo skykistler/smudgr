@@ -67,7 +67,7 @@ public class Video {
 			try {
 				FileChannelWrapper ch = NIOUtils.readableFileChannel(new File(filename));
 				frameGrabber = new FrameGrab(ch);
-				//				frameGrabber.seekToSecondPrecise(start);
+				frameGrabber.seekToSecondSloppy(start);
 			} catch (IOException | JCodecException e1) {
 				e1.printStackTrace();
 				started = false;
@@ -87,7 +87,7 @@ public class Video {
 					}
 				}
 
-			System.out.println("End of buffer reached");
+			System.out.println("End of video reached");
 		}
 
 	}
