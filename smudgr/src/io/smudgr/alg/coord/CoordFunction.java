@@ -18,6 +18,9 @@ public abstract class CoordFunction {
 	}
 
 	public void update() {
+		if (image == null)
+			return;
+
 		reset();
 
 		generate();

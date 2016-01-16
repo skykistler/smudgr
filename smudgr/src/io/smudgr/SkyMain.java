@@ -44,7 +44,7 @@ public class SkyMain {
 		spectral.bind("Enable");
 		new AnimationControl(controller, spectral.getParameter("Shift"));
 
-		new DownsampleControl(controller, 1);
+		new DownsampleControl(controller, 2);
 
 		// Declare your view
 		new JView(controller);
