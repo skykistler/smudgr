@@ -12,7 +12,6 @@ import org.jcodec.common.FileChannelWrapper;
 import org.jcodec.common.NIOUtils;
 
 public class Video {
-	private int width = 1, height = 1;
 	private String filename;
 	private int start;
 
@@ -39,9 +38,9 @@ public class Video {
 	}
 
 	public Frame getFrame() {
-		if (bufferer != null && bufferer.started && buffer.size() > 0) {
+		if (bufferer != null && bufferer.started && buffer.size() > 0)
 			return lastFrame = buffer.poll();
-		}
+
 		return lastFrame;
 	}
 
@@ -78,9 +77,6 @@ public class Video {
 
 						if (frame == null)
 							started = false;
-
-						width = frame.getWidth();
-						height = frame.getHeight();
 
 						buffer.add(new Frame(frame));
 					} catch (IOException e) {
