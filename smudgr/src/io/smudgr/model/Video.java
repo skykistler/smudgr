@@ -38,10 +38,13 @@ public class Video {
 	}
 
 	public Frame getFrame() {
-		if (bufferer != null && bufferer.started && buffer.size() > 0)
-			return lastFrame = buffer.poll();
+		if (bufferer == null || !bufferer.started)
+			return null;
 
-		return lastFrame;
+		while (buffer.size() == 0)
+			;
+
+		return lastFrame = buffer.poll();
 	}
 
 	class BufferThread implements Runnable {
@@ -64,7 +67,7 @@ public class Video {
 			try {
 				FileChannelWrapper ch = NIOUtils.readableFileChannel(new File(filename));
 				frameGrabber = new FrameGrab(ch);
-				frameGrabber.seekToSecondPrecise(start);
+				//				frameGrabber.seekToSecondPrecise(start);
 			} catch (IOException | JCodecException e1) {
 				e1.printStackTrace();
 				started = false;

@@ -15,6 +15,7 @@ public class SpectralShift extends Algorithm {
 	NumberParameter shift = new NumberParameter(this, "Shift", 0, 0, 255, 1);
 	NumberParameter colors = new NumberParameter(this, "Colors", 3, 1, 256, 1);
 	BooleanParameter sort = new BooleanParameter(this, "Sort", false);
+	BooleanParameter reverse = new BooleanParameter(this, "Reverse", false);
 
 	UnivariateFunction function = new LumaFunction();
 
@@ -28,6 +29,8 @@ public class SpectralShift extends Algorithm {
 	public void execute(Frame img) {
 		buckets = colors.getIntValue();
 		shift.setMax(buckets - 1);
+
+		boolean negate = reverse.getValue();
 
 		int[] values = new int[buckets];
 		int[] counters = new int[buckets];
@@ -48,7 +51,7 @@ public class SpectralShift extends Algorithm {
 		for (ArrayList<Integer> coords : getCoordFunction().getCoordSet())
 			for (Integer coord : coords) {
 				int val = getBucket(img.pixels[coord]);
-				int index = (val + shift_amount) % buckets;
+				int index = Math.abs((val + shift_amount * (negate ? -1 : 1)) % buckets);
 
 				img.pixels[coord] = values[index] / (counters[index] + 1);
 			}
