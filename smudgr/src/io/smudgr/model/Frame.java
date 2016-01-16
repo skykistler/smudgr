@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 
 import io.smudgr.alg.math.ColorHelper;
 
-public class Frame {
+public class Frame implements Model {
 	private BufferedImage image;
 	private int width;
 	private int height;
@@ -34,6 +34,10 @@ public class Frame {
 
 	public Frame(BufferedImage image) {
 		setBufferedImage(image);
+	}
+
+	public Frame getFrame() {
+		return this;
 	}
 
 	private void load(String path) throws IOException {

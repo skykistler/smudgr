@@ -16,7 +16,7 @@ public class AnimationControl extends Controllable {
 	}
 
 	public AnimationControl(Controller controller, Parameter p, double increment) {
-		super(controller, p.toString() + " Animator");
+		super(controller, p.getParent() + " - " + p.toString() + " Animator");
 		parameter = p;
 
 		if (parameter instanceof NumberParameter)
