@@ -18,7 +18,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class Gif {
+public class Gif implements Model {
 	private String filename;
 
 	private BufferThread bufferer;
@@ -128,7 +128,7 @@ public class Gif {
 					try {
 						image = reader.read(frameIndex);
 					} catch (IndexOutOfBoundsException e) {
-						System.out.println("Finished loading animated GIF");
+						System.out.println("Finished loading gif");
 						break;
 					}
 

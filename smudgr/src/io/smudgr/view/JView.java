@@ -111,15 +111,20 @@ public class JView implements View, Runnable, KeyListener {
 
 			long diff = System.nanoTime() - frameStart;
 			if (diff < targetFrameNs) {
+				diff = frameStart - System.nanoTime() + targetFrameNs;
+			} else if (diff < targetFrameNs * 2) {
+				diff = frameStart - System.nanoTime() + targetFrameNs * 2;
+			} else
+				diff = 0;
+
+			if (diff > 0)
 				try {
-					diff = frameStart - System.nanoTime() + targetFrameNs;
-					long ms = diff / 1000000;
+					long ms = (long) Math.floor(diff / 1000000.0);
 					int ns = (int) (diff % 1000000);
 					Thread.sleep(ms, ns);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			}
 		}
 
 		window.setVisible(false);

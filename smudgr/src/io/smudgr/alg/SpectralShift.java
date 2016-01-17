@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import io.smudgr.Smudge;
+import io.smudgr.alg.math.ColorHelper;
 import io.smudgr.alg.math.LumaFunction;
 import io.smudgr.alg.math.UnivariateFunction;
 import io.smudgr.alg.param.BooleanParameter;
@@ -14,6 +15,7 @@ public class SpectralShift extends Algorithm {
 
 	NumberParameter shift = new NumberParameter(this, "Shift", 0, 0, 255, 1);
 	NumberParameter colors = new NumberParameter(this, "Colors", 3, 1, 256, 1);
+	NumberParameter palette = new NumberParameter(this, "Palette", 27, 1, 27, 1);
 	BooleanParameter sort = new BooleanParameter(this, "Sort", false);
 	BooleanParameter reverse = new BooleanParameter(this, "Reverse", false);
 
@@ -24,13 +26,20 @@ public class SpectralShift extends Algorithm {
 	public SpectralShift(Smudge s) {
 		super(s);
 		shift.setContinuous(true);
+
+		palette.setContinuous(true);
 	}
 
 	public void execute(Frame img) {
+		boolean negate = reverse.getValue();
+
 		buckets = colors.getIntValue();
 		shift.setMax(buckets - 1);
 
-		boolean negate = reverse.getValue();
+		int paletteId = palette.getIntValue();
+		int p1 = paletteId % 3;
+		int p2 = (paletteId / 3) % 3;
+		int p3 = (paletteId / 9) % 3;
 
 		int[] values = new int[buckets];
 		int[] counters = new int[buckets];
@@ -53,7 +62,16 @@ public class SpectralShift extends Algorithm {
 				int val = getBucket(img.pixels[coord]);
 				int index = Math.abs((val + shift_amount * (negate ? -1 : 1)) % buckets);
 
-				img.pixels[coord] = values[index] / (counters[index] + 1);
+				int pixel = values[index] / (counters[index] + 1);
+				int red = (int) ColorHelper.red(pixel);
+				int blue = (int) ColorHelper.blue(pixel);
+				int green = (int) ColorHelper.green(pixel);
+
+				int r = p1 == 0 ? red : p1 == 1 ? green : blue;
+				int g = p2 == 0 ? green : p2 == 1 ? blue : red;
+				int b = p3 == 0 ? blue : p3 == 1 ? red : green;
+
+				img.pixels[coord] = ColorHelper.color(255, r, g, b);
 			}
 
 	}
