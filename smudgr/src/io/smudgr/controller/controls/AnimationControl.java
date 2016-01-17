@@ -9,14 +9,23 @@ public class AnimationControl extends Controllable {
 	private Parameter parameter;
 	private boolean run = true;
 
-	private double initialStep, divider = 1;
+	private double initialStep, speed, increment;
 
 	public AnimationControl(Controller controller, Parameter p) {
-		super(controller, p.toString() + " Animator");
+		this(controller, p, -1);
+	}
+
+	public AnimationControl(Controller controller, Parameter p, double increment) {
+		super(controller, p.getParent() + " - " + p.toString() + " Animator");
 		parameter = p;
 
 		if (parameter instanceof NumberParameter)
 			initialStep = ((NumberParameter) parameter).getStep();
+
+		if (increment < 0)
+			increment = initialStep;
+
+		speed = this.increment = increment;
 
 		requestBind();
 	}
@@ -41,25 +50,19 @@ public class AnimationControl extends Controllable {
 	public void increment() {
 		if (parameter instanceof NumberParameter) {
 
-			NumberParameter p = (NumberParameter) parameter;
+			speed += increment;
 
-			double curStep = p.getStep();
-			if (curStep < initialStep) {
-				p.setStep(initialStep / --divider);
-			} else
-				p.setStep(curStep + initialStep);
+			NumberParameter p = (NumberParameter) parameter;
+			p.setStep(initialStep + speed);
 		}
 	}
 
 	public void decrement() {
 		if (parameter instanceof NumberParameter) {
-			NumberParameter p = (NumberParameter) parameter;
+			speed -= increment;
 
-			double curStep = p.getStep();
-			if (curStep <= initialStep) {
-				p.setStep(initialStep / ++divider);
-			} else
-				p.setStep(curStep - initialStep);
+			NumberParameter p = (NumberParameter) parameter;
+			p.setStep(initialStep + speed);
 		}
 	}
 

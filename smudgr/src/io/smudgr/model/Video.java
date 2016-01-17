@@ -11,16 +11,13 @@ import org.jcodec.api.awt.FrameGrab;
 import org.jcodec.common.FileChannelWrapper;
 import org.jcodec.common.NIOUtils;
 
-public class Video {
-	private int width = 1, height = 1;
+public class Video implements Model {
 	private String filename;
 	private int start;
 
 	private BufferThread bufferer;
 	private final int bufferCap = 1000;
 	private volatile Queue<Frame> buffer;
-
-	private Frame lastFrame;
 
 	public Video(String filename) {
 		this(filename, 0);
@@ -29,8 +26,6 @@ public class Video {
 	public Video(String filename, int start) {
 		this.filename = "data/" + filename;
 		this.start = start;
-
-		load();
 	}
 
 	private void load() {
@@ -38,11 +33,21 @@ public class Video {
 		bufferer.start();
 	}
 
+	public void stop() {
+		if (bufferer != null)
+			bufferer.stop();
+	}
+
 	public Frame getFrame() {
-		if (bufferer != null && bufferer.started && buffer.size() > 0) {
-			return lastFrame = buffer.poll();
+		if (bufferer == null || !bufferer.started) {
+			load();
+			return null;
 		}
-		return lastFrame;
+
+		while (buffer.size() == 0)
+			;
+
+		return buffer.poll();
 	}
 
 	class BufferThread implements Runnable {
@@ -65,7 +70,7 @@ public class Video {
 			try {
 				FileChannelWrapper ch = NIOUtils.readableFileChannel(new File(filename));
 				frameGrabber = new FrameGrab(ch);
-				frameGrabber.seekToSecondPrecise(start);
+				frameGrabber.seekToSecondSloppy(start);
 			} catch (IOException | JCodecException e1) {
 				e1.printStackTrace();
 				started = false;
@@ -76,11 +81,10 @@ public class Video {
 					try {
 						BufferedImage frame = frameGrabber.getFrame();
 
-						if (frame == null)
+						if (frame == null) {
 							started = false;
-
-						width = frame.getWidth();
-						height = frame.getHeight();
+							break;
+						}
 
 						buffer.add(new Frame(frame));
 					} catch (IOException e) {
@@ -88,7 +92,12 @@ public class Video {
 					}
 				}
 
-			System.out.println("End of buffer reached");
+			run();
+		}
+
+		public void stop() {
+			started = false;
+			buffer = null;
 		}
 
 	}

@@ -19,10 +19,6 @@ public class Smudge {
 
 	private int downsample = 1;
 
-	private boolean showFPS = true;
-	private int frameCount;
-	private long lastSecond;
-
 	public Smudge(String filename) {
 		this(filename, filename);
 	}
@@ -74,6 +70,7 @@ public class Smudge {
 	}
 
 	public Frame render() {
+		Frame toRender;
 		synchronized (this) {
 			for (Controllable c : controller.getControls())
 				c.update();
@@ -87,35 +84,16 @@ public class Smudge {
 				}
 			}
 
-			if (lastSecond == 0)
-				lastSecond = System.nanoTime();
+			toRender = frame.copy();
 
-			for (Algorithm a : algorithms) {
-				// Frame mix = frame.copy();
-				// a.execute(mix);
-				// frame = a.mask(frame, mix, a.getMask());
-
-				a.apply(frame);
-			}
-		}
-
-		frameCount++;
-
-		if (System.nanoTime() - lastSecond > 1000000000)
-
-		{
-			if (showFPS)
-				System.out.println(frameCount + "fps");
-
-			lastSecond = 0;
-			frameCount = 0;
+			for (Algorithm a : algorithms)
+				a.apply(toRender);
 		}
 
 		if (saveNextRender)
+			outputFrame(toRender);
 
-			outputFrame(frame);
-
-		return frame;
+		return toRender;
 	}
 
 	boolean saveNextRender = false;

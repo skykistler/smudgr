@@ -2,10 +2,10 @@ sky's todo
 ========
 By Saturday
 
-+ Function parameter to change coord/univariate functions
-+ Different shift colors
++ Smooth model switcher
 
 Sometime soon
++ Function parameter to change coord/univariate functions
 + Generalized marbeler using strategy for different interpolation functions, different coord functions
 + gif output
 + Smooth video input

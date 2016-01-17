@@ -62,12 +62,11 @@ public abstract class Algorithm {
 		}
 
 		boolean imgSizeChanged = this.img == null || (img.getWidth() != this.img.getWidth() || img.getHeight() != this.img.getHeight());
-		if (coordFunction != null)
-			if (boundChanged || imgSizeChanged) {
-				coordFunction.setBound(bound);
-				coordFunction.setImage(img);
-				coordFunction.update();
-			}
+		if (boundChanged || imgSizeChanged) {
+			coordFunction.setBound(bound);
+			coordFunction.setImage(img);
+			coordFunction.update();
+		}
 
 		this.img = img;
 
@@ -105,12 +104,13 @@ public abstract class Algorithm {
 	}
 
 	public void setBound(Bound bound) {
+		if (bound == null)
+			return;
+
 		this.bound = bound;
 
-		if (coordFunction != null) {
-			coordFunction.setBound(bound);
-			coordFunction.update();
-		}
+		coordFunction.setBound(bound);
+		coordFunction.update();
 	}
 
 	public Bound getBound() {
@@ -118,6 +118,9 @@ public abstract class Algorithm {
 	}
 
 	public void setCoordFunction(CoordFunction cf) {
+		if (cf == null)
+			return;
+
 		coordFunction = cf;
 		coordFunction.setBound(bound);
 		coordFunction.init(this);

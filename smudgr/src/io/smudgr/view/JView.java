@@ -16,6 +16,8 @@ import io.smudgr.controller.Controller;
 import io.smudgr.model.Frame;
 
 public class JView implements View, Runnable, KeyListener {
+	private final int targetFPS = 60;
+	private final boolean showFPS = true;
 
 	private Controller controller;
 
@@ -88,8 +90,41 @@ public class JView implements View, Runnable, KeyListener {
 	}
 
 	public void run() {
+		long targetFrameNs = 1000000000l / targetFPS;
+		long lastSecond = System.nanoTime();
+		int frameCount = 0;
+
 		while (!exit) {
+			long frameStart = System.nanoTime();
+
 			draw();
+
+			frameCount++;
+
+			if (System.nanoTime() - lastSecond > 1000000000) {
+				if (showFPS)
+					System.out.println(frameCount + "fps");
+
+				lastSecond = System.nanoTime();
+				frameCount = 0;
+			}
+
+			long diff = System.nanoTime() - frameStart;
+			if (diff < targetFrameNs) {
+				diff = frameStart - System.nanoTime() + targetFrameNs;
+			} else if (diff < targetFrameNs * 2) {
+				diff = frameStart - System.nanoTime() + targetFrameNs * 2;
+			} else
+				diff = 0;
+
+			if (diff > 0)
+				try {
+					long ms = (long) Math.floor(diff / 1000000.0);
+					int ns = (int) (diff % 1000000);
+					Thread.sleep(ms, ns);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 		}
 
 		window.setVisible(false);
