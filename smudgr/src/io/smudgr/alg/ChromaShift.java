@@ -13,17 +13,20 @@ import io.smudgr.model.Frame;
 public class ChromaShift extends Algorithm {
 	
 	//where to place the displaced color channels
-	NumberParameter layer1X = new NumberParameter(this, "Layer 1 X", 0.90, 0, 2, 0.01);
+	NumberParameter layer1X = new NumberParameter(this, "Layer 1 X", 1, 0, 2, 0.01);
 	NumberParameter layer1Y = new NumberParameter(this, "Layer 1 Y", 1, 0, 2, 0.01);
-	NumberParameter layer2X = new NumberParameter(this, "Layer 2 X", 0.80, 0, 2, 0.01);
+	NumberParameter layer2X = new NumberParameter(this, "Layer 2 X", 1, 0, 2, 0.01);
 	NumberParameter layer2Y = new NumberParameter(this, "Layer 2 Y", 1, 0, 2, 0.01);
-	NumberParameter layer3X = new NumberParameter(this, "Layer 3 X", 0.70, 0, 2, 0.01);
+	NumberParameter layer3X = new NumberParameter(this, "Layer 3 X", 1, 0, 2, 0.01);
 	NumberParameter layer3Y = new NumberParameter(this, "Layer 3 Y", 1, 0, 2, 0.01);
 	
 	NumberParameter innerOffsetX = new NumberParameter(this, "X Offset", 0, 0, 1, 0.1);
 	NumberParameter innerOffsetY = new NumberParameter(this, "Y Offset", 0, 0, 1, 0.1);
 	NumberParameter innerWidth = new NumberParameter(this, "Width", 1, 0, 1, 0.1);
 	NumberParameter innerHeight = new NumberParameter(this, "Height", 1, 0, 1, 0.1);
+	
+	NumberParameter opChoice = new NumberParameter(this, "Bitwise Choice", 1, 1, 3, 1);
+	NumberParameter k = new NumberParameter(this, "Bit Shift", 0, 0, 7, 1);
 	
 	//BooleanParameter sort = new BooleanParameter(this, "Sort", false);
 	//UnivariateFunction function = new LumaFunction();
@@ -49,7 +52,7 @@ public class ChromaShift extends Algorithm {
 
 	public void execute(Frame img) {
 		
-		b = new Bound(innerWidth.getValue(), (int) innerHeight.getValue());
+		b = new Bound(innerWidth.getValue(), innerHeight.getValue());
 		b.setOffsetX(innerOffsetX.getValue());
 		b.setOffsetY(innerOffsetY.getValue());
 		innerCoords.setBound(b);
@@ -63,7 +66,7 @@ public class ChromaShift extends Algorithm {
 		
 		int layer1Weight = 0xFFFF0000;
 		int layer2Weight = 0xFF00FF00;
-		int layer3Weight = 0xFF0000FF;
+		int layer3Weight = 0xFFFFFFFF;
 		
 		for (ArrayList<Integer> coords : innerCoords.getCoordSet()) {
 
@@ -80,8 +83,8 @@ public class ChromaShift extends Algorithm {
 				
 				int color = img.get(x, y);
 				
-				shiftColor(x, y, color, layer1X.getValue(), layer1Y.getValue(), layer1Weight);
-				shiftColor(x, y, color, layer2X.getValue(), layer2Y.getValue(), layer2Weight);
+				//shiftColor(x, y, color, layer1X.getValue(), layer1Y.getValue(), layer1Weight);
+				//shiftColor(x, y, color, layer2X.getValue(), layer2Y.getValue(), layer2Weight);
 				shiftColor(x, y, color, layer3X.getValue(), layer3Y.getValue(), layer3Weight);
 				
 			}
@@ -104,7 +107,17 @@ public class ChromaShift extends Algorithm {
 		int color = ColorHelper.color(255, red, green, blue);
 		
 		if (getBound().containsPoint(img, x0, y0) ){
-			color = canvas.get(x0, y0) | color;
+			switch(opChoice.getIntValue()) {
+			case(1):
+				color = (canvas.get(x0, y0) >> (k.getIntValue()) ) & color;
+				break;
+			case(2):
+				color = (canvas.get(x0, y0) >> (k.getIntValue()) ) | color;
+			    break;
+			case(3):
+				color =( canvas.get(x0, y0) >> (k.getIntValue()) ) ^ color;
+				break;	
+			}
 			canvas.set(x0, y0, color);
 		}	
 	}
@@ -127,8 +140,8 @@ public class ChromaShift extends Algorithm {
 	}
 	
 	public int getBlue(int color, int bias) {
-		double blue = (( ColorHelper.red(bias) ) / 255);
-		int colorsBlue = (int) ( ColorHelper.red(color) * blue ) ;
+		double blue = (( ColorHelper.blue(bias) ) / 255);
+		int colorsBlue = (int) ( ColorHelper.blue(color) * blue ) ;
 		return colorsBlue;
 	}
 

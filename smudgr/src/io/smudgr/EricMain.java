@@ -19,7 +19,7 @@ public class EricMain {
 
 		// Make a smudge
 		Smudge smudge = new Smudge("test", "emma.jpg");
-//		new VideoControl(controller, "reptile.mp4", 300);
+		new VideoControl(controller, "reptile.mp4", 300);
 
 		// Set smudge before doing anything
 		controller.setSmudge(smudge);
@@ -32,28 +32,30 @@ public class EricMain {
 //			smear.bind("Green Mask");
 //			smear.bind("Blue Mask");
 //		
-//		SpectralShift spectral = new SpectralShift(smudge);
-//				spectral.getParameter("Colors").setInitial(60);
-//				spectral.getParameter("Sort").setInitial(true);
-//				spectral.bind("Colors");
-//				spectral.bind("Palette");
-//				spectral.bind("Sort");
-//				spectral.bind("Enable");
-//				//		spectral.getParameter("Reverse").setInitial(true);
-//				//new AnimationControl(controller, spectral.getParameter("Shift"), .01);
+		SpectralShift spectral = new SpectralShift(smudge);
+				spectral.getParameter("Colors").setInitial(60);
+				spectral.getParameter("Sort").setInitial(true);
+				spectral.bind("Colors");
+				spectral.bind("Palette");
+				spectral.bind("Sort");
+				spectral.bind("Enable");
+						spectral.getParameter("Reverse").setInitial(true);
+				//new AnimationControl(controller, spectral.getParameter("Shift"), .01);
 //
 //		
 		ChromaShift shift = new ChromaShift(smudge);
-		shift.bind("Layer 1 X");
-		shift.bind("Layer 1 Y");
+//		shift.bind("Layer 1 X");
+//		shift.bind("Layer 1 Y");
 //		shift.bind("Layer 2 X");
 //		shift.bind("Layer 2 Y");
 //		shift.bind("Layer 3 X");
 //		shift.bind("Layer 3 Y");
-		shift.bind("Bound X");
-		shift.bind("Bound Y");
-		shift.bind("Bound Width");
-		shift.bind("Bound Height");
+		shift.bind("X Offset");
+		shift.bind("Y Offset");
+		shift.bind("Height");
+		shift.bind("Width");
+		shift.bind("Bitwise Choice");
+		shift.bind("Bit Shift");
 		
 		//new AnimationControl(controller, shift.getParameter("Amount"));
 
