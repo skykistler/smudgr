@@ -21,6 +21,7 @@ public class JView implements View, Runnable, KeyListener {
 
 	private Controller controller;
 
+	private int display = 0;
 	private int displayWidth;
 	private int displayHeight;
 	private JFrame window;
@@ -30,19 +31,25 @@ public class JView implements View, Runnable, KeyListener {
 	private Frame frame;
 
 	public JView(Controller controller) {
+		this(controller, 0);
+	}
+
+	public JView(Controller controller, int display) {
 		this.controller = controller;
+		this.display = display;
 
 		controller.setView(this);
 	}
 
 	public void init() {
-		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[display];
 		displayWidth = gd.getDisplayMode().getWidth();
 		displayHeight = gd.getDisplayMode().getHeight();
 
 		window = new JFrame("smudgr");
 
-		window.setSize(displayWidth, displayHeight);
+		//		window.setSize(displayWidth, displayHeight);
+		window.setBounds(gd.getDefaultConfiguration().getBounds());
 		window.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		window.setUndecorated(true);
 		window.addKeyListener(this);

@@ -1,10 +1,8 @@
 sky's todo
 ========
-By Saturday
-
-+ Smooth model switcher
 
 Sometime soon
++ Save MIDI control map
 + Function parameter to change coord/univariate functions
 + Generalized marbeler using strategy for different interpolation functions, different coord functions
 + gif output
