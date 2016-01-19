@@ -3,6 +3,7 @@ sky's todo
 
 Sometime soon
 + Save MIDI control map
++ Slower animations
 + Function parameter to change coord/univariate functions
 + Generalized marbeler using strategy for different interpolation functions, different coord functions
 + gif output
