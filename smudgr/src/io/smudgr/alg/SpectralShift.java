@@ -63,9 +63,9 @@ public class SpectralShift extends Algorithm {
 				int index = Math.abs((val + shift_amount * (negate ? -1 : 1)) % buckets);
 
 				int pixel = values[index] / (counters[index] + 1);
-				int red = (int) ColorHelper.red(pixel);
-				int blue = (int) ColorHelper.blue(pixel);
-				int green = (int) ColorHelper.green(pixel);
+				int red = ColorHelper.red(pixel);
+				int blue = ColorHelper.blue(pixel);
+				int green = ColorHelper.green(pixel);
 
 				int r = p1 == 0 ? red : p1 == 1 ? green : blue;
 				int g = p2 == 0 ? green : p2 == 1 ? blue : red;
