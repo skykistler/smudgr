@@ -1,5 +1,6 @@
 package io.smudgr;
 
+import io.smudgr.alg.ChannelCrush;
 import io.smudgr.alg.PixelShift;
 import io.smudgr.alg.PixelSort;
 import io.smudgr.alg.SpectralShift;
@@ -12,7 +13,7 @@ import io.smudgr.controller.controls.SourceSwitcherControl;
 import io.smudgr.controller.device.MidiController;
 import io.smudgr.view.JView;
 
-public class PoeMain {
+public class SkyShowMain {
 
 	public static void main(String[] args) {
 		// Declare your controller
@@ -34,6 +35,7 @@ public class PoeMain {
 		sort.bind("Threshold");
 		sort.bind("Reverse");
 		sort.bind("Enable");
+		sort.getParameter("Enable").setInitial(false);
 
 		SpectralShift spectral = new SpectralShift(smudge);
 		spectral.getParameter("Colors").setInitial(60);
@@ -43,7 +45,6 @@ public class PoeMain {
 		spectral.bind("Sort");
 		spectral.bind("Enable");
 		spectral.getParameter("Enable").setInitial(false);
-		//		spectral.getParameter("Reverse").setInitial(true);
 		new AnimationControl(controller, spectral.getParameter("Shift"), .01);
 
 		PixelShift shift = new PixelShift(smudge);
@@ -52,6 +53,7 @@ public class PoeMain {
 		shift.bind("Intervals");
 		shift.getParameter("Amount").setInitial(.2);
 		shift.bind("Enable");
+		shift.getParameter("Enable").setInitial(false);
 		new AnimationControl(controller, shift.getParameter("Amount"));
 
 		PixelShift shift1 = new PixelShift(smudge);
@@ -60,6 +62,7 @@ public class PoeMain {
 		shift1.bind("Intervals");
 		shift1.getParameter("Amount").setInitial(.2);
 		shift1.bind("Enable");
+		shift1.getParameter("Enable").setInitial(false);
 		new AnimationControl(controller, shift1.getParameter("Amount"));
 
 		PixelSort sort1 = new PixelSort(smudge);
@@ -75,6 +78,13 @@ public class PoeMain {
 		sort2.bind("Reverse");
 		sort2.bind("Enable");
 		sort2.getParameter("Enable").setInitial(false);
+
+		ChannelCrush smear = new ChannelCrush(smudge);
+		smear.getParameter("Green Shift").setInitial(7);
+		smear.getParameter("Blue Shift").setInitial(7);
+		smear.getParameter("Red Mask").setInitial(0);
+		smear.bind("Enable");
+		smear.getParameter("Enable").setInitial(false);
 
 		new DownsampleControl(controller, 1);
 

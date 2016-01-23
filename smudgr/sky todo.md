@@ -5,6 +5,13 @@ Before Friday's show
 + Save MIDI control map
 + Slower animations
 + Faster spectral shift
++ Timesheet
++ Playlist
+
++ Sources
+  + Venture logo
+  + Band logos
+  + Dunedid brewery
 
 Sometime soon
 + Function parameter to change coord/univariate functions

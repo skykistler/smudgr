@@ -31,4 +31,8 @@ public abstract class Parameter extends Controllable {
 		continuous = cont;
 	}
 
+	public String toString() {
+		return alg + " - " + getName();
+	}
+
 }
