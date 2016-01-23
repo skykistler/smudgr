@@ -13,9 +13,19 @@ public class LumaFunction implements UnivariateFunction {
 	public double calculate(double value) {
 		int color = (int) value;
 
-		double red = ColorHelper.red(color);
-		double blue = ColorHelper.blue(color);
-		double green = ColorHelper.green(color);
+		int red = ColorHelper.red(color);
+		int blue = ColorHelper.blue(color);
+		int green = ColorHelper.green(color);
+
+		return ((red * 3 + blue + green * 4) >> 3) / 255.0;
+	}
+
+	public double calculate_precise(double value) {
+		int color = (int) value;
+
+		int red = ColorHelper.red(color);
+		int blue = ColorHelper.blue(color);
+		int green = ColorHelper.green(color);
 
 		return (.299 * red + .587 * green + .114 * blue) / 255.0;
 	}

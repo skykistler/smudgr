@@ -20,10 +20,8 @@ public class SkyShowMain {
 		MidiController controller = new MidiController(11);
 
 		// Make a smudge
-		Smudge smudge = new Smudge("test", "poe/a venture2.png");
-		new SourceSwitcherControl(controller, "poe");
-		//		new VideoControl(controller, "poe/franky4.mp4");
-		//		new GifControl(controller, "poe/bug_test2.gif");
+		Smudge smudge = new Smudge("test", "digital shamans/a venture.png");
+		new SourceSwitcherControl(controller, "digital shamans");
 
 		// Set smudge before doing anything
 		controller.setSmudge(smudge);
@@ -45,7 +43,7 @@ public class SkyShowMain {
 		spectral.bind("Sort");
 		spectral.bind("Enable");
 		spectral.getParameter("Enable").setInitial(false);
-		new AnimationControl(controller, spectral.getParameter("Shift"), .01);
+		new AnimationControl(controller, spectral.getParameter("Shift"), .005);
 
 		PixelShift shift = new PixelShift(smudge);
 		shift.setCoordFunction(new ConvergeCoordFunction());
@@ -54,7 +52,7 @@ public class SkyShowMain {
 		shift.getParameter("Amount").setInitial(.2);
 		shift.bind("Enable");
 		shift.getParameter("Enable").setInitial(false);
-		new AnimationControl(controller, shift.getParameter("Amount"));
+		new AnimationControl(controller, shift.getParameter("Amount"), .001);
 
 		PixelShift shift1 = new PixelShift(smudge);
 		shift1.setCoordFunction(new ColumnCoords());
