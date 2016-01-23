@@ -54,6 +54,8 @@ public class JView implements View, Runnable, KeyListener {
 		window.setUndecorated(true);
 		window.addKeyListener(this);
 
+		gd.setFullScreenWindow(window);
+
 		window.setVisible(true);
 
 		window.createBufferStrategy(2);

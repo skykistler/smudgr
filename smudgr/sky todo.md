@@ -1,23 +1,12 @@
 sky's todo
 ========
 
-Before Friday's show
-+ Save MIDI control map
-+ Slower animations
++ Proper game loop
 + Faster spectral shift
-+ Timesheet
-+ Playlist
-
-+ Sources
-  + Venture logo
-  + Band logos
-  + Dunedid brewery
-
-Sometime soon
-+ Function parameter to change coord/univariate functions
 + Generalized marbeler using strategy for different interpolation functions, different coord functions
 + gif output
 + Smooth video input
++ Function parameter to change coord/univariate functions (how to save midi map?)
 
 + Math functions to add:
   + Log

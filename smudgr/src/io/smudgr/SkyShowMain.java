@@ -17,7 +17,7 @@ public class SkyShowMain {
 
 	public static void main(String[] args) {
 		// Declare your controller
-		MidiController controller = new MidiController(11);
+		MidiController controller = new MidiController(11, "digitalshamans.map");
 
 		// Make a smudge
 		Smudge smudge = new Smudge("test", "digital shamans/a venture.png");
@@ -83,6 +83,20 @@ public class SkyShowMain {
 		smear.getParameter("Red Mask").setInitial(0);
 		smear.bind("Enable");
 		smear.getParameter("Enable").setInitial(false);
+
+		ChannelCrush bsmear = new ChannelCrush(smudge);
+		bsmear.getParameter("Green Shift").setInitial(7);
+		bsmear.getParameter("Red Shift").setInitial(7);
+		bsmear.getParameter("Blue Mask").setInitial(0);
+		bsmear.bind("Enable");
+		bsmear.getParameter("Enable").setInitial(false);
+
+		ChannelCrush gsmear = new ChannelCrush(smudge);
+		gsmear.getParameter("Red Shift").setInitial(7);
+		gsmear.getParameter("Blue Shift").setInitial(7);
+		gsmear.getParameter("Green Mask").setInitial(0);
+		gsmear.bind("Enable");
+		gsmear.getParameter("Enable").setInitial(false);
 
 		new DownsampleControl(controller, 1);
 
