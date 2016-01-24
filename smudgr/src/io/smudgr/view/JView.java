@@ -16,9 +16,6 @@ import io.smudgr.controller.Controller;
 import io.smudgr.model.Frame;
 
 public class JView implements View, Runnable, KeyListener {
-	private final int targetFPS = 60;
-	private final boolean showFPS = true;
-
 	private Controller controller;
 
 	private int display = 0;
@@ -26,6 +23,7 @@ public class JView implements View, Runnable, KeyListener {
 	private int displayHeight;
 	private JFrame window;
 	private BufferStrategy strategy;
+	private GraphicsDevice monitor;
 	private boolean exit = false;
 
 	private Frame frame;
@@ -42,20 +40,19 @@ public class JView implements View, Runnable, KeyListener {
 	}
 
 	public void init() {
-		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[display];
-		displayWidth = gd.getDisplayMode().getWidth();
-		displayHeight = gd.getDisplayMode().getHeight();
+		monitor = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[display];
+		displayWidth = monitor.getDisplayMode().getWidth();
+		displayHeight = monitor.getDisplayMode().getHeight();
 
 		window = new JFrame("smudgr");
 
-		//		window.setSize(displayWidth, displayHeight);
-		window.setBounds(gd.getDefaultConfiguration().getBounds());
+		window.setBounds(monitor.getDefaultConfiguration().getBounds());
 		window.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		window.setUndecorated(true);
 		window.addKeyListener(this);
 
-		gd.setFullScreenWindow(window);
-
+		if (!System.getProperty("os.name").startsWith("Windows"))
+			monitor.setFullScreenWindow(window);
 		window.setVisible(true);
 
 		window.createBufferStrategy(2);
@@ -99,47 +96,48 @@ public class JView implements View, Runnable, KeyListener {
 	}
 
 	public void run() {
-		long targetFrameNs = 1000000000l / targetFPS;
-		long lastSecond = System.nanoTime();
-		int frameCount = 0;
+		long targetFrameNs = 1000000000 / Controller.TARGET_FPS;
+
+		long lastFrame = System.nanoTime();
+		long timer = System.currentTimeMillis();
+		int frames = 0;
 
 		while (!exit) {
-			long frameStart = System.nanoTime();
-
-			draw();
-
-			frameCount++;
-
-			if (System.nanoTime() - lastSecond > 1000000000) {
-				if (showFPS)
-					System.out.println(frameCount + "fps");
-
-				lastSecond = System.nanoTime();
-				frameCount = 0;
+			try {
+				draw();
+			} catch (Exception e) {
+				e.printStackTrace();
+				break;
 			}
 
-			long diff = System.nanoTime() - frameStart;
-			if (diff < targetFrameNs) {
-				diff = frameStart - System.nanoTime() + targetFrameNs;
-			} else if (diff < targetFrameNs * 2) {
-				diff = frameStart - System.nanoTime() + targetFrameNs * 2;
-			} else
-				diff = 0;
+			frames++;
 
-			if (diff > 0)
+			if (System.currentTimeMillis() - timer >= 1000) {
+				timer += 1000;
+				System.out.println(frames + " fps");
+
+				frames = 0;
+			}
+
+			long diff = System.nanoTime() - lastFrame;
+			if (diff < targetFrameNs) {
 				try {
+					diff = lastFrame - System.nanoTime() + targetFrameNs;
 					long ms = (long) Math.floor(diff / 1000000.0);
 					int ns = (int) (diff % 1000000);
 					Thread.sleep(ms, ns);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+			}
+
+			lastFrame = System.nanoTime();
 		}
 
-		window.setVisible(false);
+		monitor.setFullScreenWindow(null);
 		window.dispose();
 
-		System.exit(0);
+		controller.stop();
 	}
 
 	public void keyPressed(KeyEvent arg0) {
@@ -148,11 +146,11 @@ public class JView implements View, Runnable, KeyListener {
 	}
 
 	public void keyReleased(KeyEvent arg0) {
-
+		// java forces us to implement these
 	}
 
 	public void keyTyped(KeyEvent arg0) {
-
+		// java forces us to implement these
 	}
 
 }

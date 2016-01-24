@@ -33,10 +33,6 @@ public class MidiController extends Controller implements DeviceObserver {
 		strategies.put(0xB0, new KnobStrategy());
 	}
 
-	public HashMap<Integer, MidiControlStrategy> getStrategies() {
-		return strategies;
-	}
-
 	public void bindDevice(String deviceName) {
 		input = new Device(this, deviceName);
 
@@ -48,10 +44,6 @@ public class MidiController extends Controller implements DeviceObserver {
 		}
 
 		bindParameters();
-	}
-
-	public Device getInputDevice() {
-		return input;
 	}
 
 	private void bindParameters() {
