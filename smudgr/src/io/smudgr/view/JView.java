@@ -89,7 +89,7 @@ public class JView implements View {
 		g.drawImage(image, x, y, width, height, null);
 	}
 
-	public void stop() {
+	public void dispose() {
 		monitor.setFullScreenWindow(null);
 		window.dispose();
 	}

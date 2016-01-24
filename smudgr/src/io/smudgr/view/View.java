@@ -5,5 +5,5 @@ public interface View {
 
 	public void draw();
 
-	public void stop();
+	public void dispose();
 }

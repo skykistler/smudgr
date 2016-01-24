@@ -53,7 +53,7 @@ public abstract class Controller implements KeyListener {
 		updater.stop();
 		renderer.stop();
 
-		view.stop();
+		view.dispose();
 		System.exit(0);
 	}
 
