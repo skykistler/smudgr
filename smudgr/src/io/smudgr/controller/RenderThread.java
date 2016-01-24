@@ -6,7 +6,6 @@ public class RenderThread implements Runnable {
 
 	private View view;
 	private boolean running;
-	private boolean finished;
 
 	public RenderThread(View v) {
 		view = v;
@@ -60,12 +59,6 @@ public class RenderThread implements Runnable {
 
 			lastFrame = System.nanoTime();
 		}
-
-		finished = true;
-	}
-
-	public boolean isFinished() {
-		return finished;
 	}
 
 }

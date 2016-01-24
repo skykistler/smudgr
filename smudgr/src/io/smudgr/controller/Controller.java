@@ -17,6 +17,7 @@ public abstract class Controller implements KeyListener {
 
 	private UpdateThread updater;
 	private RenderThread renderer;
+	private boolean started;
 
 	private ArrayList<Controllable> controls = new ArrayList<Controllable>();
 
@@ -40,24 +41,26 @@ public abstract class Controller implements KeyListener {
 		updater = new UpdateThread(this);
 		renderer = new RenderThread(view);
 
+		started = true;
 		updater.start();
 		renderer.start();
 	}
 
 	public void stop() {
+		started = false;
+		System.out.println("Stopping...");
+
 		updater.stop();
 		renderer.stop();
-
-		while (!updater.isFinished() || !renderer.isFinished())
-			;
 
 		view.stop();
 		System.exit(0);
 	}
 
 	public void update() {
-		for (Controllable c : controls)
-			c.update();
+		if (started)
+			for (Controllable c : controls)
+				c.update();
 	}
 
 	public Smudge getSmudge() {

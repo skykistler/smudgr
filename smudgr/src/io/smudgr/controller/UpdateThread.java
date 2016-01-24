@@ -4,7 +4,6 @@ public class UpdateThread implements Runnable {
 
 	private Controller controller;
 	private boolean running;
-	private boolean finished;
 
 	public UpdateThread(Controller c) {
 		controller = c;
@@ -61,12 +60,6 @@ public class UpdateThread implements Runnable {
 				now = System.nanoTime();
 			}
 		}
-
-		finished = true;
-	}
-
-	public boolean isFinished() {
-		return finished;
 	}
 
 }
