@@ -1,7 +1,6 @@
 sky's todo
 ========
 
-+ Proper game loop
 + Faster spectral shift
 + Generalized marbeler using strategy for different interpolation functions, different coord functions
 + gif output
