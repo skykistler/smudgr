@@ -71,7 +71,12 @@ public class JView implements View {
 		strategy.show();
 	}
 
-	public void drawFittedImage(Graphics g, BufferedImage image) {
+	public void dispose() {
+		monitor.setFullScreenWindow(null);
+		window.dispose();
+	}
+
+	private void drawFittedImage(Graphics g, BufferedImage image) {
 		int height = image.getHeight();
 		int width = image.getWidth();
 
@@ -87,11 +92,6 @@ public class JView implements View {
 		int y = displayHeight / 2 - height / 2;
 
 		g.drawImage(image, x, y, width, height, null);
-	}
-
-	public void dispose() {
-		monitor.setFullScreenWindow(null);
-		window.dispose();
 	}
 
 }
