@@ -16,3 +16,27 @@ sky's todo
   + Linear
   + Cosine
   + Cubic
+  
+  
+ Model
+-------
+ + Use processing video library
+   + With proper frame rate
+ + GIFs need proper frame rate
+ + GIF output
+ 
+ 
+ View
+------
++ Implement CEF
++ Design UI
+
+
+Controller
+----------
++ Sync with MIDI tempo
+
+
+Smudge
+------
++ Implement OpenCL
