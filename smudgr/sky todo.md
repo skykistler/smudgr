@@ -1,11 +1,14 @@
 sky's todo
 ========
-
+By Saturday:
 + Faster spectral shift
++ Fractal shit
++ Dea&Saint content (soul, rap, chakra, spiritual death grips)
++ Smooth video input?
+
 + Generalized marbeler using strategy for different interpolation functions, different coord functions
 + gif output
-+ Smooth video input
-+ Function parameter to change coord/univariate functions (how to save midi map?)
++ Function parameter to change coord/univariate functions
 
 + Math functions to add:
   + Log
