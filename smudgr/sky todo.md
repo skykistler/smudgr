@@ -40,7 +40,7 @@ By Saturday:
   + Cubic
   
   
- Model
+Model
 -------
  + Use processing video library
    + With proper frame rate
@@ -48,7 +48,7 @@ By Saturday:
  + GIF output
  
  
- View
+View
 ------
 + Implement CEF
 + Design UI
