@@ -21,6 +21,7 @@ By Saturday:
     + Wavy, slow but to the beat
     + Spectral shift
     + Wistful/nostalgic vibes somehow
+    + Slow desaturate?
 
 + Smooth video input
 + Generalized marbeler using strategy for different interpolation functions, different coord functions
