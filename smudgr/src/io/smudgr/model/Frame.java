@@ -21,6 +21,7 @@ public class Frame implements Model {
 		try {
 			load("data/" + filename);
 		} catch (IOException e) {
+			System.out.println("Error loading: " + filename);
 			e.printStackTrace();
 		}
 	}

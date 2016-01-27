@@ -22,9 +22,9 @@ public class ColorHelper {
 	 * 
 	 * @param color
 	 *            as single integer
-	 * @return alpha double value 0-255
+	 * @return alpha int value 0-255
 	 */
-	public static double alpha(int color) {
+	public static int alpha(int color) {
 		return (color >> 24) & 0xff;
 	}
 
@@ -33,9 +33,9 @@ public class ColorHelper {
 	 * 
 	 * @param color
 	 *            as single integer
-	 * @return red double value 0-255
+	 * @return red int value 0-255
 	 */
-	public static double red(int color) {
+	public static int red(int color) {
 		return (color >> 16) & 0xff;
 	}
 
@@ -44,9 +44,9 @@ public class ColorHelper {
 	 * 
 	 * @param color
 	 *            as single integer
-	 * @return green double value 0-255
+	 * @return green int value 0-255
 	 */
-	public static double green(int color) {
+	public static int green(int color) {
 		return (color >> 8) & 0xff;
 	}
 
@@ -55,9 +55,9 @@ public class ColorHelper {
 	 * 
 	 * @param color
 	 *            as single integer
-	 * @return blue double value 0-255
+	 * @return blue int value 0-255
 	 */
-	public static double blue(int color) {
+	public static int blue(int color) {
 		return color & 0xff;
 	}
 }

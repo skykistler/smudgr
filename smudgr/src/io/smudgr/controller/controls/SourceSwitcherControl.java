@@ -44,7 +44,7 @@ public class SourceSwitcherControl extends Controllable {
 		System.out.println("Loading " + files.size() + " source files...");
 
 		for (int i = 0; i < files.size(); i++) {
-			String path = "../data/" + files.get(i);
+			String path = files.get(i);
 			Model model = getModel(path);
 			if (model != null)
 				models.add(model);

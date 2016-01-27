@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import io.smudgr.alg.Algorithm;
 import io.smudgr.controller.Controller;
-import io.smudgr.controller.controls.Controllable;
 import io.smudgr.model.Frame;
 
 public class Smudge {
@@ -33,7 +32,7 @@ public class Smudge {
 	public void init() {
 		System.out.println("Initializing smudge...");
 
-		setSource(new Frame("../data/" + filename));
+		setSource(new Frame(filename));
 
 		System.out.println("Setting up " + algorithms.size() + " algorithms...");
 		for (Algorithm a : algorithms)
@@ -69,26 +68,21 @@ public class Smudge {
 		originalSource = frame = image;
 	}
 
-	public Frame render() {
+	public synchronized Frame render() {
 		Frame toRender;
-		synchronized (this) {
-			for (Controllable c : controller.getControls())
-				c.update();
+		if (originalSource != null) {
+			int w = Math.max(originalSource.getWidth() / downsample, 1);
+			int h = Math.max(originalSource.getHeight() / downsample, 1);
 
-			if (originalSource != null) {
-				int w = Math.max(originalSource.getWidth() / downsample, 1);
-				int h = Math.max(originalSource.getHeight() / downsample, 1);
-
-				if (frame == null || frame.getWidth() != w || frame.getHeight() != h) {
-					frame = originalSource.resize(w, h);
-				}
+			if (frame == null || frame.getWidth() != w || frame.getHeight() != h) {
+				frame = originalSource.resize(w, h);
 			}
-
-			toRender = frame.copy();
-
-			for (Algorithm a : algorithms)
-				a.apply(toRender);
 		}
+
+		toRender = frame.copy();
+
+		for (Algorithm a : algorithms)
+			a.apply(toRender);
 
 		if (saveNextRender)
 			outputFrame(toRender);

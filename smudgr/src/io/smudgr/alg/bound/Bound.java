@@ -8,7 +8,7 @@ public class Bound {
 	private double width;
 	private double height;
 
-	public Bound(double width, int height) {
+	public Bound(double width, double height) {
 		setWidth(width);
 		setHeight(height);
 	}
