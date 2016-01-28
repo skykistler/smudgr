@@ -72,6 +72,9 @@ public class SourceSwitcherControl extends Controllable {
 	}
 
 	public void update() {
+		if (models.size() == 0)
+			return;
+
 		lastFrame = models.get(curModel).getFrame();
 
 		if (lastFrame != null)
