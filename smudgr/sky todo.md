@@ -24,6 +24,7 @@ By Saturday:
     + Slow desaturate?
   + http://xonecole.com/wp-content/uploads/2015/05/Chakra-flow-Chart.jpg
 
+Sometime soon:
 + Smooth video input
 + Generalized marbeler using strategy for different interpolation functions, different coord functions
 + gif output
