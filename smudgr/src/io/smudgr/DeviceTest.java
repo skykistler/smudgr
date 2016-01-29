@@ -11,7 +11,7 @@ public class DeviceTest implements DeviceObserver {
 		Device.listAvailableDevices();
 
 		// String device = "MIDIIN2 (Ableton Push)";
-		String device = "Arturia BeatStep Pro";
+		String device = "Arturia BeatStepPro";
 
 		System.out.println(new Device(new DeviceTest(), device));
 	}

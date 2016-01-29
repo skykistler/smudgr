@@ -31,6 +31,7 @@ public class MidiController extends Controller implements DeviceObserver {
 		strategies.put(0x80, new NoteOffStrategy());
 		strategies.put(0xA0, new AftertouchStrategy());
 		strategies.put(0xB0, new KnobStrategy());
+		strategies.put(0xF8, new TimingClockStrategy(this));
 	}
 
 	public void bindDevice(String deviceName) {
@@ -91,14 +92,17 @@ public class MidiController extends Controller implements DeviceObserver {
 
 			int status = message.getStatus();
 
-			// If message isn't on our channel, skip it
-			int message_channel = (status & 0xF) + 1;
-			if (message_channel != channel)
-				return;
+			boolean system_message = status >= 0xF0;
 
-			// If not a system message, clear channel for lookup
-			if (status < 0xF0)
+			if (!system_message) {
+				// If message isn't on our channel, skip it
+				int message_channel = (status & 0xF) + 1;
+				if (message_channel != channel)
+					return;
+
+				// clear channel for lookup
 				status = (status >> 4) << 4;
+			}
 
 			// If we don't have a strategy for this message, skip it
 			if (!strategies.containsKey(status))
@@ -113,21 +117,25 @@ public class MidiController extends Controller implements DeviceObserver {
 				key = digest[1];
 				value = key;
 			} else {
-				key = status;
-				value = status;
+				key = -1;
+				value = -1;
 			}
 
-			lastKeyPressed = key;
+			if (key != -1) {
+				lastKeyPressed = key;
 
-			// If waiting for key to bind, wake thread to continue
-			if (waitingForKey) {
-				synchronized (this) {
-					notify();
+				// If waiting for key to bind, wake thread to continue
+				if (waitingForKey) {
+					synchronized (this) {
+						notify();
+					}
 				}
-			} else {
+			}
+
+			if (!waitingForKey) {
 				Controllable bound = midiMap.getKeyBind(key);
 
-				if (bound != null)
+				if (system_message || bound != null)
 					strategies.get(status).input(bound, value);
 			}
 		}

@@ -10,7 +10,7 @@ import io.smudgr.view.View;
 
 public abstract class Controller implements KeyListener {
 	public static final int TARGET_FPS = 60;
-	public static final int TARGET_UPDATES = 100;
+	public static final int TICKS_PER_BEAT = 64;
 
 	private Smudge smudge;
 	private View view;
@@ -18,6 +18,7 @@ public abstract class Controller implements KeyListener {
 	private UpdateThread updater;
 	private RenderThread renderer;
 	private boolean started;
+	private int beatsPerMinute = 120;
 
 	private ArrayList<Controllable> controls = new ArrayList<Controllable>();
 
@@ -80,6 +81,14 @@ public abstract class Controller implements KeyListener {
 
 	public void setView(View view) {
 		this.view = view;
+	}
+
+	public void setBPM(int bpm) {
+		beatsPerMinute = bpm;
+	}
+
+	public int getBPM() {
+		return beatsPerMinute;
 	}
 
 	public ArrayList<Controllable> getControls() {

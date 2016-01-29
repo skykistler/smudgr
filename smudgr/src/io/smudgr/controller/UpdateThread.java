@@ -21,13 +21,17 @@ public class UpdateThread implements Runnable {
 	}
 
 	public void run() {
-		final double TIME_BETWEEN_UPDATES = 1000000000 / Controller.TARGET_UPDATES;
+		final int nsInSecond = 1000000000;
 
 		long lastSecond = System.currentTimeMillis();
 		double lastUpdateTime = System.nanoTime();
 		int updates = 0;
 
 		while (running) {
+			double beatsPerSecond = controller.getBPM() / 60.0;
+			double TICKS_PER_SECOND = Controller.TICKS_PER_BEAT * beatsPerSecond;
+			double TIME_BETWEEN_UPDATES = nsInSecond / TICKS_PER_SECOND;
+
 			// Update enough to catch up
 			double now = System.nanoTime();
 			while (now - lastUpdateTime > TIME_BETWEEN_UPDATES) {
@@ -42,8 +46,8 @@ public class UpdateThread implements Runnable {
 
 			// Output ticks per second
 			if (System.currentTimeMillis() - lastSecond >= 1000) {
-				if (updates != Controller.TARGET_UPDATES && (updates - 1) != Controller.TARGET_UPDATES)
-					System.out.println(updates + " updates (should be " + Controller.TARGET_UPDATES + ")");
+				//				if (updates != TICKS_PER_SECOND)
+				System.out.println(updates + " updates (should be " + TICKS_PER_SECOND + ")");
 				updates = 0;
 				lastSecond = System.currentTimeMillis();
 			}
