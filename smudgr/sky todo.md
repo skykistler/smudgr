@@ -2,6 +2,8 @@ sky's todo
 ========
 By Saturday:
 + Midi tempo sync
+	+ Animate on beat, not arbitrarily
+	+ Add stop/pause/start
 + Faster/stable spectral shift
 + Test/improve live marbeler
 + Dea&Saint content
