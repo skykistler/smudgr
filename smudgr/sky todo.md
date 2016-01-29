@@ -5,6 +5,7 @@ By Saturday:
 	+ Animate on beat, not arbitrarily
 	+ Add stop/pause/start
 + Faster/stable spectral shift
++ Stabilize pixel shift on downsample
 + Test/improve live marbeler
 + Dea&Saint content
   + Hook - chakras bottom to top - hook - chakras top to bottom - hook
