@@ -5,9 +5,9 @@ Show priority:
 + Faster/stable spectral shift
 + Stabilize pixel shift on downsample
 + Test/improve live marbeler
++ Smooth video input
 
 Sometime soon:
-+ Smooth video input
 + Generalized marbeler using strategy for different interpolation functions, different coord functions
 + gif output
 + Function parameter to change coord/univariate functions
