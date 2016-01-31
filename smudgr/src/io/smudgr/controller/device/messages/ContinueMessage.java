@@ -2,10 +2,11 @@ package io.smudgr.controller.device.messages;
 
 import io.smudgr.controller.controls.Controllable;
 
-public class AftertouchStrategy implements MidiMessageStrategy {
+public class ContinueMessage implements MidiMessageStrategy {
 
+	@Override
 	public void input(Controllable c, int value) {
-		c.inputValue(value);
+		c.inputOn(1);
 	}
 
 }

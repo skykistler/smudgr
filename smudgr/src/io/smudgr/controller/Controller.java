@@ -23,6 +23,11 @@ public abstract class Controller implements KeyListener {
 	private ArrayList<Controllable> controls = new ArrayList<Controllable>();
 
 	public void start() {
+		if (started) {
+			updater.setPaused(false);
+			return;
+		}
+
 		if (smudge == null) {
 			System.out.println("Smudge not set... can not start");
 			return;
@@ -45,6 +50,10 @@ public abstract class Controller implements KeyListener {
 		started = true;
 		updater.start();
 		renderer.start();
+	}
+
+	public void pause() {
+		updater.setPaused(true);
 	}
 
 	public void stop() {

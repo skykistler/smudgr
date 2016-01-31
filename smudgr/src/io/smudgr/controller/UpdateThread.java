@@ -3,7 +3,7 @@ package io.smudgr.controller;
 public class UpdateThread implements Runnable {
 
 	private Controller controller;
-	private volatile boolean running;
+	private volatile boolean running, paused;
 	private boolean finished;
 
 	public UpdateThread(Controller c) {
@@ -15,6 +15,10 @@ public class UpdateThread implements Runnable {
 
 		Thread t = new Thread(this);
 		t.start();
+	}
+
+	public void setPaused(boolean p) {
+		paused = p;
 	}
 
 	public void stop() {
@@ -33,32 +37,35 @@ public class UpdateThread implements Runnable {
 		int updates = 0;
 
 		while (running) {
+			while (paused) {
+				lastUpdateTime = System.nanoTime();
+
+				if (!running)
+					break;
+			}
+
 			double beatsPerSecond = controller.getBPM() / 60.0;
-			double TICKS_PER_SECOND = Math.ceil(Controller.TICKS_PER_BEAT * beatsPerSecond);
-			double TIME_BETWEEN_UPDATES = nsInSecond / TICKS_PER_SECOND;
+			double ticksPerSecond = Math.ceil(Controller.TICKS_PER_BEAT * beatsPerSecond);
+			double timeForUpdate = nsInSecond / ticksPerSecond;
 
 			// Update enough to catch up
 			double now = System.nanoTime();
-			while (now - lastUpdateTime > TIME_BETWEEN_UPDATES) {
+			while (now - lastUpdateTime > timeForUpdate) {
 				controller.update();
-				lastUpdateTime += TIME_BETWEEN_UPDATES;
+				lastUpdateTime += timeForUpdate;
 				updates++;
-			}
-
-			if (now - lastUpdateTime > TIME_BETWEEN_UPDATES) {
-				lastUpdateTime = now - TIME_BETWEEN_UPDATES;
 			}
 
 			// Output ticks per second
 			if (System.currentTimeMillis() - lastSecond >= 1000) {
-				if (updates != TICKS_PER_SECOND)
-					System.out.println(updates + " updates (should be " + TICKS_PER_SECOND + ")");
+				if (updates != ticksPerSecond)
+					System.out.println(updates + " updates (should be " + ticksPerSecond + ")");
 				updates = 0;
 				lastSecond = System.currentTimeMillis();
 			}
 
 			// Sleep enough to slow down
-			while (now - lastUpdateTime < TIME_BETWEEN_UPDATES) {
+			while (now - lastUpdateTime < timeForUpdate) {
 				Thread.yield();
 
 				try {

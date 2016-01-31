@@ -6,20 +6,28 @@ import javax.sound.midi.MidiMessage;
 
 import io.smudgr.controller.Controller;
 import io.smudgr.controller.controls.Controllable;
-import io.smudgr.controller.device.messages.AftertouchStrategy;
-import io.smudgr.controller.device.messages.KnobStrategy;
+import io.smudgr.controller.controls.TimingControl;
+import io.smudgr.controller.device.messages.AftertouchMessage;
+import io.smudgr.controller.device.messages.ContinueMessage;
+import io.smudgr.controller.device.messages.KnobMessage;
 import io.smudgr.controller.device.messages.MidiMessageStrategy;
-import io.smudgr.controller.device.messages.NoteOffStrategy;
-import io.smudgr.controller.device.messages.NoteOnStrategy;
+import io.smudgr.controller.device.messages.NoteOffMessage;
+import io.smudgr.controller.device.messages.NoteOnMessage;
+import io.smudgr.controller.device.messages.ResetMessage;
+import io.smudgr.controller.device.messages.StartMessage;
+import io.smudgr.controller.device.messages.StopMessage;
+import io.smudgr.controller.device.messages.TimingClockMessage;
 
 public class MidiController extends Controller implements DeviceObserver {
 
 	private Device input;
 	private int channel;
 	private MidiControlMap midiMap;
-	private HashMap<Integer, MidiMessageStrategy> strategies;
+	private HashMap<Integer, MidiMessageStrategy> messageStrategies;
+	private HashMap<Integer, Controllable> systemControls;
 
-	private TimingCalculator timing;
+	private TimingControl timingControl;
+	private TimingClockMessage timingCalculator;
 
 	private boolean waitingForKey = false;
 	private int lastKeyPressed = -1;
@@ -29,17 +37,27 @@ public class MidiController extends Controller implements DeviceObserver {
 	}
 
 	public MidiController(int channel, String savedMap) {
+		this.channel = channel;
 		midiMap = new MidiControlMap("midi.map");
 
-		strategies = new HashMap<Integer, MidiMessageStrategy>();
-		this.channel = channel;
+		messageStrategies = new HashMap<Integer, MidiMessageStrategy>();
+		messageStrategies.put(0x90, new NoteOnMessage());
+		messageStrategies.put(0x80, new NoteOffMessage());
+		messageStrategies.put(0xA0, new AftertouchMessage());
+		messageStrategies.put(0xB0, new KnobMessage());
+		messageStrategies.put(0xFA, new StartMessage());
+		messageStrategies.put(0xFB, new ContinueMessage());
+		messageStrategies.put(0xFC, new StopMessage());
+		messageStrategies.put(0xFF, new ResetMessage());
 
-		strategies.put(0x90, new NoteOnStrategy());
-		strategies.put(0x80, new NoteOffStrategy());
-		strategies.put(0xA0, new AftertouchStrategy());
-		strategies.put(0xB0, new KnobStrategy());
+		timingControl = new TimingControl(this);
+		timingCalculator = new TimingClockMessage();
 
-		timing = new TimingCalculator(this);
+		systemControls = new HashMap<Integer, Controllable>();
+		systemControls.put(0xFA, timingControl);
+		systemControls.put(0xFB, timingControl);
+		systemControls.put(0xFC, timingControl);
+		systemControls.put(0xFF, timingControl);
 	}
 
 	public void bindDevice(String deviceName) {
@@ -98,7 +116,8 @@ public class MidiController extends Controller implements DeviceObserver {
 		int status = message.getStatus();
 
 		if (status == 0xF8) {
-			timing.tick();
+			// tick the timing calculator without overhead
+			timingCalculator.input(timingControl, 0);
 			return;
 		}
 
@@ -117,7 +136,7 @@ public class MidiController extends Controller implements DeviceObserver {
 		}
 
 		// If we don't have a strategy for this message, skip it
-		if (!strategies.containsKey(status))
+		if (!messageStrategies.containsKey(status))
 			return;
 
 		int key;
@@ -146,10 +165,11 @@ public class MidiController extends Controller implements DeviceObserver {
 
 		if (!waitingForKey) {
 			synchronized (getSmudge()) {
-				Controllable bound = midiMap.getKeyBind(key);
+				// If it's a system message, check our manual system controls list. Otherwise get the bind
+				Controllable bound = system_message ? systemControls.get(status) : midiMap.getKeyBind(key);
 
-				if (system_message || bound != null)
-					strategies.get(status).input(bound, value);
+				if (bound != null)
+					messageStrategies.get(status).input(bound, value);
 			}
 		}
 	}

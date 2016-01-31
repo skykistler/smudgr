@@ -1,6 +1,10 @@
 sky's todo
 ========
-Show priority:
+Priority 1:
++ Properly animate parameters
++ Build CEF
+
+Priority 2:
 + Midi tempo sync pause/stop
 + Faster/stable spectral shift
 + Stabilize pixel shift on downsample
