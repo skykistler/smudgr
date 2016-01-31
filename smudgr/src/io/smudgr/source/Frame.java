@@ -1,4 +1,4 @@
-package io.smudgr.model;
+package io.smudgr.source;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 
 import io.smudgr.alg.math.ColorHelper;
 
-public class Frame implements Model {
+public class Frame implements Source {
 	private BufferedImage image;
 	private int width;
 	private int height;
@@ -43,6 +43,9 @@ public class Frame implements Model {
 
 	private void load(String path) throws IOException {
 		BufferedImage loaded = ImageIO.read(new File(path));
+
+		if (loaded == null)
+			System.out.println("Unable to load: " + path);
 
 		width = loaded.getWidth();
 		height = loaded.getHeight();
@@ -175,8 +178,8 @@ public class Frame implements Model {
 
 			return scaleDown(w, h);
 		} else
-		// Scale up if needed
-		if (height < sizeH && width < sizeW) {
+			// Scale up if needed
+			if (height < sizeH && width < sizeW) {
 			int w = (int) (width * ((double) sizeH / height));
 			int h = sizeH;
 

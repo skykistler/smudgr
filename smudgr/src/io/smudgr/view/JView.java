@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 
 import io.smudgr.Smudge;
 import io.smudgr.controller.Controller;
-import io.smudgr.model.Frame;
+import io.smudgr.source.Frame;
 
 public class JView implements View {
 	private Controller controller;

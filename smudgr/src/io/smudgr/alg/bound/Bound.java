@@ -1,6 +1,6 @@
 package io.smudgr.alg.bound;
 
-import io.smudgr.model.Frame;
+import io.smudgr.source.Frame;
 
 public class Bound {
 	private double offsetX;

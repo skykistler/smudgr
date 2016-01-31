@@ -1,4 +1,4 @@
-package io.smudgr.model;
+package io.smudgr.source;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -11,7 +11,7 @@ import org.jcodec.api.awt.FrameGrab;
 import org.jcodec.common.FileChannelWrapper;
 import org.jcodec.common.NIOUtils;
 
-public class Video implements Model {
+public class Video implements Source {
 	private String filename;
 	private int start;
 

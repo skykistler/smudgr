@@ -1,4 +1,4 @@
-package io.smudgr.model;
+package io.smudgr.source;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -18,7 +18,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class Gif implements Model {
+public class Gif implements Source {
 	private String filename;
 
 	private BufferThread bufferer;

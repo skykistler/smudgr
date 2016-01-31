@@ -51,8 +51,10 @@ public abstract class Controller implements KeyListener {
 		started = false;
 		System.out.println("Stopping...");
 
-		updater.stop();
-		renderer.stop();
+		while (!updater.isFinished() && !renderer.isFinished()) {
+			updater.stop();
+			renderer.stop();
+		}
 
 		view.dispose();
 		System.exit(0);

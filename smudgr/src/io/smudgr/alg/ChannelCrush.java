@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import io.smudgr.Smudge;
 import io.smudgr.alg.math.ColorHelper;
 import io.smudgr.alg.param.NumberParameter;
-import io.smudgr.model.Frame;
+import io.smudgr.source.Frame;
 
 public class ChannelCrush extends Algorithm {
 

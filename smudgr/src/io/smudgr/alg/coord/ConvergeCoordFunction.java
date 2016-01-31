@@ -3,7 +3,7 @@ package io.smudgr.alg.coord;
 import io.smudgr.alg.Algorithm;
 import io.smudgr.alg.bound.Bound;
 import io.smudgr.alg.param.NumberParameter;
-import io.smudgr.model.Frame;
+import io.smudgr.source.Frame;
 
 public class ConvergeCoordFunction extends CoordFunction {
 

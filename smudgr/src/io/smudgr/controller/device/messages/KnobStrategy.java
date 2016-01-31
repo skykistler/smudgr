@@ -1,8 +1,8 @@
-package io.smudgr.controller.device;
+package io.smudgr.controller.device.messages;
 
 import io.smudgr.controller.controls.Controllable;
 
-public class KnobStrategy implements MidiControlStrategy {
+public class KnobStrategy implements MidiMessageStrategy {
 
 	public void input(Controllable c, int value) {
 		if (value < 64)

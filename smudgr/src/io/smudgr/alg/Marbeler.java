@@ -6,7 +6,7 @@ import io.smudgr.Smudge;
 import io.smudgr.alg.math.CubicInterpolator;
 import io.smudgr.alg.math.Interpolator;
 import io.smudgr.alg.param.NumberParameter;
-import io.smudgr.model.Frame;
+import io.smudgr.source.Frame;
 
 public class Marbeler extends Algorithm {
 
@@ -70,7 +70,7 @@ public class Marbeler extends Algorithm {
 	}
 
 	public void pushPixels(Frame img, int j, double amount) {
-		int k = horizontal ? img.getWidth() : img.getWidth() - 1;
+		int k = horizontal ? img.getHeight() : img.getWidth() - 1;
 		double o = horizontal ? offsetY.getValue() : offsetX.getValue();
 
 		int offset = (int) Math.abs(Math.floor(k * (this.offsetXY.getValue() + o + amount * mod.getValue())));

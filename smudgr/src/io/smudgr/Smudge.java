@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import io.smudgr.alg.Algorithm;
 import io.smudgr.controller.Controller;
-import io.smudgr.model.Frame;
+import io.smudgr.source.Frame;
 
 public class Smudge {
 	private Controller controller;

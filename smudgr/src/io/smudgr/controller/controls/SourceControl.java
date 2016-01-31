@@ -4,33 +4,33 @@ import java.io.File;
 import java.util.ArrayList;
 
 import io.smudgr.controller.Controller;
-import io.smudgr.model.Frame;
-import io.smudgr.model.Gif;
-import io.smudgr.model.Model;
-import io.smudgr.model.Video;
+import io.smudgr.source.Frame;
+import io.smudgr.source.Gif;
+import io.smudgr.source.Source;
+import io.smudgr.source.Video;
 
-public class SourceSwitcherControl extends Controllable {
+public class SourceControl extends Controllable {
 
 	private int curModel = 0;
 	private Frame lastFrame;
 	private ArrayList<String> files = new ArrayList<String>();;
-	private ArrayList<Model> models = new ArrayList<Model>();;
+	private ArrayList<Source> sources = new ArrayList<Source>();;
 
-	public SourceSwitcherControl(Controller c, String location) {
+	public SourceControl(Controller c, String location) {
 		super(c, "Source Switcher");
 
 		if (!location.endsWith("/"))
 			location += "/";
 
 		File directory = new File("data/" + location);
-		if (!directory.isDirectory()) {
-			System.out.println("The specified location was not a directory! Errors will result.");
-			return;
-		}
 
-		String[] list = directory.list();
-		for (int i = 0; i < list.length; i++) {
-			files.add(location + list[i]);
+		// If not a directory, just add the one file
+		if (!directory.isDirectory())
+			files.add(location);
+		else {
+			String[] list = directory.list();
+			for (int i = 0; i < list.length; i++)
+				files.add(location + list[i]);
 		}
 
 		requestBind();
@@ -45,15 +45,15 @@ public class SourceSwitcherControl extends Controllable {
 
 		for (int i = 0; i < files.size(); i++) {
 			String path = files.get(i);
-			Model model = getModel(path);
-			if (model != null)
-				models.add(model);
+			Source s = getModel(path);
+			if (s != null)
+				sources.add(s);
 		}
 
-		System.out.println("Successfully loaded " + models.size() + " sources");
+		System.out.println("Successfully loaded " + sources.size() + " sources");
 	}
 
-	private Model getModel(String path) {
+	private Source getModel(String path) {
 		String ext = path.substring(path.lastIndexOf(".") + 1);
 
 		try {
@@ -72,33 +72,33 @@ public class SourceSwitcherControl extends Controllable {
 	}
 
 	public void update() {
-		if (models.size() == 0)
+		if (sources.size() == 0)
 			return;
 
-		lastFrame = models.get(curModel).getFrame();
+		lastFrame = sources.get(curModel).getFrame();
 
 		if (lastFrame != null)
 			getController().getSmudge().setSource(lastFrame);
 	}
 
 	public void increment() {
-		Model current = models.get(curModel);
+		Source current = sources.get(curModel);
 		if (current instanceof Video)
 			((Video) current).stop();
 
 		curModel += 1;
-		if (curModel >= models.size())
+		if (curModel >= sources.size())
 			curModel = 0;
 	}
 
 	public void decrement() {
-		Model current = models.get(curModel);
+		Source current = sources.get(curModel);
 		if (current instanceof Video)
 			((Video) current).stop();
 
 		curModel -= 1;
 		if (curModel < 0)
-			curModel = models.size() - 1;
+			curModel = sources.size() - 1;
 	}
 
 	public void inputValue(int value) {

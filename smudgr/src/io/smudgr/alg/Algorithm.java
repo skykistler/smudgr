@@ -10,7 +10,7 @@ import io.smudgr.alg.coord.CoordFunction;
 import io.smudgr.alg.param.BooleanParameter;
 import io.smudgr.alg.param.NumberParameter;
 import io.smudgr.alg.param.Parameter;
-import io.smudgr.model.Frame;
+import io.smudgr.source.Frame;
 
 public abstract class Algorithm {
 	private Smudge parent;

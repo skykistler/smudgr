@@ -10,7 +10,7 @@ import io.smudgr.alg.math.LumaFunction;
 import io.smudgr.alg.math.UnivariateFunction;
 import io.smudgr.alg.param.BooleanParameter;
 import io.smudgr.alg.param.NumberParameter;
-import io.smudgr.model.Frame;
+import io.smudgr.source.Frame;
 
 public class PixelSort extends Algorithm {
 

@@ -9,7 +9,7 @@ import io.smudgr.alg.math.LumaFunction;
 import io.smudgr.alg.math.UnivariateFunction;
 import io.smudgr.alg.param.BooleanParameter;
 import io.smudgr.alg.param.NumberParameter;
-import io.smudgr.model.Frame;
+import io.smudgr.source.Frame;
 
 public class SpectralShift extends Algorithm {
 
@@ -21,7 +21,11 @@ public class SpectralShift extends Algorithm {
 
 	UnivariateFunction function = new LumaFunction();
 
-	int buckets;
+	int buckets = 0;
+	int[] values = null;
+	int[] counters = null;
+
+	boolean wasSorted = false;
 
 	public SpectralShift(Smudge s) {
 		super(s);
@@ -41,19 +45,24 @@ public class SpectralShift extends Algorithm {
 		int p2 = (paletteId / 3) % 3;
 		int p3 = (paletteId / 9) % 3;
 
-		int[] values = new int[buckets];
-		int[] counters = new int[buckets];
+		boolean shouldSort = sort.getValue();
+		if (values == null || values.length != buckets || shouldSort != wasSorted) {
+			values = new int[buckets];
+			counters = new int[buckets];
 
-		for (ArrayList<Integer> coords : getCoordFunction().getCoordSet())
-			for (Integer coord : coords) {
-				int i = getBucket(img.pixels[coord]);
+			for (ArrayList<Integer> coords : getCoordFunction().getCoordSet())
+				for (Integer coord : coords) {
+					int i = getBucket(img.pixels[coord]);
 
-				values[i] += img.pixels[coord];
-				counters[i] += 1;
-			}
+					values[i] += img.pixels[coord];
+					counters[i] += 1;
+				}
 
-		if (sort.getValue())
-			Arrays.sort(values);
+			if (shouldSort)
+				Arrays.sort(values);
+
+			wasSorted = shouldSort;
+		}
 
 		int shift_amount = shift.getIntValue() % buckets;
 

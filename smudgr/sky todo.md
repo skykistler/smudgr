@@ -1,12 +1,57 @@
 sky's todo
 ========
-By Saturday:
-+ Midi tempo sync
-	+ Animate on beat, not arbitrarily
-	+ Add stop/pause/start
+Show priority:
++ Midi tempo sync pause/stop
 + Faster/stable spectral shift
 + Stabilize pixel shift on downsample
 + Test/improve live marbeler
+
+Sometime soon:
++ Smooth video input
++ Generalized marbeler using strategy for different interpolation functions, different coord functions
++ gif output
++ Function parameter to change coord/univariate functions
++ Re-add pixel shift functionality
+
++ Math functions to add:
+  + Log
+  + Various noise
+
++ Interpolation functions:
+  + Nearest Neighbor
+  + Linear
+  + Cosine
+  + Cubic
+  
+  
+Model
+-------
+ + Use processing video library
+   + With proper frame rate
+ + GIFs need proper frame rate
+ + GIF output
+ + Graphs
+ + L-systems
+ 
+ 
+View
+------
++ Implement CEF
++ Design UI
+
+
+Controller
+----------
++ Sync with MIDI tempo
+	+ Animate on beat, not arbitrarily
+	+ Add stop/pause/start
+
+
+Smudge
+------
++ Implement OpenCL
+
+
 + Dea&Saint content
   + Hook - chakras bottom to top - hook - chakras top to bottom - hook
   + First and second hook:
@@ -26,43 +71,3 @@ By Saturday:
     + Wistful/nostalgic vibes somehow
     + Slow desaturate?
   + http://xonecole.com/wp-content/uploads/2015/05/Chakra-flow-Chart.jpg
-
-Sometime soon:
-+ Smooth video input
-+ Generalized marbeler using strategy for different interpolation functions, different coord functions
-+ gif output
-+ Function parameter to change coord/univariate functions
-
-+ Math functions to add:
-  + Log
-  + Various noise
-
-+ Interpolation functions:
-  + Nearest Neighbor
-  + Linear
-  + Cosine
-  + Cubic
-  
-  
-Model
--------
- + Use processing video library
-   + With proper frame rate
- + GIFs need proper frame rate
- + GIF output
- 
- 
-View
-------
-+ Implement CEF
-+ Design UI
-
-
-Controller
-----------
-+ Sync with MIDI tempo
-
-
-Smudge
-------
-+ Implement OpenCL

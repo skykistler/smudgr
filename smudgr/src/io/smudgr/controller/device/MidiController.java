@@ -6,13 +6,20 @@ import javax.sound.midi.MidiMessage;
 
 import io.smudgr.controller.Controller;
 import io.smudgr.controller.controls.Controllable;
+import io.smudgr.controller.device.messages.AftertouchStrategy;
+import io.smudgr.controller.device.messages.KnobStrategy;
+import io.smudgr.controller.device.messages.MidiMessageStrategy;
+import io.smudgr.controller.device.messages.NoteOffStrategy;
+import io.smudgr.controller.device.messages.NoteOnStrategy;
 
 public class MidiController extends Controller implements DeviceObserver {
 
 	private Device input;
 	private int channel;
 	private MidiControlMap midiMap;
-	private HashMap<Integer, MidiControlStrategy> strategies;
+	private HashMap<Integer, MidiMessageStrategy> strategies;
+
+	private TimingCalculator timing;
 
 	private boolean waitingForKey = false;
 	private int lastKeyPressed = -1;
@@ -24,14 +31,15 @@ public class MidiController extends Controller implements DeviceObserver {
 	public MidiController(int channel, String savedMap) {
 		midiMap = new MidiControlMap("midi.map");
 
-		strategies = new HashMap<Integer, MidiControlStrategy>();
+		strategies = new HashMap<Integer, MidiMessageStrategy>();
 		this.channel = channel;
 
 		strategies.put(0x90, new NoteOnStrategy());
 		strategies.put(0x80, new NoteOffStrategy());
 		strategies.put(0xA0, new AftertouchStrategy());
 		strategies.put(0xB0, new KnobStrategy());
-		strategies.put(0xF8, new TimingClockStrategy(this));
+
+		timing = new TimingCalculator(this);
 	}
 
 	public void bindDevice(String deviceName) {
@@ -87,52 +95,57 @@ public class MidiController extends Controller implements DeviceObserver {
 	}
 
 	public void midiInput(MidiMessage message) {
-		synchronized (getSmudge()) {
-			byte[] digest = message.getMessage();
+		int status = message.getStatus();
 
-			int status = message.getStatus();
+		if (status == 0xF8) {
+			timing.tick();
+			return;
+		}
 
-			boolean system_message = status >= 0xF0;
+		byte[] digest = message.getMessage();
 
-			if (!system_message) {
-				// If message isn't on our channel, skip it
-				int message_channel = (status & 0xF) + 1;
-				if (message_channel != channel)
-					return;
+		boolean system_message = status >= 0xF0;
 
-				// clear channel for lookup
-				status = (status >> 4) << 4;
-			}
-
-			// If we don't have a strategy for this message, skip it
-			if (!strategies.containsKey(status))
+		if (!system_message) {
+			// If message isn't on our channel, skip it
+			int message_channel = (status & 0xF) + 1;
+			if (message_channel != channel)
 				return;
 
-			int key;
-			int value;
-			if (message.getLength() == 3) {
-				key = digest[1];
-				value = digest[2];
-			} else if (message.getLength() > 1) {
-				key = digest[1];
-				value = key;
-			} else {
-				key = -1;
-				value = -1;
-			}
+			// clear channel for lookup
+			status = (status >> 4) << 4;
+		}
 
-			if (key != -1) {
-				lastKeyPressed = key;
+		// If we don't have a strategy for this message, skip it
+		if (!strategies.containsKey(status))
+			return;
 
-				// If waiting for key to bind, wake thread to continue
-				if (waitingForKey) {
-					synchronized (this) {
-						notify();
-					}
+		int key;
+		int value;
+		if (message.getLength() == 3) {
+			key = digest[1];
+			value = digest[2];
+		} else if (message.getLength() > 1) {
+			key = digest[1];
+			value = key;
+		} else {
+			key = -1;
+			value = -1;
+		}
+
+		if (key != -1) {
+			lastKeyPressed = key;
+
+			// If waiting for key to bind, wake thread to continue
+			if (waitingForKey) {
+				synchronized (this) {
+					notify();
 				}
 			}
+		}
 
-			if (!waitingForKey) {
+		if (!waitingForKey) {
+			synchronized (getSmudge()) {
 				Controllable bound = midiMap.getKeyBind(key);
 
 				if (system_message || bound != null)

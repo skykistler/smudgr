@@ -8,7 +8,7 @@ import io.smudgr.alg.coord.CoordFunction;
 import io.smudgr.alg.math.LinearFunction;
 import io.smudgr.alg.math.UnivariateFunction;
 import io.smudgr.alg.param.NumberParameter;
-import io.smudgr.model.Frame;
+import io.smudgr.source.Frame;
 
 public class PixelShift extends Algorithm {
 

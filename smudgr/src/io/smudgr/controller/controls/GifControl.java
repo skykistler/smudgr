@@ -1,8 +1,8 @@
 package io.smudgr.controller.controls;
 
 import io.smudgr.controller.Controller;
-import io.smudgr.model.Frame;
-import io.smudgr.model.Gif;
+import io.smudgr.source.Frame;
+import io.smudgr.source.Gif;
 
 public class GifControl extends Controllable {
 

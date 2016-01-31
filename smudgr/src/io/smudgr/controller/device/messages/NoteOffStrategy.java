@@ -1,8 +1,8 @@
-package io.smudgr.controller.device;
+package io.smudgr.controller.device.messages;
 
 import io.smudgr.controller.controls.Controllable;
 
-public class NoteOffStrategy implements MidiControlStrategy {
+public class NoteOffStrategy implements MidiMessageStrategy {
 
 	public void input(Controllable c, int value) {
 		c.inputOff(value);

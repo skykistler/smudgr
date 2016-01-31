@@ -5,7 +5,8 @@ import io.smudgr.view.View;
 public class RenderThread implements Runnable {
 
 	private View view;
-	private boolean running;
+	private volatile boolean running;
+	private boolean finished;
 
 	public RenderThread(View v) {
 		view = v;
@@ -21,6 +22,10 @@ public class RenderThread implements Runnable {
 		running = false;
 	}
 
+	public boolean isFinished() {
+		return finished;
+	}
+
 	public void run() {
 		long targetFrameNs = 1000000000 / Controller.TARGET_FPS;
 
@@ -31,8 +36,8 @@ public class RenderThread implements Runnable {
 		while (running) {
 			try {
 				view.draw();
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (IllegalStateException e) {
+				System.out.println("Rendering stopped.");
 				break;
 			}
 
@@ -59,6 +64,8 @@ public class RenderThread implements Runnable {
 
 			lastFrame = System.nanoTime();
 		}
+
+		finished = true;
 	}
 
 }

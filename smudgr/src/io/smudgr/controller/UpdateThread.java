@@ -3,7 +3,8 @@ package io.smudgr.controller;
 public class UpdateThread implements Runnable {
 
 	private Controller controller;
-	private boolean running;
+	private volatile boolean running;
+	private boolean finished;
 
 	public UpdateThread(Controller c) {
 		controller = c;
@@ -20,6 +21,10 @@ public class UpdateThread implements Runnable {
 		running = false;
 	}
 
+	public boolean isFinished() {
+		return finished;
+	}
+
 	public void run() {
 		final int nsInSecond = 1000000000;
 
@@ -29,7 +34,7 @@ public class UpdateThread implements Runnable {
 
 		while (running) {
 			double beatsPerSecond = controller.getBPM() / 60.0;
-			double TICKS_PER_SECOND = Controller.TICKS_PER_BEAT * beatsPerSecond;
+			double TICKS_PER_SECOND = Math.ceil(Controller.TICKS_PER_BEAT * beatsPerSecond);
 			double TIME_BETWEEN_UPDATES = nsInSecond / TICKS_PER_SECOND;
 
 			// Update enough to catch up
@@ -46,8 +51,8 @@ public class UpdateThread implements Runnable {
 
 			// Output ticks per second
 			if (System.currentTimeMillis() - lastSecond >= 1000) {
-				//				if (updates != TICKS_PER_SECOND)
-				System.out.println(updates + " updates (should be " + TICKS_PER_SECOND + ")");
+				if (updates != TICKS_PER_SECOND)
+					System.out.println(updates + " updates (should be " + TICKS_PER_SECOND + ")");
 				updates = 0;
 				lastSecond = System.currentTimeMillis();
 			}
@@ -64,6 +69,8 @@ public class UpdateThread implements Runnable {
 				now = System.nanoTime();
 			}
 		}
+
+		finished = true;
 	}
 
 }

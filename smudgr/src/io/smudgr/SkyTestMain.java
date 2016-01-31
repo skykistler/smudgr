@@ -1,5 +1,6 @@
 package io.smudgr;
 
+import io.smudgr.alg.Marbeler;
 import io.smudgr.controller.controls.DownsampleControl;
 import io.smudgr.controller.device.MidiController;
 import io.smudgr.view.JView;
@@ -14,6 +15,12 @@ public class SkyTestMain {
 
 		// Set smudge before doing anything
 		controller.setSmudge(smudge);
+
+		Marbeler m = new Marbeler(smudge);
+		m.bind("Offset - X/Y");
+		m.bind("Frequency");
+		m.bind("Iterations");
+		m.bind("Strength");
 
 		new DownsampleControl(controller, 1);
 
