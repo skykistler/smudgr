@@ -1,15 +1,10 @@
 package io.smudgr;
 
-import io.smudgr.alg.MonotonicMap;
 import io.smudgr.alg.PixelSort;
 import io.smudgr.alg.SpectralShift;
 import io.smudgr.alg.bound.EllipticalBound;
-import io.smudgr.alg.coord.ColumnCoords;
 import io.smudgr.alg.coord.ConvergeCoordFunction;
-import io.smudgr.alg.coord.RowCoords;
-import io.smudgr.controller.controls.AnimationControl;
 import io.smudgr.controller.controls.DownsampleControl;
-import io.smudgr.controller.controls.VideoControl;
 import io.smudgr.controller.device.MidiController;
 import io.smudgr.view.JView;
 
@@ -65,18 +60,18 @@ public class EricMain {
 
 		//new AnimationControl(controller, shift.getParameter("Amount"));
 
-//		PixelSort sort = new PixelSort(smudge);
-//		sort.setCoordFunction(new Converge;
-//		sort.getParameter("Threshold").setInitial(.1);
-//		sort.getParameter("Reverse").setInitial(true);
-//		sort.bind("Threshold");
-//		sort.bind("Reverse");
-//		sort.bind("Enable");
-//		sort.getParameter("Enable").setInitial(false);
-//		
-//		MonotonicMap map = new MonotonicMap(smudge);
-//		map.bind("Shift");
-		
+		//		PixelSort sort = new PixelSort(smudge);
+		//		sort.setCoordFunction(new Converge;
+		//		sort.getParameter("Threshold").setInitial(.1);
+		//		sort.getParameter("Reverse").setInitial(true);
+		//		sort.bind("Threshold");
+		//		sort.bind("Reverse");
+		//		sort.bind("Enable");
+		//		sort.getParameter("Enable").setInitial(false);
+		//		
+		//		MonotonicMap map = new MonotonicMap(smudge);
+		//		map.bind("Shift");
+
 		PixelSort sort1 = new PixelSort(smudge);
 		sort1.setCoordFunction(new ConvergeCoordFunction());
 		sort1.bind("Threshold");
@@ -84,13 +79,13 @@ public class EricMain {
 		sort1.bind("Enable");
 		sort1.getParameter("Enable").setInitial(false);
 
-//		PixelSort sort2 = new PixelSort(smudge);
-//		sort2.setCoordFunction(new RowCoords());
-//		sort2.bind("Threshold");
-//		sort2.bind("Reverse");
-//		sort2.bind("Enable");
-//		sort2.getParameter("Enable").setInitial(false);
-//		
+		//		PixelSort sort2 = new PixelSort(smudge);
+		//		sort2.setCoordFunction(new RowCoords());
+		//		sort2.bind("Threshold");
+		//		sort2.bind("Reverse");
+		//		sort2.bind("Enable");
+		//		sort2.getParameter("Enable").setInitial(false);
+		//		
 		new DownsampleControl(controller, 1);
 
 		// Declare your view
