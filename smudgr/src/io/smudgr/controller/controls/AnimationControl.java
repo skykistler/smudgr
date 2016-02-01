@@ -6,33 +6,29 @@ import io.smudgr.controller.Controller;
 
 public class AnimationControl extends Controllable {
 
-	private Parameter parameter;
+	private static final double[] SPEEDS = { 1 / 128.0, 1 / 96.0, 1 / 64.0, 1 / 46.0, 1 / 32.0, 1 / 24.0, 1 / 16.0, 1 / 12.0, 1 / 8.0, 1 / 4.0, 1 / 2.0, 1.0, 2.0, 4.0, 8.0 };
+
+	private NumberParameter parameter;
 	private boolean run = true;
 
-	private double initialStep, speed, increment;
+	private int speed;
 
 	public AnimationControl(Controller controller, Parameter p) {
-		this(controller, p, -1);
-	}
-
-	public AnimationControl(Controller controller, Parameter p, double increment) {
 		super(controller, p.getParent() + " - " + p.toString() + " Animator");
-		parameter = p;
-
-		if (parameter instanceof NumberParameter)
-			initialStep = ((NumberParameter) parameter).getStep();
-
-		if (increment < 0)
-			increment = initialStep;
-
-		speed = this.increment = increment;
+		parameter = (NumberParameter) p;
 
 		requestBind();
 	}
 
 	public void update() {
-		if (run)
-			parameter.increment();
+		if (!run)
+			return;
+
+		double val = parameter.getValue();
+		double step = parameter.getStep();
+		val = val + step / (Controller.TICKS_PER_BEAT * SPEEDS[speed]);
+
+		parameter.setValue(val);
 	}
 
 	public void inputValue(int value) {
@@ -48,21 +44,20 @@ public class AnimationControl extends Controllable {
 	}
 
 	public void increment() {
-		if (parameter instanceof NumberParameter) {
+		System.out.println(1 / SPEEDS[speed]);
+		run = true;
 
-			speed += increment;
-
-			NumberParameter p = (NumberParameter) parameter;
-			p.setStep(initialStep + speed);
-		}
+		speed--;
+		if (speed < 0)
+			speed = 0;
 	}
 
 	public void decrement() {
-		if (parameter instanceof NumberParameter) {
-			speed -= increment;
+		speed++;
 
-			NumberParameter p = (NumberParameter) parameter;
-			p.setStep(initialStep + speed);
+		if (speed >= SPEEDS.length) {
+			run = false;
+			speed = SPEEDS.length - 1;
 		}
 	}
 

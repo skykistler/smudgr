@@ -130,19 +130,26 @@ public class NumberParameter extends Parameter {
 
 	private void inc() {
 		value += step;
-		if (continuous && value > max)
-			value = min + (max - value);
 	}
 
 	private void dec() {
 		value -= step;
-		if (continuous && value < min)
-			value = max - (min - value);
 	}
 
 	private void enforce() {
-		value = value < min ? min : value;
-		value = value > max ? max : value;
+		if (value < min) {
+			if (continuous)
+				value += (max - min);
+			else
+				value = min;
+		}
+
+		if (value > max) {
+			if (continuous)
+				value -= (max - min);
+			else
+				value = max;
+		}
 	}
 
 }

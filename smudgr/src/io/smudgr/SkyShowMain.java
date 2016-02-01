@@ -8,6 +8,7 @@ import io.smudgr.alg.coord.ConvergeCoordFunction;
 import io.smudgr.alg.coord.RowCoords;
 import io.smudgr.controller.controls.AnimationControl;
 import io.smudgr.controller.controls.DownsampleControl;
+import io.smudgr.controller.controls.SourceControl;
 import io.smudgr.controller.device.MidiController;
 import io.smudgr.view.JView;
 
@@ -19,7 +20,7 @@ public class SkyShowMain {
 
 		// Make smudge
 		Smudge smudge = new Smudge("test", "nicole.png");
-		// new SourceSwitcherControl(controller, "demo");
+		new SourceControl(controller, "demo");
 		// new VideoControl(controller, "hackers.mp4");
 
 		// Set smudge before doing anything
@@ -42,7 +43,7 @@ public class SkyShowMain {
 		spectral.bind("Sort");
 		spectral.bind("Enable");
 		spectral.getParameter("Enable").setInitial(false);
-		new AnimationControl(controller, spectral.getParameter("Shift"), .005);
+		new AnimationControl(controller, spectral.getParameter("Shift"));
 
 		PixelShift shift = new PixelShift(smudge);
 		shift.setCoordFunction(new ConvergeCoordFunction());
@@ -51,7 +52,7 @@ public class SkyShowMain {
 		shift.getParameter("Amount").setInitial(.2);
 		shift.bind("Enable");
 		shift.getParameter("Enable").setInitial(false);
-		new AnimationControl(controller, shift.getParameter("Amount"), .001);
+		new AnimationControl(controller, shift.getParameter("Amount"));
 
 		PixelShift shift1 = new PixelShift(smudge);
 		shift1.setCoordFunction(new ColumnCoords());
