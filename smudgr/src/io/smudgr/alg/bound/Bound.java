@@ -3,10 +3,10 @@ package io.smudgr.alg.bound;
 import io.smudgr.source.Frame;
 
 public class Bound {
-	private double offsetX;
-	private double offsetY;
-	private double width;
-	private double height;
+	protected double offsetX;
+	protected double offsetY;
+	protected double width;
+	protected double height;
 
 	public Bound(double width, double height) {
 		setWidth(width);
