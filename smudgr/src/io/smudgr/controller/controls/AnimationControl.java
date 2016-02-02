@@ -11,7 +11,7 @@ public class AnimationControl extends Controllable {
 	private NumberParameter parameter;
 	private boolean run = true;
 
-	private int speed;
+	private int speed = 7;
 
 	public AnimationControl(Controller controller, Parameter p) {
 		super(controller, p.getParent() + " - " + p.toString() + " Animator");
