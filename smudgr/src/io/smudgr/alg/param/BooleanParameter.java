@@ -36,12 +36,10 @@ public class BooleanParameter extends Parameter {
 	}
 
 	public void inputOn(int value) {
-		boolean input = value == 127 ? true : false;
-
 		if (reverse)
-			setValue(!input);
+			setValue(false);
 		else
-			setValue(input);
+			setValue(true);
 	}
 
 	public void inputOff(int value) {
