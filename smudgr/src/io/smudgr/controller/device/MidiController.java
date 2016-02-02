@@ -38,7 +38,7 @@ public class MidiController extends Controller implements DeviceObserver {
 
 	public MidiController(int channel, String savedMap) {
 		this.channel = channel;
-		midiMap = new MidiControlMap("midi.map");
+		midiMap = new MidiControlMap(savedMap);
 
 		messageStrategies = new HashMap<Integer, MidiMessageStrategy>();
 		messageStrategies.put(0x90, new NoteOnMessage());
