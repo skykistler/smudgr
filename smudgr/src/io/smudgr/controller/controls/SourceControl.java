@@ -19,10 +19,12 @@ public class SourceControl extends Controllable {
 	public SourceControl(Controller c, String location) {
 		super(c, "Source Switcher");
 
-		if (!location.endsWith("/"))
-			location += "/";
-
 		File directory = new File("data/" + location);
+
+		if (!directory.exists()) {
+			System.out.println("File " + location + " does not exist!");
+			return;
+		}
 
 		// If not a directory, just add the one file
 		if (!directory.isDirectory())
@@ -45,7 +47,7 @@ public class SourceControl extends Controllable {
 
 		for (int i = 0; i < files.size(); i++) {
 			String path = files.get(i);
-			Source s = getModel(path);
+			Source s = getSource(path);
 			if (s != null)
 				sources.add(s);
 		}
@@ -53,7 +55,7 @@ public class SourceControl extends Controllable {
 		System.out.println("Successfully loaded " + sources.size() + " sources");
 	}
 
-	private Source getModel(String path) {
+	private Source getSource(String path) {
 		String ext = path.substring(path.lastIndexOf(".") + 1);
 
 		try {
