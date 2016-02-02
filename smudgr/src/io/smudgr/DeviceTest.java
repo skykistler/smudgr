@@ -10,9 +10,8 @@ public class DeviceTest implements DeviceObserver {
 	public static void main(String[] args) {
 		Device.listAvailableDevices();
 
-		// String device = "MIDIIN2 (Ableton Push)";
-		String device = "Arturia BeatStep Pro";
-
+		String device = "Twitch";
+		//
 		System.out.println(new Device(new DeviceTest(), device));
 	}
 
