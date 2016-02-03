@@ -6,7 +6,7 @@ import io.smudgr.alg.SpectralShift;
 import io.smudgr.alg.coord.ColumnCoords;
 import io.smudgr.alg.coord.ConvergeCoordFunction;
 import io.smudgr.alg.coord.RowCoords;
-import io.smudgr.controller.controls.AnimationControl;
+import io.smudgr.controller.controls.AnimateOnBeatControl;
 import io.smudgr.controller.controls.DownsampleControl;
 import io.smudgr.controller.controls.SourceControl;
 import io.smudgr.controller.device.MidiController;
@@ -43,7 +43,7 @@ public class SkyShowMain {
 		spectral.bind("Sort");
 		spectral.bind("Enable");
 		spectral.getParameter("Enable").setInitial(false);
-		new AnimationControl(controller, spectral.getParameter("Shift"));
+		new AnimateOnBeatControl(controller, spectral.getParameter("Shift"));
 
 		PixelShift shift = new PixelShift(smudge);
 		shift.setCoordFunction(new ConvergeCoordFunction());
@@ -52,7 +52,7 @@ public class SkyShowMain {
 		shift.getParameter("Amount").setInitial(.2);
 		shift.bind("Enable");
 		shift.getParameter("Enable").setInitial(false);
-		new AnimationControl(controller, shift.getParameter("Amount"));
+		new AnimateOnBeatControl(controller, shift.getParameter("Amount"));
 
 		PixelShift shift1 = new PixelShift(smudge);
 		shift1.setCoordFunction(new ColumnCoords());
@@ -61,7 +61,7 @@ public class SkyShowMain {
 		shift1.getParameter("Amount").setInitial(.2);
 		shift1.bind("Enable");
 		shift1.getParameter("Enable").setInitial(false);
-		new AnimationControl(controller, shift1.getParameter("Amount"));
+		new AnimateOnBeatControl(controller, shift1.getParameter("Amount"));
 
 		PixelSort sort1 = new PixelSort(smudge);
 		sort1.setCoordFunction(new ColumnCoords());
