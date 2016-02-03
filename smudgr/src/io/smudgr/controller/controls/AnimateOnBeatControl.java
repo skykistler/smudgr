@@ -11,7 +11,7 @@ public class AnimateOnBeatControl extends Controllable {
 	private NumberParameter parameter;
 	private boolean run = true;
 
-	private int speed;
+	private int speed = 5;
 
 	public AnimateOnBeatControl(Controller controller, Parameter p) {
 		super(controller, p.getParent() + " - " + p.toString() + " Animator");
