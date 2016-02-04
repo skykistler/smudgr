@@ -103,20 +103,21 @@ public class EricMain {
 //		new AnimationControl(controller, shift.getParameter("Amount"));
 
 		PixelShift shift1 = new PixelShift(smudge);
-		shift1.setBound(new EllipticalBound(1, 1));
+		//shift1.setBound(new EllipticalBound(1, 1));
 		shift1.setCoordFunction(new ColumnCoords());
-		shift1.getParameter("Intervals").setInitial(3);
+		//shift1.getParameter("Intervals").setInitial(3);
 		shift1.bind("Intervals");
 		shift1.getParameter("Amount").setInitial(.2);
 		shift1.bind("Enable");
 		shift1.getParameter("Enable").setInitial(false);
 		//shift1.bind("Amount");
-		shift1.bind("Start");
+		
+		//shift1.bind("Start");
 		//shift1.bind("End");
 		
 		new AnimationControl(controller, shift1.getParameter("Amount"));
-		new AnimationControl(controller, shift1.getParameter("End"));
-		new AnimationControl(controller, shift1.getParameter("Start"));
+		//new AnimationControl(controller, shift1.getParameter("End"));
+		//new AnimationControl(controller, shift1.getParameter("Start"));
 		
 		new DownsampleControl(controller, 1);
 
