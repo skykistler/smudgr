@@ -53,7 +53,8 @@ public class Smudge {
 	}
 
 	public void downsample(int amount) {
-		downsample = amount;
+		if (amount > 0)
+			downsample = amount;
 	}
 
 	public void addAlgorithm(Algorithm alg) {

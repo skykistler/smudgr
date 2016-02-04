@@ -44,6 +44,9 @@ public class Video implements Source {
 			return null;
 		}
 
+		if (buffer == null)
+			return null;
+
 		while (buffer.size() == 0)
 			;
 

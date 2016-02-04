@@ -32,7 +32,7 @@ public class SourceControl extends Controllable {
 		else {
 			String[] list = directory.list();
 			for (int i = 0; i < list.length; i++)
-				files.add(location + list[i]);
+				files.add(location + "/" + list[i]);
 		}
 
 		requestBind();
