@@ -1,12 +1,8 @@
 package io.smudgr;
 
 import io.smudgr.alg.PixelShift;
-import io.smudgr.alg.PixelSort;
-import io.smudgr.alg.SpectralShift;
-import io.smudgr.alg.bound.EllipticalBound;
 import io.smudgr.alg.coord.ColumnCoords;
-import io.smudgr.alg.coord.ConvergeCoordFunction;
-import io.smudgr.controller.controls.AnimationControl;
+import io.smudgr.controller.controls.AnimateByStepControl;
 import io.smudgr.controller.controls.DownsampleControl;
 import io.smudgr.controller.device.MidiController;
 import io.smudgr.view.JView;
@@ -31,19 +27,19 @@ public class EricMain {
 		//			smear.bind("Green Mask");
 		//			smear.bind("Blue Mask");
 		//		
-//		SpectralShift spectral = new SpectralShift(smudge);
-//		spectral.getParameter("Colors").setInitial(60);
-//		spectral.getParameter("Sort").setInitial(true);
-//		spectral.bind("Colors");
-//		spectral.bind("Palette");
-//		spectral.bind("Sort");
-//		spectral.bind("Enable");
-//		spectral.getParameter("Reverse").setInitial(true);
-//		spectral.setBound(new EllipticalBound(1, 1));
-//		spectral.bind("Bound X");
-//		spectral.bind("Bound Y");
-//		spectral.bind("Bound Width");
-//		spectral.bind("Bound Height");
+		//		SpectralShift spectral = new SpectralShift(smudge);
+		//		spectral.getParameter("Colors").setInitial(60);
+		//		spectral.getParameter("Sort").setInitial(true);
+		//		spectral.bind("Colors");
+		//		spectral.bind("Palette");
+		//		spectral.bind("Sort");
+		//		spectral.bind("Enable");
+		//		spectral.getParameter("Reverse").setInitial(true);
+		//		spectral.setBound(new EllipticalBound(1, 1));
+		//		spectral.bind("Bound X");
+		//		spectral.bind("Bound Y");
+		//		spectral.bind("Bound Width");
+		//		spectral.bind("Bound Height");
 		//new AnimationControl(controller, spectral.getParameter("Shift"), .01);
 		//
 		//		
@@ -75,12 +71,12 @@ public class EricMain {
 		//		MonotonicMap map = new MonotonicMap(smudge);
 		//		map.bind("Shift");
 
-//		PixelSort sort1 = new PixelSort(smudge);
-//		sort1.setCoordFunction(new ConvergeCoordFunction());
-//		sort1.bind("Threshold");
-//		sort1.bind("Reverse");
-//		sort1.bind("Enable");
-//		sort1.getParameter("Enable").setInitial(false);
+		//		PixelSort sort1 = new PixelSort(smudge);
+		//		sort1.setCoordFunction(new ConvergeCoordFunction());
+		//		sort1.bind("Threshold");
+		//		sort1.bind("Reverse");
+		//		sort1.bind("Enable");
+		//		sort1.getParameter("Enable").setInitial(false);
 
 		//		PixelSort sort2 = new PixelSort(smudge);
 		//		sort2.setCoordFunction(new RowCoords());
@@ -89,18 +85,17 @@ public class EricMain {
 		//		sort2.bind("Enable");
 		//		sort2.getParameter("Enable").setInitial(false);
 		//		
-		
-		
-//		PixelShift shift = new PixelShift(smudge);
-//		shift.setCoordFunction(new ConvergeCoordFunction());
-//		//shift.setBound(new EllipticalBound(1, 1));
-//		shift.getParameter("Intervals").setInitial(3);
-//		shift.bind("Intervals");
-//		shift.getParameter("Amount").setInitial(.2);
-//		shift.bind("Amount");
-//		shift.bind("Enable");
-//		shift.getParameter("Enable").setInitial(false);
-//		new AnimationControl(controller, shift.getParameter("Amount"));
+
+		//		PixelShift shift = new PixelShift(smudge);
+		//		shift.setCoordFunction(new ConvergeCoordFunction());
+		//		//shift.setBound(new EllipticalBound(1, 1));
+		//		shift.getParameter("Intervals").setInitial(3);
+		//		shift.bind("Intervals");
+		//		shift.getParameter("Amount").setInitial(.2);
+		//		shift.bind("Amount");
+		//		shift.bind("Enable");
+		//		shift.getParameter("Enable").setInitial(false);
+		//		new AnimationControl(controller, shift.getParameter("Amount"));
 
 		PixelShift shift1 = new PixelShift(smudge);
 		//shift1.setBound(new EllipticalBound(1, 1));
@@ -111,14 +106,14 @@ public class EricMain {
 		shift1.bind("Enable");
 		shift1.getParameter("Enable").setInitial(false);
 		//shift1.bind("Amount");
-		
+
 		//shift1.bind("Start");
 		//shift1.bind("End");
-		
-		new AnimationControl(controller, shift1.getParameter("Amount"));
+
+		new AnimateByStepControl(controller, shift1.getParameter("Amount"));
 		//new AnimationControl(controller, shift1.getParameter("End"));
 		//new AnimationControl(controller, shift1.getParameter("Start"));
-		
+
 		new DownsampleControl(controller, 1);
 
 		// Declare your view
