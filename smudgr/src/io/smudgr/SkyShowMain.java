@@ -8,7 +8,6 @@ import io.smudgr.alg.coord.ConvergeCoordFunction;
 import io.smudgr.alg.coord.RowCoords;
 import io.smudgr.controller.controls.AnimateOnBeatControl;
 import io.smudgr.controller.controls.DownsampleControl;
-import io.smudgr.controller.controls.SourceControl;
 import io.smudgr.controller.device.MidiController;
 import io.smudgr.view.JView;
 
@@ -19,8 +18,8 @@ public class SkyShowMain {
 		MidiController controller = new MidiController(11, "show_test.map");
 
 		// Make smudge
-		Smudge smudge = new Smudge("test", "nicole.png");
-		new SourceControl(controller, "demo");
+		Smudge smudge = new Smudge("test", "SeepferdSeepferd.jpeg");
+		//		new SourceControl(controller, "poe");
 		// new VideoControl(controller, "hackers.mp4");
 
 		// Set smudge before doing anything
@@ -103,7 +102,7 @@ public class SkyShowMain {
 		// Declare your view
 		new JView(controller, 0);
 
-		controller.bindDevice("Arturia BeatStep Pro");
+		controller.bindDevice("Arturia BeatStepPro");
 		controller.start();
 	}
 
