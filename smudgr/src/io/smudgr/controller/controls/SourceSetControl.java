@@ -8,7 +8,7 @@ import io.smudgr.source.SourceSet;
 
 public class SourceSetControl extends Controllable {
 
-	private int currentSet = 0;
+	private int currentSet = -1;
 	private ArrayList<String> files = new ArrayList<String>();;
 	private ArrayList<SourceSet> sourceSets = new ArrayList<SourceSet>();;
 
@@ -49,14 +49,22 @@ public class SourceSetControl extends Controllable {
 
 		for (String path : files) {
 			SourceSet set = new SourceSet(path);
-			if (set.size() > 0)
+			if (set.size() > 0) {
+				set.init();
 				sourceSets.add(set);
+			}
 		}
 
+		setCurrentSet(0);
 		System.out.println("Successfully loaded " + sourceSets.size() + " source sets");
 	}
 
 	public void update() {
+		SourceSet set = getCurrentSet();
+		if (set == null)
+			return;
+
+		set.update();
 	}
 
 	public void increment() {
@@ -65,6 +73,13 @@ public class SourceSetControl extends Controllable {
 
 	public void decrement() {
 		setCurrentSet(currentSet - 1);
+	}
+
+	private SourceSet getCurrentSet() {
+		if (sourceSets.size() == 0 || currentSet == -1)
+			return null;
+
+		return sourceSets.get(currentSet);
 	}
 
 	private void setCurrentSet(int i) {
@@ -76,12 +91,16 @@ public class SourceSetControl extends Controllable {
 		if (i == currentSet)
 			return;
 
-		sourceSets.get(currentSet).stop();
+		SourceSet current = getCurrentSet();
+		if (current != null)
+			current.stop();
 
 		if (currentSet >= sourceSets.size())
 			currentSet %= sourceSets.size();
 		else if (currentSet < 0)
 			currentSet += sourceSets.size();
+
+		getController().getSmudge().setSource(sourceSets.get(currentSet));
 	}
 
 	public void inputValue(int value) {

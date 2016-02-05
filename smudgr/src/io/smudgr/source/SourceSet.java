@@ -33,8 +33,10 @@ public class SourceSet implements Source {
 			String path = files.get(i);
 
 			Source s = makeSource(path);
-			if (s != null)
+			if (s != null) {
+				s.init();
 				sources.add(s);
+			}
 		}
 	}
 

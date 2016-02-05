@@ -8,6 +8,7 @@ import io.smudgr.alg.coord.ConvergeCoordFunction;
 import io.smudgr.alg.coord.RowCoords;
 import io.smudgr.controller.controls.AnimateOnBeatControl;
 import io.smudgr.controller.controls.DownsampleControl;
+import io.smudgr.controller.controls.SourceSetControl;
 import io.smudgr.controller.device.MidiController;
 import io.smudgr.source.Image;
 import io.smudgr.view.JView;
@@ -20,7 +21,7 @@ public class SkyShowMain {
 
 		// Make smudge
 		Smudge smudge = new Smudge(new Image("SeepferdSeepferd.jpeg"));
-		// new SourceControl(controller, "poe");
+		new SourceSetControl(controller, "poe");
 		// new VideoControl(controller, "hackers.mp4");
 
 		// Set smudge before doing anything
