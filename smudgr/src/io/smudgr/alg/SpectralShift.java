@@ -38,7 +38,6 @@ public class SpectralShift extends Algorithm {
 
 		buckets = colors.getIntValue();
 		shift.setMax(buckets - 1);
-		shift.setStep(buckets / 255.0);
 
 		int paletteId = palette.getIntValue();
 		int p1 = paletteId % 3;
