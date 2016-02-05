@@ -22,14 +22,15 @@ public class Gif implements Source {
 	private String filename;
 
 	private BufferThread bufferer;
-	private volatile ArrayList<Frame> buffer;
+	private volatile ArrayList<GifFrame> buffer;
+
+	private long lastFrameSwitch;
 	private int currentFrame;
 
 	private Frame lastFrame;
 
 	public Gif(String filename) {
 		this.filename = "data/" + filename;
-
 	}
 
 	public void init() {
@@ -38,18 +39,32 @@ public class Gif implements Source {
 	}
 
 	public void update() {
-		// every x ticks, switch to next
+		if (buffer.size() == 0)
+			return;
+
+		long now = System.currentTimeMillis();
+		if (lastFrameSwitch == 0) {
+			lastFrameSwitch = now;
+			return;
+		}
+
+		long delay = now - lastFrameSwitch;
+		GifFrame frame = buffer.get(currentFrame);
+
+		if (frame.getDelay() <= delay) {
+			currentFrame++;
+			currentFrame %= buffer.size();
+			lastFrameSwitch = now;
+		}
+
 	}
 
 	public Frame getFrame() {
-		if (bufferer != null && bufferer.started && buffer.size() > 0) {
-			currentFrame += 1;
-			currentFrame %= buffer.size();
-
-			return lastFrame = buffer.get(currentFrame);
+		if (bufferer == null || !bufferer.started || buffer.size() == 0) {
+			return lastFrame;
 		}
 
-		return lastFrame;
+		return lastFrame = buffer.get(currentFrame).getFrame();
 	}
 
 	class BufferThread implements Runnable {
@@ -57,7 +72,7 @@ public class Gif implements Source {
 		private boolean started;
 
 		public BufferThread() {
-			buffer = new ArrayList<Frame>();
+			buffer = new ArrayList<GifFrame>();
 		}
 
 		public void start() {
@@ -68,8 +83,6 @@ public class Gif implements Source {
 		// This is just absolutely terrifying
 		public void run() {
 			started = true;
-
-			ArrayList<GifFrame> frames = new ArrayList<GifFrame>(2);
 
 			ImageReader reader = (ImageReader) ImageIO.getImageReadersByFormatName("gif").next();
 			try {
@@ -144,7 +157,7 @@ public class Gif implements Source {
 					IIOMetadataNode gce = (IIOMetadataNode) root.getElementsByTagName("GraphicControlExtension").item(0);
 					NodeList children = root.getChildNodes();
 
-					// int delay = Integer.valueOf(gce.getAttribute("delayTime"));
+					int delay = Integer.valueOf(gce.getAttribute("delayTime"));
 
 					String disposal = gce.getAttribute("disposalMethod");
 
@@ -174,8 +187,8 @@ public class Gif implements Source {
 						if (disposal.equals("restoreToPrevious")) {
 							BufferedImage from = null;
 							for (int i = frameIndex - 1; i >= 0; i--) {
-								if (!frames.get(i).getDisposal().equals("restoreToPrevious") || frameIndex == 0) {
-									from = frames.get(i).getImage();
+								if (!buffer.get(i).getDisposal().equals("restoreToPrevious") || frameIndex == 0) {
+									from = buffer.get(i).getImage();
 									break;
 								}
 							}
@@ -187,7 +200,7 @@ public class Gif implements Source {
 
 						} else if (disposal.equals("restoreToBackgroundColor") && backgroundColor != null) {
 							if (!hasBackround || frameIndex > 1) {
-								Frame last = buffer.get(frameIndex - 1);
+								Frame last = buffer.get(frameIndex - 1).getFrame();
 								master.createGraphics().fillRect(lastx, lasty, last.getWidth(), last.getHeight());
 							}
 						}
@@ -206,9 +219,9 @@ public class Gif implements Source {
 							WritableRaster raster = master.copyData(null);
 							copy = new BufferedImage(model, raster, alpha, null);
 						}
-						frames.add(new GifFrame(copy, disposal));
 
-						buffer.add(new Frame(copy));
+						GifFrame gifframe = new GifFrame(copy, disposal, delay);
+						buffer.add(gifframe);
 					}
 
 					master.flush();
@@ -226,19 +239,31 @@ public class Gif implements Source {
 
 	private class GifFrame {
 		private final BufferedImage image;
+		private final Frame frame;
 		private final String disposal;
+		private final int delay;
 
-		public GifFrame(BufferedImage image, String disposal) {
+		public GifFrame(BufferedImage image, String disposal, int delay) {
 			this.image = image;
+			frame = new Frame(image);
 			this.disposal = disposal;
+			this.delay = delay;
 		}
 
 		public BufferedImage getImage() {
 			return image;
 		}
 
+		public Frame getFrame() {
+			return frame;
+		}
+
 		public String getDisposal() {
 			return disposal;
+		}
+
+		public int getDelay() {
+			return delay;
 		}
 
 	}
