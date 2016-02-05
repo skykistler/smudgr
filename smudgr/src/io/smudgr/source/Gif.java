@@ -30,12 +30,15 @@ public class Gif implements Source {
 	public Gif(String filename) {
 		this.filename = "data/" + filename;
 
-		load();
 	}
 
-	private void load() {
+	public void init() {
 		bufferer = new BufferThread();
 		bufferer.start();
+	}
+
+	public void update() {
+		// every x ticks, switch to next
 	}
 
 	public Frame getFrame() {

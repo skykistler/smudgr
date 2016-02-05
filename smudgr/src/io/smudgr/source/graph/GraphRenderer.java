@@ -6,16 +6,15 @@ import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 
 import io.smudgr.source.Frame;
-import io.smudgr.source.Source;
 
-public class GraphRenderer implements Source {
+public class GraphRenderer {
 	private Graph graph;
 
 	public GraphRenderer(Graph model) {
 		graph = model;
 	}
 
-	public Frame getFrame() {
+	public Frame drawGraph() {
 		BufferedImage graphImage = new BufferedImage(graph.getWidth(), graph.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Graphics g = graphImage.getGraphics();
 

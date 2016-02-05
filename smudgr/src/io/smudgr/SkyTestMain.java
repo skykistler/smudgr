@@ -3,6 +3,7 @@ package io.smudgr;
 import io.smudgr.alg.Marbeler;
 import io.smudgr.controller.controls.DownsampleControl;
 import io.smudgr.controller.device.MidiController;
+import io.smudgr.source.Image;
 import io.smudgr.view.JView;
 
 public class SkyTestMain {
@@ -11,7 +12,7 @@ public class SkyTestMain {
 		MidiController controller = new MidiController(11, "test.map");
 
 		// Make a smudge
-		Smudge smudge = new Smudge("test", "nicole.png");
+		Smudge smudge = new Smudge(new Image("nicole.jpg"));
 
 		// Set smudge before doing anything
 		controller.setSmudge(smudge);

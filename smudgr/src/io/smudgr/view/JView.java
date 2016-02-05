@@ -63,8 +63,10 @@ public class JView implements View {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, window.getWidth(), window.getHeight());
 
-		frame = smudge.render().copy();
-		drawFittedImage(g, frame.getBufferedImage());
+		frame = smudge.render();
+		if (frame != null) {
+			drawFittedImage(g, frame.getBufferedImage());
+		}
 
 		g.dispose();
 

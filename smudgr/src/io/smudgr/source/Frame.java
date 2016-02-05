@@ -10,21 +10,12 @@ import javax.imageio.ImageIO;
 
 import io.smudgr.alg.math.ColorHelper;
 
-public class Frame implements Source {
+public class Frame {
 	private BufferedImage image;
 	private int width;
 	private int height;
 
 	public int[] pixels;
-
-	public Frame(String filename) {
-		try {
-			load("data/" + filename);
-		} catch (IOException e) {
-			System.out.println("Error loading: " + filename);
-			e.printStackTrace();
-		}
-	}
 
 	public Frame(int w, int h) {
 		width = w;
@@ -57,6 +48,33 @@ public class Frame implements Source {
 	private void init() {
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		grabPixels();
+	}
+
+	public void setBufferedImage(BufferedImage img) {
+		width = img.getWidth();
+		height = img.getHeight();
+
+		int type = img.getType();
+
+		if (type != BufferedImage.TYPE_INT_RGB || type != BufferedImage.TYPE_INT_ARGB) {
+			init();
+			convert(img);
+		} else {
+			image = img;
+			grabPixels();
+		}
+	}
+
+	public BufferedImage getBufferedImage() {
+		return image;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
 	}
 
 	private void grabPixels() {
@@ -198,30 +216,4 @@ public class Frame implements Source {
 		}
 	}
 
-	public void setBufferedImage(BufferedImage img) {
-		width = img.getWidth();
-		height = img.getHeight();
-
-		int type = img.getType();
-
-		if (type != BufferedImage.TYPE_INT_RGB || type != BufferedImage.TYPE_INT_ARGB) {
-			init();
-			convert(img);
-		} else {
-			image = img;
-			grabPixels();
-		}
-	}
-
-	public BufferedImage getBufferedImage() {
-		return image;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
 }

@@ -28,23 +28,17 @@ public class Video implements Source {
 		this.start = start;
 	}
 
-	private void load() {
+	public void init() {
 		bufferer = new BufferThread();
 		bufferer.start();
 	}
 
-	public void stop() {
-		if (bufferer != null)
-			bufferer.stop();
+	public void update() {
+		// update every frame delay ms
 	}
 
 	public Frame getFrame() {
-		if (bufferer == null || !bufferer.started) {
-			load();
-			return null;
-		}
-
-		if (buffer == null)
+		if (!bufferer.started)
 			return null;
 
 		while (buffer.size() == 0)
@@ -53,10 +47,15 @@ public class Video implements Source {
 		return buffer.poll();
 	}
 
+	public void stop() {
+		if (bufferer != null)
+			bufferer.stop();
+	}
+
 	class BufferThread implements Runnable {
 
 		private FrameGrab frameGrabber;
-		private boolean started;
+		private volatile boolean started;
 
 		public BufferThread() {
 			buffer = new LinkedList<Frame>();

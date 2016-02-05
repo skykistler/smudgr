@@ -5,40 +5,63 @@ import java.util.ArrayList;
 import io.smudgr.alg.Algorithm;
 import io.smudgr.controller.Controller;
 import io.smudgr.source.Frame;
+import io.smudgr.source.Source;
 
 public class Smudge {
 	private Controller controller;
 
+	private Source source;
 	private ArrayList<Algorithm> algorithms;
-	private String filename;
-	private String name;
-	private Frame originalSource;
-
-	private Frame frame;
 
 	private int downsample = 1;
 
-	public Smudge(String filename) {
-		this(filename, filename);
-	}
-
-	public Smudge(String smudgename, String filename) {
-		this.filename = filename;
-		name = smudgename;
-
+	public Smudge(Source s) {
+		source = s;
 		algorithms = new ArrayList<Algorithm>();
 	}
 
 	public void init() {
 		System.out.println("Initializing smudge...");
 
-		setSource(new Frame(filename));
+		source.init();
 
 		System.out.println("Setting up " + algorithms.size() + " algorithms...");
 		for (Algorithm a : algorithms)
 			a.init();
 
 		System.out.println("Smudge initialized.");
+	}
+
+	public void update() {
+		source.update();
+	}
+
+	public synchronized Frame render() {
+		if (source == null)
+			return null;
+
+		Frame toRender = source.getFrame();
+
+		int w = Math.max(toRender.getWidth() / downsample, 1);
+		int h = Math.max(toRender.getHeight() / downsample, 1);
+
+		toRender.resize(w, h);
+
+		for (Algorithm a : algorithms)
+			a.apply(toRender);
+
+		if (saveNextRender)
+			outputFrame(toRender);
+
+		return toRender;
+	}
+
+	public Source getSource() {
+		return source;
+	}
+
+	public void setSource(Source source) {
+		this.source = source;
 	}
 
 	public Controller getController() {
@@ -65,32 +88,6 @@ public class Smudge {
 		return algorithms;
 	}
 
-	public void setSource(Frame image) {
-		originalSource = frame = image;
-	}
-
-	public synchronized Frame render() {
-		Frame toRender;
-		if (originalSource != null) {
-			int w = Math.max(originalSource.getWidth() / downsample, 1);
-			int h = Math.max(originalSource.getHeight() / downsample, 1);
-
-			if (frame == null || frame.getWidth() != w || frame.getHeight() != h) {
-				frame = originalSource.resize(w, h);
-			}
-		}
-
-		toRender = frame.copy();
-
-		for (Algorithm a : algorithms)
-			a.apply(toRender);
-
-		if (saveNextRender)
-			outputFrame(toRender);
-
-		return toRender;
-	}
-
 	boolean saveNextRender = false;
 
 	public void save() {
@@ -98,10 +95,10 @@ public class Smudge {
 	}
 
 	private void outputFrame(Frame f) {
-		String output = "output/" + name + "_" + System.currentTimeMillis() + ".png";
+		String output = "output/" + System.currentTimeMillis() + ".png";
 		System.out.println("Saving smudge to " + output);
 
-		Frame toSave = f.resize(originalSource.getWidth(), originalSource.getHeight());
+		Frame toSave = f.resize(source.getFrame().getWidth(), source.getFrame().getHeight());
 		toSave.save(output);
 
 		saveNextRender = false;
