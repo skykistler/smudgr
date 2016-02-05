@@ -32,19 +32,6 @@ public class Frame {
 		return this;
 	}
 
-	private void load(String path) throws IOException {
-		BufferedImage loaded = ImageIO.read(new File(path));
-
-		if (loaded == null)
-			System.out.println("Unable to load: " + path);
-
-		width = loaded.getWidth();
-		height = loaded.getHeight();
-
-		init();
-		convert(loaded);
-	}
-
 	private void init() {
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		grabPixels();
@@ -196,8 +183,8 @@ public class Frame {
 
 			return scaleDown(w, h);
 		} else
-			// Scale up if needed
-			if (height < sizeH && width < sizeW) {
+		// Scale up if needed
+		if (height < sizeH && width < sizeW) {
 			int w = (int) (width * ((double) sizeH / height));
 			int h = sizeH;
 
