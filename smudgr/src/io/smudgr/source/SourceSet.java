@@ -2,6 +2,7 @@ package io.smudgr.source;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SourceSet implements Source {
 	private ArrayList<String> files = new ArrayList<String>();
@@ -21,6 +22,7 @@ public class SourceSet implements Source {
 			files.add(location);
 		else {
 			String[] list = directory.list();
+			Arrays.sort(list);
 			for (int i = 0; i < list.length; i++)
 				files.add(location + "/" + list[i]);
 		}

@@ -2,6 +2,7 @@ package io.smudgr.controller.controls;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import io.smudgr.controller.Controller;
 import io.smudgr.source.SourceSet;
@@ -27,6 +28,7 @@ public class SourceSetControl extends Controllable {
 			files.add(location);
 		else {
 			String[] list = directory.list();
+			Arrays.sort(list);
 			boolean sourceSetControlNeeded = false;
 			for (int i = 0; i < list.length; i++) {
 				String path = location + "/" + list[i];
