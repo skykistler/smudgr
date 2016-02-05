@@ -20,9 +20,8 @@ public class SkyShowMain {
 		MidiController controller = new MidiController(11, "show_test.map");
 
 		// Make smudge
-		Smudge smudge = new Smudge(new Image("SeepferdSeepferd.jpeg"));
-		new SourceSetControl(controller, "poe");
-		// new VideoControl(controller, "hackers.mp4");
+		Smudge smudge = new Smudge(new Image("amsterdam/aa_title.png"));
+		new SourceSetControl(controller, "amsterdam");
 
 		// Set smudge before doing anything
 		controller.setSmudge(smudge);

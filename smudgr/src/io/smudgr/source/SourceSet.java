@@ -74,8 +74,12 @@ public class SourceSet implements Source {
 				return new Video(path);
 			case "gif":
 				return new Gif(path);
-			default:
+			case "png":
+			case "jpg":
+			case "jpeg":
 				return new Image(path);
+			default:
+				return null;
 			}
 		} catch (Exception e) {
 			return null;

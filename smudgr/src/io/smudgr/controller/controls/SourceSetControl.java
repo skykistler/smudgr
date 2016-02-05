@@ -29,18 +29,13 @@ public class SourceSetControl extends Controllable {
 		else {
 			String[] list = directory.list();
 			Arrays.sort(list);
-			boolean sourceSetControlNeeded = false;
 			for (int i = 0; i < list.length; i++) {
 				String path = location + "/" + list[i];
-				File f = new File(path);
-				if (f.isDirectory())
-					sourceSetControlNeeded = true;
 
 				files.add(path);
 			}
 
-			if (sourceSetControlNeeded)
-				new SourceControl(c);
+			new SourceControl(c);
 		}
 
 		requestBind();
@@ -51,8 +46,8 @@ public class SourceSetControl extends Controllable {
 
 		for (String path : files) {
 			SourceSet set = new SourceSet(path);
+			set.init();
 			if (set.size() > 0) {
-				set.init();
 				sourceSets.add(set);
 			}
 		}
@@ -96,6 +91,8 @@ public class SourceSetControl extends Controllable {
 		SourceSet current = getCurrentSet();
 		if (current != null)
 			current.stop();
+
+		currentSet = i;
 
 		if (currentSet >= sourceSets.size())
 			currentSet %= sourceSets.size();

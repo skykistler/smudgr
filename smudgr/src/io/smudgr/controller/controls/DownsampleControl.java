@@ -18,13 +18,13 @@ public class DownsampleControl extends Controllable {
 	}
 
 	public void init() {
-		getController().getSmudge().downsample(downsample);
+		getController().getSmudge().setDownsample(downsample);
 	}
 
 	public void increment() {
 		downsample++;
 
-		getController().getSmudge().downsample(downsample);
+		getController().getSmudge().setDownsample(downsample);
 	}
 
 	public void decrement() {
@@ -32,7 +32,7 @@ public class DownsampleControl extends Controllable {
 		if (downsample < 1)
 			downsample = 1;
 
-		getController().getSmudge().downsample(downsample);
+		getController().getSmudge().setDownsample(downsample);
 	}
 
 	public void inputValue(int value) {

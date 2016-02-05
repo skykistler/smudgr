@@ -64,9 +64,8 @@ public class JView implements View {
 		g.fillRect(0, 0, window.getWidth(), window.getHeight());
 
 		frame = smudge.render();
-		if (frame != null) {
+		if (frame != null)
 			drawFittedImage(g, frame.getBufferedImage());
-		}
 
 		g.dispose();
 

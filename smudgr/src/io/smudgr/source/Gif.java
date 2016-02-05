@@ -157,7 +157,7 @@ public class Gif implements Source {
 					IIOMetadataNode gce = (IIOMetadataNode) root.getElementsByTagName("GraphicControlExtension").item(0);
 					NodeList children = root.getChildNodes();
 
-					int delay = Integer.valueOf(gce.getAttribute("delayTime"));
+					int delay = Integer.valueOf(gce.getAttribute("delayTime")) * 10;
 
 					String disposal = gce.getAttribute("disposalMethod");
 
@@ -247,6 +247,9 @@ public class Gif implements Source {
 			this.image = image;
 			frame = new Frame(image);
 			this.disposal = disposal;
+
+			if (delay == 0)
+				delay = 100;
 			this.delay = delay;
 		}
 

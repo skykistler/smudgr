@@ -18,8 +18,10 @@ public class Image implements Source {
 		try {
 			BufferedImage loaded = ImageIO.read(new File("data/" + filename));
 
-			if (loaded == null)
+			if (loaded == null) {
 				System.out.println("Unable to load: " + filename);
+				return;
+			}
 
 			frame = new Frame(loaded);
 		} catch (IOException e) {
@@ -32,7 +34,6 @@ public class Image implements Source {
 
 	}
 
-	@Override
 	public Frame getFrame() {
 		return frame;
 	}

@@ -13,6 +13,7 @@ public class Smudge {
 	private Source source;
 	private ArrayList<Algorithm> algorithms;
 
+	private Frame lastFrame;
 	private int downsample = 1;
 
 	public Smudge(Source s) {
@@ -42,10 +43,17 @@ public class Smudge {
 
 		Frame toRender = source.getFrame();
 
-		int w = Math.max(toRender.getWidth() / downsample, 1);
-		int h = Math.max(toRender.getHeight() / downsample, 1);
+		if (toRender == null)
+			return lastFrame;
 
-		toRender.resize(w, h);
+		if (downsample > 1) {
+			int w = Math.max(toRender.getWidth() / downsample, 1);
+			int h = Math.max(toRender.getHeight() / downsample, 1);
+
+			toRender = toRender.resize(w, h);
+		} else {
+			toRender = toRender.copy();
+		}
 
 		for (Algorithm a : algorithms)
 			a.apply(toRender);
@@ -53,7 +61,7 @@ public class Smudge {
 		if (saveNextRender)
 			outputFrame(toRender);
 
-		return toRender;
+		return lastFrame = toRender;
 	}
 
 	public Source getSource() {
@@ -75,7 +83,7 @@ public class Smudge {
 			controller.setSmudge(this);
 	}
 
-	public void downsample(int amount) {
+	public void setDownsample(int amount) {
 		if (amount > 0)
 			downsample = amount;
 	}
