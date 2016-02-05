@@ -15,9 +15,8 @@ public class PixelShift extends Algorithm {
 
 	private NumberParameter amount = new NumberParameter(this, "Amount", 0, 0, 1, 0.005);
 	private NumberParameter intervals = new NumberParameter(this, "Intervals", 5, 1, 1000, 1); // Change to be a percentage or not I guess
-	//private NumberParameter intervals = new NumberParameter(this, "Intervals", 0.25, 0, 0.51, 0.001);
-	//private NumberParameter start = new NumberParameter(this, "Start", 0.4, 0, 1, 0.001);
-	//private NumberParameter end = new NumberParameter(this, "End", 0.55, 0, 1, 0.001);
+	private NumberParameter start = new NumberParameter(this, "Start", 0, 0, 1, 0.01);
+	private NumberParameter length = new NumberParameter(this, "Length", 1, 0, 1, 0.01);
 	private NumberParameter shiftType = new NumberParameter(this, "Shift Type", 1, 1, 3, 1); // allows shift to be set via switch structure in calculateShift function
 	private BooleanParameter reverse = new BooleanParameter(this, "Reverse", true);
 	private NumberParameter optional = new NumberParameter(this, "Optional", 100, 100, 10000, 10);
@@ -51,6 +50,15 @@ public class PixelShift extends Algorithm {
 		
 		double ints = intervals.getValue();
 		
+		// set start and end of intervals affected
+		int n0 = (int) (ints * start.getValue());
+		int nLength = (int) (ints * length.getValue());
+		int n1 = n0 + nLength;
+				
+		if (n1 > ints)
+			n1 = (int) ints;
+		
+		
 		double intervalWidth = size / ints;
 		
 		if(intervalWidth < 1) {
@@ -58,15 +66,10 @@ public class PixelShift extends Algorithm {
 			ints = size;
 		}
 		
-		//int n0 = (int) (start.getValue() * ints);
-		//int n1 = (int) (end.getValue() * ints);
-		
-		for (int n = 1; n < ints + 1; n++) {
+		for (int n = n0 + 1; n < n1 + 1; n++) {
 			
 			double interval = (n - 1) * intervalWidth;
-			
-			//if (inStopArea(n, n0, n1, img.getWidth())) continue;
-			
+
 			for (int i = 0; i < intervalWidth; i++) {
 				int index = (int) (interval + i);
 				if (index < cf.getCoordSet().size()) {
@@ -120,14 +123,6 @@ public class PixelShift extends Algorithm {
 		
 	}
 
-	public boolean inStopArea(int n, int n0, int n1, int width){
-		if( n0 <= n1) 
-			return (n <= n1 && n >= n0);
-		else
-			return ( (n >= 0 && n <= n1) || (n >= n0 && n <= width) );
-		
-	}
-	
 	public String getName() {
 		return "Pixel Shift";
 	}
