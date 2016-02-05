@@ -5,6 +5,7 @@ import io.smudgr.alg.coord.ColumnCoords;
 import io.smudgr.controller.controls.AnimateByStepControl;
 import io.smudgr.controller.controls.DownsampleControl;
 import io.smudgr.controller.device.MidiController;
+import io.smudgr.source.Image;
 import io.smudgr.view.JView;
 
 public class EricMain {
@@ -13,7 +14,7 @@ public class EricMain {
 		MidiController controller = new MidiController(11);
 
 		// Make a smudge
-		Smudge smudge = new Smudge("test", "emma.jpg");
+		Smudge smudge = new Smudge(new Image("emma.jpg"));
 		//new VideoControl(controller, "cars.mp4", 300);
 
 		// Set smudge before doing anything
