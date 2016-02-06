@@ -62,6 +62,7 @@ public class SkyShowMain {
 		shift1.getParameter("Amount").setInitial(.2);
 		shift1.bind("Enable");
 		shift1.getParameter("Enable").setInitial(false);
+		shift1.bind("Reverse");
 		new AnimateOnBeatControl(controller, shift1.getParameter("Amount"));
 
 		PixelSort sort1 = new PixelSort(smudge);
