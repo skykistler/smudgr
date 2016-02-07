@@ -1,13 +1,9 @@
 sky's todo
 ========
 Priority 1:
-+ Properly animate parameters
 + Build CEF
 
 Priority 2:
-+ Midi tempo sync pause/stop
-+ Faster/stable spectral shift
-+ Stabilize pixel shift on downsample
 + Test/improve live marbeler
 + Smooth video input
 
@@ -15,7 +11,6 @@ Sometime soon:
 + Generalized marbeler using strategy for different interpolation functions, different coord functions
 + gif output
 + Function parameter to change coord/univariate functions
-+ Re-add pixel shift functionality
 
 + Math functions to add:
   + Log
