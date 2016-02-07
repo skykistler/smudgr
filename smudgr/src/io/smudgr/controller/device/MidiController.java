@@ -112,7 +112,7 @@ public class MidiController extends Controller implements DeviceObserver {
 		}
 	}
 
-	public void midiInput(MidiMessage message) {
+	public void midiInput(MidiMessage message, long timestamp) {
 		int status = message.getStatus();
 
 		if (status == 0xF8) {
