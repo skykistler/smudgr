@@ -1,5 +1,7 @@
 package io.smudgr.controller.device;
 
+import java.util.ArrayList;
+
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiDevice.Info;
 import javax.sound.midi.MidiMessage;
@@ -35,7 +37,10 @@ public class Device {
 
 		if (desired == null) {
 			System.out.println("No available device named '" + name + "' found.\nPlease choose one of the following:");
-			listAvailableDevices();
+			ArrayList<String> devices = getAvailableDevices();
+			for (int i = 0; i < devices.size(); i++) {
+				System.out.println("[Device #" + i + "] " + devices.get(i));
+			}
 		} else
 			try {
 				device = MidiSystem.getMidiDevice(desired);
@@ -61,7 +66,7 @@ public class Device {
 
 		@Override
 		public void send(MidiMessage message, long timeStamp) {
-			parent.midiInput(message);
+			parent.midiInput(message, timeStamp);
 		}
 
 		public String toString() {
@@ -74,8 +79,14 @@ public class Device {
 
 	}
 
-	public static void listAvailableDevices() {
+	/**
+	 * Return a list of device names.
+	 * 
+	 * @return String[]
+	 */
+	public static ArrayList<String> getAvailableDevices() {
 		Info[] midiDevices = MidiSystem.getMidiDeviceInfo();
+		ArrayList<String> devices = new ArrayList<String>();
 
 		for (Info i : midiDevices) {
 			MidiDevice device = null;
@@ -84,7 +95,7 @@ public class Device {
 				device = MidiSystem.getMidiDevice(i);
 				Transmitter t = device.getTransmitter();
 				if (t != null)
-					System.out.println(i);
+					devices.add(i.getName());
 			} catch (Exception e) {
 			} finally {
 				if (device.isOpen())
@@ -92,7 +103,7 @@ public class Device {
 			}
 		}
 
-		System.out.println();
+		return devices;
 	}
 
 }
