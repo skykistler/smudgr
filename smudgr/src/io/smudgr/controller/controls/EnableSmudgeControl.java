@@ -7,6 +7,8 @@ public class EnableSmudgeControl extends Controllable {
 
 	public EnableSmudgeControl(Controller controller) {
 		super(controller, "Enable Smudge");
+
+		requestBind();
 	}
 
 	public void inputValue(int value) {
