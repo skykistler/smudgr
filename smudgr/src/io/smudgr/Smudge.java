@@ -20,6 +20,7 @@ public class Smudge {
 	public Smudge(Source s) {
 		source = s;
 		algorithms = new ArrayList<Algorithm>();
+		setEnabled(true);
 	}
 
 	public void init() {
