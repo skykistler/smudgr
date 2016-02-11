@@ -12,6 +12,7 @@ public class Smudge {
 
 	private Source source;
 	private ArrayList<Algorithm> algorithms;
+	private boolean enabled;
 
 	private Frame lastFrame;
 	private int downsample = 1;
@@ -19,6 +20,7 @@ public class Smudge {
 	public Smudge(Source s) {
 		source = s;
 		algorithms = new ArrayList<Algorithm>();
+		setEnabled(true);
 	}
 
 	public void init() {
@@ -55,13 +57,22 @@ public class Smudge {
 			toRender = toRender.copy();
 		}
 
-		for (Algorithm a : algorithms)
-			a.apply(toRender);
+		if (enabled)
+			for (Algorithm a : algorithms)
+				a.apply(toRender);
 
 		if (saveNextRender)
 			outputFrame(toRender);
 
 		return lastFrame = toRender;
+	}
+
+	public void setEnabled(boolean enable) {
+		enabled = enable;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
 	}
 
 	public Source getSource() {

@@ -238,13 +238,11 @@ public class Gif implements Source {
 	}
 
 	private class GifFrame {
-		private final BufferedImage image;
 		private final Frame frame;
 		private final String disposal;
 		private final int delay;
 
 		public GifFrame(BufferedImage image, String disposal, int delay) {
-			this.image = image;
 			frame = new Frame(image);
 			this.disposal = disposal;
 
@@ -254,7 +252,7 @@ public class Gif implements Source {
 		}
 
 		public BufferedImage getImage() {
-			return image;
+			return frame.getBufferedImage();
 		}
 
 		public Frame getFrame() {

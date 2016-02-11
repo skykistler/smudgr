@@ -32,7 +32,7 @@ public class BooleanParameter extends Parameter {
 	}
 
 	public void inputValue(int midi) {
-		setValue(midi > 0);
+		// No need for this
 	}
 
 	public void inputOn(int value) {

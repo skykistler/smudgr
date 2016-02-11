@@ -8,6 +8,7 @@ import io.smudgr.alg.coord.ConvergeCoordFunction;
 import io.smudgr.alg.coord.RowCoords;
 import io.smudgr.controller.controls.AnimateOnBeatControl;
 import io.smudgr.controller.controls.DownsampleControl;
+import io.smudgr.controller.controls.EnableSmudgeControl;
 import io.smudgr.controller.controls.SourceSetControl;
 import io.smudgr.controller.device.MidiController;
 import io.smudgr.source.Image;
@@ -21,7 +22,8 @@ public class SkyShowMain {
 
 		// Make smudge
 		Smudge smudge = new Smudge(new Image("amsterdam/aa_title.png"));
-		new SourceSetControl(controller, "amsterdam");
+		new SourceSetControl(controller, "dankGifs3");
+		new EnableSmudgeControl(controller);
 
 		// Set smudge before doing anything
 		controller.setSmudge(smudge);
