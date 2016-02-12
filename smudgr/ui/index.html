@@ -3,7 +3,7 @@
     <link href="style.css" rel="stylesheet">
 
     <script src="jquery-1.12.0.min.js"></script>
-    <script src="SequenceComponent.js"></script>
+    <script src="vue.min.js"></script>
   </head>
 
   <body>
@@ -23,6 +23,30 @@
       $(window).resize(function() {
         fitSections();
       });
+
+      Vue.component('sequence-component', {
+        props: ['name'],
+        template: "{{ name }} Algorithm"
+      });
+
+      function SequenceComponent(name) {
+        this.name = name;
+        this.id = name.replace(/ /g, "") + "-" + generateUID();
+
+        var div_container = "<div class='sequence-component' id='" + this.id + "'>";
+        var component_html = "<sequence-component name='" + this.name + "'/>";
+        div_container += component_html + "</div>";
+
+        $('#sequence-bar').append(div_container);
+
+        new Vue ({
+          el: '#' + this.id
+        });
+      }
+
+      function generateUID() {
+        return Math.floor((Math.random() * 1000) + 1);
+      }
 
       $(document).ready(function() {
         fitSections();
@@ -44,6 +68,7 @@
         var detail_bar_width = $('#detail-bar').width();
         $('#render-view').width(window.innerWidth - detail_bar_width);
       }
+
     </script>
   </body>
 </html>
