@@ -1,5 +1,6 @@
 package io.smudgr;
 
+import io.smudgr.alg.HSVLModifier;
 import io.smudgr.alg.PixelShift;
 import io.smudgr.alg.coord.ColumnCoords;
 import io.smudgr.controller.controls.AnimateByStepControl;
@@ -42,35 +43,8 @@ public class EricMain {
 		//		spectral.bind("Bound Width");
 		//		spectral.bind("Bound Height");
 		//new AnimationControl(controller, spectral.getParameter("Shift"), .01);
-		//
-		//		
-		//		ChromaShift shift = new ChromaShift(smudge);
-		//		shift.bind("Layer 1 X");
-		//		shift.bind("Layer 1 Y");
-		//		shift.bind("Layer 2 X");
-		//		shift.bind("Layer 2 Y");
-		//		shift.bind("Layer 3 X");
-		//		shift.bind("Layer 3 Y");
-		//		shift.bind("X Offset");
-		//		shift.bind("Y Offset");
-		//		shift.bind("Height");
-		//		shift.bind("Width");
-		//		shift.bind("Bitwise Choice");
-		//		shift.bind("Bit Shift");
-
+		
 		//new AnimationControl(controller, shift.getParameter("Amount"));
-
-		//		PixelSort sort = new PixelSort(smudge);
-		//		sort.setCoordFunction(new Converge;
-		//		sort.getParameter("Threshold").setInitial(.1);
-		//		sort.getParameter("Reverse").setInitial(true);
-		//		sort.bind("Threshold");
-		//		sort.bind("Reverse");
-		//		sort.bind("Enable");
-		//		sort.getParameter("Enable").setInitial(false);
-		//		
-		//		MonotonicMap map = new MonotonicMap(smudge);
-		//		map.bind("Shift");
 
 		//		PixelSort sort1 = new PixelSort(smudge);
 		//		sort1.setCoordFunction(new ConvergeCoordFunction());
@@ -98,22 +72,28 @@ public class EricMain {
 		//		shift.getParameter("Enable").setInitial(false);
 		//		new AnimationControl(controller, shift.getParameter("Amount"));
 
-		PixelShift shift1 = new PixelShift(smudge);
-		//shift1.setBound(new EllipticalBound(1, 1));
-		shift1.setCoordFunction(new ColumnCoords());
-		//shift1.getParameter("Intervals").setInitial(3);
-		shift1.bind("Intervals");
-		shift1.getParameter("Amount").setInitial(.2);
-		shift1.bind("Enable");
-		shift1.getParameter("Enable").setInitial(false);
+//		PixelShift shift1 = new PixelShift(smudge);
+//		//shift1.setBound(new EllipticalBound(1, 1));
+//		shift1.setCoordFunction(new ColumnCoords());
+//		//shift1.getParameter("Intervals").setInitial(3);
+//		shift1.bind("Intervals");
+//		shift1.getParameter("Amount").setInitial(.2);
+//		shift1.bind("Enable");
+//		shift1.getParameter("Enable").setInitial(false);
 		//shift1.bind("Amount");
 
 		//shift1.bind("Start");
 		//shift1.bind("End");
 
-		new AnimateByStepControl(controller, shift1.getParameter("Amount"));
+		//new AnimateByStepControl(controller, shift1.getParameter("Amount"));
 		//new AnimationControl(controller, shift1.getParameter("End"));
 		//new AnimationControl(controller, shift1.getParameter("Start"));
+		
+		HSVLModifier mod = new HSVLModifier(smudge);
+		mod.bind("Saturation");
+		mod.bind("Hue Rotation");
+		mod.bind("Value/Lightness");
+		mod.bind("Color Space");
 
 		new DownsampleControl(controller, 1);
 
