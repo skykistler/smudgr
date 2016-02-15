@@ -1,0 +1,74 @@
+<html>
+  <head>
+    <link href="style.css" rel="stylesheet">
+
+    <script src="jquery-1.12.0.min.js"></script>
+    <script src="vue.min.js"></script>
+  </head>
+
+  <body>
+    <div id="detail-bar">
+    </div>
+
+    <div id="render-view">
+      <img src="demo.gif"/>
+    </div>
+
+    <div id="sequence-bar-container">
+      <div id="sequence-bar">
+      </div>
+    </div>
+
+    <script>
+      $(window).resize(function() {
+        fitSections();
+      });
+
+      Vue.component('sequence-component', {
+        props: ['name'],
+        template: "{{ name }} Algorithm"
+      });
+
+      function SequenceComponent(name) {
+        this.name = name;
+        this.id = name.replace(/ /g, "") + "-" + generateUID();
+
+        var div_container = "<div class='sequence-component' id='" + this.id + "'>";
+        var component_html = "<sequence-component name='" + this.name + "'/>";
+        div_container += component_html + "</div>";
+
+        $('#sequence-bar').append(div_container);
+
+        new Vue ({
+          el: '#' + this.id
+        });
+      }
+
+      function generateUID() {
+        return Math.floor((Math.random() * 1000) + 1);
+      }
+
+      $(document).ready(function() {
+        fitSections();
+
+        new SequenceComponent("Sources");
+        new SequenceComponent("Pixel Sort");
+        new SequenceComponent("Spectral Shift");
+        new SequenceComponent("Spectral Shift 2");
+        new SequenceComponent("Spectral Shift 3");
+        new SequenceComponent("Spectral Shift 4");
+        new SequenceComponent("Spectral Shift 5");
+      });
+
+      function fitSections() {
+        var top_layer_height = window.innerHeight - $('#sequence-bar-container').height();
+        $('#detail-bar').height(top_layer_height);
+        $('#render-view').height(top_layer_height);
+
+        var detail_bar_width = $('#detail-bar').width();
+        $('#render-view').width(window.innerWidth - detail_bar_width);
+      }
+
+    </script>
+  </body>
+</html>

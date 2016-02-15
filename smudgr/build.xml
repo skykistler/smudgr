@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="smudgr" default="launch" basedir=".">
+
+	<target depends="makejar, windowsLaunch, macLaunch" name="launch"/>
+	
+	<target name="makejar">
+		<jar jarfile="smudgr.jar" includes="**/**" basedir="bin"/>
+	</target>
+	
+	<condition property="isMac">
+		<os family="mac" />
+	</condition>
+
+	<condition property="isWindows">
+		<os family="windows" />
+	</condition>
+
+	<target name="windowsLaunch" if="isWindows">
+		<echo>Windows currently not supported</echo>
+	</target>
+
+	<target name="macLaunch" if="isMac">
+		<echo>Running Mac scripts...</echo>
+		<exec dir="." executable="/bin/sh">
+			<arg line="builds/macosx64/compile.sh"/>
+		</exec>
+	</target>
+</project>

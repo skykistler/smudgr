@@ -4,5 +4,30 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="lib" path="library/jcodec-0.1.9.jar"/>
 	<classpathentry kind="lib" path="library/jcodec-javase-0.1.9.jar"/>
+	<classpathentry kind="lib" path="builds/macosx64/bin/smudgr.app/Contents/Java/gluegen-rt-natives-macosx-universal.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="smudgr-java/builds/macosx64/bin/smudgr.app/Contents/Java"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="builds/macosx64/bin/smudgr.app/Contents/Java/gluegen-rt.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="smudgr-java/builds/macosx64/bin/smudgr.app/Contents/Java"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="builds/macosx64/bin/smudgr.app/Contents/Java/jcef.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="smudgr-java/builds/macosx64/bin/smudgr.app/Contents/Java"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="builds/macosx64/bin/smudgr.app/Contents/Java/jogl-all-natives-macosx-universal.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="smudgr-java/builds/macosx64/bin/smudgr.app/Contents/Java"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="builds/macosx64/bin/smudgr.app/Contents/Java/jogl-all.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="smudgr-java/builds/macosx64/bin/smudgr.app/Contents/Java"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

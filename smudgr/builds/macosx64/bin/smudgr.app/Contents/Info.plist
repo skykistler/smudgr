@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>JavaAppLauncher</string>
+	<key>CFBundleIconFile</key>
+	<string>SmudgrIcon.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>org.jcef.jcef</string>
+	<key>CFBundleDisplayName</key>
+	<string>smudgr</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>smudgr</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>NSHumanReadableCopyright</key>
+	<string></string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+	<key>NSSupportsAutomaticGraphicsSwitching</key>
+	<true/>
+	<key>JVMVersion</key>
+	<string>1.7</string>
+	<key>JVMMainClassName</key>
+	<string>io.smudgr.smudgr</string>
+	<key>CFBundleDocumentTypes</key>
+	<array/>
+	<key>LSArchitecturePriority</key>
+	<array/>
+	<key>LSEnvironment</key>
+	<dict>
+		<key>LC_CTYPE</key>
+		<string>UTF-8</string>
+	</dict>
+	<key>JVMOptions</key>
+	<array>
+		<string>-Djava.library.path=$APP_ROOT/Contents/Java/:$APP_ROOT/Contents/Frameworks/Chromium Embedded Framework.framework/Libraries</string>
+	</array>
+	<key>JVMDefaultOptions</key>
+	<dict/>
+	<key>JVMArguments</key>
+	<array/>
+</dict>
+</plist>
