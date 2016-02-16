@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>JavaAppLauncher</string>
 	<key>CFBundleIconFile</key>
-	<string>SmudgrIcon.icns</string>
+	<string>smudgr.icns</string>
 	<key>CFBundleIdentifier</key>
 	<string>org.jcef.jcef</string>
 	<key>CFBundleDisplayName</key>
