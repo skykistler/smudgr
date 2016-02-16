@@ -1,5 +1,6 @@
 package io.smudgr;
 
+import io.smudgr.alg.ChannelDrift;
 import io.smudgr.alg.HSVLModifier;
 import io.smudgr.alg.PixelShift;
 import io.smudgr.alg.coord.ColumnCoords;
@@ -89,11 +90,19 @@ public class EricMain {
 		//new AnimationControl(controller, shift1.getParameter("End"));
 		//new AnimationControl(controller, shift1.getParameter("Start"));
 		
-		HSVLModifier mod = new HSVLModifier(smudge);
-		mod.bind("Saturation");
-		mod.bind("Hue Rotation");
-		mod.bind("Value/Lightness");
-		mod.bind("Color Space");
+//		HSVLModifier mod = new HSVLModifier(smudge);
+//		mod.bind("Saturation");
+//		mod.bind("Hue Rotation");
+//		mod.bind("Value/Lightness");
+//		mod.bind("Color Space");
+		
+		ChannelDrift drift = new ChannelDrift(smudge);
+		drift.bind("Red Offset - X");
+		drift.bind("Red Offset - Y");
+		drift.bind("Green Offset - X");
+		drift.bind("Green Offset - Y");
+		drift.bind("Blue Offset - X");
+		drift.bind("Blue Offset - Y");
 
 		new DownsampleControl(controller, 1);
 

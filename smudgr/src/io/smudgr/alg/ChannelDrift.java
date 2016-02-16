@@ -9,12 +9,12 @@ import io.smudgr.source.Frame;
 
 public class ChannelDrift extends Algorithm {
 
-	NumberParameter redX = new NumberParameter(this, "Red Offset - X", 0, 0, 1);
-	NumberParameter redY = new NumberParameter(this, "Red Offset - Y", 0, 0, 1);
-	NumberParameter greenX = new NumberParameter(this, "Green Offset - X", 0, 0, 1);
-	NumberParameter greenY = new NumberParameter(this, "Green Offset - Y", 0, 0, 1);
-	NumberParameter blueX = new NumberParameter(this, "Blue Offset - X", 0, 0, 1);
-	NumberParameter blueY = new NumberParameter(this, "Blue Offset - Y", 0, 0, 1);
+	NumberParameter redX = new NumberParameter(this, "Red Offset - X", 0, 0, 1, 0.001);
+	NumberParameter redY = new NumberParameter(this, "Red Offset - Y", 0, 0, 1, 0.001);
+	NumberParameter greenX = new NumberParameter(this, "Green Offset - X", 0, 0, 1, 0.001);
+	NumberParameter greenY = new NumberParameter(this, "Green Offset - Y", 0, 0, 1, 0.001);
+	NumberParameter blueX = new NumberParameter(this, "Blue Offset - X", 0, 0, 1, 0.001);
+	NumberParameter blueY = new NumberParameter(this, "Blue Offset - Y", 0, 0, 1, 0.001);
 
 	private int boundWidth;
 	private int boundHeight;
@@ -59,7 +59,7 @@ public class ChannelDrift extends Algorithm {
 			}
 		}
 
-		img.pixels = copy.pixels;
+		img.setBufferedImage(copy.getBufferedImage());
 	}
 
 	public int getShifted(int x, int y, int shiftX, int shiftY) {
