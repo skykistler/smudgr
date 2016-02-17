@@ -23,6 +23,10 @@ public class SourceMixer extends Algorithm {
 		 * Grab the frame that will be mixed into img
 		*/
 		mixFrame = source.getFrame();
+		
+		if(mixFrame == null)
+			return;
+		
 		int w = mixFrame.getWidth();
 		int h = mixFrame.getHeight();
 		int width = img.getWidth();
