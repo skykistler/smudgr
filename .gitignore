@@ -1,2 +1,6 @@
 **/.DS_Store
 **/smudgr.jar
+
+smudgr/builds/macosx64/bin/smudgr.app/Contents/Java/smudgr.jar
+
+smudgr/builds/smudgr.jar
