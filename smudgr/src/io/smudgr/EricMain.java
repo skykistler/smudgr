@@ -3,11 +3,15 @@ package io.smudgr;
 import io.smudgr.alg.ChannelDrift;
 import io.smudgr.alg.HSVLModifier;
 import io.smudgr.alg.PixelShift;
+import io.smudgr.alg.PixelSort;
+import io.smudgr.alg.SourceMixer;
 import io.smudgr.alg.coord.ColumnCoords;
+import io.smudgr.alg.coord.RowCoords;
 import io.smudgr.controller.controls.AnimateByStepControl;
 import io.smudgr.controller.controls.DownsampleControl;
 import io.smudgr.controller.device.MidiController;
 import io.smudgr.source.Image;
+import io.smudgr.source.SourceSet;
 import io.smudgr.view.JView;
 
 public class EricMain {
@@ -16,12 +20,19 @@ public class EricMain {
 		MidiController controller = new MidiController(11);
 
 		// Make a smudge
-		Smudge smudge = new Smudge(new Image("emma.jpg"));
+		Smudge smudge = new Smudge(new Image("flowers/flowers2.jpg"));
 		//new VideoControl(controller, "cars.mp4", 300);
 
 		// Set smudge before doing anything
 		controller.setSmudge(smudge);
 
+		SourceSet mySource = new SourceSet("mix");
+		mySource.init();
+		
+		SourceMixer mixer = new SourceMixer(smudge, mySource);
+		mixer.bind("Enable");
+		mixer.getParameter("Enable").setInitial(false);
+		
 		//		BitSmear smear = new BitSmear(smudge);
 		//			smear.bind("Red Shift");
 		//			smear.bind("Green Shift");
@@ -54,12 +65,12 @@ public class EricMain {
 		//		sort1.bind("Enable");
 		//		sort1.getParameter("Enable").setInitial(false);
 
-		//		PixelSort sort2 = new PixelSort(smudge);
-		//		sort2.setCoordFunction(new RowCoords());
-		//		sort2.bind("Threshold");
-		//		sort2.bind("Reverse");
-		//		sort2.bind("Enable");
-		//		sort2.getParameter("Enable").setInitial(false);
+//				PixelSort sort2 = new PixelSort(smudge);
+//				sort2.setCoordFunction(new RowCoords());
+//				sort2.bind("Threshold");
+//				sort2.bind("Reverse");
+//				sort2.bind("Enable");
+//				sort2.getParameter("Enable").setInitial(false);
 		//		
 
 		//		PixelShift shift = new PixelShift(smudge);
@@ -96,13 +107,13 @@ public class EricMain {
 //		mod.bind("Value/Lightness");
 //		mod.bind("Color Space");
 		
-		ChannelDrift drift = new ChannelDrift(smudge);
-		drift.bind("Red Offset - X");
-		drift.bind("Red Offset - Y");
-		drift.bind("Green Offset - X");
-		drift.bind("Green Offset - Y");
-		drift.bind("Blue Offset - X");
-		drift.bind("Blue Offset - Y");
+//		ChannelDrift drift = new ChannelDrift(smudge);
+//		drift.bind("Red Offset - X");
+//		drift.bind("Red Offset - Y");
+//		drift.bind("Green Offset - X");
+//		drift.bind("Green Offset - Y");
+//		drift.bind("Blue Offset - X");
+//		drift.bind("Blue Offset - Y");
 
 		new DownsampleControl(controller, 1);
 
