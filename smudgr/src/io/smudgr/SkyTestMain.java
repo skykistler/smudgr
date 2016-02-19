@@ -12,7 +12,7 @@ public class SkyTestMain {
 		MidiController controller = new MidiController(11, "test.map");
 
 		// Make a smudge
-		Smudge smudge = new Smudge(new Image("nicole.jpg"));
+		Smudge smudge = new Smudge(new Image("lilly.png"));
 
 		// Set smudge before doing anything
 		controller.setSmudge(smudge);
