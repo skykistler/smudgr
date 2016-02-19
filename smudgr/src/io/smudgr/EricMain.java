@@ -5,6 +5,7 @@ import io.smudgr.alg.HSVLModifier;
 import io.smudgr.alg.PixelShift;
 import io.smudgr.alg.PixelSort;
 import io.smudgr.alg.SourceMixer;
+import io.smudgr.alg.SourceMixerHack;
 import io.smudgr.alg.coord.ColumnCoords;
 import io.smudgr.alg.coord.RowCoords;
 import io.smudgr.controller.controls.AnimateByStepControl;
@@ -29,7 +30,7 @@ public class EricMain {
 		SourceSet mySource = new SourceSet("mix");
 		mySource.init();
 		
-		SourceMixer mixer = new SourceMixer(smudge, mySource);
+		SourceMixerHack mixer = new SourceMixerHack(smudge, mySource);
 		mixer.bind("Enable");
 		mixer.getParameter("Enable").setInitial(false);
 		

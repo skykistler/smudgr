@@ -1,24 +1,26 @@
 package io.smudgr.alg;
 
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 import io.smudgr.Smudge;
 import io.smudgr.alg.math.ColorHelper;
+import io.smudgr.alg.param.NumberParameter;
 import io.smudgr.source.Frame;
 import io.smudgr.source.Source;
 
-public class SourceMixer extends Algorithm {
+public class SourceMixerHack extends Algorithm {
 
 	private Frame mixFrame;
 	private Source source;
 	
-	public SourceMixer(Smudge s, Source mySource) {
+	public SourceMixerHack(Smudge s, Source mySource) {
 		super(s);
 		this.source = mySource;
 	}
 	
 	public void init() {
-		//source.init();
+		source.init();
 	}
 	
 	public void execute(Frame img) {
@@ -34,26 +36,12 @@ public class SourceMixer extends Algorithm {
 		int w = mixFrame.getWidth();
 		int h = mixFrame.getHeight();
 		int width = img.getWidth();
+		int height = img.getHeight();
 		
-		int x, y;
-		for (ArrayList<Integer> coords : getCoordFunction().getCoordSet()) {
-			for(Integer coord : coords) {
-				x = coord % width;
-				y = (coord - x)/width;
-				if(inFrame(w, h, x, y)) 
-					mix(coord, mixFrame, img, x, y);
-			}
-		}
-	}
-
-	private boolean inFrame(int mixW, int mixH, int x, int y) {
-		return x < mixW && y < mixH;
-	}
-	
-	private void mix(int coord, Frame mix, Frame img, int x, int y) {
-		int color = mix.get(x, y);
-		if(ColorHelper.alpha(color) == 255)
-			img.pixels[coord] = color;
+		Graphics2D g = (Graphics2D) img.getFrame().getBufferedImage().getGraphics();
+		g.drawImage(mixFrame.getBufferedImage(), 0, 0, width, height, null);
+		g.dispose();
+		
 	}
 	
 	public String getName() {
