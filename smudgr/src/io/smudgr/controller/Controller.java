@@ -8,7 +8,7 @@ import io.smudgr.Smudge;
 import io.smudgr.controller.controls.Controllable;
 import io.smudgr.view.View;
 
-public abstract class Controller implements KeyListener {
+public class Controller implements KeyListener {
 	public static final int TARGET_FPS = 60;
 	public static final int TICKS_PER_BEAT = 64;
 

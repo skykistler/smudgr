@@ -77,6 +77,17 @@ public class JView implements View {
 		window.dispose();
 	}
 
+	public Controller getController() {
+		return controller;
+	}
+
+	public void setController(Controller c) {
+		controller = c;
+
+		if (controller.getView() != this)
+			controller.setView(this);
+	}
+
 	private void drawFittedImage(Graphics g, BufferedImage image) {
 		int height = image.getHeight();
 		int width = image.getWidth();
