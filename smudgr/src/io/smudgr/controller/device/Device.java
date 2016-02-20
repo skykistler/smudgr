@@ -29,9 +29,6 @@ public class Device {
 				if (t != null && i.getName().equals(name))
 					desired = i;
 			} catch (Exception e) {
-			} finally {
-				if (d.isOpen())
-					d.close();
 			}
 		}
 

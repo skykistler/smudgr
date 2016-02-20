@@ -9,7 +9,7 @@ import io.smudgr.view.JView;
 public class SkyTestMain {
 	public static void main(String[] args) {
 		// Declare your controller
-		MidiController controller = new MidiController(11, "test.map");
+		MidiController controller = new MidiController("test.map");
 
 		// Make a smudge
 		Smudge smudge = new Smudge(new Image("lilly.png"));

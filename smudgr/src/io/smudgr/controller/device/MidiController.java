@@ -1,5 +1,6 @@
 package io.smudgr.controller.device;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.sound.midi.MidiMessage;
@@ -20,8 +21,7 @@ import io.smudgr.controller.device.messages.TimingClockMessage;
 
 public class MidiController extends Controller implements DeviceObserver {
 
-	private Device input;
-	private int channel;
+	private ArrayList<Device> devices;
 	private MidiControlMap midiMap;
 	private HashMap<Integer, MidiMessageStrategy> messageStrategies;
 	private HashMap<Integer, Controllable> systemControls;
@@ -30,14 +30,16 @@ public class MidiController extends Controller implements DeviceObserver {
 	private TimingClockMessage timingCalculator;
 
 	private boolean waitingForKey = false;
+	private int lastChannel = -1;
 	private int lastKeyPressed = -1;
 
-	public MidiController(int channel) {
-		this(channel, "midi.map");
+	public MidiController() {
+		this("midi.map");
 	}
 
-	public MidiController(int channel, String savedMap) {
-		this.channel = channel;
+	public MidiController(String savedMap) {
+		devices = new ArrayList<Device>();
+
 		midiMap = new MidiControlMap(savedMap);
 
 		messageStrategies = new HashMap<Integer, MidiMessageStrategy>();
@@ -61,22 +63,19 @@ public class MidiController extends Controller implements DeviceObserver {
 	}
 
 	public void bindDevice(String deviceName) {
-		input = new Device(this, deviceName);
+		devices.add(new Device(this, deviceName));
 
-		System.out.println("Bound to " + input);
+		System.out.println("Bound to " + devices.get(devices.size() - 1));
+	}
 
-		if (getSmudge() == null) {
-			System.out.println("Set smudge before binding device");
-			return;
-		}
-
+	public void start() {
 		bindParameters();
+		super.start();
 	}
 
 	private void bindParameters() {
-		for (Controllable c : getControls()) {
+		for (Controllable c : getControls())
 			bindControl(c);
-		}
 
 		midiMap.save();
 	}
@@ -93,6 +92,7 @@ public class MidiController extends Controller implements DeviceObserver {
 		System.out.println("Please touch a MIDI key to bind: " + c + " ...");
 
 		lastKeyPressed = -1;
+		lastChannel = -1;
 		waitingForKey = true;
 
 		synchronized (this) {
@@ -103,9 +103,9 @@ public class MidiController extends Controller implements DeviceObserver {
 			}
 		}
 
-		Controllable assigned = midiMap.getKeyBind(lastKeyPressed);
+		Controllable assigned = midiMap.getKeyBind(lastChannel, lastKeyPressed);
 		if (assigned == null) {
-			midiMap.assign(lastKeyPressed, c);
+			midiMap.assign(lastChannel, lastKeyPressed, c);
 			waitingForKey = false;
 		} else {
 			bindControl(c);
@@ -125,13 +125,9 @@ public class MidiController extends Controller implements DeviceObserver {
 
 		boolean system_message = status >= 0xF0;
 
+		int channel = -1;
 		if (!system_message) {
-			// If message isn't on our channel, skip it
-			int message_channel = (status & 0xF) + 1;
-			if (message_channel != channel)
-				return;
-
-			// clear channel for lookup
+			channel = (status & 0xF) + 1;
 			status = (status >> 4) << 4;
 		}
 
@@ -152,21 +148,21 @@ public class MidiController extends Controller implements DeviceObserver {
 			value = -1;
 		}
 
-		if (key != -1) {
+		if (key != -1 && channel != -1) {
 			lastKeyPressed = key;
+			lastChannel = channel;
 
 			// If waiting for key to bind, wake thread to continue
-			if (waitingForKey) {
+			if (waitingForKey)
 				synchronized (this) {
 					notify();
 				}
-			}
 		}
 
 		if (!waitingForKey) {
 			synchronized (getSmudge()) {
 				// If it's a system message, check our manual system controls list. Otherwise get the bind
-				Controllable bound = system_message ? systemControls.get(status) : midiMap.getKeyBind(key);
+				Controllable bound = system_message ? systemControls.get(status) : midiMap.getKeyBind(channel, key);
 
 				if (bound != null)
 					messageStrategies.get(status).input(bound, value);

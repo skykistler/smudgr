@@ -15,12 +15,12 @@ import io.smudgr.controller.controls.Controllable;
 public class MidiControlMap {
 
 	private String filename;
-	private HashMap<Integer, Controllable> midiMap;
-	private HashMap<String, Integer> savedMap;
+	private HashMap<Integer, HashMap<Integer, Controllable>> midiMap;
+	private HashMap<String, String> savedMap;
 
 	public MidiControlMap(String filename) {
-		midiMap = new HashMap<Integer, Controllable>();
-		savedMap = new HashMap<String, Integer>();
+		midiMap = new HashMap<Integer, HashMap<Integer, Controllable>>();
+		savedMap = new HashMap<String, String>();
 
 		this.filename = "data/midi/" + filename;
 		load();
@@ -46,7 +46,8 @@ public class MidiControlMap {
 		try {
 			while ((line = br.readLine()) != null) {
 				String[] parts = line.split(":");
-				savedMap.put(parts[1], Integer.parseInt(parts[0]));
+				if (parts.length == 3)
+					savedMap.put(parts[2], parts[0] + ":" + parts[1]);
 			}
 		} catch (Exception e) {
 			System.out.println("Error while reading the MIDI map file!");
@@ -60,9 +61,13 @@ public class MidiControlMap {
 			System.out.print(".");
 
 			StringBuffer sb = new StringBuffer();
-			for (Integer i : midiMap.keySet()) {
-				sb.append(i + ":" + midiMap.get(i) + "\r\n");
+
+			for (Integer channel : midiMap.keySet()) {
+				HashMap<Integer, Controllable> channelMap = midiMap.get(channel);
+				for (Integer key : channelMap.keySet())
+					sb.append(channel + ":" + key + ":" + channelMap.get(key) + "\r\n");
 			}
+
 			System.out.print(".");
 
 			BufferedWriter bw = new BufferedWriter(new FileWriter(filename));
@@ -75,23 +80,39 @@ public class MidiControlMap {
 		}
 	}
 
-	public void assign(int key, Controllable c) {
-		midiMap.put(key, c);
+	public void assign(int channel, int key, Controllable c) {
+		HashMap<Integer, Controllable> channelMap = midiMap.get(channel);
+
+		if (channelMap == null) {
+			channelMap = new HashMap<Integer, Controllable>();
+			midiMap.put(channel, channelMap);
+		}
+
+		channelMap.put(key, c);
 	}
 
-	public Controllable getKeyBind(int key) {
-		return midiMap.get(key);
+	public Controllable getKeyBind(int channel, int key) {
+		HashMap<Integer, Controllable> channelMap = midiMap.get(channel);
+
+		if (channelMap != null)
+			return channelMap.get(key);
+
+		return null;
 	}
 
 	public boolean isSaved(Controllable c) {
 		boolean contains = savedMap.containsKey(c.toString());
 
 		if (contains) {
-			int key = savedMap.get(c.toString());
+			String channelAndKey = savedMap.get(c.toString());
+			String[] parts = channelAndKey.split(":");
 
-			Controllable bound = getKeyBind(key);
+			int channel = Integer.parseInt(parts[0]);
+			int key = Integer.parseInt(parts[1]);
+
+			Controllable bound = getKeyBind(channel, key);
 			if (bound == null) {
-				assign(key, c);
+				assign(channel, key, c);
 				return true;
 			} else if (!bound.equals(c.toString())) {
 				System.out.println("Bound conflict - " + c.toString() + " saved map has been overridden. Please bind to a different key.");

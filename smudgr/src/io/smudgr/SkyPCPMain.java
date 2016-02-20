@@ -9,20 +9,19 @@ import io.smudgr.alg.coord.RowCoords;
 import io.smudgr.controller.controls.AnimateOnBeatControl;
 import io.smudgr.controller.controls.DownsampleControl;
 import io.smudgr.controller.controls.EnableSmudgeControl;
-import io.smudgr.controller.controls.SourceSetControl;
 import io.smudgr.controller.device.MidiController;
 import io.smudgr.source.Image;
 import io.smudgr.view.JView;
 
-public class SkyShowMain {
+public class SkyPCPMain {
 
 	public static void main(String[] args) {
 		// Declare your controller
-		MidiController controller = new MidiController("show_test.map");
+		MidiController controller = new MidiController("bbt_pcp.map");
 
 		// Make smudge
-		Smudge smudge = new Smudge(new Image("amsterdam/aa_title.png"));
-		new SourceSetControl(controller, "dankGifs3");
+		Smudge smudge = new Smudge(new Image("lilly 2.png"));
+		//		new SourceSetControl(controller, "dankGifs3");
 		new EnableSmudgeControl(controller);
 
 		// Set smudge before doing anything
@@ -107,6 +106,7 @@ public class SkyShowMain {
 		// Declare your view
 		new JView(controller, 0);
 
+		controller.bindDevice("User Port");
 		controller.bindDevice("Arturia BeatStepPro");
 		controller.start();
 	}
