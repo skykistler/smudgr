@@ -27,20 +27,22 @@ public class SourceSet implements Source {
 				if (!list[i].toLowerCase().equals(".ds_store"))
 					files.add(location + "/" + list[i]);
 		}
-	}
-
-	public void init() {
-		System.out.println("Loading " + files.size() + " source files...");
 
 		for (int i = 0; i < files.size(); i++) {
 			String path = files.get(i);
 
 			Source s = makeSource(path);
 			if (s != null) {
-				s.init();
 				sources.add(s);
 			}
 		}
+	}
+
+	public void init() {
+		System.out.println("Loading " + files.size() + " source files...");
+
+		for (Source s : sources)
+			s.init();
 	}
 
 	public void update() {

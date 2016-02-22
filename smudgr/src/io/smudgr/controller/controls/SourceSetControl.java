@@ -46,7 +46,8 @@ public class SourceSetControl extends Controllable {
 
 		for (String path : files) {
 			SourceSet set = new SourceSet(path);
-			sourceSets.add(set);
+			if (set.size() > 0)
+				sourceSets.add(set);
 		}
 
 		setCurrentSet(0);
