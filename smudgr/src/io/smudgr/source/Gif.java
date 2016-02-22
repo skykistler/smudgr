@@ -39,7 +39,7 @@ public class Gif implements Source {
 	}
 
 	public void update() {
-		if (buffer.size() == 0)
+		if (buffer == null || buffer.size() == 0)
 			return;
 
 		long now = System.currentTimeMillis();
@@ -47,6 +47,9 @@ public class Gif implements Source {
 			lastFrameSwitch = now;
 			return;
 		}
+
+		if (currentFrame >= buffer.size() || currentFrame < 0)
+			return;
 
 		long delay = now - lastFrameSwitch;
 		GifFrame frame = buffer.get(currentFrame);
@@ -61,10 +64,25 @@ public class Gif implements Source {
 
 	public Frame getFrame() {
 		if (bufferer == null || !bufferer.started || buffer.size() == 0) {
+			// If getFrame() is being called, 
+			// we need to kick it in gear and make sure this gif gets loaded
+			init();
 			return lastFrame;
 		}
 
+		if (currentFrame < 0 || currentFrame >= buffer.size())
+			return lastFrame;
+
 		return lastFrame = buffer.get(currentFrame).getFrame();
+	}
+
+	public void dispose() {
+		buffer = null;
+		bufferer = null;
+	}
+
+	public String toString() {
+		return filename;
 	}
 
 	class BufferThread implements Runnable {
@@ -200,6 +218,9 @@ public class Gif implements Source {
 
 						} else if (disposal.equals("restoreToBackgroundColor") && backgroundColor != null) {
 							if (!hasBackround || frameIndex > 1) {
+								if (buffer == null)
+									return;
+
 								Frame last = buffer.get(frameIndex - 1).getFrame();
 								master.createGraphics().fillRect(lastx, lasty, last.getWidth(), last.getHeight());
 							}
@@ -221,7 +242,11 @@ public class Gif implements Source {
 						}
 
 						GifFrame gifframe = new GifFrame(copy, disposal, delay);
-						buffer.add(gifframe);
+
+						if (buffer != null)
+							buffer.add(gifframe);
+						else
+							return;
 					}
 
 					master.flush();

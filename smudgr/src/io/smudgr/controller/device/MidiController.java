@@ -29,6 +29,7 @@ public class MidiController extends Controller implements DeviceObserver {
 	private TimingControl timingControl;
 	private TimingClockMessage timingCalculator;
 
+	private boolean parametersBound = false;
 	private boolean waitingForKey = false;
 	private int lastChannel = -1;
 	private int lastKeyPressed = -1;
@@ -69,7 +70,9 @@ public class MidiController extends Controller implements DeviceObserver {
 	}
 
 	public void start() {
-		bindParameters();
+		if (!parametersBound && devices.size() > 0)
+			bindParameters();
+
 		super.start();
 	}
 
@@ -78,6 +81,7 @@ public class MidiController extends Controller implements DeviceObserver {
 			bindControl(c);
 
 		midiMap.save();
+		parametersBound = true;
 	}
 
 	private void bindControl(Controllable c) {

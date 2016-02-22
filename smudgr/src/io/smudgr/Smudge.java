@@ -38,6 +38,9 @@ public class Smudge {
 
 	public void update() {
 		source.update();
+
+		for (Algorithm a : algorithms)
+			a.update();
 	}
 
 	public synchronized Frame render() {

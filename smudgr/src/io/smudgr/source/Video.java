@@ -52,6 +52,10 @@ public class Video implements Source {
 			bufferer.stop();
 	}
 
+	public void dispose() {
+		stop();
+	}
+
 	class BufferThread implements Runnable {
 
 		private FrameGrab frameGrabber;
@@ -102,6 +106,10 @@ public class Video implements Source {
 			buffer = null;
 		}
 
+	}
+
+	public String toString() {
+		return filename;
 	}
 
 }

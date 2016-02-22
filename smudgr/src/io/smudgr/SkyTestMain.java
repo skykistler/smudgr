@@ -12,7 +12,7 @@ public class SkyTestMain {
 		MidiController controller = new MidiController("test.map");
 
 		// Make a smudge
-		Smudge smudge = new Smudge(new Image("lilly.png"));
+		Smudge smudge = new Smudge(new Image("lilly 2.png"));
 
 		// Set smudge before doing anything
 		controller.setSmudge(smudge);
@@ -28,7 +28,7 @@ public class SkyTestMain {
 		// Declare your view
 		new JView(controller);
 
-		controller.bindDevice("Arturia BeatStep Pro");
+		//		controller.bindDevice("Arturia BeatStep Pro");
 		controller.start();
 	}
 }

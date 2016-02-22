@@ -24,7 +24,8 @@ public class SourceSet implements Source {
 			String[] list = directory.list();
 			Arrays.sort(list);
 			for (int i = 0; i < list.length; i++)
-				files.add(location + "/" + list[i]);
+				if (!list[i].toLowerCase().equals(".ds_store"))
+					files.add(location + "/" + list[i]);
 		}
 	}
 
@@ -51,9 +52,12 @@ public class SourceSet implements Source {
 	}
 
 	public void stop() {
-		Source current = getCurrentSource();
-		if (current instanceof Video)
-			((Video) current).stop();
+		for (Source s : sources)
+			s.dispose();
+	}
+
+	public void dispose() {
+		stop();
 	}
 
 	public Frame getFrame() {
@@ -114,7 +118,9 @@ public class SourceSet implements Source {
 		if (i == currentSource)
 			return;
 
-		stop();
+		Source current = getCurrentSource();
+		if (current instanceof Video)
+			((Video) current).stop();
 
 		currentSource = i;
 

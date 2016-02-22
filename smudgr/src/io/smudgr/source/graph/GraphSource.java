@@ -20,4 +20,8 @@ public class GraphSource implements Source {
 		return renderer.drawGraph();
 	}
 
+	public void dispose() {
+
+	}
+
 }

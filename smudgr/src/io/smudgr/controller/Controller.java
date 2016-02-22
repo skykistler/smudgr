@@ -64,15 +64,16 @@ public class Controller implements KeyListener {
 			updater.stop();
 			renderer.stop();
 		}
-
-		view.dispose();
-		System.exit(0);
 	}
 
 	public void update() {
-		if (started)
-			for (Controllable c : controls)
-				c.update();
+		if (!started)
+			return;
+
+		for (Controllable c : controls)
+			c.update();
+
+		smudge.update();
 	}
 
 	public Smudge getSmudge() {

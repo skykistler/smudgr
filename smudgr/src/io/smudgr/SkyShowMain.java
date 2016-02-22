@@ -105,7 +105,7 @@ public class SkyShowMain {
 		new DownsampleControl(controller, 1);
 
 		// Declare your view
-		new JView(controller, 0);
+		new JView(controller, 0, false);
 
 		controller.bindDevice("Arturia BeatStepPro");
 		controller.start();

@@ -66,6 +66,7 @@ public class RenderThread implements Runnable {
 		}
 
 		finished = true;
+		view.dispose();
 	}
 
 }
