@@ -1,7 +1,9 @@
 package io.smudgr;
 
+import io.smudgr.alg.ChannelCrush;
 import io.smudgr.alg.PixelShift;
 import io.smudgr.alg.PixelSort;
+import io.smudgr.alg.SourceMixerHack;
 import io.smudgr.alg.SpectralShift;
 import io.smudgr.alg.coord.ColumnCoords;
 import io.smudgr.alg.coord.ConvergeCoordFunction;
@@ -11,18 +13,20 @@ import io.smudgr.controller.controls.DownsampleControl;
 import io.smudgr.controller.controls.EnableSmudgeControl;
 import io.smudgr.controller.controls.SourceSetControl;
 import io.smudgr.controller.device.MidiController;
+import io.smudgr.source.Gif;
 import io.smudgr.source.Image;
+import io.smudgr.source.Source;
 import io.smudgr.view.JView;
 
-public class SkyShowMain {
+public class SkyPCPMain {
 
 	public static void main(String[] args) {
 		// Declare your controller
-		MidiController controller = new MidiController("show_test.map");
+		MidiController controller = new MidiController("bbt_pcp.map");
 
 		// Make smudge
-		Smudge smudge = new Smudge(new Image("amsterdam/aa_title.png"));
-		new SourceSetControl(controller, "dankGifs3");
+		Smudge smudge = new Smudge(new Gif("pcp/burns/sailor.gif"));
+		new SourceSetControl(controller, "pcp/sets/");
 		new EnableSmudgeControl(controller);
 
 		// Set smudge before doing anything
@@ -81,34 +85,59 @@ public class SkyShowMain {
 		sort2.bind("Enable");
 		sort2.getParameter("Enable").setInitial(false);
 
-		// ChannelCrush smear = new ChannelCrush(smudge);
-		// smear.getParameter("Green Shift").setInitial(7);
-		// smear.getParameter("Blue Shift").setInitial(7);
-		// smear.getParameter("Red Mask").setInitial(0);
-		// smear.bind("Enable");
-		// smear.getParameter("Enable").setInitial(false);
-		//
-		// ChannelCrush bsmear = new ChannelCrush(smudge);
-		// bsmear.getParameter("Green Shift").setInitial(7);
-		// bsmear.getParameter("Red Shift").setInitial(7);
-		// bsmear.getParameter("Blue Mask").setInitial(0);
-		// bsmear.bind("Enable");
-		// bsmear.getParameter("Enable").setInitial(false);
-		//
-		// ChannelCrush gsmear = new ChannelCrush(smudge);
-		// gsmear.getParameter("Red Shift").setInitial(7);
-		// gsmear.getParameter("Blue Shift").setInitial(7);
-		// gsmear.getParameter("Green Mask").setInitial(0);
-		// gsmear.bind("Enable");
-		// gsmear.getParameter("Enable").setInitial(false);
+		ChannelCrush smear = new ChannelCrush(smudge);
+		smear.getParameter("Green Shift").setInitial(7);
+		smear.getParameter("Blue Shift").setInitial(7);
+		smear.getParameter("Red Mask").setInitial(0);
+		smear.bind("Enable");
+		smear.getParameter("Enable").setInitial(false);
+
+		ChannelCrush bsmear = new ChannelCrush(smudge);
+		bsmear.getParameter("Green Shift").setInitial(7);
+		bsmear.getParameter("Red Shift").setInitial(7);
+		bsmear.getParameter("Blue Mask").setInitial(0);
+		bsmear.bind("Enable");
+		bsmear.getParameter("Enable").setInitial(false);
+
+		ChannelCrush gsmear = new ChannelCrush(smudge);
+		gsmear.getParameter("Red Shift").setInitial(7);
+		gsmear.getParameter("Blue Shift").setInitial(7);
+		gsmear.getParameter("Green Mask").setInitial(0);
+		gsmear.bind("Enable");
+		gsmear.getParameter("Enable").setInitial(false);
+
+		makeSourceMixer(smudge, "&.png");
+		makeSourceMixer(smudge, "disco.png");
+		makeSourceMixer(smudge, "fuck.png");
+		makeSourceMixer(smudge, "it.png");
+		makeSourceMixer(smudge, "keep.png");
+		makeSourceMixer(smudge, "mellow.png");
+		makeSourceMixer(smudge, "mother.png");
+		makeSourceMixer(smudge, "rock.png");
+		makeSourceMixer(smudge, "roll.png");
+		makeSourceMixer(smudge, "giphy-2.gif");
 
 		new DownsampleControl(controller, 1);
 
 		// Declare your view
 		new JView(controller, 0, false);
 
+		controller.bindDevice("User Port");
 		controller.bindDevice("Arturia BeatStepPro");
 		controller.start();
+	}
+
+	public static void makeSourceMixer(Smudge s, String path) {
+		path = "pcp/stills/" + path;
+		Source src = null;
+		if (path.endsWith(".gif"))
+			src = new Gif(path);
+		else
+			src = new Image(path);
+
+		SourceMixerHack sm = new SourceMixerHack(s, src);
+		sm.bind("Enable");
+		sm.getParameter("Enable").setInitial(false);
 	}
 
 }

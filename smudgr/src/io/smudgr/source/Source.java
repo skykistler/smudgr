@@ -7,4 +7,6 @@ public interface Source {
 
 	public Frame getFrame();
 
+	public void dispose();
+
 }

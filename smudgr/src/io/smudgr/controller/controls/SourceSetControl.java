@@ -46,22 +46,11 @@ public class SourceSetControl extends Controllable {
 
 		for (String path : files) {
 			SourceSet set = new SourceSet(path);
-			set.init();
-			if (set.size() > 0) {
-				sourceSets.add(set);
-			}
+			sourceSets.add(set);
 		}
 
 		setCurrentSet(0);
 		System.out.println("Successfully loaded " + sourceSets.size() + " source sets");
-	}
-
-	public void update() {
-		SourceSet set = getCurrentSet();
-		if (set == null)
-			return;
-
-		set.update();
 	}
 
 	public void increment() {
@@ -99,7 +88,10 @@ public class SourceSetControl extends Controllable {
 		else if (currentSet < 0)
 			currentSet += sourceSets.size();
 
-		getController().getSmudge().setSource(sourceSets.get(currentSet));
+		current = sourceSets.get(currentSet);
+		current.init();
+
+		getController().getSmudge().setSource(current);
 	}
 
 	public void inputValue(int value) {

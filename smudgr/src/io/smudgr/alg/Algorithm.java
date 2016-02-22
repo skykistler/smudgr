@@ -43,6 +43,10 @@ public abstract class Algorithm {
 
 	}
 
+	public void update() {
+
+	}
+
 	public void apply(Frame img) {
 		if (!enable.getValue())
 			return;

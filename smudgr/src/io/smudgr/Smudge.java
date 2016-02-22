@@ -26,7 +26,8 @@ public class Smudge {
 	public void init() {
 		System.out.println("Initializing smudge...");
 
-		source.init();
+		if (source != null)
+			source.init();
 
 		System.out.println("Setting up " + algorithms.size() + " algorithms...");
 		for (Algorithm a : algorithms)
@@ -37,6 +38,9 @@ public class Smudge {
 
 	public void update() {
 		source.update();
+
+		for (Algorithm a : algorithms)
+			a.update();
 	}
 
 	public synchronized Frame render() {

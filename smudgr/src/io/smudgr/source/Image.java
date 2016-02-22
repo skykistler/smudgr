@@ -38,4 +38,12 @@ public class Image implements Source {
 		return frame;
 	}
 
+	public void dispose() {
+		frame = null;
+	}
+
+	public String toString() {
+		return filename;
+	}
+
 }
