@@ -18,7 +18,8 @@ public class SaveControl extends Controllable {
 	}
 
 	public void inputOn(int value) {
-		getController().getSmudge().save();
+		getController().getSmudge().startOutput();
+		getController().getSmudge().finishOutput();
 	}
 
 	public void inputOff(int value) {

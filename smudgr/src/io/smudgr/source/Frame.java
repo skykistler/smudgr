@@ -3,10 +3,6 @@ package io.smudgr.source;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import io.smudgr.source.smudge.alg.math.ColorHelper;
 
@@ -193,14 +189,6 @@ public class Frame {
 
 		return this;
 
-	}
-
-	public void save(String path) {
-		try {
-			ImageIO.write(image, "png", new File(path));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

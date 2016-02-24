@@ -3,6 +3,7 @@ package io.smudgr.source.smudge;
 import java.util.ArrayList;
 
 import io.smudgr.controller.SmudgeController;
+import io.smudgr.out.Output;
 import io.smudgr.source.Frame;
 import io.smudgr.source.Source;
 import io.smudgr.source.smudge.alg.Algorithm;
@@ -16,6 +17,8 @@ public class Smudge implements Source {
 
 	private Frame lastFrame;
 	private int downsample = 1;
+
+	private Output output;
 
 	public Smudge(Source s) {
 		setSource(s);
@@ -65,8 +68,8 @@ public class Smudge implements Source {
 			for (Algorithm a : algorithms)
 				a.apply(toRender);
 
-		if (saveNextRender)
-			outputFrame(toRender);
+		if (output != null)
+			output.addFrame(toRender);
 
 		return lastFrame = toRender;
 	}
@@ -112,20 +115,14 @@ public class Smudge implements Source {
 		return algorithms;
 	}
 
-	boolean saveNextRender = false;
-
-	public void save() {
-		saveNextRender = true;
+	public void startOutput() {
+		output = new Output(Long.toString(System.currentTimeMillis()), lastFrame.getWidth(), lastFrame.getHeight());
+		output.addFrame(lastFrame);
 	}
 
-	private void outputFrame(Frame f) {
-		String output = "output/" + System.currentTimeMillis() + ".png";
-		System.out.println("Saving smudge to " + output);
-
-		Frame toSave = f.resize(source.getFrame().getWidth(), source.getFrame().getHeight());
-		toSave.save(output);
-
-		saveNextRender = false;
+	public void finishOutput() {
+		output.finish();
+		output = null;
 	}
 
 	public void dispose() {
