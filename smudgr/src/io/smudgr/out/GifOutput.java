@@ -15,7 +15,9 @@ import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.imageio.stream.ImageOutputStream;
 
-public class GifOutput {
+import io.smudgr.source.Frame;
+
+public class GifOutput implements Output {
 	private String path;
 	private int delay;
 	private int loop;
@@ -31,7 +33,7 @@ public class GifOutput {
 		this.loop = loop ? 0 : 1;
 	}
 
-	public void open() throws IOException {
+	public void open() {
 		Iterator<ImageWriter> iter = ImageIO.getImageWritersBySuffix("gif");
 
 		gifWriter = iter.next();
@@ -65,22 +67,33 @@ public class GifOutput {
 
 		child.setUserObject(new byte[] { 0x1, (byte) (loop & 0xFF), (byte) ((loop >> 8) & 0xFF) });
 		appEntensionsNode.appendChild(child);
+		try {
+			imageMetaData.setFromTree(metaFormatName, root);
 
-		imageMetaData.setFromTree(metaFormatName, root);
+			output = new FileImageOutputStream(new File(path));
+			gifWriter.setOutput(output);
 
-		output = new FileImageOutputStream(new File(path));
-		gifWriter.setOutput(output);
-
-		gifWriter.prepareWriteSequence(null);
+			gifWriter.prepareWriteSequence(null);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void write(BufferedImage image) throws IOException {
-		gifWriter.writeToSequence(new IIOImage(image, null, imageMetaData), imageWriteParam);
+	public void addFrame(Frame f) {
+		try {
+			gifWriter.writeToSequence(new IIOImage(f.getBufferedImage(), null, imageMetaData), imageWriteParam);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void close() throws IOException {
-		gifWriter.endWriteSequence();
-		output.close();
+	public void close() {
+		try {
+			gifWriter.endWriteSequence();
+			output.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private static IIOMetadataNode getNode(IIOMetadataNode rootNode, String nodeName) {

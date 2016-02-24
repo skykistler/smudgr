@@ -3,6 +3,8 @@ package io.smudgr.source.smudge;
 import java.util.ArrayList;
 
 import io.smudgr.controller.SmudgeController;
+import io.smudgr.out.GifOutput;
+import io.smudgr.out.ImageOutput;
 import io.smudgr.out.Output;
 import io.smudgr.source.Frame;
 import io.smudgr.source.Source;
@@ -115,13 +117,19 @@ public class Smudge implements Source {
 		return algorithms;
 	}
 
-	public void startOutput() {
-		output = new Output(Long.toString(System.currentTimeMillis()), lastFrame.getWidth(), lastFrame.getHeight());
+	public void saveFrame() {
+		output = new ImageOutput(Long.toString(System.currentTimeMillis()), lastFrame.getWidth(), lastFrame.getHeight());
+		output.addFrame(lastFrame);
+		output.close();
+	}
+
+	public void startGifOutput() {
+		output = new GifOutput(Long.toString(System.currentTimeMillis()), 30, true);
 		output.addFrame(lastFrame);
 	}
 
-	public void finishOutput() {
-		output.finish();
+	public void finishGifOutput() {
+		output.close();
 		output = null;
 	}
 
