@@ -8,7 +8,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import io.smudgr.alg.math.ColorHelper;
+import io.smudgr.source.smudge.alg.math.ColorHelper;
 
 public class Frame {
 	private BufferedImage image;

@@ -1,20 +1,20 @@
 package io.smudgr.controller.controls;
 
-import io.smudgr.controller.Controller;
+import io.smudgr.controller.SmudgeController;
 
 public abstract class Controllable {
-	private Controller controller;
+	private SmudgeController controller;
 	private String name;
 	private boolean bindRequested = false;
 
-	public Controllable(Controller controller, String name) {
+	public Controllable(SmudgeController controller, String name) {
 		this.controller = controller;
 		this.name = name;
 
 		controller.addControl(this);
 	}
 
-	public Controller getController() {
+	public SmudgeController getController() {
 		return controller;
 	}
 

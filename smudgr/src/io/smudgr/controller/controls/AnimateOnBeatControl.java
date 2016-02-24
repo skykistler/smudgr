@@ -1,8 +1,8 @@
 package io.smudgr.controller.controls;
 
-import io.smudgr.alg.param.NumberParameter;
-import io.smudgr.alg.param.Parameter;
-import io.smudgr.controller.Controller;
+import io.smudgr.controller.SmudgeController;
+import io.smudgr.source.smudge.alg.param.NumberParameter;
+import io.smudgr.source.smudge.alg.param.Parameter;
 
 public class AnimateOnBeatControl extends Controllable {
 
@@ -13,7 +13,7 @@ public class AnimateOnBeatControl extends Controllable {
 
 	private int speed = 5;
 
-	public AnimateOnBeatControl(Controller controller, Parameter p) {
+	public AnimateOnBeatControl(SmudgeController controller, Parameter p) {
 		super(controller, p.getParent() + " - " + p.toString() + " Animator");
 		parameter = (NumberParameter) p;
 
@@ -26,7 +26,7 @@ public class AnimateOnBeatControl extends Controllable {
 
 		double val = parameter.getValue();
 		double step = parameter.getStep();
-		val = val + step / (Controller.TICKS_PER_BEAT * SPEEDS[speed]);
+		val = val + step / (SmudgeController.TICKS_PER_BEAT * SPEEDS[speed]);
 
 		parameter.setValue(val);
 	}

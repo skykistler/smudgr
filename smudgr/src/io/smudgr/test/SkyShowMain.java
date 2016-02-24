@@ -1,18 +1,18 @@
 package io.smudgr.test;
 
-import io.smudgr.alg.PixelShift;
-import io.smudgr.alg.PixelSort;
-import io.smudgr.alg.SpectralShift;
-import io.smudgr.alg.coord.ColumnCoords;
-import io.smudgr.alg.coord.ConvergeCoordFunction;
-import io.smudgr.alg.coord.RowCoords;
 import io.smudgr.controller.controls.AnimateOnBeatControl;
 import io.smudgr.controller.controls.DownsampleControl;
 import io.smudgr.controller.controls.EnableSmudgeControl;
 import io.smudgr.controller.controls.SourceSetControl;
 import io.smudgr.controller.device.MidiController;
 import io.smudgr.source.Image;
-import io.smudgr.source.Smudge;
+import io.smudgr.source.smudge.Smudge;
+import io.smudgr.source.smudge.alg.PixelShift;
+import io.smudgr.source.smudge.alg.PixelSort;
+import io.smudgr.source.smudge.alg.SpectralShift;
+import io.smudgr.source.smudge.alg.coord.ColumnCoords;
+import io.smudgr.source.smudge.alg.coord.ConvergeCoordFunction;
+import io.smudgr.source.smudge.alg.coord.RowCoords;
 import io.smudgr.view.JView;
 
 public class SkyShowMain {

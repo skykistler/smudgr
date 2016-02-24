@@ -1,10 +1,10 @@
 package io.smudgr.controller.controls;
 
-import io.smudgr.controller.Controller;
+import io.smudgr.controller.SmudgeController;
 
 public class SaveControl extends Controllable {
 
-	public SaveControl(Controller c) {
+	public SaveControl(SmudgeController c) {
 		super(c, "Save Frame");
 
 		requestBind();

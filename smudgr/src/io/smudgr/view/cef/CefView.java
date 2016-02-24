@@ -18,17 +18,17 @@ import org.cef.CefClient;
 import org.cef.CefSettings;
 import org.cef.browser.CefBrowser;
 
-import io.smudgr.controller.Controller;
+import io.smudgr.controller.SmudgeController;
 import io.smudgr.source.Frame;
-import io.smudgr.source.Smudge;
+import io.smudgr.source.Source;
 import io.smudgr.view.View;
 
 public class CefView implements View {
 	private int WINDOW_WIDTH = 800;
 	private int WINDOW_HEIGHT = 600;
 
-	private Controller controller;
-	private Frame frame;
+	private SmudgeController controller;
+	private Source source;
 	private int canvasWidth;
 	private int canvasHeight;
 
@@ -41,7 +41,7 @@ public class CefView implements View {
 	private CefBrowser cefBrowser;
 	private Component cefBrowserUI;
 
-	public CefView(Controller c) {
+	public CefView(SmudgeController c) {
 		this.controller = c;
 		controller.setView(this);
 	}
@@ -77,8 +77,8 @@ public class CefView implements View {
 
 		canvas = new Canvas();
 		canvas.setSize(400, 300);
-		//		canvas.createBufferStrategy(2);
-		//		strategy = canvas.getBufferStrategy();
+		canvas.createBufferStrategy(2);
+		strategy = canvas.getBufferStrategy();
 
 		window.add(cefBrowserUI);
 
@@ -92,15 +92,12 @@ public class CefView implements View {
 	}
 
 	public void draw() {
-		if (true)
-			return;
-		Smudge smudge = controller.getSmudge();
+		Frame frame = source.getFrame();
 
 		Graphics g = strategy.getDrawGraphics();
 		g.setColor(Color.black);
 		g.fillRect(0, 0, window.getWidth(), window.getHeight());
 
-		frame = smudge.getFrame();
 		if (frame != null)
 			drawFittedImage(g, frame.getBufferedImage());
 
@@ -110,20 +107,28 @@ public class CefView implements View {
 
 	}
 
-	public void dispose() {
-		CefApp.getInstance().dispose();
-		window.dispose();
+	public Source getSource() {
+		return source;
 	}
 
-	public Controller getController() {
+	public void setSource(Source s) {
+		source = s;
+	}
+
+	public SmudgeController getController() {
 		return controller;
 	}
 
-	public void setController(Controller c) {
+	public void setController(SmudgeController c) {
 		controller = c;
 
 		if (controller.getView() != this)
 			controller.setView(this);
+	}
+
+	public void dispose() {
+		CefApp.getInstance().dispose();
+		window.dispose();
 	}
 
 	private void drawFittedImage(Graphics g, BufferedImage image) {

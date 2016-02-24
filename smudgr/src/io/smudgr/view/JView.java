@@ -10,12 +10,12 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
-import io.smudgr.controller.Controller;
+import io.smudgr.controller.SmudgeController;
 import io.smudgr.source.Frame;
-import io.smudgr.source.Smudge;
+import io.smudgr.source.Source;
 
 public class JView implements View {
-	private Controller controller;
+	private SmudgeController controller;
 
 	private int displayNumber = 0;
 	private JFrame fullscreenWindow;
@@ -24,13 +24,13 @@ public class JView implements View {
 	private JFrame monitor;
 	private boolean showMonitor;
 
-	private Frame frame;
+	private Source source;
 
-	public JView(Controller controller) {
+	public JView(SmudgeController controller) {
 		this(controller, 0, false);
 	}
 
-	public JView(Controller controller, int displayNumber, boolean showMonitor) {
+	public JView(SmudgeController controller, int displayNumber, boolean showMonitor) {
 		this.controller = controller;
 		this.displayNumber = displayNumber;
 		this.showMonitor = showMonitor;
@@ -63,16 +63,37 @@ public class JView implements View {
 	}
 
 	public void draw() {
-		Smudge smudge = controller.getSmudge();
+		if (source == null)
+			return;
 
-		frame = smudge.getFrame();
+		Frame frame = source.getFrame();
+
 		if (frame == null)
 			return;
 
-		drawFittedImage(fullscreenWindow, frame.getBufferedImage());
+		drawFittedImageToFrame(fullscreenWindow, frame.getBufferedImage());
 
 		if (showMonitor)
-			drawFittedImage(monitor, frame.getBufferedImage());
+			drawFittedImageToFrame(monitor, frame.getBufferedImage());
+	}
+
+	public Source getSource() {
+		return source;
+	}
+
+	public void setSource(Source s) {
+		source = s;
+	}
+
+	public SmudgeController getController() {
+		return controller;
+	}
+
+	public void setController(SmudgeController c) {
+		controller = c;
+
+		if (controller.getView() != this)
+			controller.setView(this);
 	}
 
 	public void dispose() {
@@ -83,18 +104,7 @@ public class JView implements View {
 			monitor.dispose();
 	}
 
-	public Controller getController() {
-		return controller;
-	}
-
-	public void setController(Controller c) {
-		controller = c;
-
-		if (controller.getView() != this)
-			controller.setView(this);
-	}
-
-	private void drawFittedImage(JFrame f, BufferedImage image) {
+	private void drawFittedImageToFrame(JFrame f, BufferedImage image) {
 		int displayHeight = f.getHeight();
 		int displayWidth = f.getWidth();
 
@@ -118,7 +128,7 @@ public class JView implements View {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, displayWidth, displayHeight);
 
-		if (frame != null)
+		if (image != null)
 			g.drawImage(image, x, y, width, height, null);
 
 		g.dispose();

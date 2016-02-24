@@ -1,16 +1,16 @@
 package io.smudgr.controller.controls;
 
-import io.smudgr.controller.Controller;
+import io.smudgr.controller.SmudgeController;
 
 public class DownsampleControl extends Controllable {
 
 	private int downsample;
 
-	public DownsampleControl(Controller c) {
+	public DownsampleControl(SmudgeController c) {
 		this(c, 1);
 	}
 
-	public DownsampleControl(Controller c, int initial) {
+	public DownsampleControl(SmudgeController c, int initial) {
 		super(c, "Downsampler");
 		downsample = initial;
 

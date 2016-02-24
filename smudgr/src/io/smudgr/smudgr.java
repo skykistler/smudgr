@@ -4,16 +4,16 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
-import io.smudgr.alg.Marbeler;
-import io.smudgr.controller.Controller;
+import io.smudgr.controller.SmudgeController;
 import io.smudgr.source.Image;
-import io.smudgr.source.Smudge;
+import io.smudgr.source.smudge.Smudge;
+import io.smudgr.source.smudge.alg.Marbeler;
 import io.smudgr.view.cef.CefView;
 
 public class smudgr {
 
 	private smudgr() {
-		Controller controller = new Controller();
+		SmudgeController controller = new SmudgeController();
 
 		Smudge smudge = new Smudge(new Image("lilly.png"));
 

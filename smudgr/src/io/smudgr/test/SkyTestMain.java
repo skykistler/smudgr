@@ -1,10 +1,10 @@
 package io.smudgr.test;
 
-import io.smudgr.alg.Marbeler;
 import io.smudgr.controller.controls.DownsampleControl;
 import io.smudgr.controller.device.MidiController;
 import io.smudgr.source.Image;
-import io.smudgr.source.Smudge;
+import io.smudgr.source.smudge.Smudge;
+import io.smudgr.source.smudge.alg.Marbeler;
 import io.smudgr.view.JView;
 
 public class SkyTestMain {

@@ -1,11 +1,11 @@
 package io.smudgr.controller.controls;
 
-import io.smudgr.controller.Controller;
-import io.smudgr.source.Smudge;
+import io.smudgr.controller.SmudgeController;
+import io.smudgr.source.smudge.Smudge;
 
 public class EnableSmudgeControl extends Controllable {
 
-	public EnableSmudgeControl(Controller controller) {
+	public EnableSmudgeControl(SmudgeController controller) {
 		super(controller, "Enable Smudge");
 
 		requestBind();
