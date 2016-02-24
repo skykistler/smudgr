@@ -3,7 +3,6 @@ package io.smudgr.alg;
 import java.util.Collection;
 import java.util.HashMap;
 
-import io.smudgr.Smudge;
 import io.smudgr.alg.bound.Bound;
 import io.smudgr.alg.coord.AllCoords;
 import io.smudgr.alg.coord.CoordFunction;
@@ -11,6 +10,7 @@ import io.smudgr.alg.param.BooleanParameter;
 import io.smudgr.alg.param.NumberParameter;
 import io.smudgr.alg.param.Parameter;
 import io.smudgr.source.Frame;
+import io.smudgr.source.Smudge;
 
 public abstract class Algorithm {
 	private Smudge parent;

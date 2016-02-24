@@ -18,9 +18,9 @@ import org.cef.CefClient;
 import org.cef.CefSettings;
 import org.cef.browser.CefBrowser;
 
-import io.smudgr.Smudge;
 import io.smudgr.controller.Controller;
 import io.smudgr.source.Frame;
+import io.smudgr.source.Smudge;
 import io.smudgr.view.View;
 
 public class CefView implements View {
@@ -100,7 +100,7 @@ public class CefView implements View {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, window.getWidth(), window.getHeight());
 
-		frame = smudge.render();
+		frame = smudge.getFrame();
 		if (frame != null)
 			drawFittedImage(g, frame.getBufferedImage());
 

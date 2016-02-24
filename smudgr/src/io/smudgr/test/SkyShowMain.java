@@ -1,4 +1,4 @@
-package io.smudgr;
+package io.smudgr.test;
 
 import io.smudgr.alg.PixelShift;
 import io.smudgr.alg.PixelSort;
@@ -12,6 +12,7 @@ import io.smudgr.controller.controls.EnableSmudgeControl;
 import io.smudgr.controller.controls.SourceSetControl;
 import io.smudgr.controller.device.MidiController;
 import io.smudgr.source.Image;
+import io.smudgr.source.Smudge;
 import io.smudgr.view.JView;
 
 public class SkyShowMain {

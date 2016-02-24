@@ -2,10 +2,10 @@ package io.smudgr.alg;
 
 import java.util.ArrayList;
 
-import io.smudgr.Smudge;
 import io.smudgr.alg.math.ColorHelper;
 import io.smudgr.alg.param.NumberParameter;
 import io.smudgr.source.Frame;
+import io.smudgr.source.Smudge;
 
 public class HSVLModifier extends Algorithm {
 	

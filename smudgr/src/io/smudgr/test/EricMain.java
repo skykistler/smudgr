@@ -1,24 +1,17 @@
-package io.smudgr;
+package io.smudgr.test;
 
-import io.smudgr.alg.ChannelDrift;
-import io.smudgr.alg.HSVLModifier;
-import io.smudgr.alg.PixelShift;
-import io.smudgr.alg.PixelSort;
-import io.smudgr.alg.SourceMixer;
 import io.smudgr.alg.SourceMixerHack;
-import io.smudgr.alg.coord.ColumnCoords;
-import io.smudgr.alg.coord.RowCoords;
-import io.smudgr.controller.controls.AnimateByStepControl;
 import io.smudgr.controller.controls.DownsampleControl;
 import io.smudgr.controller.device.MidiController;
 import io.smudgr.source.Image;
+import io.smudgr.source.Smudge;
 import io.smudgr.source.SourceSet;
 import io.smudgr.view.JView;
 
 public class EricMain {
 	public static void main(String[] args) {
 		// Declare your controller
-		MidiController controller = new MidiController(11);
+		MidiController controller = new MidiController();
 
 		// Make a smudge
 		Smudge smudge = new Smudge(new Image("flowers/flowers2.jpg"));
@@ -29,11 +22,11 @@ public class EricMain {
 
 		SourceSet mySource = new SourceSet("mix");
 		mySource.init();
-		
+
 		SourceMixerHack mixer = new SourceMixerHack(smudge, mySource);
 		mixer.bind("Enable");
 		mixer.getParameter("Enable").setInitial(false);
-		
+
 		//		BitSmear smear = new BitSmear(smudge);
 		//			smear.bind("Red Shift");
 		//			smear.bind("Green Shift");
@@ -56,7 +49,7 @@ public class EricMain {
 		//		spectral.bind("Bound Width");
 		//		spectral.bind("Bound Height");
 		//new AnimationControl(controller, spectral.getParameter("Shift"), .01);
-		
+
 		//new AnimationControl(controller, shift.getParameter("Amount"));
 
 		//		PixelSort sort1 = new PixelSort(smudge);
@@ -66,12 +59,12 @@ public class EricMain {
 		//		sort1.bind("Enable");
 		//		sort1.getParameter("Enable").setInitial(false);
 
-//				PixelSort sort2 = new PixelSort(smudge);
-//				sort2.setCoordFunction(new RowCoords());
-//				sort2.bind("Threshold");
-//				sort2.bind("Reverse");
-//				sort2.bind("Enable");
-//				sort2.getParameter("Enable").setInitial(false);
+		//				PixelSort sort2 = new PixelSort(smudge);
+		//				sort2.setCoordFunction(new RowCoords());
+		//				sort2.bind("Threshold");
+		//				sort2.bind("Reverse");
+		//				sort2.bind("Enable");
+		//				sort2.getParameter("Enable").setInitial(false);
 		//		
 
 		//		PixelShift shift = new PixelShift(smudge);
@@ -85,14 +78,14 @@ public class EricMain {
 		//		shift.getParameter("Enable").setInitial(false);
 		//		new AnimationControl(controller, shift.getParameter("Amount"));
 
-//		PixelShift shift1 = new PixelShift(smudge);
-//		//shift1.setBound(new EllipticalBound(1, 1));
-//		shift1.setCoordFunction(new ColumnCoords());
-//		//shift1.getParameter("Intervals").setInitial(3);
-//		shift1.bind("Intervals");
-//		shift1.getParameter("Amount").setInitial(.2);
-//		shift1.bind("Enable");
-//		shift1.getParameter("Enable").setInitial(false);
+		//		PixelShift shift1 = new PixelShift(smudge);
+		//		//shift1.setBound(new EllipticalBound(1, 1));
+		//		shift1.setCoordFunction(new ColumnCoords());
+		//		//shift1.getParameter("Intervals").setInitial(3);
+		//		shift1.bind("Intervals");
+		//		shift1.getParameter("Amount").setInitial(.2);
+		//		shift1.bind("Enable");
+		//		shift1.getParameter("Enable").setInitial(false);
 		//shift1.bind("Amount");
 
 		//shift1.bind("Start");
@@ -101,20 +94,20 @@ public class EricMain {
 		//new AnimateByStepControl(controller, shift1.getParameter("Amount"));
 		//new AnimationControl(controller, shift1.getParameter("End"));
 		//new AnimationControl(controller, shift1.getParameter("Start"));
-		
-//		HSVLModifier mod = new HSVLModifier(smudge);
-//		mod.bind("Saturation");
-//		mod.bind("Hue Rotation");
-//		mod.bind("Value/Lightness");
-//		mod.bind("Color Space");
-		
-//		ChannelDrift drift = new ChannelDrift(smudge);
-//		drift.bind("Red Offset - X");
-//		drift.bind("Red Offset - Y");
-//		drift.bind("Green Offset - X");
-//		drift.bind("Green Offset - Y");
-//		drift.bind("Blue Offset - X");
-//		drift.bind("Blue Offset - Y");
+
+		//		HSVLModifier mod = new HSVLModifier(smudge);
+		//		mod.bind("Saturation");
+		//		mod.bind("Hue Rotation");
+		//		mod.bind("Value/Lightness");
+		//		mod.bind("Color Space");
+
+		//		ChannelDrift drift = new ChannelDrift(smudge);
+		//		drift.bind("Red Offset - X");
+		//		drift.bind("Red Offset - Y");
+		//		drift.bind("Green Offset - X");
+		//		drift.bind("Green Offset - Y");
+		//		drift.bind("Blue Offset - X");
+		//		drift.bind("Blue Offset - Y");
 
 		new DownsampleControl(controller, 1);
 

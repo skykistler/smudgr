@@ -2,8 +2,8 @@ package io.smudgr.alg;
 
 import java.awt.Graphics2D;
 
-import io.smudgr.Smudge;
 import io.smudgr.source.Frame;
+import io.smudgr.source.Smudge;
 import io.smudgr.source.Source;
 
 public class SourceMixerHack extends Algorithm {

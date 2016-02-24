@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import io.smudgr.Smudge;
 import io.smudgr.alg.coord.ColumnCoords;
 import io.smudgr.alg.math.BrightnessFunction;
 import io.smudgr.alg.math.ChromaFunction;
@@ -14,6 +13,7 @@ import io.smudgr.alg.math.UnivariateFunction;
 import io.smudgr.alg.param.BooleanParameter;
 import io.smudgr.alg.param.NumberParameter;
 import io.smudgr.source.Frame;
+import io.smudgr.source.Smudge;
 
 public class PixelSort extends Algorithm {
 

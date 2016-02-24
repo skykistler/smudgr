@@ -4,8 +4,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
-import io.smudgr.Smudge;
 import io.smudgr.controller.controls.Controllable;
+import io.smudgr.source.Smudge;
 import io.smudgr.view.View;
 
 public class Controller implements KeyListener {

@@ -7,6 +7,7 @@ import java.io.PrintStream;
 import io.smudgr.alg.Marbeler;
 import io.smudgr.controller.Controller;
 import io.smudgr.source.Image;
+import io.smudgr.source.Smudge;
 import io.smudgr.view.cef.CefView;
 
 public class smudgr {

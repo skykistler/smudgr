@@ -1,13 +1,11 @@
-package io.smudgr;
+package io.smudgr.source;
 
 import java.util.ArrayList;
 
 import io.smudgr.alg.Algorithm;
 import io.smudgr.controller.Controller;
-import io.smudgr.source.Frame;
-import io.smudgr.source.Source;
 
-public class Smudge {
+public class Smudge implements Source {
 	private Controller controller;
 
 	private Source source;
@@ -18,7 +16,7 @@ public class Smudge {
 	private int downsample = 1;
 
 	public Smudge(Source s) {
-		source = s;
+		setSource(s);
 		algorithms = new ArrayList<Algorithm>();
 		setEnabled(true);
 	}
@@ -43,8 +41,8 @@ public class Smudge {
 			a.update();
 	}
 
-	public synchronized Frame render() {
-		if (source == null)
+	public synchronized Frame getFrame() {
+		if (source == null || source == this)
 			return null;
 
 		Frame toRender = source.getFrame();
@@ -84,7 +82,8 @@ public class Smudge {
 	}
 
 	public void setSource(Source source) {
-		this.source = source;
+		if (source != this)
+			this.source = source;
 	}
 
 	public Controller getController() {
@@ -125,6 +124,10 @@ public class Smudge {
 		toSave.save(output);
 
 		saveNextRender = false;
+	}
+
+	public void dispose() {
+
 	}
 
 }

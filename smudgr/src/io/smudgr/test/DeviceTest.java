@@ -1,4 +1,4 @@
-package io.smudgr;
+package io.smudgr.test;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

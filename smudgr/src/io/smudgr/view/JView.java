@@ -10,9 +10,9 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
-import io.smudgr.Smudge;
 import io.smudgr.controller.Controller;
 import io.smudgr.source.Frame;
+import io.smudgr.source.Smudge;
 
 public class JView implements View {
 	private Controller controller;
@@ -65,7 +65,7 @@ public class JView implements View {
 	public void draw() {
 		Smudge smudge = controller.getSmudge();
 
-		frame = smudge.render();
+		frame = smudge.getFrame();
 		if (frame == null)
 			return;
 

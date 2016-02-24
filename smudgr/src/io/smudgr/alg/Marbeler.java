@@ -2,11 +2,11 @@ package io.smudgr.alg;
 
 import java.util.Random;
 
-import io.smudgr.Smudge;
 import io.smudgr.alg.math.CubicInterpolator;
 import io.smudgr.alg.math.Interpolator;
 import io.smudgr.alg.param.NumberParameter;
 import io.smudgr.source.Frame;
+import io.smudgr.source.Smudge;
 
 public class Marbeler extends Algorithm {
 

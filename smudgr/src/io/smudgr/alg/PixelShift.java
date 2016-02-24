@@ -2,7 +2,6 @@ package io.smudgr.alg;
 
 import java.util.ArrayList;
 
-import io.smudgr.Smudge;
 import io.smudgr.alg.coord.ColumnCoords;
 import io.smudgr.alg.coord.CoordFunction;
 import io.smudgr.alg.math.LinearFunction;
@@ -10,6 +9,7 @@ import io.smudgr.alg.math.UnivariateFunction;
 import io.smudgr.alg.param.BooleanParameter;
 import io.smudgr.alg.param.NumberParameter;
 import io.smudgr.source.Frame;
+import io.smudgr.source.Smudge;
 
 public class PixelShift extends Algorithm {
 

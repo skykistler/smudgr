@@ -1,7 +1,7 @@
 package io.smudgr.controller.controls;
 
-import io.smudgr.Smudge;
 import io.smudgr.controller.Controller;
+import io.smudgr.source.Smudge;
 
 public class EnableSmudgeControl extends Controllable {
 

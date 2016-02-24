@@ -2,9 +2,9 @@ package io.smudgr.alg;
 
 import java.util.ArrayList;
 
-import io.smudgr.Smudge;
 import io.smudgr.alg.math.ColorHelper;
 import io.smudgr.source.Frame;
+import io.smudgr.source.Smudge;
 import io.smudgr.source.Source;
 
 public class SourceMixer extends Algorithm {
