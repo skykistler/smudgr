@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import io.smudgr.controller.SmudgeController;
+import io.smudgr.controller.Controller;
 import io.smudgr.source.SourceSet;
 
 public class SourceSetControl extends Controllable {
@@ -13,7 +13,7 @@ public class SourceSetControl extends Controllable {
 	private ArrayList<String> files = new ArrayList<String>();;
 	private ArrayList<SourceSet> sourceSets = new ArrayList<SourceSet>();;
 
-	public SourceSetControl(SmudgeController c, String location) {
+	public SourceSetControl(Controller c, String location) {
 		super(c, "Source Set Switcher");
 
 		File directory = new File("data/" + location);

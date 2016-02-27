@@ -1,10 +1,10 @@
 package io.smudgr.controller.controls;
 
-import io.smudgr.controller.SmudgeController;
+import io.smudgr.controller.Controller;
 
 public class TimingControl extends Controllable {
 
-	public TimingControl(SmudgeController controller) {
+	public TimingControl(Controller controller) {
 		super(controller, "Timing Control");
 	}
 

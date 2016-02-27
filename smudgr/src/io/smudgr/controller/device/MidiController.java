@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import javax.sound.midi.MidiMessage;
 
-import io.smudgr.controller.SmudgeController;
+import io.smudgr.controller.Controller;
 import io.smudgr.controller.controls.Controllable;
 import io.smudgr.controller.controls.TimingControl;
 import io.smudgr.controller.device.messages.AftertouchMessage;
@@ -19,7 +19,7 @@ import io.smudgr.controller.device.messages.StartMessage;
 import io.smudgr.controller.device.messages.StopMessage;
 import io.smudgr.controller.device.messages.TimingClockMessage;
 
-public class MidiController extends SmudgeController implements DeviceObserver {
+public class MidiController extends Controller implements DeviceObserver {
 
 	private ArrayList<Device> devices;
 	private MidiControlMap midiMap;

@@ -1,12 +1,12 @@
 package io.smudgr.controller.controls;
 
-import io.smudgr.controller.SmudgeController;
+import io.smudgr.controller.Controller;
 import io.smudgr.source.Source;
 import io.smudgr.source.SourceSet;
 
 public class SourceControl extends Controllable {
 
-	public SourceControl(SmudgeController controller) {
+	public SourceControl(Controller controller) {
 		super(controller, "Source Switcher");
 
 		requestBind();

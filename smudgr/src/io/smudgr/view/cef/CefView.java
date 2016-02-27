@@ -1,5 +1,6 @@
 package io.smudgr.view.cef;
 
+import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Component;
@@ -12,13 +13,15 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
 
 import org.cef.CefApp;
 import org.cef.CefClient;
 import org.cef.CefSettings;
 import org.cef.browser.CefBrowser;
+import org.cef.browser.CefMessageRouter;
 
-import io.smudgr.controller.SmudgeController;
+import io.smudgr.controller.Controller;
 import io.smudgr.source.Frame;
 import io.smudgr.source.Source;
 import io.smudgr.view.View;
@@ -27,12 +30,11 @@ public class CefView implements View {
 	private int WINDOW_WIDTH = 800;
 	private int WINDOW_HEIGHT = 600;
 
-	private SmudgeController controller;
+	private Controller controller;
 	private Source source;
-	private int canvasWidth;
-	private int canvasHeight;
 
 	private JFrame window;
+	private JLayeredPane layeredPane;
 	private Canvas canvas;
 	private BufferStrategy strategy;
 
@@ -41,7 +43,7 @@ public class CefView implements View {
 	private CefBrowser cefBrowser;
 	private Component cefBrowserUI;
 
-	public CefView(SmudgeController c) {
+	public CefView(Controller c) {
 		this.controller = c;
 		controller.setView(this);
 	}
@@ -60,12 +62,17 @@ public class CefView implements View {
 
 		cefClient = cefApp.createClient();
 
-		cefBrowser = cefClient.createBrowser("smudgr://handler.html", false, false);
+		CefMessageRouter msgRouter = CefMessageRouter.create(new SmudgrQueryRouter(this));
+		cefClient.addMessageRouter(msgRouter);
+
+		cefBrowser = cefClient.createBrowser("smudgr://ui/index.html", false, false);
+
 		cefBrowserUI = cefBrowser.getUIComponent();
 	}
 
 	private void makeWindow() {
 		window = new JFrame("smudgr");
+		window.getContentPane().setLayout(new BorderLayout());
 
 		window.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		window.setBackground(Color.black);
@@ -75,12 +82,19 @@ public class CefView implements View {
 		int y = (int) ((dimension.getHeight() - window.getHeight()) / 2);
 		window.setLocation(x, y);
 
-		canvas = new Canvas();
-		canvas.setSize(400, 300);
-		canvas.createBufferStrategy(2);
-		strategy = canvas.getBufferStrategy();
+		layeredPane = new JLayeredPane();
+		layeredPane.setSize(window.getSize());
 
-		window.add(cefBrowserUI);
+		canvas = new Canvas();
+		canvas.setLocation(200, 200);
+		canvas.setSize(400, 400);
+
+		cefBrowserUI.setSize(window.getSize());
+
+		layeredPane.add(cefBrowserUI, JLayeredPane.DEFAULT_LAYER);
+		layeredPane.add(canvas, JLayeredPane.PALETTE_LAYER);
+
+		window.add(layeredPane);
 
 		window.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -89,6 +103,10 @@ public class CefView implements View {
 		});
 
 		window.setVisible(true);
+		window.createBufferStrategy(2);
+
+		canvas.createBufferStrategy(2);
+		strategy = canvas.getBufferStrategy();
 	}
 
 	public void draw() {
@@ -115,11 +133,11 @@ public class CefView implements View {
 		source = s;
 	}
 
-	public SmudgeController getController() {
+	public Controller getController() {
 		return controller;
 	}
 
-	public void setController(SmudgeController c) {
+	public void setController(Controller c) {
 		controller = c;
 
 		if (controller.getView() != this)
@@ -127,23 +145,30 @@ public class CefView implements View {
 	}
 
 	public void dispose() {
-		CefApp.getInstance().dispose();
 		window.dispose();
+
+		try {
+			Thread.sleep(20);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} finally {
+			CefApp.getInstance().dispose();
+		}
 	}
 
 	private void drawFittedImage(Graphics g, BufferedImage image) {
 		int height = image.getHeight();
 		int width = image.getWidth();
 
-		boolean largerThanCanvas = height > canvasHeight || width > canvasWidth;
-		boolean smallerThanCanvas = height < canvasHeight && width < canvasWidth;
+		boolean largerThanCanvas = height > canvas.getHeight() || width > canvas.getWidth();
+		boolean smallerThanCanvas = height < canvas.getHeight() && width < canvas.getWidth();
 		if (largerThanCanvas || smallerThanCanvas) {
-			width = (int) (width * ((double) canvasHeight / height));
-			height = canvasHeight;
+			width = (int) (width * ((double) canvas.getHeight() / height));
+			height = canvas.getHeight();
 		}
 
-		int x = canvasWidth / 2 - width / 2;
-		int y = canvasHeight / 2 - height / 2;
+		int x = canvas.getWidth() / 2 - width / 2;
+		int y = canvas.getHeight() / 2 - height / 2;
 
 		g.drawImage(image, x, y, width, height, null);
 	}

@@ -27,7 +27,7 @@ public class RenderThread implements Runnable {
 	}
 
 	public void run() {
-		long targetFrameNs = 1000000000 / SmudgeController.TARGET_FPS;
+		long targetFrameNs = 1000000000 / Controller.TARGET_FPS;
 
 		long lastFrame = System.nanoTime();
 		long timer = System.currentTimeMillis();
@@ -65,8 +65,8 @@ public class RenderThread implements Runnable {
 			lastFrame = System.nanoTime();
 		}
 
-		finished = true;
 		view.dispose();
+		finished = true;
 	}
 
 }

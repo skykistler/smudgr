@@ -10,12 +10,12 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
-import io.smudgr.controller.SmudgeController;
+import io.smudgr.controller.Controller;
 import io.smudgr.source.Frame;
 import io.smudgr.source.Source;
 
 public class JView implements View {
-	private SmudgeController controller;
+	private Controller controller;
 
 	private int displayNumber = 0;
 	private JFrame fullscreenWindow;
@@ -26,11 +26,11 @@ public class JView implements View {
 
 	private Source source;
 
-	public JView(SmudgeController controller) {
+	public JView(Controller controller) {
 		this(controller, 0, false);
 	}
 
-	public JView(SmudgeController controller, int displayNumber, boolean showMonitor) {
+	public JView(Controller controller, int displayNumber, boolean showMonitor) {
 		this.controller = controller;
 		this.displayNumber = displayNumber;
 		this.showMonitor = showMonitor;
@@ -85,11 +85,11 @@ public class JView implements View {
 		source = s;
 	}
 
-	public SmudgeController getController() {
+	public Controller getController() {
 		return controller;
 	}
 
-	public void setController(SmudgeController c) {
+	public void setController(Controller c) {
 		controller = c;
 
 		if (controller.getView() != this)

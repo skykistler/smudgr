@@ -1,6 +1,6 @@
 package io.smudgr.view;
 
-import io.smudgr.controller.SmudgeController;
+import io.smudgr.controller.Controller;
 import io.smudgr.source.Source;
 
 public interface View {
@@ -12,9 +12,9 @@ public interface View {
 
 	public void setSource(Source s);
 
-	public SmudgeController getController();
+	public Controller getController();
 
-	public void setController(SmudgeController c);
+	public void setController(Controller c);
 
 	public void dispose();
 

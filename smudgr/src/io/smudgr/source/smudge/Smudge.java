@@ -2,7 +2,7 @@ package io.smudgr.source.smudge;
 
 import java.util.ArrayList;
 
-import io.smudgr.controller.SmudgeController;
+import io.smudgr.controller.Controller;
 import io.smudgr.out.GifOutput;
 import io.smudgr.out.ImageOutput;
 import io.smudgr.out.Output;
@@ -11,7 +11,7 @@ import io.smudgr.source.Source;
 import io.smudgr.source.smudge.alg.Algorithm;
 
 public class Smudge implements Source {
-	private SmudgeController controller;
+	private Controller controller;
 
 	private Source source;
 	private ArrayList<Algorithm> algorithms;
@@ -21,6 +21,10 @@ public class Smudge implements Source {
 	private int downsample = 1;
 
 	private Output output;
+
+	public Smudge() {
+		this(null);
+	}
 
 	public Smudge(Source s) {
 		setSource(s);
@@ -42,7 +46,8 @@ public class Smudge implements Source {
 	}
 
 	public void update() {
-		source.update();
+		if (source != null)
+			source.update();
 
 		for (Algorithm a : algorithms)
 			a.update();
@@ -93,11 +98,11 @@ public class Smudge implements Source {
 			this.source = source;
 	}
 
-	public SmudgeController getController() {
+	public Controller getController() {
 		return controller;
 	}
 
-	public void setController(SmudgeController c) {
+	public void setController(Controller c) {
 		controller = c;
 
 		if (controller.getSmudge() != this)
