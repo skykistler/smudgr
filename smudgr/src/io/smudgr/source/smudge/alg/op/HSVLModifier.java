@@ -25,7 +25,7 @@ public class HSVLModifier extends Operation {
 		if (lastSaturation == sat && lastValue == val && lastDegree == deg) {
 			img.setBufferedImage(lastFrame.getBufferedImage());
 		} else {
-			for (ArrayList<Integer> coords : getAlgorithm().getCoordFunction().getCoordSet()) {
+			for (ArrayList<Integer> coords : getAlgorithm().getSelectedPixels()) {
 				for (Integer coord : coords) {
 					img.pixels[coord] = manipulate(img.pixels[coord], deg, sat, val);
 				}

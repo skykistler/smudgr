@@ -3,7 +3,6 @@ package io.smudgr.source.smudge.alg.op;
 import java.util.ArrayList;
 
 import io.smudgr.source.Frame;
-import io.smudgr.source.smudge.alg.coord.CoordFunction;
 import io.smudgr.source.smudge.alg.math.LinearFunction;
 import io.smudgr.source.smudge.alg.math.UnivariateFunction;
 import io.smudgr.source.smudge.param.BooleanParameter;
@@ -31,12 +30,11 @@ public class PixelShift extends Operation {
 	}
 
 	public void execute(Frame img) {
-		int size = getAlgorithm().getCoordFunction().getCoordSet().size();
+		int size = getAlgorithm().getSelectedPixels().size();
 
 		orig = img;
 		shifted = img.copy();
 
-		CoordFunction cf = getAlgorithm().getCoordFunction();
 		double shift = amount.getValue();
 
 		double ints = intervals.getValue();
@@ -62,8 +60,8 @@ public class PixelShift extends Operation {
 
 			for (int i = 0; i < intervalWidth; i++) {
 				int index = (int) (interval + i);
-				if (index < cf.getCoordSet().size()) {
-					ArrayList<Integer> coords = cf.getCoordSet().get(index);
+				if (index < size) {
+					ArrayList<Integer> coords = getAlgorithm().getSelectedPixels().get(index);
 					shift(coords, n, shift, i, ints);
 				}
 			}

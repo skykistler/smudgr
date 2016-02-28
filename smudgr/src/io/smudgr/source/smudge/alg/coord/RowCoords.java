@@ -9,10 +9,7 @@ public class RowCoords extends CoordFunction {
 		return "Row";
 	}
 
-	protected void generate() {
-		Bound b = getBound();
-		Frame img = getImage();
-
+	public void generate(Bound b, Frame img) {
 		int boundWidth = b.getTranslatedWidth(img);
 		int boundHeight = b.getTranslatedHeight(img);
 		int boundX = b.getTranslatedX(img);

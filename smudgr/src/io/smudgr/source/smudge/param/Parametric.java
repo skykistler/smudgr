@@ -46,6 +46,12 @@ public abstract class Parametric {
 			c.addControl(p);
 	}
 
+	public abstract String getName();
+
+	public String toString() {
+		return getName();
+	}
+
 	public int getID() {
 		return id;
 	}

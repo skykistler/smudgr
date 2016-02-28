@@ -14,10 +14,7 @@ public class RadialCoordFunction extends CoordFunction {
 		return "Radial";
 	}
 
-	protected void generate() {
-		Bound b = getBound();
-		Frame img = getImage();
-
+	protected void generate(Bound b, Frame img) {
 		int boundX = b.getTranslatedX(img);
 		int boundWidth = b.getTranslatedWidth(img);
 		int boundY = b.getTranslatedY(img);

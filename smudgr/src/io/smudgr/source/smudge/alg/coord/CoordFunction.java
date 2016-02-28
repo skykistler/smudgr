@@ -9,7 +9,7 @@ import io.smudgr.source.smudge.alg.bound.Bound;
 
 public abstract class CoordFunction extends AlgorithmComponent {
 	private Algorithm parent;
-	private Frame image;
+	private Frame frame;
 	private Bound bound;
 
 	protected ArrayList<ArrayList<Integer>> coordSet = null;
@@ -20,12 +20,12 @@ public abstract class CoordFunction extends AlgorithmComponent {
 	}
 
 	public void update() {
-		if (image == null)
+		if (frame == null)
 			return;
 
 		reset();
 
-		generate();
+		generate(bound, frame);
 		nextSet();
 	}
 
@@ -38,7 +38,7 @@ public abstract class CoordFunction extends AlgorithmComponent {
 		nextSet();
 	}
 
-	protected abstract void generate();
+	protected abstract void generate(Bound b, Frame img);
 
 	protected void nextSet() {
 		// If our total set of coords doesn't exist yet, make it
@@ -62,8 +62,8 @@ public abstract class CoordFunction extends AlgorithmComponent {
 			nextSet();
 
 		// If point is in bound, add it's index
-		if (bound.containsPoint(image, x, y)) {
-			int index = x + y * image.getWidth();
+		if (bound.containsPoint(frame, x, y)) {
+			int index = x + y * frame.getWidth();
 			currentSet.add(index);
 			wasInBound = true;
 		}
@@ -78,20 +78,12 @@ public abstract class CoordFunction extends AlgorithmComponent {
 		return coordSet;
 	}
 
-	public Bound getBound() {
-		return bound;
-	}
-
 	public void setBound(Bound bound) {
 		this.bound = bound;
 	}
 
-	public Frame getImage() {
-		return image;
-	}
-
-	public void setImage(Frame image) {
-		this.image = image;
+	public void setDimensions(Frame image) {
+		this.frame = image;
 	}
 
 	public abstract String getName();

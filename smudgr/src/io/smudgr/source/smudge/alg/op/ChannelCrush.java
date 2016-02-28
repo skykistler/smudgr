@@ -24,7 +24,7 @@ public class ChannelCrush extends Operation {
 
 	@Override
 	public void execute(Frame img) {
-		for (ArrayList<Integer> coords : getAlgorithm().getCoordFunction().getCoordSet())
+		for (ArrayList<Integer> coords : getAlgorithm().getSelectedPixels())
 			for (Integer coord : coords)
 				smear(coord, img);
 	}

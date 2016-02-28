@@ -13,10 +13,7 @@ public class ConvergeCoordFunction extends CoordFunction {
 		return "Gravity";
 	}
 
-	protected void generate() {
-		Bound b = getBound();
-		Frame img = getImage();
-
+	protected void generate(Bound b, Frame img) {
 		int boundX = b.getTranslatedX(img);
 		int boundY = b.getTranslatedY(img);
 		int boundWidth = b.getTranslatedWidth(img);

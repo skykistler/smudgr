@@ -9,10 +9,7 @@ public class AllCoords extends CoordFunction {
 		return "";
 	}
 
-	protected void generate() {
-		Bound b = getBound();
-		Frame img = getImage();
-
+	protected void generate(Bound b, Frame img) {
 		int boundWidth = b.getTranslatedWidth(img);
 		int boundHeight = b.getTranslatedHeight(img);
 		int boundX = b.getTranslatedX(img);

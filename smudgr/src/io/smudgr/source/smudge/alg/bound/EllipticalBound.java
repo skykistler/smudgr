@@ -4,8 +4,8 @@ import io.smudgr.source.Frame;
 
 public class EllipticalBound extends Bound {
 
-	public EllipticalBound(double width, double height) {
-		super(width, height);
+	public String getName() {
+		return "Elliptical Bound";
 	}
 
 	public boolean containsPoint(Frame img, int x, int y) {

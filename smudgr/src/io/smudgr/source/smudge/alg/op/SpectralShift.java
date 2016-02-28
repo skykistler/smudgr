@@ -47,7 +47,7 @@ public class SpectralShift extends Operation {
 			values = new int[buckets];
 			counters = new int[buckets];
 
-			for (ArrayList<Integer> coords : getAlgorithm().getCoordFunction().getCoordSet())
+			for (ArrayList<Integer> coords : getAlgorithm().getSelectedPixels())
 				for (Integer coord : coords) {
 					int i = getBucket(img.pixels[coord]);
 
@@ -63,7 +63,7 @@ public class SpectralShift extends Operation {
 
 		int shift_amount = shift.getIntValue() % buckets;
 
-		for (ArrayList<Integer> coords : getAlgorithm().getCoordFunction().getCoordSet())
+		for (ArrayList<Integer> coords : getAlgorithm().getSelectedPixels())
 			for (Integer coord : coords) {
 				int val = getBucket(img.pixels[coord]);
 				int index = Math.abs((val + shift_amount * (negate ? -1 : 1)) % buckets);

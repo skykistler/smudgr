@@ -140,7 +140,7 @@ public class Smudge extends Parametric implements Source {
 			output.close();
 	}
 
-	public String toString() {
+	public String getName() {
 		return "Smudge";
 	}
 

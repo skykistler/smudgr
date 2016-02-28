@@ -11,11 +11,6 @@ public class Bound extends AlgorithmComponent {
 	protected NumberParameter width = new NumberParameter("Bound Width", this, 1, 0, 1, 0.005);
 	protected NumberParameter height = new NumberParameter("Bound Height", this, 1, 0, 1, 0.005);
 
-	public Bound(double width, double height) {
-		setWidth(width);
-		setHeight(height);
-	}
-
 	public void init() {
 
 	}
@@ -97,6 +92,10 @@ public class Bound extends AlgorithmComponent {
 
 	public int getTranslatedHeight(Frame image) {
 		return (int) Math.floor(height.getValue() * image.getHeight());
+	}
+
+	public String getName() {
+		return "Bound";
 	}
 
 }

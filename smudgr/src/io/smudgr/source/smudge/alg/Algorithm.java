@@ -9,22 +9,25 @@ import io.smudgr.source.smudge.alg.bound.Bound;
 import io.smudgr.source.smudge.alg.coord.AllCoords;
 import io.smudgr.source.smudge.alg.coord.CoordFunction;
 import io.smudgr.source.smudge.alg.op.Operation;
+import io.smudgr.source.smudge.alg.select.Selector;
 import io.smudgr.source.smudge.param.BooleanParameter;
 import io.smudgr.source.smudge.param.Parametric;
 
 public class Algorithm extends Parametric {
 
-	private Smudge parent;
-
-	private ArrayList<AlgorithmComponent> components = new ArrayList<AlgorithmComponent>();
-	private Bound bound;
-	private CoordFunction coordFunction;
-	protected Frame lastFrame;
-
 	private BooleanParameter enable = new BooleanParameter("Enable", this, true);
 
+	private Smudge parent;
+	private Bound bound;
+	private CoordFunction coordFunction;
+
+	private ArrayList<AlgorithmComponent> components = new ArrayList<AlgorithmComponent>();
+	private ArrayList<ArrayList<Integer>> selectedPixels = new ArrayList<ArrayList<Integer>>();
+
+	protected Frame lastFrame;
+
 	public Algorithm() {
-		add(new Bound(1, 1));
+		add(new Bound());
 		add(new AllCoords());
 	}
 
@@ -47,23 +50,35 @@ public class Algorithm extends Parametric {
 			return;
 
 		boolean boundChanged = lastBoundX != bound.getOffsetX() || lastBoundY != bound.getOffsetY() || lastBoundW != bound.getWidth() || lastBoundH != bound.getHeight();
-		boolean imgSizeChanged = lastFrame == null || (lastFrame.getWidth() != this.lastFrame.getWidth() || img.getHeight() != this.lastFrame.getHeight());
+		boolean dimensionsChanged = lastFrame == null || (img.getWidth() != this.lastFrame.getWidth() || img.getHeight() != this.lastFrame.getHeight());
 
-		if (imgSizeChanged || boundChanged) {
-			coordFunction.setBound(bound);
-			coordFunction.setImage(img);
+		coordFunction.setDimensions(img);
+		coordFunction.setBound(bound);
+		if (dimensionsChanged || boundChanged)
 			coordFunction.update();
+
+		if (lastFrame != img) {
+			setSelectedPixels(coordFunction.getCoordSet());
+
+			for (AlgorithmComponent component : components)
+				if (component instanceof Selector) {
+					Selector selector = ((Selector) component);
+					selector.setFrame(img);
+					selector.update();
+				}
 		}
 
-		for (AlgorithmComponent component : components) {
+		for (AlgorithmComponent component : components)
 			if (component instanceof Operation)
 				((Operation) component).apply(img);
-		}
 
 		lastFrame = img;
 	}
 
 	public void add(AlgorithmComponent component) {
+		if (component == null)
+			return;
+
 		component.setAlgorithm(this);
 
 		if (component instanceof Bound)
@@ -72,9 +87,7 @@ public class Algorithm extends Parametric {
 		if (component instanceof CoordFunction)
 			setCoordFunction((CoordFunction) component);
 
-		if (component instanceof Operation)
-			setOperation((Operation) component);
-
+		components.add(component);
 	}
 
 	private void setBound(Bound bound) {
@@ -88,7 +101,6 @@ public class Algorithm extends Parametric {
 				otherBounds.add(component);
 
 		components.remove(otherBounds);
-		components.add(bound);
 
 		this.bound = bound;
 
@@ -113,7 +125,6 @@ public class Algorithm extends Parametric {
 				otherCoordFunctions.add(component);
 
 		components.remove(otherCoordFunctions);
-		components.add(cf);
 
 		coordFunction = cf;
 
@@ -121,18 +132,15 @@ public class Algorithm extends Parametric {
 			coordFunction.setBound(bound);
 	}
 
-	public CoordFunction getCoordFunction() {
-		return coordFunction;
+	public void setSelectedPixels(ArrayList<ArrayList<Integer>> selected) {
+		selectedPixels = selected;
 	}
 
-	public void setOperation(Operation op) {
-		if (op == null)
-			return;
-
-		components.add(op);
+	public ArrayList<ArrayList<Integer>> getSelectedPixels() {
+		return selectedPixels;
 	}
 
-	public String toString() {
+	public String getName() {
 		StringBuffer name = new StringBuffer();
 
 		for (AlgorithmComponent component : components)

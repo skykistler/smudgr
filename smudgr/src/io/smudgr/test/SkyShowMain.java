@@ -12,6 +12,7 @@ import io.smudgr.source.smudge.alg.coord.RowCoords;
 import io.smudgr.source.smudge.alg.op.PixelShift;
 import io.smudgr.source.smudge.alg.op.PixelSort;
 import io.smudgr.source.smudge.alg.op.SpectralShift;
+import io.smudgr.source.smudge.alg.select.ThresholdSelect;
 import io.smudgr.view.JView;
 
 public class SkyShowMain {
@@ -29,17 +30,23 @@ public class SkyShowMain {
 		sort.bind("Enable");
 		sort.getParameter("Enable").setInitial(false);
 		sort.add(new ConvergeCoordFunction());
+
+		ThresholdSelect threshold = new ThresholdSelect();
+		threshold.getParameter("Threshold").setInitial(.1);
+		threshold.bind("Threshold");
+		sort.add(threshold);
+
 		PixelSort sort_op = new PixelSort();
-		sort_op.getParameter("Threshold").setInitial(.1);
 		sort_op.getParameter("Reverse").setInitial(true);
-		sort_op.bind("Threshold");
 		sort_op.bind("Reverse");
 		sort.add(sort_op);
+
 		smudge.add(sort);
 
 		Algorithm spectral = new Algorithm();
 		spectral.bind("Enable");
 		spectral.getParameter("Enable").setInitial(false);
+
 		SpectralShift spectral_op = new SpectralShift();
 		spectral_op.getParameter("Colors").setInitial(60);
 		spectral_op.getParameter("Sort").setInitial(true);
@@ -48,12 +55,14 @@ public class SkyShowMain {
 		spectral_op.bind("Sort");
 		new AnimateOnBeatControl(controller, spectral_op.getParameter("Shift"));
 		spectral.add(spectral_op);
+
 		smudge.add(spectral);
 
 		Algorithm shift = new Algorithm();
 		shift.bind("Enable");
 		shift.getParameter("Enable").setInitial(false);
 		shift.add(new ConvergeCoordFunction());
+
 		PixelShift shift_op = new PixelShift();
 		shift_op.getParameter("Intervals").setInitial(3);
 		shift_op.bind("Intervals");
@@ -61,12 +70,14 @@ public class SkyShowMain {
 		shift_op.bind("Reverse");
 		new AnimateOnBeatControl(controller, shift_op.getParameter("Amount"));
 		shift.add(shift_op);
+
 		smudge.add(shift);
 
 		Algorithm shift1 = new Algorithm();
 		shift1.bind("Enable");
 		shift1.getParameter("Enable").setInitial(false);
 		shift1.add(new ColumnCoords());
+
 		PixelShift shift1_op = new PixelShift();
 		shift1_op.getParameter("Intervals").setInitial(3);
 		shift1_op.bind("Intervals");
@@ -74,26 +85,35 @@ public class SkyShowMain {
 		shift1_op.bind("Reverse");
 		new AnimateOnBeatControl(controller, shift1_op.getParameter("Amount"));
 		shift1.add(shift1_op);
+
 		smudge.add(shift1);
 
 		Algorithm sort1 = new Algorithm();
 		sort1.bind("Enable");
 		sort1.getParameter("Enable").setInitial(false);
 		sort1.add(new ColumnCoords());
+		ThresholdSelect threshold2 = new ThresholdSelect();
+		threshold2.bind("Threshold");
+		sort1.add(threshold2);
+
 		PixelSort sort1_op = new PixelSort();
-		sort1_op.bind("Threshold");
 		sort1_op.bind("Reverse");
 		sort1.add(sort1_op);
+
 		smudge.add(sort1);
 
 		Algorithm sort2 = new Algorithm();
 		sort2.bind("Enable");
 		sort2.getParameter("Enable").setInitial(false);
 		sort2.add(new RowCoords());
+		ThresholdSelect threshold3 = new ThresholdSelect();
+		threshold3.bind("Threshold");
+		sort2.add(threshold3);
+
 		PixelSort sort2_op = new PixelSort();
-		sort2_op.bind("Threshold");
 		sort2_op.bind("Reverse");
 		sort2.add(sort2_op);
+
 		smudge.add(sort2);
 
 		new DownsampleControl(controller, 1);

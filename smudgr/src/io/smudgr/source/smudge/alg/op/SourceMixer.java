@@ -34,7 +34,7 @@ public class SourceMixer extends Operation {
 		int width = img.getWidth();
 
 		int x, y;
-		for (ArrayList<Integer> coords : getAlgorithm().getCoordFunction().getCoordSet()) {
+		for (ArrayList<Integer> coords : getAlgorithm().getSelectedPixels()) {
 			for (Integer coord : coords) {
 				x = coord % width;
 				y = (coord - x) / width;

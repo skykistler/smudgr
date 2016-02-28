@@ -44,7 +44,7 @@ public class ChannelDrift extends Operation {
 		int blueShiftX = (int) (blueX.getValue() * boundWidth);
 		int blueShiftY = (int) (blueY.getValue() * boundHeight);
 
-		for (ArrayList<Integer> coords : getAlgorithm().getCoordFunction().getCoordSet()) {
+		for (ArrayList<Integer> coords : getAlgorithm().getSelectedPixels()) {
 			for (Integer coord : coords) {
 				int x = coord % copy.getWidth();
 				int y = (coord - x) / copy.getWidth();
