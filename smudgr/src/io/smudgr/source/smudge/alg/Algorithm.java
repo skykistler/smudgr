@@ -73,6 +73,10 @@ public class Algorithm extends Parametric {
 				((Operation) component).execute(img);
 
 		lastFrame = img;
+		lastBoundX = bound.getOffsetX();
+		lastBoundY = bound.getOffsetY();
+		lastBoundW = bound.getWidth();
+		lastBoundH = bound.getHeight();
 	}
 
 	public void add(AlgorithmComponent component) {
