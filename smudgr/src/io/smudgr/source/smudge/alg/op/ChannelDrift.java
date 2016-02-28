@@ -50,9 +50,9 @@ public class ChannelDrift extends Operation {
 				int x = coord % copy.getWidth();
 				int y = (coord - x) / copy.getWidth();
 
-				int r = (int) ColorHelper.red(getShifted(x, y, redShiftX, redShiftY));
-				int g = (int) ColorHelper.green(getShifted(x, y, greenShiftX, greenShiftY));
-				int b = (int) ColorHelper.blue(getShifted(x, y, blueShiftX, blueShiftY));
+				int r = (int) ColorHelper.red(getShifted(img, x, y, redShiftX, redShiftY));
+				int g = (int) ColorHelper.green(getShifted(img, x, y, greenShiftX, greenShiftY));
+				int b = (int) ColorHelper.blue(getShifted(img, x, y, blueShiftX, blueShiftY));
 
 				copy.pixels[coord] = ColorHelper.color(255, r, g, b);
 			}
@@ -61,11 +61,11 @@ public class ChannelDrift extends Operation {
 		img.setBufferedImage(copy.getBufferedImage());
 	}
 
-	public int getShifted(int x, int y, int shiftX, int shiftY) {
+	public int getShifted(Frame orig, int x, int y, int shiftX, int shiftY) {
 		int x1 = (x + shiftX) % boundWidth;
 		int y1 = (y + shiftY) % boundHeight;
 
-		return img.get(x1, y1);
+		return orig.get(x1, y1);
 	}
 
 	public String getName() {

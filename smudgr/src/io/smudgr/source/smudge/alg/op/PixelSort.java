@@ -30,10 +30,10 @@ public class PixelSort extends Operation {
 
 	public void execute(Frame img) {
 		for (ColorIndexList coords : getAlgorithm().getSelectedPixels())
-			sort(coords);
+			sort(img, coords);
 	}
 
-	public void sort(ColorIndexList coords) {
+	public void sort(Frame img, ColorIndexList coords) {
 		Integer[] toSort = new Integer[coords.size()];
 
 		for (int i = 0; i < toSort.length; i++) {
