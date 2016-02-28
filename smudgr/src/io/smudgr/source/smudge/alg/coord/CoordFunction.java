@@ -2,10 +2,10 @@ package io.smudgr.source.smudge.alg.coord;
 
 import java.util.ArrayList;
 
-import gnu.trove.list.array.TIntArrayList;
 import io.smudgr.source.Frame;
 import io.smudgr.source.smudge.alg.Algorithm;
 import io.smudgr.source.smudge.alg.AlgorithmComponent;
+import io.smudgr.source.smudge.alg.ColorIndexList;
 import io.smudgr.source.smudge.alg.bound.Bound;
 
 public abstract class CoordFunction extends AlgorithmComponent {
@@ -13,8 +13,8 @@ public abstract class CoordFunction extends AlgorithmComponent {
 	private Frame frame;
 	private Bound bound;
 
-	protected ArrayList<TIntArrayList> coordSet = null;
-	protected TIntArrayList currentSet = null;
+	protected ArrayList<ColorIndexList> coordSet = null;
+	protected ColorIndexList currentSet = null;
 
 	public void init() {
 
@@ -44,14 +44,14 @@ public abstract class CoordFunction extends AlgorithmComponent {
 	protected void nextSet() {
 		// If our total set of coords doesn't exist yet, make it
 		if (coordSet == null)
-			coordSet = new ArrayList<TIntArrayList>();
+			coordSet = new ArrayList<ColorIndexList>();
 
 		// If a current set was being generated, add it if not empty
 		if (currentSet != null && currentSet.size() > 0)
 			coordSet.add(currentSet);
 
 		// Finally, reset the current set and our in-bound flag
-		currentSet = new TIntArrayList();
+		currentSet = new ColorIndexList();
 		wasInBound = false;
 	}
 
@@ -75,7 +75,7 @@ public abstract class CoordFunction extends AlgorithmComponent {
 		}
 	}
 
-	public ArrayList<TIntArrayList> getCoordSet() {
+	public ArrayList<ColorIndexList> getCoordSet() {
 		return coordSet;
 	}
 

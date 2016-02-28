@@ -2,9 +2,9 @@ package io.smudgr.source.smudge.alg.select;
 
 import java.util.ArrayList;
 
-import gnu.trove.list.array.TIntArrayList;
 import io.smudgr.source.Frame;
 import io.smudgr.source.smudge.alg.AlgorithmComponent;
+import io.smudgr.source.smudge.alg.ColorIndexList;
 
 public abstract class Selector extends AlgorithmComponent {
 
@@ -18,13 +18,13 @@ public abstract class Selector extends AlgorithmComponent {
 		if (frame == null)
 			return;
 
-		ArrayList<TIntArrayList> selected = getAlgorithm().getSelectedPixels();
-		ArrayList<TIntArrayList> newSelected = new ArrayList<TIntArrayList>();
+		ArrayList<ColorIndexList> selected = getAlgorithm().getSelectedPixels();
+		ArrayList<ColorIndexList> newSelected = new ArrayList<ColorIndexList>();
 
-		TIntArrayList currentSet = new TIntArrayList();
+		ColorIndexList currentSet = new ColorIndexList();
 
 		for (int i = 0; i < selected.size(); i++) {
-			TIntArrayList coords = selected.get(i);
+			ColorIndexList coords = selected.get(i);
 
 			for (int index = 0; index < coords.size(); index++) {
 				int coord = coords.get(index);
@@ -35,13 +35,13 @@ public abstract class Selector extends AlgorithmComponent {
 					currentSet.add(coord);
 				else if (currentSet.size() > 0) {
 					newSelected.add(currentSet);
-					currentSet = new TIntArrayList();
+					currentSet = new ColorIndexList();
 				}
 			}
 
 			if (currentSet.size() > 0) {
 				newSelected.add(currentSet);
-				currentSet = new TIntArrayList();
+				currentSet = new ColorIndexList();
 			}
 		}
 

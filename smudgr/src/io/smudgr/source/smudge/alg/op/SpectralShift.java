@@ -2,8 +2,8 @@ package io.smudgr.source.smudge.alg.op;
 
 import java.util.Arrays;
 
-import gnu.trove.list.array.TIntArrayList;
 import io.smudgr.source.Frame;
+import io.smudgr.source.smudge.alg.ColorIndexList;
 import io.smudgr.source.smudge.alg.math.ColorHelper;
 import io.smudgr.source.smudge.alg.math.LumaFunction;
 import io.smudgr.source.smudge.alg.math.UnivariateFunction;
@@ -47,7 +47,7 @@ public class SpectralShift extends Operation {
 			values = new int[buckets];
 			counters = new int[buckets];
 
-			for (TIntArrayList coords : getAlgorithm().getSelectedPixels())
+			for (ColorIndexList coords : getAlgorithm().getSelectedPixels())
 				for (int index = 0; index < coords.size(); index++) {
 					int coord = coords.get(index);
 					int i = getBucket(img.pixels[coord]);
@@ -64,7 +64,7 @@ public class SpectralShift extends Operation {
 
 		int shift_amount = shift.getIntValue() % buckets;
 
-		for (TIntArrayList coords : getAlgorithm().getSelectedPixels())
+		for (ColorIndexList coords : getAlgorithm().getSelectedPixels())
 			for (int index = 0; index < coords.size(); index++) {
 				int coord = coords.get(index);
 				int val = getBucket(img.pixels[coord]);

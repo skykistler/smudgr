@@ -1,7 +1,7 @@
 package io.smudgr.source.smudge.alg.coord;
 
-import gnu.trove.list.array.TIntArrayList;
 import io.smudgr.source.Frame;
+import io.smudgr.source.smudge.alg.ColorIndexList;
 import io.smudgr.source.smudge.alg.bound.Bound;
 import io.smudgr.source.smudge.param.NumberParameter;
 
@@ -34,14 +34,14 @@ public class RadialCoordFunction extends CoordFunction {
 	}
 
 	public void bresenham(int radiusX, int radiusY, int centerX, int centerY, int width, int height) {
-		TIntArrayList c1 = new TIntArrayList();
-		TIntArrayList c2 = new TIntArrayList();
-		TIntArrayList c3 = new TIntArrayList();
-		TIntArrayList c4 = new TIntArrayList();
-		TIntArrayList c5 = new TIntArrayList();
-		TIntArrayList c6 = new TIntArrayList();
-		TIntArrayList c7 = new TIntArrayList();
-		TIntArrayList c8 = new TIntArrayList();
+		ColorIndexList c1 = new ColorIndexList();
+		ColorIndexList c2 = new ColorIndexList();
+		ColorIndexList c3 = new ColorIndexList();
+		ColorIndexList c4 = new ColorIndexList();
+		ColorIndexList c5 = new ColorIndexList();
+		ColorIndexList c6 = new ColorIndexList();
+		ColorIndexList c7 = new ColorIndexList();
+		ColorIndexList c8 = new ColorIndexList();
 
 		// first set of points
 		int x, y;
@@ -83,9 +83,9 @@ public class RadialCoordFunction extends CoordFunction {
 		x = 0;
 		y = radiusY;
 		while (stoppingX <= stoppingY) {
-			c2.insert(0, (centerX + x) + ((centerY + y) * width));
+			c2.add(0, (centerX + x) + ((centerY + y) * width));
 			c3.add((centerX - x) + ((centerY + y) * width));
-			c6.insert(0, (centerX - x) + ((centerY - y) * width));
+			c6.add(0, (centerX - x) + ((centerY - y) * width));
 			c7.add((centerX + x) + ((centerY - y) * width));
 
 			x++;
