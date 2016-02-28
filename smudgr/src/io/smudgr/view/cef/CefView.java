@@ -145,15 +145,9 @@ public class CefView implements View {
 	}
 
 	public void dispose() {
+		window.setVisible(false);
 		window.dispose();
-
-		try {
-			Thread.sleep(20);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} finally {
-			CefApp.getInstance().dispose();
-		}
+		CefApp.getInstance().dispose();
 	}
 
 	private void drawFittedImage(Graphics g, BufferedImage image) {
