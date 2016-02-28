@@ -1,5 +1,6 @@
 package io.smudgr.source.smudge.alg.coord;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 import io.smudgr.source.Frame;
@@ -8,7 +9,6 @@ import io.smudgr.source.smudge.alg.bound.Bound;
 import io.smudgr.source.smudge.alg.param.NumberParameter;
 
 public class RadialCoordFunction extends CoordFunction {
-
 	private NumberParameter innerRadius;
 
 	public String getName() {
@@ -16,7 +16,7 @@ public class RadialCoordFunction extends CoordFunction {
 	}
 
 	public void init(Algorithm a) {
-		innerRadius = new NumberParameter(a, "Inner Radius", .5, 0, 1, 0.005);
+		innerRadius = new NumberParameter(a, "Inner Radius", 0, 0, 1, 0.005);
 	}
 
 	protected void generate() {
@@ -36,13 +36,13 @@ public class RadialCoordFunction extends CoordFunction {
 		int _radiusY = radiusY;
 		int _radiusX = radiusX;
 		for (int i = 0; i < innerR; i++) {
-			bresenham(_radiusX, _radiusY, boundX, boundY, img.getWidth(), img.getHeight());
+			bresenham(_radiusX, _radiusY, boundX + boundWidth/2, boundY + boundHeight/2, img.getWidth(), img.getHeight(), b, img);
 			_radiusX--;
 			_radiusY--;
 		}
 	}
 
-	public void bresenham(int radiusX, int radiusY, int centerX, int centerY, int width, int height) {
+	public void bresenham(int radiusX, int radiusY, int centerX, int centerY, int width, int height, Bound b, Frame img) {
 		ArrayList<Integer> c1 = new ArrayList<Integer>();
 		ArrayList<Integer> c2 = new ArrayList<Integer>();
 		ArrayList<Integer> c3 = new ArrayList<Integer>();
@@ -52,63 +52,128 @@ public class RadialCoordFunction extends CoordFunction {
 		ArrayList<Integer> c7 = new ArrayList<Integer>();
 		ArrayList<Integer> c8 = new ArrayList<Integer>();
 
-		// first set of points
 		int x, y;
-
-		int twoASquare = 2 * radiusX * radiusX;
-		int twoBSquare = 2 * radiusY * radiusY;
-		int dx = radiusY * radiusY * (1 - 2 * radiusX);
-		int dy = radiusX * radiusX;
-		int error = 0;
-		int stoppingX = twoBSquare * radiusX;
-		int stoppingY = 0;
+		
+		// creating BigInteger variables to avoid a bunch of casting and converting later on:
+		BigInteger rX = BigInteger.valueOf(radiusX);
+		BigInteger rY = BigInteger.valueOf(radiusY);
+		BigInteger two = BigInteger.valueOf(2);
+		BigInteger rXsquare = rX.multiply(rX);
+		BigInteger rYsquare = rY.multiply(rY);
+		BigInteger twoXsquare = rXsquare.multiply(two);
+		BigInteger twoYsquare = rYsquare.multiply(two);
+		BigInteger oneMinus2rX = BigInteger.valueOf(1).subtract(two.multiply(rX));
+		BigInteger oneMinus2rY = BigInteger.valueOf(1).subtract(two.multiply(rY));
+		
+		
+		// first while loop creates the first set of points in the ellipse
+		
+		BigInteger twoASquare = twoXsquare;
+		BigInteger twoBSquare =  twoYsquare;
+		BigInteger dx = rYsquare.multiply(oneMinus2rX);
+		BigInteger dy = rXsquare;
+		BigInteger error = BigInteger.ZERO;
+		BigInteger stoppingX = twoBSquare.multiply(rX);
+		BigInteger stoppingY = BigInteger.ZERO;
 
 		x = radiusX;
 		y = 0;
-		while (stoppingX >= stoppingY) {
-			c1.add((centerX + x) + ((centerY + y) * width));
-			c4.add(0, (centerX - x) + ((centerY + y) * width));
-			c5.add((centerX - x) + ((centerY - y) * width));
-			c8.add(0, (centerX + x) + ((centerY - y) * width));
+		
+		while (stoppingX.compareTo(stoppingY) >= 0) {
+			
+			// The symmetric points in each quadrant of the ellipse:
+			int xplusx = centerX + x;
+			int yplusy = centerY + y;
+			int xminusx = centerX - x;
+			int yminusy = centerY - y;
+			
+			int p1x = xplusx;
+			int p1y = yplusy;
+			if(b.containsPoint(img, p1x, p1y))
+				c1.add(p1x + p1y * width);
+			
+			int p2x = xminusx;
+			int p2y = yplusy;
+			if(b.containsPoint(img, p2x, p2y))
+				c4.add(0, p2x + p2y * width);
+			
+			int p3x = xminusx;
+			int p3y = yminusy;
+			if(b.containsPoint(img, p3x, p3y))
+				c5.add(p3x + p3y * width);
+			
+			int p4x = xplusx;
+			int p4y = yminusy;
+			if(b.containsPoint(img, p4x, p4y))
+				c8.add(0, p4x + p4y * width);
+
 
 			y++;
-			stoppingY += twoASquare;
-			error += dy;
-			dy += twoASquare;
-			if ((2 * error + dx) > 0) {
+			stoppingY = stoppingY.add(twoASquare); //stoppingY += twoASquare;
+			error = error.add(dy); //error += dy;
+			dy = dy.add(twoASquare); //dy += twoASquare;
+			if ((error.multiply(BigInteger.valueOf(2)).add(dx)).compareTo(BigInteger.ZERO) > 0 ){
 				x--;
-				stoppingX -= twoBSquare;
-				error += dx;
-				dx += twoBSquare;
+				stoppingX = stoppingX.subtract(twoBSquare); //stoppingX -= twoBSquare;
+				error = error.add(dx); //error += dx;
+				dx = dx.add(twoBSquare); //dx += twoBSquare;
 			}
 		}
 
 		// second set of points
-		dx = radiusY * radiusY;
-		dy = radiusX * radiusX * (1 - 2 * radiusY);
-		error = 0;
-		stoppingX = 0;
-		stoppingY = twoASquare * radiusY;
+		
+		dx = rYsquare; //radiusY * radiusY;
+		dy = rXsquare.multiply(oneMinus2rY); //radiusX1 * radiusX1 * (1 - 2 * radiusY);
+		error = BigInteger.ZERO;
+		stoppingX = BigInteger.ZERO;
+		stoppingY = twoASquare.multiply(rY); //twoASquare * radiusY;
+		
 		x = 0;
 		y = radiusY;
-		while (stoppingX <= stoppingY) {
-			c2.add(0, (centerX + x) + ((centerY + y) * width));
-			c3.add((centerX - x) + ((centerY + y) * width));
-			c6.add(0, (centerX - x) + ((centerY - y) * width));
-			c7.add((centerX + x) + ((centerY - y) * width));
-
+		while (stoppingX.compareTo(stoppingY) <= 0) {
+			
+			// The symmetric points in each quadrant of the ellipse:
+			int xplusx = centerX + x;
+			int yplusy = centerY + y;
+			int xminusx = centerX - x;
+			int yminusy = centerY - y;
+			
+			int p1x = xplusx;
+			int p1y = yplusy;
+			if(b.containsPoint(img, p1x, p1y))
+				c2.add(0, p1x + p1y * width);
+			
+			int p2x = xminusx;
+			int p2y = yplusy;
+			if(b.containsPoint(img, p2x, p2y))
+				c3.add(p2x + p2y * width);
+			
+			int p3x = xminusx;
+			int p3y = yminusy;
+			if(b.containsPoint(img, p3x, p3y))
+				c6.add(0, p3x + p3y * width);
+			
+			int p4x = xplusx;
+			int p4y = yminusy;
+			if(b.containsPoint(img, p4x, p4y))
+				c7.add(p4x + p4y * width);
+			
 			x++;
-			stoppingX += twoBSquare;
-			error += dx;
-			dx += twoBSquare;
-			if ((2 * error + dy) > 0) {
+			stoppingX = stoppingX.add(twoBSquare); //stoppingX += twoBSquare;
+			error = error.add(dx); //error += dx;
+			dx = dx.add(twoBSquare); //dx += twoBSquare;
+			if ((error.multiply(BigInteger.valueOf(2)).add(dy)).compareTo(BigInteger.ZERO) > 0 ) {
 				y--;
-				stoppingY -= twoASquare;
-				error += dy;
-				dy += twoASquare;
+				stoppingY = stoppingY.subtract(twoASquare); //stoppingY -= twoASquare;
+				error = error.add(dy); //error += dy;
+				dy = dy.add(twoASquare); //dy += twoASquare;
 			}
 		}
 
+		/* The algorithm uses the symmetry of an ellipse to calculate points in each quadrant simultaneously
+		 * through each loop. The following corrects the order of the calculated points to 
+		 * represent a single continuous ellipse curve.
+		 */
 		currentSet.addAll(c1);
 		currentSet.addAll(c2);
 		currentSet.addAll(c3);
@@ -120,4 +185,5 @@ public class RadialCoordFunction extends CoordFunction {
 		nextSet();
 
 	}
+
 }

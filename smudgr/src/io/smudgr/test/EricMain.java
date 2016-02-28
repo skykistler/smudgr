@@ -5,7 +5,10 @@ import io.smudgr.controller.device.MidiController;
 import io.smudgr.source.Image;
 import io.smudgr.source.SourceSet;
 import io.smudgr.source.smudge.Smudge;
+import io.smudgr.source.smudge.alg.PixelShift;
+import io.smudgr.source.smudge.alg.PixelSort;
 import io.smudgr.source.smudge.alg.SourceMixerHack;
+import io.smudgr.source.smudge.alg.coord.RadialCoordFunction;
 import io.smudgr.view.JView;
 
 public class EricMain {
@@ -23,9 +26,9 @@ public class EricMain {
 		SourceSet mySource = new SourceSet("mix");
 		mySource.init();
 
-		SourceMixerHack mixer = new SourceMixerHack(smudge, mySource);
-		mixer.bind("Enable");
-		mixer.getParameter("Enable").setInitial(false);
+//		SourceMixerHack mixer = new SourceMixerHack(smudge, mySource);
+//		mixer.bind("Enable");
+//		mixer.getParameter("Enable").setInitial(false);
 
 		//		BitSmear smear = new BitSmear(smudge);
 		//			smear.bind("Red Shift");
@@ -52,12 +55,20 @@ public class EricMain {
 
 		//new AnimationControl(controller, shift.getParameter("Amount"));
 
-		//		PixelSort sort1 = new PixelSort(smudge);
-		//		sort1.setCoordFunction(new ConvergeCoordFunction());
-		//		sort1.bind("Threshold");
-		//		sort1.bind("Reverse");
-		//		sort1.bind("Enable");
-		//		sort1.getParameter("Enable").setInitial(false);
+//				RadialCoordFunction radialcoords = new RadialCoordFunction();
+//				
+//				PixelSort sort1 = new PixelSort(smudge);
+//				sort1.setCoordFunction(radialcoords);
+//				radialcoords.init(sort1);
+//				sort1.bind("Threshold");
+//				sort1.bind("Reverse");
+//				sort1.bind("Enable");
+//				sort1.getParameter("Enable").setInitial(false);
+//				sort1.bind("Bound X");
+//				sort1.bind("Bound Y");
+//				sort1.bind("Bound Width");
+//				sort1.bind("Bound Height");
+//				//sort1.bind("Inner Radius");
 
 		//				PixelSort sort2 = new PixelSort(smudge);
 		//				sort2.setCoordFunction(new RowCoords());
@@ -78,15 +89,20 @@ public class EricMain {
 		//		shift.getParameter("Enable").setInitial(false);
 		//		new AnimationControl(controller, shift.getParameter("Amount"));
 
-		//		PixelShift shift1 = new PixelShift(smudge);
-		//		//shift1.setBound(new EllipticalBound(1, 1));
-		//		shift1.setCoordFunction(new ColumnCoords());
-		//		//shift1.getParameter("Intervals").setInitial(3);
-		//		shift1.bind("Intervals");
-		//		shift1.getParameter("Amount").setInitial(.2);
-		//		shift1.bind("Enable");
-		//		shift1.getParameter("Enable").setInitial(false);
-		//shift1.bind("Amount");
+				PixelShift shift1 = new PixelShift(smudge);
+				//shift1.setBound(new EllipticalBound(1, 1));
+				shift1.setCoordFunction(new RadialCoordFunction());
+				//shift1.getParameter("Intervals").setInitial(3);
+				shift1.bind("Intervals");
+				shift1.getParameter("Amount").setInitial(.2);
+				shift1.bind("Enable");
+				shift1.getParameter("Enable").setInitial(false);
+				shift1.bind("Amount");
+				shift1.bind("Bound X");
+				shift1.bind("Bound Y");
+				shift1.bind("Bound Width");
+				shift1.bind("Bound Height");
+				
 
 		//shift1.bind("Start");
 		//shift1.bind("End");
