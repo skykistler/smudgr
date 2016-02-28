@@ -13,7 +13,7 @@ public abstract class Operation extends AlgorithmComponent {
 
 	}
 
-	protected abstract void execute(Frame img);
+	public abstract void execute(Frame img);
 
 	public abstract String getName();
 

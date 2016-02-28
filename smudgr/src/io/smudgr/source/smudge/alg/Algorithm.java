@@ -70,7 +70,7 @@ public class Algorithm extends Parametric {
 
 		for (AlgorithmComponent component : components)
 			if (component instanceof Operation)
-				((Operation) component).apply(img);
+				((Operation) component).execute(img);
 
 		lastFrame = img;
 	}
