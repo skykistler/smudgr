@@ -4,11 +4,15 @@ import java.util.Arrays;
 
 import io.smudgr.source.Frame;
 import io.smudgr.source.smudge.alg.ColorIndexList;
+import io.smudgr.source.smudge.alg.math.ChromaFunction;
 import io.smudgr.source.smudge.alg.math.ColorHelper;
+import io.smudgr.source.smudge.alg.math.HueFunction;
+import io.smudgr.source.smudge.alg.math.LogFunction;
 import io.smudgr.source.smudge.alg.math.LumaFunction;
-import io.smudgr.source.smudge.alg.math.UnivariateFunction;
+import io.smudgr.source.smudge.alg.math.SinFunction;
 import io.smudgr.source.smudge.param.BooleanParameter;
 import io.smudgr.source.smudge.param.NumberParameter;
+import io.smudgr.source.smudge.param.UnivariateParameter;
 
 public class SpectralShift extends Operation {
 
@@ -18,7 +22,7 @@ public class SpectralShift extends Operation {
 	BooleanParameter sort = new BooleanParameter("Sort", this, false);
 	BooleanParameter reverse = new BooleanParameter("Reverse", this, false);
 
-	UnivariateFunction function = new LumaFunction();
+	private UnivariateParameter function = new UnivariateParameter("Function", this, new LumaFunction());
 
 	int buckets = 0;
 	int[] values = null;
@@ -29,6 +33,11 @@ public class SpectralShift extends Operation {
 	public void init() {
 		shift.setContinuous(true);
 		palette.setContinuous(true);
+
+		function.add(new ChromaFunction());
+		function.add(new HueFunction());
+		function.add(new SinFunction());
+		function.add(new LogFunction());
 	}
 
 	public void execute(Frame img) {
@@ -85,7 +94,7 @@ public class SpectralShift extends Operation {
 	}
 
 	public int getBucket(int value) {
-		return (int) (function.calculate(value) * (buckets - 1));
+		return (int) (function.getValue().calculate(value) * (buckets - 1));
 	}
 
 	public String getName() {

@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
@@ -62,8 +64,14 @@ public class JView implements View {
 			monitor.setVisible(true);
 			monitor.createBufferStrategy(2);
 
-			if (fullscreenWindow == null)
+			if (fullscreenWindow == null) {
 				monitor.addKeyListener(controller);
+				monitor.addWindowListener(new WindowAdapter() {
+					public void windowClosing(WindowEvent e) {
+						getController().stop();
+					}
+				});
+			}
 		}
 	}
 

@@ -2,8 +2,6 @@ package io.smudgr.source.smudge.alg.op;
 
 import io.smudgr.source.Frame;
 import io.smudgr.source.smudge.alg.ColorIndexList;
-import io.smudgr.source.smudge.alg.math.LinearFunction;
-import io.smudgr.source.smudge.alg.math.UnivariateFunction;
 import io.smudgr.source.smudge.param.BooleanParameter;
 import io.smudgr.source.smudge.param.NumberParameter;
 
@@ -17,15 +15,13 @@ public class PixelShift extends Operation {
 	private BooleanParameter reverse = new BooleanParameter("Reverse", this, true);
 	private NumberParameter optional = new NumberParameter("Optional", this, 100, 100, 10000, 10);
 
-	UnivariateFunction scale = new LinearFunction();
+	//	private UnivariateParameter scale = new UnivariateParameter("Scale", this, new LinearFunction());
 
 	Frame orig;
 	Frame shifted;
 
 	public void init() {
 		amount.setContinuous(true);
-		//start.setContinuous(true);
-		//end.setContinuous(true);
 	}
 
 	public void execute(Frame img) {

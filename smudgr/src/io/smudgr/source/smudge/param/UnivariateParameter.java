@@ -11,6 +11,11 @@ public class UnivariateParameter extends Parameter {
 	private UnivariateFunction initial;
 	private int current;
 
+	public UnivariateParameter(String name, Parametric parent, UnivariateFunction initial) {
+		this(name, parent);
+		setInitial(initial);
+	}
+
 	public UnivariateParameter(String name, Parametric parent) {
 		super(name, parent);
 	}
@@ -24,9 +29,8 @@ public class UnivariateParameter extends Parameter {
 			return;
 
 		UnivariateFunction func = (UnivariateFunction) o;
-		if (!univariates.contains(func))
-			univariates.add(func);
 
+		add(func);
 		initial = func;
 	}
 
@@ -35,10 +39,21 @@ public class UnivariateParameter extends Parameter {
 			return;
 
 		UnivariateFunction func = (UnivariateFunction) o;
+
+		add(func);
+		current = univariates.indexOf(func);
+	}
+
+	public UnivariateFunction getValue() {
+		if (univariates.size() == 0)
+			return null;
+
+		return univariates.get(current);
+	}
+
+	public void add(UnivariateFunction func) {
 		if (!univariates.contains(func))
 			univariates.add(func);
-
-		current = univariates.indexOf(func);
 	}
 
 	public void inputValue(int value) {
