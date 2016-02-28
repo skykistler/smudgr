@@ -1,7 +1,6 @@
 package io.smudgr.source.smudge.alg.op;
 
-import java.util.ArrayList;
-
+import gnu.trove.list.array.TIntArrayList;
 import io.smudgr.source.Frame;
 import io.smudgr.source.smudge.alg.math.LinearFunction;
 import io.smudgr.source.smudge.alg.math.UnivariateFunction;
@@ -61,7 +60,7 @@ public class PixelShift extends Operation {
 			for (int i = 0; i < intervalWidth; i++) {
 				int index = (int) (interval + i);
 				if (index < size) {
-					ArrayList<Integer> coords = getAlgorithm().getSelectedPixels().get(index);
+					TIntArrayList coords = getAlgorithm().getSelectedPixels().get(index);
 					shift(coords, n, shift, i, ints);
 				}
 			}
@@ -70,7 +69,7 @@ public class PixelShift extends Operation {
 		img.setBufferedImage(shifted.getBufferedImage());
 	}
 
-	public void shift(ArrayList<Integer> coords, int currentInterval, double amount, int indexIntoCurrentInt, double totalInts) {
+	public void shift(TIntArrayList coords, int currentInterval, double amount, int indexIntoCurrentInt, double totalInts) {
 
 		double shiftScale = 1;
 

@@ -64,15 +64,9 @@ public class Gif implements Source {
 	}
 
 	public Frame getFrame() {
-		if (bufferer == null || !bufferer.started || buffer.size() == 0) {
-			// If getFrame() is being called, 
-			// we need to kick it in gear and make sure this gif gets loaded
-			init();
+		if (bufferer == null || !bufferer.started || buffer.size() == 0 || currentFrame < 0 || currentFrame >= buffer.size()) {
 			return lastFrame;
 		}
-
-		if (currentFrame < 0 || currentFrame >= buffer.size())
-			return lastFrame;
 
 		return lastFrame = buffer.get(currentFrame).getFrame();
 	}

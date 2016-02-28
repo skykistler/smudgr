@@ -2,6 +2,7 @@ package io.smudgr.source.smudge.alg.select;
 
 import java.util.ArrayList;
 
+import gnu.trove.list.array.TIntArrayList;
 import io.smudgr.source.Frame;
 import io.smudgr.source.smudge.alg.AlgorithmComponent;
 
@@ -17,15 +18,16 @@ public abstract class Selector extends AlgorithmComponent {
 		if (frame == null)
 			return;
 
-		ArrayList<ArrayList<Integer>> selected = getAlgorithm().getSelectedPixels();
-		ArrayList<ArrayList<Integer>> newSelected = new ArrayList<ArrayList<Integer>>();
+		ArrayList<TIntArrayList> selected = getAlgorithm().getSelectedPixels();
+		ArrayList<TIntArrayList> newSelected = new ArrayList<TIntArrayList>();
 
-		ArrayList<Integer> currentSet = new ArrayList<Integer>();
+		TIntArrayList currentSet = new TIntArrayList();
 
 		for (int i = 0; i < selected.size(); i++) {
-			ArrayList<Integer> coords = selected.get(i);
+			TIntArrayList coords = selected.get(i);
 
-			for (Integer coord : coords) {
+			for (int index = 0; index < coords.size(); index++) {
+				int coord = coords.get(index);
 				int x = coord % frame.getWidth();
 				int y = (coord - x) / frame.getWidth();
 
@@ -33,13 +35,13 @@ public abstract class Selector extends AlgorithmComponent {
 					currentSet.add(coord);
 				else if (currentSet.size() > 0) {
 					newSelected.add(currentSet);
-					currentSet = new ArrayList<Integer>();
+					currentSet = new TIntArrayList();
 				}
 			}
 
 			if (currentSet.size() > 0) {
 				newSelected.add(currentSet);
-				currentSet = new ArrayList<Integer>();
+				currentSet = new TIntArrayList();
 			}
 		}
 

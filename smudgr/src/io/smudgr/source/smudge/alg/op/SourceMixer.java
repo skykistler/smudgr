@@ -1,7 +1,6 @@
 package io.smudgr.source.smudge.alg.op;
 
-import java.util.ArrayList;
-
+import gnu.trove.list.array.TIntArrayList;
 import io.smudgr.source.Frame;
 import io.smudgr.source.Source;
 import io.smudgr.source.smudge.alg.math.ColorHelper;
@@ -34,8 +33,9 @@ public class SourceMixer extends Operation {
 		int width = img.getWidth();
 
 		int x, y;
-		for (ArrayList<Integer> coords : getAlgorithm().getSelectedPixels()) {
-			for (Integer coord : coords) {
+		for (TIntArrayList coords : getAlgorithm().getSelectedPixels()) {
+			for (int index = 0; index < coords.size(); index++) {
+				int coord = coords.get(index);
 				x = coord % width;
 				y = (coord - x) / width;
 				if (inFrame(w, h, x, y))

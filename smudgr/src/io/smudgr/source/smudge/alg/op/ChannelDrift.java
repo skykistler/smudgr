@@ -1,7 +1,6 @@
 package io.smudgr.source.smudge.alg.op;
 
-import java.util.ArrayList;
-
+import gnu.trove.list.array.TIntArrayList;
 import io.smudgr.source.Frame;
 import io.smudgr.source.smudge.alg.math.ColorHelper;
 import io.smudgr.source.smudge.param.NumberParameter;
@@ -44,8 +43,10 @@ public class ChannelDrift extends Operation {
 		int blueShiftX = (int) (blueX.getValue() * boundWidth);
 		int blueShiftY = (int) (blueY.getValue() * boundHeight);
 
-		for (ArrayList<Integer> coords : getAlgorithm().getSelectedPixels()) {
-			for (Integer coord : coords) {
+		for (TIntArrayList coords : getAlgorithm().getSelectedPixels()) {
+			for (int index = 0; index < coords.size(); index++) {
+				int coord = coords.get(index);
+
 				int x = coord % copy.getWidth();
 				int y = (coord - x) / copy.getWidth();
 

@@ -1,7 +1,6 @@
 package io.smudgr.source.smudge.alg.op;
 
-import java.util.ArrayList;
-
+import gnu.trove.list.array.TIntArrayList;
 import io.smudgr.source.Frame;
 import io.smudgr.source.smudge.alg.math.ColorHelper;
 import io.smudgr.source.smudge.param.NumberParameter;
@@ -24,9 +23,9 @@ public class ChannelCrush extends Operation {
 
 	@Override
 	public void execute(Frame img) {
-		for (ArrayList<Integer> coords : getAlgorithm().getSelectedPixels())
-			for (Integer coord : coords)
-				smear(coord, img);
+		for (TIntArrayList coords : getAlgorithm().getSelectedPixels())
+			for (int index = 0; index < coords.size(); index++)
+				smear(coords.get(index), img);
 	}
 
 	public void smear(int coord, Frame img) {

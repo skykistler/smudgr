@@ -1,9 +1,9 @@
 package io.smudgr.source.smudge.alg.op;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import gnu.trove.list.array.TIntArrayList;
 import io.smudgr.source.Frame;
 import io.smudgr.source.smudge.alg.math.LumaFunction;
 import io.smudgr.source.smudge.alg.math.UnivariateFunction;
@@ -20,11 +20,11 @@ public class PixelSort extends Operation {
 	}
 
 	public void execute(Frame img) {
-		for (ArrayList<Integer> coords : getAlgorithm().getSelectedPixels())
+		for (TIntArrayList coords : getAlgorithm().getSelectedPixels())
 			sort(coords);
 	}
 
-	public void sort(ArrayList<Integer> coords) {
+	public void sort(TIntArrayList coords) {
 		Integer[] toSort = new Integer[coords.size()];
 
 		for (int i = 0; i < toSort.length; i++) {

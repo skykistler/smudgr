@@ -1,7 +1,6 @@
 package io.smudgr.source.smudge.alg.coord;
 
-import java.util.ArrayList;
-
+import gnu.trove.list.array.TIntArrayList;
 import io.smudgr.source.Frame;
 import io.smudgr.source.smudge.alg.bound.Bound;
 import io.smudgr.source.smudge.param.NumberParameter;
@@ -35,14 +34,14 @@ public class RadialCoordFunction extends CoordFunction {
 	}
 
 	public void bresenham(int radiusX, int radiusY, int centerX, int centerY, int width, int height) {
-		ArrayList<Integer> c1 = new ArrayList<Integer>();
-		ArrayList<Integer> c2 = new ArrayList<Integer>();
-		ArrayList<Integer> c3 = new ArrayList<Integer>();
-		ArrayList<Integer> c4 = new ArrayList<Integer>();
-		ArrayList<Integer> c5 = new ArrayList<Integer>();
-		ArrayList<Integer> c6 = new ArrayList<Integer>();
-		ArrayList<Integer> c7 = new ArrayList<Integer>();
-		ArrayList<Integer> c8 = new ArrayList<Integer>();
+		TIntArrayList c1 = new TIntArrayList();
+		TIntArrayList c2 = new TIntArrayList();
+		TIntArrayList c3 = new TIntArrayList();
+		TIntArrayList c4 = new TIntArrayList();
+		TIntArrayList c5 = new TIntArrayList();
+		TIntArrayList c6 = new TIntArrayList();
+		TIntArrayList c7 = new TIntArrayList();
+		TIntArrayList c8 = new TIntArrayList();
 
 		// first set of points
 		int x, y;
@@ -59,9 +58,9 @@ public class RadialCoordFunction extends CoordFunction {
 		y = 0;
 		while (stoppingX >= stoppingY) {
 			c1.add((centerX + x) + ((centerY + y) * width));
-			c4.add(0, (centerX - x) + ((centerY + y) * width));
+			c4.insert(0, (centerX - x) + ((centerY + y) * width));
 			c5.add((centerX - x) + ((centerY - y) * width));
-			c8.add(0, (centerX + x) + ((centerY - y) * width));
+			c8.insert(0, (centerX + x) + ((centerY - y) * width));
 
 			y++;
 			stoppingY += twoASquare;
@@ -84,9 +83,9 @@ public class RadialCoordFunction extends CoordFunction {
 		x = 0;
 		y = radiusY;
 		while (stoppingX <= stoppingY) {
-			c2.add(0, (centerX + x) + ((centerY + y) * width));
+			c2.insert(0, (centerX + x) + ((centerY + y) * width));
 			c3.add((centerX - x) + ((centerY + y) * width));
-			c6.add(0, (centerX - x) + ((centerY - y) * width));
+			c6.insert(0, (centerX - x) + ((centerY - y) * width));
 			c7.add((centerX + x) + ((centerY - y) * width));
 
 			x++;

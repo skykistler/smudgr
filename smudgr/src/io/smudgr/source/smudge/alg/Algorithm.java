@@ -2,6 +2,7 @@ package io.smudgr.source.smudge.alg;
 
 import java.util.ArrayList;
 
+import gnu.trove.list.array.TIntArrayList;
 import io.smudgr.controller.Controller;
 import io.smudgr.source.Frame;
 import io.smudgr.source.smudge.Smudge;
@@ -22,7 +23,7 @@ public class Algorithm extends Parametric {
 	private CoordFunction coordFunction;
 
 	private ArrayList<AlgorithmComponent> components = new ArrayList<AlgorithmComponent>();
-	private ArrayList<ArrayList<Integer>> selectedPixels = new ArrayList<ArrayList<Integer>>();
+	private ArrayList<TIntArrayList> selectedPixels = new ArrayList<TIntArrayList>();
 
 	protected Frame lastFrame;
 
@@ -132,11 +133,11 @@ public class Algorithm extends Parametric {
 			coordFunction.setBound(bound);
 	}
 
-	public void setSelectedPixels(ArrayList<ArrayList<Integer>> selected) {
+	public void setSelectedPixels(ArrayList<TIntArrayList> selected) {
 		selectedPixels = selected;
 	}
 
-	public ArrayList<ArrayList<Integer>> getSelectedPixels() {
+	public ArrayList<TIntArrayList> getSelectedPixels() {
 		return selectedPixels;
 	}
 
