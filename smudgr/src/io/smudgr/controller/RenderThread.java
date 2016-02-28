@@ -5,6 +5,7 @@ import io.smudgr.view.View;
 public class RenderThread implements Runnable {
 
 	private View view;
+	private Thread thread;
 	private volatile boolean running;
 	private boolean finished;
 
@@ -14,12 +15,13 @@ public class RenderThread implements Runnable {
 
 	public void start() {
 		running = true;
-		Thread t = new Thread(this);
-		t.start();
+		thread = new Thread(this);
+		thread.start();
 	}
 
 	public void stop() {
 		running = false;
+		thread.interrupt();
 	}
 
 	public boolean isFinished() {
@@ -38,7 +40,7 @@ public class RenderThread implements Runnable {
 				view.draw();
 			} catch (IllegalStateException e) {
 				System.out.println("Rendering stopped.");
-				break;
+				view.getController().stop();
 			}
 
 			frames++;
@@ -56,9 +58,8 @@ public class RenderThread implements Runnable {
 					diff = lastFrame - System.nanoTime() + targetFrameNs;
 					long ms = (long) Math.floor(diff / 1000000.0);
 					int ns = (int) (diff % 1000000);
-					Thread.sleep(ms, ns);
+					Thread.sleep(Math.max(ms, 0), Math.max(ns, 0));
 				} catch (Exception e) {
-					e.printStackTrace();
 				}
 			}
 

@@ -2,21 +2,20 @@ package io.smudgr.test;
 
 import io.smudgr.controller.controls.AnimateOnBeatControl;
 import io.smudgr.controller.controls.DownsampleControl;
-import io.smudgr.controller.controls.EnableSmudgeControl;
 import io.smudgr.controller.controls.SourceSetControl;
 import io.smudgr.controller.device.MidiController;
 import io.smudgr.source.Gif;
 import io.smudgr.source.Image;
 import io.smudgr.source.Source;
 import io.smudgr.source.smudge.Smudge;
-import io.smudgr.source.smudge.alg.ChannelCrush;
-import io.smudgr.source.smudge.alg.PixelShift;
-import io.smudgr.source.smudge.alg.PixelSort;
-import io.smudgr.source.smudge.alg.SourceMixerHack;
-import io.smudgr.source.smudge.alg.SpectralShift;
+import io.smudgr.source.smudge.alg.Algorithm;
 import io.smudgr.source.smudge.alg.coord.ColumnCoords;
 import io.smudgr.source.smudge.alg.coord.ConvergeCoordFunction;
 import io.smudgr.source.smudge.alg.coord.RowCoords;
+import io.smudgr.source.smudge.alg.op.PixelShift;
+import io.smudgr.source.smudge.alg.op.PixelSort;
+import io.smudgr.source.smudge.alg.op.SourceMixerHack;
+import io.smudgr.source.smudge.alg.op.SpectralShift;
 import io.smudgr.view.JView;
 
 public class SkyPCPMain {
@@ -26,86 +25,79 @@ public class SkyPCPMain {
 		MidiController controller = new MidiController("bbt_pcp.map");
 
 		// Make smudge
-		Smudge smudge = new Smudge(new Gif("pcp/burns/sailor.gif"));
+		Smudge smudge = new Smudge();
 		new SourceSetControl(controller, "pcp/sets/");
-		new EnableSmudgeControl(controller);
 
-		// Set smudge before doing anything
-		controller.setSmudge(smudge);
-
-		PixelSort sort = new PixelSort(smudge);
-		sort.setCoordFunction(new ConvergeCoordFunction());
-		sort.getParameter("Threshold").setInitial(.1);
-		sort.getParameter("Reverse").setInitial(true);
-		sort.bind("Threshold");
-		sort.bind("Reverse");
+		Algorithm sort = new Algorithm();
 		sort.bind("Enable");
 		sort.getParameter("Enable").setInitial(false);
+		sort.add(new ConvergeCoordFunction());
+		PixelSort sort_op = new PixelSort();
+		sort_op.getParameter("Threshold").setInitial(.1);
+		sort_op.getParameter("Reverse").setInitial(true);
+		sort_op.bind("Threshold");
+		sort_op.bind("Reverse");
+		sort.add(sort_op);
+		smudge.add(sort);
 
-		SpectralShift spectral = new SpectralShift(smudge);
-		spectral.getParameter("Colors").setInitial(60);
-		spectral.getParameter("Sort").setInitial(true);
-		spectral.bind("Colors");
-		spectral.bind("Palette");
-		spectral.bind("Sort");
+		Algorithm spectral = new Algorithm();
 		spectral.bind("Enable");
 		spectral.getParameter("Enable").setInitial(false);
-		new AnimateOnBeatControl(controller, spectral.getParameter("Shift"));
+		SpectralShift spectral_op = new SpectralShift();
+		spectral_op.getParameter("Colors").setInitial(60);
+		spectral_op.getParameter("Sort").setInitial(true);
+		spectral_op.bind("Colors");
+		spectral_op.bind("Palette");
+		spectral_op.bind("Sort");
+		new AnimateOnBeatControl(controller, spectral_op.getParameter("Shift"));
+		spectral.add(spectral_op);
+		smudge.add(spectral);
 
-		PixelShift shift = new PixelShift(smudge);
-		shift.setCoordFunction(new ConvergeCoordFunction());
-		shift.getParameter("Intervals").setInitial(3);
-		shift.bind("Intervals");
-		shift.getParameter("Amount").setInitial(.2);
+		Algorithm shift = new Algorithm();
 		shift.bind("Enable");
 		shift.getParameter("Enable").setInitial(false);
-		shift.bind("Reverse");
-		new AnimateOnBeatControl(controller, shift.getParameter("Amount"));
+		shift.add(new ConvergeCoordFunction());
+		PixelShift shift_op = new PixelShift();
+		shift_op.getParameter("Intervals").setInitial(3);
+		shift_op.bind("Intervals");
+		shift_op.getParameter("Amount").setInitial(.2);
+		shift_op.bind("Reverse");
+		new AnimateOnBeatControl(controller, shift_op.getParameter("Amount"));
+		shift.add(shift_op);
+		smudge.add(shift);
 
-		PixelShift shift1 = new PixelShift(smudge);
-		shift1.setCoordFunction(new ColumnCoords());
-		shift1.getParameter("Intervals").setInitial(3);
-		shift1.bind("Intervals");
-		shift1.getParameter("Amount").setInitial(.2);
+		Algorithm shift1 = new Algorithm();
 		shift1.bind("Enable");
 		shift1.getParameter("Enable").setInitial(false);
-		shift1.bind("Reverse");
-		new AnimateOnBeatControl(controller, shift1.getParameter("Amount"));
+		shift1.add(new ColumnCoords());
+		PixelShift shift1_op = new PixelShift();
+		shift1_op.getParameter("Intervals").setInitial(3);
+		shift1_op.bind("Intervals");
+		shift1_op.getParameter("Amount").setInitial(.2);
+		shift1_op.bind("Reverse");
+		new AnimateOnBeatControl(controller, shift1_op.getParameter("Amount"));
+		shift1.add(shift_op);
+		smudge.add(shift1);
 
-		PixelSort sort1 = new PixelSort(smudge);
-		sort1.setCoordFunction(new ColumnCoords());
-		sort1.bind("Threshold");
-		sort1.bind("Reverse");
+		Algorithm sort1 = new Algorithm();
 		sort1.bind("Enable");
 		sort1.getParameter("Enable").setInitial(false);
+		sort1.add(new ColumnCoords());
+		PixelSort sort1_op = new PixelSort();
+		sort1.bind("Threshold");
+		sort1.bind("Reverse");
+		sort1.add(sort1_op);
+		smudge.add(sort1);
 
-		PixelSort sort2 = new PixelSort(smudge);
-		sort2.setCoordFunction(new RowCoords());
-		sort2.bind("Threshold");
-		sort2.bind("Reverse");
-		sort2.bind("Enable");
-		sort2.getParameter("Enable").setInitial(false);
-
-		ChannelCrush smear = new ChannelCrush(smudge);
-		smear.getParameter("Green Shift").setInitial(7);
-		smear.getParameter("Blue Shift").setInitial(7);
-		smear.getParameter("Red Mask").setInitial(0);
-		smear.bind("Enable");
-		smear.getParameter("Enable").setInitial(false);
-
-		ChannelCrush bsmear = new ChannelCrush(smudge);
-		bsmear.getParameter("Green Shift").setInitial(7);
-		bsmear.getParameter("Red Shift").setInitial(7);
-		bsmear.getParameter("Blue Mask").setInitial(0);
-		bsmear.bind("Enable");
-		bsmear.getParameter("Enable").setInitial(false);
-
-		ChannelCrush gsmear = new ChannelCrush(smudge);
-		gsmear.getParameter("Red Shift").setInitial(7);
-		gsmear.getParameter("Blue Shift").setInitial(7);
-		gsmear.getParameter("Green Mask").setInitial(0);
-		gsmear.bind("Enable");
-		gsmear.getParameter("Enable").setInitial(false);
+		Algorithm sort2 = new Algorithm();
+		sort2.add(new RowCoords());
+		PixelSort sort2_op = new PixelSort();
+		sort2_op.bind("Threshold");
+		sort2_op.bind("Reverse");
+		sort2_op.bind("Enable");
+		sort2_op.getParameter("Enable").setInitial(false);
+		sort2.add(sort2_op);
+		smudge.add(sort2);
 
 		makeSourceMixer(smudge, "&.png");
 		makeSourceMixer(smudge, "disco.png");
@@ -123,6 +115,7 @@ public class SkyPCPMain {
 		// Declare your view
 		new JView(controller, 0, false);
 
+		controller.setSmudge(smudge);
 		controller.bindDevice("User Port");
 		controller.bindDevice("Arturia BeatStepPro");
 		controller.start();
@@ -136,9 +129,14 @@ public class SkyPCPMain {
 		else
 			src = new Image(path);
 
-		SourceMixerHack sm = new SourceMixerHack(s, src);
+		Algorithm sm = new Algorithm();
 		sm.bind("Enable");
 		sm.getParameter("Enable").setInitial(false);
+
+		SourceMixerHack sm_op = new SourceMixerHack(src);
+		sm.add(sm_op);
+
+		s.add(sm);
 	}
 
 }

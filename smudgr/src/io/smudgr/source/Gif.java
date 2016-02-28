@@ -54,11 +54,12 @@ public class Gif implements Source {
 		long delay = now - lastFrameSwitch;
 		GifFrame frame = buffer.get(currentFrame);
 
-		if (frame.getDelay() <= delay) {
-			currentFrame++;
-			currentFrame %= buffer.size();
-			lastFrameSwitch = now;
-		}
+		if (frame != null)
+			if (frame.getDelay() <= delay) {
+				currentFrame++;
+				currentFrame %= buffer.size();
+				lastFrameSwitch = now;
+			}
 
 	}
 
@@ -78,7 +79,7 @@ public class Gif implements Source {
 
 	public void dispose() {
 		buffer = null;
-		bufferer = null;
+		bufferer.stop();
 	}
 
 	public String toString() {
@@ -96,6 +97,10 @@ public class Gif implements Source {
 		public void start() {
 			Thread t = new Thread(this);
 			t.start();
+		}
+
+		public void stop() {
+			started = false;
 		}
 
 		// This is just absolutely terrifying
@@ -158,6 +163,9 @@ public class Gif implements Source {
 				boolean hasBackround = false;
 
 				for (int frameIndex = 0;; frameIndex++) {
+					if (!started)
+						break;
+
 					BufferedImage image;
 					try {
 						image = reader.read(frameIndex);

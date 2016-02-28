@@ -1,21 +1,37 @@
 package io.smudgr.source.smudge.alg.bound;
 
 import io.smudgr.source.Frame;
+import io.smudgr.source.smudge.alg.AlgorithmComponent;
+import io.smudgr.source.smudge.param.NumberParameter;
 
-public class Bound {
-	protected double offsetX;
-	protected double offsetY;
-	protected double width;
-	protected double height;
+public class Bound extends AlgorithmComponent {
+
+	protected NumberParameter offsetX = new NumberParameter("Bound X", this, 0, 0, 1, 0.005);
+	protected NumberParameter offsetY = new NumberParameter("Bound Y", this, 0, 0, 1, 0.005);
+	protected NumberParameter width = new NumberParameter("Bound Width", this, 1, 0, 1, 0.005);
+	protected NumberParameter height = new NumberParameter("Bound Height", this, 1, 0, 1, 0.005);
 
 	public Bound(double width, double height) {
 		setWidth(width);
 		setHeight(height);
 	}
 
+	public void init() {
+
+	}
+
+	public void update() {
+
+	}
+
 	public boolean containsPoint(Frame img, int x, int y) {
 		int w = img.getWidth();
 		int h = img.getHeight();
+
+		double offsetX = this.offsetX.getValue();
+		double offsetY = this.offsetY.getValue();
+		double width = this.width.getValue();
+		double height = this.height.getValue();
 
 		boolean inImage = x >= 0 && y >= 0 && x < w && y < h;
 		if (!inImage)
@@ -36,67 +52,51 @@ public class Bound {
 	}
 
 	public double getOffsetX() {
-		return offsetX;
+		return offsetX.getValue();
 	}
 
 	public void setOffsetX(double offsetX) {
-		if (offsetX < 0)
-			offsetX = 0;
-		if (offsetX > 1)
-			offsetX = 1;
-		this.offsetX = offsetX;
+		this.offsetX.setValue(offsetX);
 	}
 
 	public double getOffsetY() {
-		return offsetY;
+		return offsetY.getValue();
 	}
 
 	public void setOffsetY(double offsetY) {
-		if (offsetY < 0)
-			offsetY = 0;
-		if (offsetY > 1)
-			offsetY = 1;
-		this.offsetY = offsetY;
+		this.offsetY.setValue(offsetY);
 	}
 
 	public double getWidth() {
-		return width;
+		return width.getValue();
 	}
 
 	public void setWidth(double width) {
-		if (width < 0)
-			width = 0;
-		if (width > 1)
-			width = 1;
-		this.width = width;
+		this.width.setValue(width);
 	}
 
 	public double getHeight() {
-		return height;
+		return height.getValue();
 	}
 
 	public void setHeight(double height) {
-		if (height < 0)
-			height = 0;
-		if (height > 1)
-			height = 1;
-		this.height = height;
+		this.height.setValue(height);
 	}
 
 	public int getTranslatedX(Frame image) {
-		return (int) Math.floor(offsetX * image.getWidth());
+		return (int) Math.floor(offsetX.getValue() * image.getWidth());
 	}
 
 	public int getTranslatedY(Frame image) {
-		return (int) Math.floor(offsetY * image.getHeight());
+		return (int) Math.floor(offsetY.getValue() * image.getHeight());
 	}
 
 	public int getTranslatedWidth(Frame image) {
-		return (int) Math.floor(width * image.getWidth());
+		return (int) Math.floor(width.getValue() * image.getWidth());
 	}
 
 	public int getTranslatedHeight(Frame image) {
-		return (int) Math.floor(height * image.getHeight());
+		return (int) Math.floor(height.getValue() * image.getHeight());
 	}
 
 }

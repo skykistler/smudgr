@@ -3,6 +3,7 @@ package io.smudgr.controller;
 public class UpdateThread implements Runnable {
 
 	private Controller controller;
+	private Thread thread;
 	private volatile boolean running, paused;
 	private boolean finished;
 
@@ -12,9 +13,8 @@ public class UpdateThread implements Runnable {
 
 	public void start() {
 		running = true;
-
-		Thread t = new Thread(this);
-		t.start();
+		thread = new Thread(this);
+		thread.start();
 	}
 
 	public void setPaused(boolean p) {
@@ -23,6 +23,7 @@ public class UpdateThread implements Runnable {
 
 	public void stop() {
 		running = false;
+		thread.interrupt();
 	}
 
 	public boolean isFinished() {
@@ -50,8 +51,13 @@ public class UpdateThread implements Runnable {
 
 			// Update enough to catch up
 			double now = System.nanoTime();
-			while (now - lastUpdateTime > timeForUpdate) {
-				controller.update();
+			while (now - lastUpdateTime >= timeForUpdate) {
+				try {
+					controller.update();
+				} catch (Exception e) {
+					e.printStackTrace();
+					controller.stop();
+				}
 				lastUpdateTime += timeForUpdate;
 				updates++;
 			}
@@ -74,6 +80,9 @@ public class UpdateThread implements Runnable {
 				}
 
 				now = System.nanoTime();
+
+				if (!running)
+					break;
 			}
 		}
 

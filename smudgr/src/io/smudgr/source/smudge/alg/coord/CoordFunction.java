@@ -4,16 +4,18 @@ import java.util.ArrayList;
 
 import io.smudgr.source.Frame;
 import io.smudgr.source.smudge.alg.Algorithm;
+import io.smudgr.source.smudge.alg.AlgorithmComponent;
 import io.smudgr.source.smudge.alg.bound.Bound;
 
-public abstract class CoordFunction {
+public abstract class CoordFunction extends AlgorithmComponent {
+	private Algorithm parent;
 	private Frame image;
 	private Bound bound;
 
 	protected ArrayList<ArrayList<Integer>> coordSet = null;
 	protected ArrayList<Integer> currentSet = null;
 
-	public void init(Algorithm alg) {
+	public void init() {
 
 	}
 
@@ -96,6 +98,10 @@ public abstract class CoordFunction {
 
 	public String toString() {
 		return getName();
+	}
+
+	public Algorithm getAlgorithm() {
+		return parent;
 	}
 
 }

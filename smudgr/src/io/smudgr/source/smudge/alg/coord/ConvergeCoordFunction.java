@@ -1,22 +1,16 @@
 package io.smudgr.source.smudge.alg.coord;
 
 import io.smudgr.source.Frame;
-import io.smudgr.source.smudge.alg.Algorithm;
 import io.smudgr.source.smudge.alg.bound.Bound;
-import io.smudgr.source.smudge.alg.param.NumberParameter;
+import io.smudgr.source.smudge.param.NumberParameter;
 
 public class ConvergeCoordFunction extends CoordFunction {
 
-	private NumberParameter centerX;
-	private NumberParameter centerY;
+	private NumberParameter centerX = new NumberParameter("Gravity Center X", this, .5, 0, 1, 0.005);
+	private NumberParameter centerY = new NumberParameter("Gravity Center Y", this, .5, 0, 1, 0.005);
 
 	public String getName() {
 		return "Gravity";
-	}
-
-	public void init(Algorithm a) {
-		centerX = new NumberParameter(a, "Gravity Center X", .5, 0, 1, 0.005);
-		centerY = new NumberParameter(a, "Gravity Center Y", .5, 0, 1, 0.005);
 	}
 
 	protected void generate() {

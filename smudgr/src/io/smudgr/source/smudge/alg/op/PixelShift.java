@@ -1,51 +1,42 @@
-package io.smudgr.source.smudge.alg;
+package io.smudgr.source.smudge.alg.op;
 
 import java.util.ArrayList;
 
 import io.smudgr.source.Frame;
-import io.smudgr.source.smudge.Smudge;
-import io.smudgr.source.smudge.alg.coord.ColumnCoords;
 import io.smudgr.source.smudge.alg.coord.CoordFunction;
 import io.smudgr.source.smudge.alg.math.LinearFunction;
 import io.smudgr.source.smudge.alg.math.UnivariateFunction;
-import io.smudgr.source.smudge.alg.param.BooleanParameter;
-import io.smudgr.source.smudge.alg.param.NumberParameter;
+import io.smudgr.source.smudge.param.BooleanParameter;
+import io.smudgr.source.smudge.param.NumberParameter;
 
-public class PixelShift extends Algorithm {
+public class PixelShift extends Operation {
 
-	private NumberParameter amount = new NumberParameter(this, "Amount", 0, 0, 1, 0.005);
-	private NumberParameter intervals = new NumberParameter(this, "Intervals", 5, 1, 1000, 1); // Change to be a percentage or not I guess
-	private NumberParameter start = new NumberParameter(this, "Start", 0, 0, 1, 0.01);
-	private NumberParameter length = new NumberParameter(this, "Length", 1, 0, 1, 0.01);
-	private NumberParameter shiftType = new NumberParameter(this, "Shift Type", 1, 1, 3, 1); // allows shift to be set via switch structure in calculateShift function
-	private BooleanParameter reverse = new BooleanParameter(this, "Reverse", true);
-	private NumberParameter optional = new NumberParameter(this, "Optional", 100, 100, 10000, 10);
+	private NumberParameter amount = new NumberParameter("Amount", this, 0, 0, 1, 0.005);
+	private NumberParameter intervals = new NumberParameter("Intervals", this, 5, 1, 1000, 1); // Change to be a percentage or not I guess
+	private NumberParameter start = new NumberParameter("Start", this, 0, 0, 1, 0.01);
+	private NumberParameter length = new NumberParameter("Length", this, 1, 0, 1, 0.01);
+	private NumberParameter shiftType = new NumberParameter("Shift Type", this, 1, 1, 3, 1); // allows shift to be set via switch structure in calculateShift function
+	private BooleanParameter reverse = new BooleanParameter("Reverse", this, true);
+	private NumberParameter optional = new NumberParameter("Optional", this, 100, 100, 10000, 10);
 
 	UnivariateFunction scale = new LinearFunction();
 
 	Frame orig;
 	Frame shifted;
 
-	public PixelShift(Smudge s) {
-		super(s);
+	public void init() {
 		amount.setContinuous(true);
 		//start.setContinuous(true);
 		//end.setContinuous(true);
-		setCoordFunction(new ColumnCoords());
-
-	}
-
-	public void init() {
-		super.init();
 	}
 
 	public void execute(Frame img) {
-		int size = getCoordFunction().getCoordSet().size();
+		int size = getAlgorithm().getCoordFunction().getCoordSet().size();
 
 		orig = img;
 		shifted = img.copy();
 
-		CoordFunction cf = getCoordFunction();
+		CoordFunction cf = getAlgorithm().getCoordFunction();
 		double shift = amount.getValue();
 
 		double ints = intervals.getValue();

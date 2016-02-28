@@ -1,18 +1,16 @@
-package io.smudgr.source.smudge.alg;
+package io.smudgr.source.smudge.alg.op;
 
 import java.awt.Graphics2D;
 
 import io.smudgr.source.Frame;
 import io.smudgr.source.Source;
-import io.smudgr.source.smudge.Smudge;
 
-public class SourceMixerHack extends Algorithm {
+public class SourceMixerHack extends Operation {
 
 	private Frame mixFrame;
 	private Source source;
 
-	public SourceMixerHack(Smudge s, Source mySource) {
-		super(s);
+	public SourceMixerHack(Source mySource) {
 		this.source = mySource;
 	}
 

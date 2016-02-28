@@ -8,7 +8,6 @@ import java.net.URLDecoder;
 
 import io.smudgr.controller.Controller;
 import io.smudgr.source.smudge.Smudge;
-import io.smudgr.source.smudge.alg.Marbeler;
 import io.smudgr.view.cef.CefView;
 
 public class smudgr {
@@ -19,11 +18,11 @@ public class smudgr {
 		Smudge smudge = new Smudge();
 		controller.setSmudge(smudge);
 
-		Marbeler m = new Marbeler(smudge);
-		m.bind("Offset - X/Y");
-		m.bind("Frequency");
-		m.bind("Iterations");
-		m.bind("Strength");
+		//		Marbeler m = new Marbeler(smudge);
+		//		m.bind("Offset - X/Y");
+		//		m.bind("Frequency");
+		//		m.bind("Iterations");
+		//		m.bind("Strength");
 
 		new CefView(controller);
 

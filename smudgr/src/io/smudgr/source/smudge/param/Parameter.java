@@ -1,22 +1,18 @@
-package io.smudgr.source.smudge.alg.param;
+package io.smudgr.source.smudge.param;
 
 import io.smudgr.controller.controls.Controllable;
-import io.smudgr.source.smudge.alg.Algorithm;
 
 public abstract class Parameter extends Controllable {
-	private Algorithm alg;
+
+	private Parametric parent;
 	protected boolean reverse;
 	protected boolean continuous;
 
-	public Parameter(Algorithm parent, String name) {
-		super(parent.getParent().getController(), name);
-		alg = parent;
+	public Parameter(String name, Parametric parent) {
+		super(name);
 
-		alg.addParameter(this);
-	}
-
-	public Algorithm getParent() {
-		return alg;
+		this.parent = parent;
+		this.parent.addParameter(this);
 	}
 
 	public abstract void setInitial(Object o);
@@ -32,7 +28,11 @@ public abstract class Parameter extends Controllable {
 	}
 
 	public String toString() {
-		return alg + " - " + getName();
+		return parent + " " + parent.getID() + " - " + getName();
+	}
+
+	public Parametric getParent() {
+		return parent;
 	}
 
 }

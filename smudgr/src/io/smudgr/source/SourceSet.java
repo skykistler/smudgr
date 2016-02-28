@@ -53,13 +53,10 @@ public class SourceSet implements Source {
 		s.update();
 	}
 
-	public void stop() {
+	public void dispose() {
+
 		for (Source s : sources)
 			s.dispose();
-	}
-
-	public void dispose() {
-		stop();
 	}
 
 	public Frame getFrame() {
@@ -122,7 +119,7 @@ public class SourceSet implements Source {
 
 		Source current = getCurrentSource();
 		if (current instanceof Video)
-			((Video) current).stop();
+			current.dispose();
 
 		currentSource = i;
 

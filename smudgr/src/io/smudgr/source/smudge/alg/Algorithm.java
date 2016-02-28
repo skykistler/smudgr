@@ -1,47 +1,42 @@
 package io.smudgr.source.smudge.alg;
 
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.ArrayList;
 
+import io.smudgr.controller.Controller;
 import io.smudgr.source.Frame;
 import io.smudgr.source.smudge.Smudge;
 import io.smudgr.source.smudge.alg.bound.Bound;
 import io.smudgr.source.smudge.alg.coord.AllCoords;
 import io.smudgr.source.smudge.alg.coord.CoordFunction;
-import io.smudgr.source.smudge.alg.param.BooleanParameter;
-import io.smudgr.source.smudge.alg.param.NumberParameter;
-import io.smudgr.source.smudge.alg.param.Parameter;
+import io.smudgr.source.smudge.alg.op.Operation;
+import io.smudgr.source.smudge.param.BooleanParameter;
+import io.smudgr.source.smudge.param.Parametric;
 
-public abstract class Algorithm {
+public class Algorithm extends Parametric {
+
 	private Smudge parent;
-	private HashMap<String, Parameter> parameters = new HashMap<String, Parameter>();
+
+	private ArrayList<AlgorithmComponent> components = new ArrayList<AlgorithmComponent>();
 	private Bound bound;
+	private CoordFunction coordFunction;
+	protected Frame lastFrame;
 
-	private BooleanParameter enable;
-	private NumberParameter boundX;
-	private NumberParameter boundY;
-	private NumberParameter boundW;
-	private NumberParameter boundH;
-	private CoordFunction coordFunction = new AllCoords();
+	private BooleanParameter enable = new BooleanParameter("Enable", this, true);
 
-	protected Frame img;
-
-	public Algorithm(Smudge s) {
-		parent = s;
-		parent.addAlgorithm(this);
-
-		enable = new BooleanParameter(this, "Enable", true);
-		boundX = new NumberParameter(this, "Bound X", 0, 0, 1, 0.005);
-		boundY = new NumberParameter(this, "Bound Y", 0, 0, 1, 0.005);
-		boundW = new NumberParameter(this, "Bound Width", 1, 0, 1, 0.005);
-		boundH = new NumberParameter(this, "Bound Height", 1, 0, 1, 0.005);
-
-		setBound(new Bound(1, 1));
+	public Algorithm() {
+		add(new Bound(1, 1));
+		add(new AllCoords());
 	}
 
 	public void init() {
-
+		for (AlgorithmComponent c : components)
+			c.init();
 	}
+
+	private double lastBoundX;
+	private double lastBoundY;
+	private double lastBoundW;
+	private double lastBoundH;
 
 	public void update() {
 
@@ -51,93 +46,123 @@ public abstract class Algorithm {
 		if (!enable.getValue())
 			return;
 
-		double x = boundX.getValue();
-		double y = boundY.getValue();
-		double w = boundW.getValue();
-		double h = boundH.getValue();
+		boolean boundChanged = lastBoundX != bound.getOffsetX() || lastBoundY != bound.getOffsetY() || lastBoundW != bound.getWidth() || lastBoundH != bound.getHeight();
+		boolean imgSizeChanged = lastFrame == null || (lastFrame.getWidth() != this.lastFrame.getWidth() || img.getHeight() != this.lastFrame.getHeight());
 
-		boolean boundChanged = false;
-		if (x != bound.getOffsetX() || y != bound.getOffsetY() || w != bound.getWidth() || h != bound.getHeight()) {
-			bound.setOffsetX(x);
-			bound.setOffsetY(y);
-			bound.setWidth(w);
-			bound.setHeight(h);
-			boundChanged = true;
-		}
-
-		boolean imgSizeChanged = this.img == null || (img.getWidth() != this.img.getWidth() || img.getHeight() != this.img.getHeight());
-		if (boundChanged || imgSizeChanged) {
+		if (imgSizeChanged || boundChanged) {
 			coordFunction.setBound(bound);
 			coordFunction.setImage(img);
 			coordFunction.update();
 		}
 
-		this.img = img;
+		for (AlgorithmComponent component : components) {
+			if (component instanceof Operation)
+				((Operation) component).apply(img);
+		}
 
-		execute(img);
+		lastFrame = img;
 	}
 
-	public abstract void execute(Frame img);
+	public void add(AlgorithmComponent component) {
+		component.setAlgorithm(this);
 
-	public Smudge getParent() {
-		return parent;
+		if (component instanceof Bound)
+			setBound((Bound) component);
+
+		if (component instanceof CoordFunction)
+			setCoordFunction((CoordFunction) component);
+
+		if (component instanceof Operation)
+			setOperation((Operation) component);
+
 	}
 
-	public void addParameter(Parameter p) {
-		parameters.put(p.getName(), p);
-	}
-
-	public Parameter getParameter(String name) {
-		return parameters.get(name);
-	}
-
-	public Collection<Parameter> getParameters() {
-		return (Collection<Parameter>) parameters.values();
-	}
-
-	public void listParameters() {
-		for (Parameter p : parameters.values())
-			System.out.println(p);
-	}
-
-	public void bind(String parameterName) {
-		Parameter p = getParameter(parameterName);
-
-		if (p != null)
-			p.requestBind();
-	}
-
-	public void setBound(Bound bound) {
+	private void setBound(Bound bound) {
 		if (bound == null)
 			return;
 
+		ArrayList<AlgorithmComponent> otherBounds = new ArrayList<AlgorithmComponent>();
+
+		for (AlgorithmComponent component : components)
+			if (component instanceof CoordFunction)
+				otherBounds.add(component);
+
+		components.remove(otherBounds);
+		components.add(bound);
+
 		this.bound = bound;
 
-		coordFunction.setBound(bound);
-		coordFunction.update();
+		if (coordFunction != null) {
+			coordFunction.setBound(bound);
+			coordFunction.update();
+		}
 	}
 
 	public Bound getBound() {
 		return bound;
 	}
 
-	public void setCoordFunction(CoordFunction cf) {
+	private void setCoordFunction(CoordFunction cf) {
 		if (cf == null)
 			return;
 
+		ArrayList<AlgorithmComponent> otherCoordFunctions = new ArrayList<AlgorithmComponent>();
+
+		for (AlgorithmComponent component : components)
+			if (component instanceof CoordFunction)
+				otherCoordFunctions.add(component);
+
+		components.remove(otherCoordFunctions);
+		components.add(cf);
+
 		coordFunction = cf;
-		coordFunction.setBound(bound);
-		coordFunction.init(this);
+
+		if (bound != null)
+			coordFunction.setBound(bound);
 	}
 
 	public CoordFunction getCoordFunction() {
 		return coordFunction;
 	}
 
-	public abstract String getName();
+	public void setOperation(Operation op) {
+		if (op == null)
+			return;
 
-	public String toString() {
-		return (coordFunction == null || coordFunction instanceof AllCoords ? "" : coordFunction + " ") + getName();
+		components.add(op);
 	}
 
+	public String toString() {
+		StringBuffer name = new StringBuffer();
+
+		for (AlgorithmComponent component : components)
+			if (component instanceof CoordFunction)
+				name.append(component instanceof AllCoords ? "" : coordFunction + " ");
+
+		for (AlgorithmComponent component : components)
+			if (component instanceof Operation)
+				name.append(component + " ");
+
+		return name.toString().trim();
+	}
+
+	public void setSmudge(Smudge s) {
+		parent = s;
+
+		setController(s.getController());
+	}
+
+	public void setController(Controller c) {
+		if (c == null)
+			return;
+
+		super.setController(c);
+
+		for (AlgorithmComponent component : components)
+			component.setController(c);
+	}
+
+	public Smudge getSmudge() {
+		return parent;
+	}
 }

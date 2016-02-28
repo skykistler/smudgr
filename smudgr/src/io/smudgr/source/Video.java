@@ -47,13 +47,10 @@ public class Video implements Source {
 		return buffer.poll();
 	}
 
-	public void stop() {
+	public void dispose() {
+
 		if (bufferer != null)
 			bufferer.stop();
-	}
-
-	public void dispose() {
-		stop();
 	}
 
 	class BufferThread implements Runnable {

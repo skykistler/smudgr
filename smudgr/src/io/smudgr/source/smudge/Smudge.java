@@ -9,13 +9,15 @@ import io.smudgr.out.Output;
 import io.smudgr.source.Frame;
 import io.smudgr.source.Source;
 import io.smudgr.source.smudge.alg.Algorithm;
+import io.smudgr.source.smudge.param.BooleanParameter;
+import io.smudgr.source.smudge.param.Parametric;
 
-public class Smudge implements Source {
+public class Smudge extends Parametric implements Source {
 	private Controller controller;
 
 	private Source source;
 	private ArrayList<Algorithm> algorithms;
-	private boolean enabled;
+	private BooleanParameter enabled = new BooleanParameter("Enable", this, true);
 
 	private Frame lastFrame;
 	private int downsample = 1;
@@ -23,13 +25,7 @@ public class Smudge implements Source {
 	private Output output;
 
 	public Smudge() {
-		this(null);
-	}
-
-	public Smudge(Source s) {
-		setSource(s);
 		algorithms = new ArrayList<Algorithm>();
-		setEnabled(true);
 	}
 
 	public void init() {
@@ -71,7 +67,7 @@ public class Smudge implements Source {
 			toRender = toRender.copy();
 		}
 
-		if (enabled)
+		if (enabled.getValue())
 			for (Algorithm a : algorithms)
 				a.apply(toRender);
 
@@ -79,14 +75,6 @@ public class Smudge implements Source {
 			output.addFrame(toRender);
 
 		return lastFrame = toRender;
-	}
-
-	public void setEnabled(boolean enable) {
-		enabled = enable;
-	}
-
-	public boolean isEnabled() {
-		return enabled;
 	}
 
 	public Source getSource() {
@@ -107,6 +95,11 @@ public class Smudge implements Source {
 
 		if (controller.getSmudge() != this)
 			controller.setSmudge(this);
+
+		super.setController(c);
+
+		for (Algorithm a : algorithms)
+			a.setController(c);
 	}
 
 	public void setDownsample(int amount) {
@@ -114,12 +107,13 @@ public class Smudge implements Source {
 			downsample = amount;
 	}
 
-	public void addAlgorithm(Algorithm alg) {
+	public void add(Algorithm alg) {
 		algorithms.add(alg);
+		alg.setSmudge(this);
 	}
 
-	public ArrayList<Algorithm> getAlgorithms() {
-		return algorithms;
+	public void save(String path) {
+
 	}
 
 	public void saveFrame() {
@@ -139,7 +133,15 @@ public class Smudge implements Source {
 	}
 
 	public void dispose() {
+		if (source != null)
+			source.dispose();
 
+		if (output != null)
+			output.close();
+	}
+
+	public String toString() {
+		return "Smudge";
 	}
 
 }

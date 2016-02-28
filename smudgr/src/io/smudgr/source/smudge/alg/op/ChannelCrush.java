@@ -1,24 +1,22 @@
-package io.smudgr.source.smudge.alg;
+package io.smudgr.source.smudge.alg.op;
 
 import java.util.ArrayList;
 
 import io.smudgr.source.Frame;
-import io.smudgr.source.smudge.Smudge;
 import io.smudgr.source.smudge.alg.math.ColorHelper;
-import io.smudgr.source.smudge.alg.param.NumberParameter;
+import io.smudgr.source.smudge.param.NumberParameter;
 
-public class ChannelCrush extends Algorithm {
+public class ChannelCrush extends Operation {
 
-	NumberParameter redMaskShift = new NumberParameter(this, "Red Mask", 1, 1, 7, 1);
-	NumberParameter greenMaskShift = new NumberParameter(this, "Green Mask", 1, 1, 7, 1);
-	NumberParameter blueMaskShift = new NumberParameter(this, "Blue Mask", 1, 1, 7, 1);
+	NumberParameter redMaskShift = new NumberParameter("Red Mask", this, 1, 1, 7, 1);
+	NumberParameter greenMaskShift = new NumberParameter("Green Mask", this, 1, 1, 7, 1);
+	NumberParameter blueMaskShift = new NumberParameter("Blue Mask", this, 1, 1, 7, 1);
 
-	NumberParameter redShift = new NumberParameter(this, "Red Shift", 0, 0, 7, 1);
-	NumberParameter greenShift = new NumberParameter(this, "Green Shift", 0, 0, 7, 1);
-	NumberParameter blueShift = new NumberParameter(this, "Blue Shift", 0, 0, 7, 1);
+	NumberParameter redShift = new NumberParameter("Red Shift", this, 0, 0, 7, 1);
+	NumberParameter greenShift = new NumberParameter("Green Shift", this, 0, 0, 7, 1);
+	NumberParameter blueShift = new NumberParameter("Blue Shift", this, 0, 0, 7, 1);
 
-	public ChannelCrush(Smudge s) {
-		super(s);
+	public ChannelCrush() {
 		redShift.setReverse(true);
 		blueShift.setReverse(true);
 		greenShift.setReverse(true);
@@ -26,7 +24,7 @@ public class ChannelCrush extends Algorithm {
 
 	@Override
 	public void execute(Frame img) {
-		for (ArrayList<Integer> coords : getCoordFunction().getCoordSet())
+		for (ArrayList<Integer> coords : getAlgorithm().getCoordFunction().getCoordSet())
 			for (Integer coord : coords)
 				smear(coord, img);
 	}

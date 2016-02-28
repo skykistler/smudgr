@@ -80,7 +80,7 @@ public class SourceSetControl extends Controllable {
 
 		SourceSet current = getCurrentSet();
 		if (current != null)
-			current.stop();
+			current.dispose();
 
 		currentSet = i;
 

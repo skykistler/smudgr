@@ -1,17 +1,16 @@
-package io.smudgr.source.smudge.alg.param;
-
-import io.smudgr.source.smudge.alg.Algorithm;
+package io.smudgr.source.smudge.param;
 
 public class BooleanParameter extends Parameter {
+
 	private boolean initial;
 	private boolean value;
 
-	public BooleanParameter(Algorithm parent, String name) {
-		this(parent, name, false);
+	public BooleanParameter(String name, Parametric parent) {
+		this(name, parent, false);
 	}
 
-	public BooleanParameter(Algorithm parent, String name, boolean initial) {
-		super(parent, name);
+	public BooleanParameter(String name, Parametric parent, boolean initial) {
+		super(name, parent);
 		this.initial = initial;
 	}
 

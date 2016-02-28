@@ -1,6 +1,4 @@
-package io.smudgr.source.smudge.alg.param;
-
-import io.smudgr.source.smudge.alg.Algorithm;
+package io.smudgr.source.smudge.param;
 
 public class NumberParameter extends Parameter {
 	private double initial;
@@ -9,20 +7,20 @@ public class NumberParameter extends Parameter {
 	private double max;
 	private double step;
 
-	public NumberParameter(Algorithm parent, String name) {
-		this(parent, name, 0);
+	public NumberParameter(String name, Parametric parent) {
+		this(name, parent, 0);
 	}
 
-	public NumberParameter(Algorithm parent, String name, double initial) {
-		this(parent, name, initial, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 1);
+	public NumberParameter(String name, Parametric parent, double initial) {
+		this(name, parent, initial, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 1);
 	}
 
-	public NumberParameter(Algorithm parent, String name, double initial, double minimum, double maximum) {
-		this(parent, name, initial, minimum, maximum, (maximum - minimum) / 127);
+	public NumberParameter(String name, Parametric parent, double initial, double minimum, double maximum) {
+		this(name, parent, initial, minimum, maximum, (maximum - minimum) / 127);
 	}
 
-	public NumberParameter(Algorithm parent, String name, double initial, double minimum, double maximum, double step) {
-		super(parent, name);
+	public NumberParameter(String name, Parametric parent, double initial, double minimum, double maximum, double step) {
+		super(name, parent);
 		setInitial(initial);
 		min = minimum;
 		max = maximum;

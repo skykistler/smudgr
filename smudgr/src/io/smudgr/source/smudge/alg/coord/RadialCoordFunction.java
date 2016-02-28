@@ -3,20 +3,15 @@ package io.smudgr.source.smudge.alg.coord;
 import java.util.ArrayList;
 
 import io.smudgr.source.Frame;
-import io.smudgr.source.smudge.alg.Algorithm;
 import io.smudgr.source.smudge.alg.bound.Bound;
-import io.smudgr.source.smudge.alg.param.NumberParameter;
+import io.smudgr.source.smudge.param.NumberParameter;
 
 public class RadialCoordFunction extends CoordFunction {
 
-	private NumberParameter innerRadius;
+	private NumberParameter innerRadius = new NumberParameter("Inner Radius", this, .5, 0, 1, 0.005);
 
 	public String getName() {
 		return "Radial";
-	}
-
-	public void init(Algorithm a) {
-		innerRadius = new NumberParameter(a, "Inner Radius", .5, 0, 1, 0.005);
 	}
 
 	protected void generate() {

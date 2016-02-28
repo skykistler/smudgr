@@ -39,26 +39,31 @@ public class JView implements View {
 	}
 
 	public void init() {
-		display = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[displayNumber];
+		if (displayNumber >= 0) {
+			display = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[displayNumber];
 
-		fullscreenWindow = new JFrame("smudgr");
+			fullscreenWindow = new JFrame("smudgr");
 
-		fullscreenWindow.setBounds(display.getDefaultConfiguration().getBounds());
-		fullscreenWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		fullscreenWindow.setUndecorated(true);
-		fullscreenWindow.addKeyListener(controller);
+			fullscreenWindow.setBounds(display.getDefaultConfiguration().getBounds());
+			fullscreenWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
+			fullscreenWindow.setUndecorated(true);
+			fullscreenWindow.addKeyListener(controller);
 
-		if (!System.getProperty("os.name").startsWith("Windows"))
-			display.setFullScreenWindow(fullscreenWindow);
-		fullscreenWindow.setVisible(true);
+			if (!System.getProperty("os.name").startsWith("Windows"))
+				display.setFullScreenWindow(fullscreenWindow);
+			fullscreenWindow.setVisible(true);
 
-		fullscreenWindow.createBufferStrategy(2);
+			fullscreenWindow.createBufferStrategy(2);
+		}
 
 		if (showMonitor) {
 			monitor = new JFrame("smudgr");
 			monitor.setBounds(new Rectangle(800, 600));
 			monitor.setVisible(true);
 			monitor.createBufferStrategy(2);
+
+			if (fullscreenWindow == null)
+				monitor.addKeyListener(controller);
 		}
 	}
 
@@ -71,7 +76,8 @@ public class JView implements View {
 		if (frame == null)
 			return;
 
-		drawFittedImageToFrame(fullscreenWindow, frame.getBufferedImage());
+		if (fullscreenWindow != null)
+			drawFittedImageToFrame(fullscreenWindow, frame.getBufferedImage());
 
 		if (showMonitor)
 			drawFittedImageToFrame(monitor, frame.getBufferedImage());
@@ -97,11 +103,16 @@ public class JView implements View {
 	}
 
 	public void dispose() {
-		display.setFullScreenWindow(null);
-		fullscreenWindow.dispose();
+		if (fullscreenWindow != null) {
+			display.setFullScreenWindow(null);
+			fullscreenWindow.setVisible(false);
+			fullscreenWindow.dispose();
+		}
 
-		if (monitor != null)
+		if (monitor != null) {
+			monitor.setVisible(false);
 			monitor.dispose();
+		}
 	}
 
 	private void drawFittedImageToFrame(JFrame f, BufferedImage image) {

@@ -1,31 +1,26 @@
-package io.smudgr.source.smudge.alg;
+package io.smudgr.source.smudge.alg.op;
 
 import java.util.Random;
 
 import io.smudgr.source.Frame;
-import io.smudgr.source.smudge.Smudge;
 import io.smudgr.source.smudge.alg.math.CubicInterpolator;
 import io.smudgr.source.smudge.alg.math.Interpolator;
-import io.smudgr.source.smudge.alg.param.NumberParameter;
+import io.smudgr.source.smudge.param.NumberParameter;
 
-public class Marbeler extends Algorithm {
+public class Marbeler extends Operation {
 
-	NumberParameter freq = new NumberParameter(this, "Frequency", 5, 1, 128);
-	NumberParameter iterations = new NumberParameter(this, "Iterations", 4, 0, 32, 1);
-	NumberParameter mod = new NumberParameter(this, "Strength", .3, 0, 1);
-	NumberParameter seed = new NumberParameter(this, "Seed", 0);
-	NumberParameter offsetXY = new NumberParameter(this, "Offset - X/Y", .75, 0, 1);
-	NumberParameter offsetX = new NumberParameter(this, "Offset - X", 0, 0, 1);
-	NumberParameter offsetY = new NumberParameter(this, "Offset - Y", 0, 0, 1);
+	NumberParameter freq = new NumberParameter("Frequency", this, 5, 1, 128);
+	NumberParameter iterations = new NumberParameter("Iterations", this, 4, 0, 32, 1);
+	NumberParameter mod = new NumberParameter("Strength", this, .3, 0, 1);
+	NumberParameter seed = new NumberParameter("Seed", this, 0);
+	NumberParameter offsetXY = new NumberParameter("Offset - X/Y", this, .75, 0, 1);
+	NumberParameter offsetX = new NumberParameter("Offset - X", this, 0, 0, 1);
+	NumberParameter offsetY = new NumberParameter("Offset - Y", this, 0, 0, 1);
 
 	Interpolator intplt = new CubicInterpolator();
 
 	boolean horizontal = false;
 	Random rand;
-
-	public Marbeler(Smudge s) {
-		super(s);
-	}
 
 	public String getName() {
 		return "Cubic Marbeler";

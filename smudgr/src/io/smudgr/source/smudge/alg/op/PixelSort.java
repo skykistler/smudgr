@@ -1,31 +1,24 @@
-package io.smudgr.source.smudge.alg;
+package io.smudgr.source.smudge.alg.op;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
 import io.smudgr.source.Frame;
-import io.smudgr.source.smudge.Smudge;
-import io.smudgr.source.smudge.alg.coord.ColumnCoords;
-import io.smudgr.source.smudge.alg.math.BrightnessFunction;
-import io.smudgr.source.smudge.alg.math.ChromaFunction;
-import io.smudgr.source.smudge.alg.math.HueFunction;
 import io.smudgr.source.smudge.alg.math.LumaFunction;
 import io.smudgr.source.smudge.alg.math.UnivariateFunction;
-import io.smudgr.source.smudge.alg.param.BooleanParameter;
-import io.smudgr.source.smudge.alg.param.NumberParameter;
+import io.smudgr.source.smudge.param.BooleanParameter;
+import io.smudgr.source.smudge.param.NumberParameter;
 
-public class PixelSort extends Algorithm {
+public class PixelSort extends Operation {
 
-	NumberParameter thresh = new NumberParameter(this, "Threshold", .2, -.01, 1, .01);
-	BooleanParameter reverse = new BooleanParameter(this, "Reverse", false);
+	NumberParameter thresh = new NumberParameter("Threshold", this, .2, -.01, 1, .01);
+	BooleanParameter reverse = new BooleanParameter("Reverse", this, false);
 
 	UnivariateFunction thresholdFunction = new LumaFunction();
 	UnivariateFunction sortFunction = new LumaFunction();
 
-	public PixelSort(Smudge s) {
-		super(s);
-		setCoordFunction(new ColumnCoords());
+	public void init() {
 		thresh.setReverse(true);
 	}
 
@@ -34,7 +27,7 @@ public class PixelSort extends Algorithm {
 	}
 
 	public void execute(Frame img) {
-		for (ArrayList<Integer> coords : getCoordFunction().getCoordSet())
+		for (ArrayList<Integer> coords : getAlgorithm().getCoordFunction().getCoordSet())
 			sort(coords);
 	}
 

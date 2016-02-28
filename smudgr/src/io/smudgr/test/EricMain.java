@@ -5,7 +5,7 @@ import io.smudgr.controller.device.MidiController;
 import io.smudgr.source.Image;
 import io.smudgr.source.SourceSet;
 import io.smudgr.source.smudge.Smudge;
-import io.smudgr.source.smudge.alg.SourceMixerHack;
+import io.smudgr.source.smudge.alg.op.SourceMixerHack;
 import io.smudgr.view.JView;
 
 public class EricMain {
@@ -14,7 +14,8 @@ public class EricMain {
 		MidiController controller = new MidiController();
 
 		// Make a smudge
-		Smudge smudge = new Smudge(new Image("flowers/flowers2.jpg"));
+		Smudge smudge = new Smudge();
+		smudge.setSource(new Image("flowers/flowers2.jpg"));
 		//new VideoControl(controller, "cars.mp4", 300);
 
 		// Set smudge before doing anything
@@ -23,7 +24,7 @@ public class EricMain {
 		SourceSet mySource = new SourceSet("mix");
 		mySource.init();
 
-		SourceMixerHack mixer = new SourceMixerHack(smudge, mySource);
+		SourceMixerHack mixer = new SourceMixerHack(mySource);
 		mixer.bind("Enable");
 		mixer.getParameter("Enable").setInitial(false);
 

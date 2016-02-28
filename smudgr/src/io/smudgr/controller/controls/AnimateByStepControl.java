@@ -1,8 +1,8 @@
 package io.smudgr.controller.controls;
 
 import io.smudgr.controller.Controller;
-import io.smudgr.source.smudge.alg.param.NumberParameter;
-import io.smudgr.source.smudge.alg.param.Parameter;
+import io.smudgr.source.smudge.param.NumberParameter;
+import io.smudgr.source.smudge.param.Parameter;
 
 public class AnimateByStepControl extends Controllable {
 
@@ -16,7 +16,7 @@ public class AnimateByStepControl extends Controllable {
 	}
 
 	public AnimateByStepControl(Controller controller, Parameter p, double increment) {
-		super(controller, p.getParent() + " - " + p.toString() + " Animator");
+		super(controller, p.toString() + " Animator");
 		parameter = (NumberParameter) p;
 
 		this.increment = increment;

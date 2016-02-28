@@ -10,7 +10,7 @@ import io.smudgr.view.View;
 
 public class Controller implements KeyListener {
 	public static final int TARGET_FPS = 60;
-	public static final int TICKS_PER_BEAT = 64;
+	public static final int TICKS_PER_BEAT = 50;
 
 	private Smudge smudge;
 	private View view;
@@ -66,6 +66,11 @@ public class Controller implements KeyListener {
 		System.out.println("Stopping...");
 		updater.stop();
 		renderer.stop();
+
+		if (smudge != null)
+			smudge.dispose();
+
+		System.exit(0);
 	}
 
 	public void update() {
@@ -110,7 +115,8 @@ public class Controller implements KeyListener {
 	}
 
 	public void addControl(Controllable c) {
-		controls.add(c);
+		if (!controls.contains(c))
+			controls.add(c);
 	}
 
 	public void keyPressed(KeyEvent arg0) {
