@@ -153,8 +153,10 @@ public class CefView implements View {
 
 	public void dispose() {
 		window.setVisible(false);
-		window.dispose();
+
 		CefApp.getInstance().dispose();
+
+		window.dispose();
 	}
 
 	private void drawFittedImage(Graphics g, BufferedImage image) {

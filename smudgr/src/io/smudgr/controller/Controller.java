@@ -70,10 +70,13 @@ public class Controller implements KeyListener {
 		if (smudge != null)
 			smudge.dispose();
 
-		while (!updater.isFinished() && !renderer.isFinished())
-			;
-
-		System.exit(0);
+		try {
+			Thread.sleep(200);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} finally {
+			System.exit(0);
+		}
 	}
 
 	public void update() {
