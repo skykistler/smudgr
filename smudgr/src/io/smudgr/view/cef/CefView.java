@@ -5,7 +5,9 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.DisplayMode;
 import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -27,11 +29,12 @@ import io.smudgr.source.Source;
 import io.smudgr.view.View;
 
 public class CefView implements View {
-	private int WINDOW_WIDTH = 800;
-	private int WINDOW_HEIGHT = 600;
 
 	private Controller controller;
 	private Source source;
+
+	private int windowWidth;
+	private int windowHeight;
 
 	private JFrame window;
 	private JLayeredPane layeredPane;
@@ -49,6 +52,10 @@ public class CefView implements View {
 	}
 
 	public void init() {
+		DisplayMode display = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode();
+		windowWidth = display.getWidth();
+		windowHeight = display.getHeight();
+
 		startCef();
 		makeWindow();
 	}
@@ -74,7 +81,7 @@ public class CefView implements View {
 		window = new JFrame("smudgr");
 		window.getContentPane().setLayout(new BorderLayout());
 
-		window.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+		window.setSize(windowWidth, windowHeight);
 		window.setBackground(Color.black);
 
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
@@ -86,8 +93,8 @@ public class CefView implements View {
 		layeredPane.setSize(window.getSize());
 
 		canvas = new Canvas();
-		canvas.setLocation(200, 200);
-		canvas.setSize(400, 400);
+		canvas.setLocation(0, 0);
+		canvas.setSize(windowWidth, windowHeight);
 
 		cefBrowserUI.setSize(window.getSize());
 
