@@ -15,9 +15,13 @@ public class SmudgrQueryRouter extends CefMessageRouterHandlerAdapter {
 
 	public boolean onQuery(CefBrowser browser, long query_id, String request, boolean persistent, CefQueryCallback callback) {
 
-		//		Smudge s = view.getController().getSmudge();
-		//		s.setEnabled(!s.isEnabled());
-		callback.success("HEYOOOOO");
+		if (request.startsWith("smudgr://") && request.endsWith("html")) {
+			JarFile resource = new JarFile(request.substring(9));
+			byte[] data = resource.getData();
+			String file = new String(data);
+
+			callback.success(file);
+		}
 
 		return true;
 	}

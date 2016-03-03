@@ -12,7 +12,7 @@ import io.smudgr.view.cef.CefView;
 
 public class smudgr {
 
-	private smudgr() {
+	private smudgr(boolean debug) {
 		Controller controller = new Controller();
 
 		Smudge smudge = new Smudge();
@@ -24,7 +24,7 @@ public class smudgr {
 		//		m.bind("Iterations");
 		//		m.bind("Strength");
 
-		new CefView(controller);
+		new CefView(controller, debug);
 
 		controller.start();
 	}
@@ -47,7 +47,7 @@ public class smudgr {
 				System.setOut(nullStream);
 			}
 
-			new smudgr();
+			new smudgr(debug);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(0);

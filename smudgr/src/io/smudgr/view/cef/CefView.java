@@ -35,6 +35,7 @@ public class CefView implements View {
 
 	private int windowWidth;
 	private int windowHeight;
+	private boolean debug;
 
 	private JFrame window;
 	private JLayeredPane layeredPane;
@@ -46,9 +47,10 @@ public class CefView implements View {
 	private CefBrowser cefBrowser;
 	private Component cefBrowserUI;
 
-	public CefView(Controller c) {
+	public CefView(Controller c, boolean debug) {
 		this.controller = c;
 		controller.setView(this);
+		this.debug = debug;
 	}
 
 	public void init() {
@@ -65,6 +67,10 @@ public class CefView implements View {
 
 		CefSettings settings = new CefSettings();
 		settings.background_color = settings.new ColorType(255, 0, 0, 0);
+
+		if (debug)
+			settings.remote_debugging_port = 54321;
+
 		cefApp = CefApp.getInstance(settings);
 
 		cefClient = cefApp.createClient();
@@ -72,7 +78,7 @@ public class CefView implements View {
 		CefMessageRouter msgRouter = CefMessageRouter.create(new SmudgrQueryRouter(this));
 		cefClient.addMessageRouter(msgRouter);
 
-		cefBrowser = cefClient.createBrowser("smudgr://ui/index.html", false, false);
+		cefBrowser = cefClient.createBrowser("smudgr://ui/html/main.html", false, false);
 
 		cefBrowserUI = cefBrowser.getUIComponent();
 	}

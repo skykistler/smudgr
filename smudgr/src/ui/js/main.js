@@ -9,7 +9,7 @@ $(document).ready(function() {
 function fitSections() {
   var top_layer_height = window.innerHeight - $('#sequence-bar-container').height();
   top_layer_height -= $('.mdl-layout__header').height();
-  
+
   $('#detail-bar').height(top_layer_height);
   $('#render-view').height(top_layer_height);
 
@@ -17,10 +17,6 @@ function fitSections() {
   $('#render-view').width(window.innerWidth - detail_bar_width);
 }
 
-function queryTest() {
-  window.cefQuery({
-    request: 'This is a test :)',
-    onSuccess: function(response) {alert(response);},
-    onFailure: function(error_code, error_message) {}
-  });
+function test() {
+  new SequenceComponent("test", "#sequence-bar");
 }

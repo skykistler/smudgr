@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <link   href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link   href="../mdl/material.min.css" rel="stylesheet" >
+    <link   href="../css/main.css" rel="stylesheet">
+
+    <script src="../mdl/material.min.js"></script>
+    <script src="../js/jquery-1.12.0.min.js"></script>
+
+    <script src="../js/sequence_component.js"></script>
+    <script src="../js/main.js"></script>
+  </head>
+
+  <body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+          <nav class="mdl-navigation">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect" style="margin-right:5px" href="" onclick="test()">Load</a>
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect" href="">Save</a>
+          </nav>
+          <div class="mdl-layout-spacer"></div>
+          <nav class="mdl-navigation">
+            <a class="mdl-button mdl-js-button mdl-js-ripple-effect" href="">Studio</a>
+            <a class="mdl-button mdl-js-button mdl-button--accent mdl-js-ripple-effect" href="">Live</a>
+          </nav>
+        </div>
+      </header>
+
+      <main class="mdl-layout__content">
+        <div class="page-content">
+
+          <div id="detail-bar" class="mdl-layout__content"></div>
+
+          <div id="render-view" class="mdl-layout__content"></div>
+
+          <div id="sequence-bar-container" class="mdl-layout__content">
+            <div id="sequence-bar"></div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

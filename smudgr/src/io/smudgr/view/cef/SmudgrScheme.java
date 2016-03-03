@@ -1,9 +1,5 @@
 package io.smudgr.view.cef;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.cef.callback.CefCallback;
 import org.cef.handler.CefResourceHandlerAdapter;
 import org.cef.misc.IntRef;
@@ -26,9 +22,10 @@ public class SmudgrScheme extends CefResourceHandlerAdapter {
 
 		System.out.println("Loading element: " + path);
 
-		boolean exists = loadInternalContent(path);
+		JarFile resource = new JarFile(path);
+		data = resource.getData();
 
-		if (exists)
+		if (data != null)
 			switch (ext) {
 			case "html":
 				mime_type = "text/html";
@@ -95,19 +92,4 @@ public class SmudgrScheme extends CefResourceHandlerAdapter {
 		return has_data;
 	}
 
-	private boolean loadInternalContent(String resName) {
-		InputStream inStream = ClassLoader.getSystemResourceAsStream(resName);
-		if (inStream != null) {
-			try {
-				ByteArrayOutputStream outFile = new ByteArrayOutputStream();
-				int readByte = -1;
-				while ((readByte = inStream.read()) >= 0)
-					outFile.write(readByte);
-				data = outFile.toByteArray();
-				return true;
-			} catch (IOException e) {
-			}
-		}
-		return false;
-	}
 }
