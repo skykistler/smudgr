@@ -39,6 +39,7 @@ public class RenderThread implements Runnable {
 			try {
 				view.draw();
 			} catch (IllegalStateException e) {
+				e.printStackTrace();
 				System.out.println("Rendering stopped.");
 				view.getController().stop();
 			}

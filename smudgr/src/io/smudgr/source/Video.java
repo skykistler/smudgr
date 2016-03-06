@@ -24,7 +24,7 @@ public class Video implements Source {
 	}
 
 	public Video(String filename, int start) {
-		this.filename = "data/" + filename;
+		this.filename = filename;
 		this.start = start;
 	}
 

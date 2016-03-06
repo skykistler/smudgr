@@ -1,4 +1,4 @@
-package io.smudgr.view.cef;
+package io.smudgr.view.cef.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

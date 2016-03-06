@@ -16,7 +16,7 @@ public class Image implements Source {
 
 	public void init() {
 		try {
-			BufferedImage loaded = ImageIO.read(new File("data/" + filename));
+			BufferedImage loaded = ImageIO.read(new File(filename));
 
 			if (loaded == null) {
 				System.out.println("Unable to load: " + filename);

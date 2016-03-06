@@ -28,10 +28,11 @@ public class SourceSet implements Source {
 					files.add(location + "/" + list[i]);
 		}
 
+		SourceFactory sf = new SourceFactory();
 		for (int i = 0; i < files.size(); i++) {
 			String path = files.get(i);
 
-			Source s = makeSource(path);
+			Source s = sf.makeSource(path);
 			if (s != null) {
 				sources.add(s);
 			}
@@ -65,28 +66,6 @@ public class SourceSet implements Source {
 			return null;
 
 		return s.getFrame();
-	}
-
-	private Source makeSource(String path) {
-		String ext = path.substring(path.lastIndexOf(".") + 1);
-
-		try {
-			switch (ext) {
-			case "mov":
-			case "mp4":
-				return new Video(path);
-			case "gif":
-				return new Gif(path);
-			case "png":
-			case "jpg":
-			case "jpeg":
-				return new Image(path);
-			default:
-				return null;
-			}
-		} catch (Exception e) {
-			return null;
-		}
 	}
 
 	public int size() {

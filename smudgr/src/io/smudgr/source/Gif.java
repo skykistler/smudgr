@@ -30,7 +30,7 @@ public class Gif implements Source {
 	private Frame lastFrame;
 
 	public Gif(String filename) {
-		this.filename = "data/" + filename;
+		this.filename = filename;
 	}
 
 	public void init() {

@@ -8,6 +8,11 @@ import java.net.URLDecoder;
 
 import io.smudgr.controller.Controller;
 import io.smudgr.source.smudge.Smudge;
+import io.smudgr.source.smudge.alg.Algorithm;
+import io.smudgr.source.smudge.alg.coord.ColumnCoords;
+import io.smudgr.source.smudge.alg.op.Marbeler;
+import io.smudgr.source.smudge.alg.op.PixelSort;
+import io.smudgr.source.smudge.alg.select.ThresholdSelect;
 import io.smudgr.view.cef.CefView;
 
 public class smudgr {
@@ -18,11 +23,16 @@ public class smudgr {
 		Smudge smudge = new Smudge();
 		controller.setSmudge(smudge);
 
-		//		Marbeler m = new Marbeler(smudge);
-		//		m.bind("Offset - X/Y");
-		//		m.bind("Frequency");
-		//		m.bind("Iterations");
-		//		m.bind("Strength");
+		Algorithm sort = new Algorithm();
+		sort.add(new ColumnCoords());
+
+		ThresholdSelect threshold = new ThresholdSelect();
+		sort.add(threshold);
+
+		sort.add(new PixelSort());
+		sort.add(new Marbeler());
+
+		smudge.add(sort);
 
 		new CefView(controller, debug);
 

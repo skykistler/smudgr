@@ -17,13 +17,13 @@ public class EricMain {
 
 		// Make a smudge
 		Smudge smudge = new Smudge();
-		smudge.setSource(new Image("flowers/flowers2.jpg"));
+		smudge.setSource(new Image("data/flowers/flowers2.jpg"));
 		//new VideoControl(controller, "cars.mp4", 300);
 
 		// Set smudge before doing anything
 		controller.setSmudge(smudge);
 
-		SourceSet mySource = new SourceSet("mix");
+		SourceSet mySource = new SourceSet("data/mix");
 		mySource.init();
 
 		//		SourceMixerHack mixer = new SourceMixerHack(mySource);

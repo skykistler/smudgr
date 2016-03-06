@@ -1,4 +1,4 @@
-package io.smudgr.view.cef;
+package io.smudgr.view.cef.util;
 
 import org.cef.CefApp;
 import org.cef.CefApp.CefAppState;
@@ -9,11 +9,13 @@ import org.cef.handler.CefAppHandlerAdapter;
 import org.cef.handler.CefResourceHandler;
 import org.cef.network.CefRequest;
 
+import io.smudgr.view.View;
+
 public class CefHandler extends CefAppHandlerAdapter {
 
-	private CefView view;
+	private View view;
 
-	public CefHandler(CefView view) {
+	public CefHandler(View view) {
 		super(null);
 		this.view = view;
 	}
