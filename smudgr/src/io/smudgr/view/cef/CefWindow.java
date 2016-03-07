@@ -18,6 +18,7 @@ import javax.swing.SwingUtilities;
 import org.cef.CefApp;
 import org.cef.CefClient;
 import org.cef.CefSettings;
+import org.cef.OS;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefMessageRouter;
 
@@ -116,6 +117,10 @@ public class CefWindow extends JFrame {
 			e1.printStackTrace();
 		}
 		setSize(width, height);
+		
+
+		if(OS.isWindows()) 
+			setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
 	}
 
 	private void startCef() {

@@ -78,11 +78,13 @@ public class RenderFrame extends JFrame {
 
 	public void updateIsVisible() {
 		boolean visible = parent.isActive() && currentFrame != null;
+		System.out.println(isVisible() + " " + visible);
 		if (isVisible() != visible)
 			setVisible(visible);
 	}
 
 	public void updateDimensions() {
+		updateIsVisible();
 		if (!isVisible())
 			return;
 
@@ -129,10 +131,6 @@ public class RenderFrame extends JFrame {
 
 	public void setHeight(int renderViewHeight) {
 		viewHeight = renderViewHeight;
-	}
-
-	public boolean isVisible() {
-		return currentFrame != null && super.isVisible();
 	}
 
 	private static final long serialVersionUID = -6876566152495162962L;

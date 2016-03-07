@@ -27,7 +27,7 @@
 	<classpathentry kind="lib" path="builds/win64/bin/jcef.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/smudgr-java/lib/jcef_docs.zip!/"/>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="smudgr-java/lib"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="smudgr-java/builds/win64/bin/lib/win64"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="builds/macosx64/bin/smudgr.app/Contents/Java/jcef.jar">

@@ -20,7 +20,7 @@
 		<copy file="./builds/smudgr.jar" todir="./builds/win64/bin" />
 		<exec dir="./builds/win64/" executable="cmd">
 	        <arg line="/c" />
-			<arg line="compile.bat" />
+			<arg line="run.bat" />
 		</exec>
 	</target>
 

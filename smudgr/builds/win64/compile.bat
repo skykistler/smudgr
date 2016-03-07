@@ -1,1 +1,0 @@
-java -cp "./bin;./bin/*" -Djava.library.path=./bin/lib/win64 io.smudgr.smudgr
