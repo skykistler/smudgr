@@ -34,23 +34,27 @@ public class SmudgrQueryRouter extends CefMessageRouterHandlerAdapter {
 
 			callback.success("Opening file dialog");
 
-			SwingUtilities.invokeLater(new Runnable() {
+			(new Thread() {
 				public void run() {
-					FileDialog.getInstance().show(view.getWindow(), "Open Source");
-					SourceFactory sf = new SourceFactory();
-					File f = FileDialog.getInstance().getSelectedFile();
+					SwingUtilities.invokeLater(new Runnable() {
+						public void run() {
+							FileDialog.getInstance().show(view.getWindow(), "Open Source");
+							SourceFactory sf = new SourceFactory();
+							File f = FileDialog.getInstance().getSelectedFile();
 
-					Smudge s = view.getController().getSmudge();
-					if (f != null) {
-						Source src = sf.makeSource(f.getAbsolutePath());
+							Smudge s = view.getController().getSmudge();
+							if (f != null) {
+								Source src = sf.makeSource(f.getAbsolutePath());
 
-						if (src != null) {
-							src.init();
-							s.setSource(src);
+								if (src != null) {
+									src.init();
+									s.setSource(src);
+								}
+							}
 						}
-					}
+					});
 				}
-			});
+			}).start();
 		}
 
 		if (request.startsWith("prop")) {

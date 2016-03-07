@@ -117,9 +117,8 @@ public class CefWindow extends JFrame {
 			e1.printStackTrace();
 		}
 		setSize(width, height);
-		
 
-		if(OS.isWindows()) 
+		if (OS.isWindows())
 			setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
 	}
 
@@ -141,7 +140,7 @@ public class CefWindow extends JFrame {
 
 		cefClient.addDialogHandler(new DialogHandler());
 
-		cefBrowser = cefClient.createBrowser("smudgr://ui/html/main.html", false, false);
+		cefBrowser = cefClient.createBrowser("smudgr://ui/html/main.html", true, false);
 
 		cefBrowserUI = cefBrowser.getUIComponent();
 	}
