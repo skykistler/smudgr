@@ -14,9 +14,9 @@ import io.smudgr.source.Frame;
 public class RenderFrame extends JFrame {
 
 	private JFrame parent;
-	private Frame lastFrame;
-	private int posX, posY;
-	private int totalWidth, totalHeight;
+	private Frame currentFrame;
+	private int offsetX, offsetY;
+	private int viewWidth, viewHeight;
 
 	public RenderFrame(JFrame parent) {
 		this.parent = parent;
@@ -44,66 +44,22 @@ public class RenderFrame extends JFrame {
 		createBufferStrategy(2);
 	}
 
-	public void updateDimensions() {
-		Insets inset = parent.getInsets();
-		posX = parent.getX() + inset.left + 400;
-		posY = inset.top + parent.getY() + 50;
-		totalWidth = parent.getWidth() - 400;
-		totalHeight = parent.getHeight() - inset.top - inset.bottom - 260;
+	public void draw(Frame image) {
+		Frame lastFrame = currentFrame;
 
-		if (lastFrame == null) {
-			setVisible(false);
+		currentFrame = image;
+
+		updateIsVisible();
+		if (!isVisible())
 			return;
-		}
 
-		int displayHeight = totalHeight;
-		int displayWidth = totalWidth;
-
-		int height = lastFrame.getHeight();
-		int width = lastFrame.getWidth();
-
-		boolean needsResize = (height > displayHeight || width > displayWidth) || (height < displayHeight && width < displayWidth);
-		boolean byHeight = ((double) displayWidth / width) * height > displayHeight;
-		if (needsResize) {
-			if (byHeight) {
-				width = (int) (width * ((double) displayHeight / height));
-				height = displayHeight;
-			} else {
-				height = (int) (height * ((double) displayWidth / width));
-				width = displayWidth;
-			}
-		}
-
-		int x = displayWidth / 2 - width / 2;
-		int y = displayHeight / 2 - height / 2;
-
-		setLocation(posX + x, posY + y);
-		setSize(width, height);
-
-		createBufferStrategy(2);
-	}
-
-	public void drawFittedImage(Frame image) {
-		if (!parent.isActive())
-			setVisible(false);
-		else if (image != null && !isVisible())
-			setVisible(true);
-
-		if (lastFrame == null || lastFrame.getWidth() != image.getWidth() || lastFrame.getHeight() != image.getHeight()) {
-			lastFrame = image;
+		if (lastFrame == null || lastFrame.getWidth() != currentFrame.getWidth() || lastFrame.getHeight() != currentFrame.getHeight())
 			updateDimensions();
-		} else
-			lastFrame = image;
-
-		if (lastFrame == null)
-			return;
 
 		BufferStrategy st = getBufferStrategy();
 
-		if (st == null) {
-			createBufferStrategy(2);
-			st = getBufferStrategy();
-		}
+		if (st == null)
+			return;
 
 		Graphics g = st.getDrawGraphics();
 		g.setColor(Color.black);
@@ -118,6 +74,65 @@ public class RenderFrame extends JFrame {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void updateIsVisible() {
+		boolean visible = parent.isActive() && currentFrame != null;
+		if (isVisible() != visible)
+			setVisible(visible);
+	}
+
+	public void updateDimensions() {
+		if (!isVisible())
+			return;
+
+		Insets inset = parent.getInsets();
+		int x = inset.left + parent.getX() + offsetX;
+		int y = inset.top + parent.getY() + offsetY;
+
+		int height = currentFrame.getHeight();
+		int width = currentFrame.getWidth();
+
+		boolean needsResize = (height > viewHeight || width > viewWidth) || (height < viewHeight && width < viewWidth);
+		boolean byHeight = (height * ((double) viewWidth / width)) > viewHeight;
+		if (needsResize) {
+			if (byHeight) {
+				width = (int) (width * ((double) viewHeight / height));
+				height = viewHeight;
+			} else {
+				height = (int) (height * ((double) viewWidth / width));
+				width = viewWidth;
+			}
+
+			setSize(width, height);
+
+			createBufferStrategy(2);
+		}
+
+		x += viewWidth / 2 - width / 2;
+		y += viewHeight / 2 - height / 2;
+
+		setLocation(x, y);
+	}
+
+	public void setX(int offsetX) {
+		this.offsetX = offsetX;
+	}
+
+	public void setY(int offsetY) {
+		this.offsetY = offsetY;
+	}
+
+	public void setWidth(int renderViewWidth) {
+		viewWidth = renderViewWidth;
+	}
+
+	public void setHeight(int renderViewHeight) {
+		viewHeight = renderViewHeight;
+	}
+
+	public boolean isVisible() {
+		return currentFrame != null && super.isVisible();
 	}
 
 	private static final long serialVersionUID = -6876566152495162962L;

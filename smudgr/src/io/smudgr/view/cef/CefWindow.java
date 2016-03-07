@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.DisplayMode;
 import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -12,6 +13,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import org.cef.CefApp;
 import org.cef.CefClient;
@@ -19,14 +21,12 @@ import org.cef.CefSettings;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefMessageRouter;
 
-import io.smudgr.source.Frame;
 import io.smudgr.view.cef.util.CefHandler;
 import io.smudgr.view.cef.util.DialogHandler;
 import io.smudgr.view.cef.util.SmudgrQueryRouter;
 
 public class CefWindow extends JFrame {
 
-	private int width, height;
 	private boolean debug;
 
 	private CefView view;
@@ -48,11 +48,11 @@ public class CefWindow extends JFrame {
 		startCef();
 
 		DisplayMode display = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode();
-		width = display.getWidth();
-		height = display.getHeight();
+		int width = display.getWidth();
+		int height = display.getHeight();
 		setSize(width, height);
 
-		setBackground(Color.black);
+		setBackground(new Color(0x212121));
 
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = (int) ((dimension.getWidth() - width) / 2);
@@ -62,20 +62,20 @@ public class CefWindow extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			public void windowActivated(WindowEvent e) {
 				if (e.getOppositeWindow() != renderFrame)
-					renderFrame.setVisible(true);
+					renderFrame.updateIsVisible();
 			}
 
 			public void windowDeactivated(WindowEvent e) {
 				if (e.getOppositeWindow() != renderFrame)
-					renderFrame.setVisible(false);
+					renderFrame.updateIsVisible();
 			}
 
 			public void windowIconified(WindowEvent e) {
-				renderFrame.setVisible(false);
+				renderFrame.updateIsVisible();
 			}
 
 			public void windowDeiconified(WindowEvent e) {
-				renderFrame.setVisible(true);
+				renderFrame.updateIsVisible();
 			}
 
 			public void windowClosing(WindowEvent e) {
@@ -85,9 +85,9 @@ public class CefWindow extends JFrame {
 
 		addComponentListener(new ComponentListener() {
 			public void componentResized(ComponentEvent e) {
-				width = getWidth();
-				height = getHeight();
-				cefBrowserUI.setSize(width, height);
+				Insets inset = getInsets();
+				cefBrowserUI.setSize(getWidth() - inset.left - inset.right, getHeight() - inset.top - inset.bottom);
+				System.out.println(cefBrowserUI.getHeight());
 				renderFrame.updateDimensions();
 			}
 
@@ -96,11 +96,11 @@ public class CefWindow extends JFrame {
 			}
 
 			public void componentShown(ComponentEvent e) {
-				renderFrame.setVisible(true);
+				renderFrame.updateIsVisible();
 			}
 
 			public void componentHidden(ComponentEvent e) {
-				renderFrame.setVisible(false);
+				renderFrame.updateIsVisible();
 			}
 		});
 
@@ -111,11 +111,11 @@ public class CefWindow extends JFrame {
 
 		setSize(width - 100, height);
 		try {
-			Thread.sleep(300);
+			Thread.sleep(200);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-		setSize(width + 100, height);
+		setSize(width, height);
 	}
 
 	private void startCef() {
@@ -141,17 +141,21 @@ public class CefWindow extends JFrame {
 		cefBrowserUI = cefBrowser.getUIComponent();
 	}
 
-	public void drawToRenderFrame(Frame image) {
-		renderFrame.drawFittedImage(image);
+	public RenderFrame getRenderFrame() {
+		return renderFrame;
 	}
 
 	public void dispose() {
 		renderFrame.setVisible(false);
 		setVisible(false);
 
-		CefApp.getInstance().dispose();
-
 		super.dispose();
+
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				CefApp.getInstance().dispose();
+			}
+		});
 	}
 
 	private static final long serialVersionUID = 6622012878252406208L;

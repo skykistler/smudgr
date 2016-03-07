@@ -14,7 +14,7 @@ function initializeMaterial() {
 
   $('main').addClass("mdl-layout__content");
 
-  $('.js-detail-bar').addClass("mdl-layout__content");
+  $('.js-detail-bar').addClass("mdl-layout__content mdl-cell--4-col");
   $('.js-render-view').addClass("mdl-layout__content");
   $('.js-sequence-bar-container').addClass("mdl-layout__content");
 
@@ -24,13 +24,15 @@ function initializeMaterial() {
 
 function fitSections() {
   var top_layer_height = window.innerHeight - $('.js-sequence-bar-container').height();
-  top_layer_height -= $('.mdl-layout__header').height();
+  top_layer_height -= $('.js-header').height();
 
   $('.js-detail-bar').height(top_layer_height);
   $('.js-render-view').height(top_layer_height);
 
   var detail_bar_width = $('.js-detail-bar').width();
   $('.js-render-view').width(window.innerWidth - detail_bar_width);
+
+  sendRenderDimensions();
 }
 
 function test() {
@@ -38,12 +40,39 @@ function test() {
 }
 
 function loadTest() {
+  sendAction("open");
+}
+
+function sendRenderDimensions() {
+  var offset = $('.js-render-view').offset();
+  var renderOffsetY = offset.top;
+  var renderOffsetX = offset.left;
+	var renderViewWidth = $('.js-render-view').width();
+	var renderViewHeight = $('.js-render-view').height();
+
+  sendProperty('renderOffsetX', renderOffsetX);
+  sendProperty('renderOffsetY', renderOffsetY);
+  sendProperty('renderViewWidth', renderViewWidth);
+  sendProperty('renderViewHeight', renderViewHeight);
+  sendAction('updateRenderView');
+}
+
+function sendProperty(name, value) {
+  sendRequest("prop:" + name + ":" + value);
+}
+
+function sendAction(action) {
+  sendRequest("action:" + action);
+}
+
+function sendRequest(requestValue) {
   window.cefQuery({
-    request: "open",
+    request: requestValue,
     onSuccess: function(response) {
       console.log(response);
     },
     onFailure: function(error_code, error_message) {
+      console.log(error_message);
     }
   });
 }

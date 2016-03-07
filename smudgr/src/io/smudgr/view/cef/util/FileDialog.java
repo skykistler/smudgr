@@ -9,20 +9,26 @@ import javax.swing.JFrame;
 
 public class FileDialog {
 
-	private String name;
+	private volatile static FileDialog instance;
+
+	public static FileDialog getInstance() {
+		if (instance == null)
+			instance = new FileDialog();
+
+		return instance;
+	}
+
 	private JFileChooser fileChooser;
 	private File[] selectedFiles;
 
-	public FileDialog(String name) {
-		this.name = name;
-
+	public FileDialog() {
 		String parent_path = null;
 		try {
 			String this_path = URLDecoder.decode(FileDialog.class.getProtectionDomain().getCodeSource().getLocation().getPath(), "UTF-8");
 			parent_path = (new File(this_path)).getParentFile().getAbsolutePath();
 
 			if (parent_path.contains("smudgr"))
-				parent_path = parent_path.substring(0, parent_path.indexOf("smudgr"));
+				parent_path = parent_path.substring(0, parent_path.lastIndexOf("smudgr"));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
@@ -41,7 +47,7 @@ public class FileDialog {
 		return selectedFiles;
 	}
 
-	public void show(JFrame frame) {
+	public void show(JFrame frame, String name) {
 		int ret = fileChooser.showDialog(frame, name);
 
 		if (ret == JFileChooser.APPROVE_OPTION)

@@ -69,13 +69,6 @@ public class Controller implements KeyListener {
 
 		if (smudge != null)
 			smudge.dispose();
-
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-		} finally {
-			System.exit(0);
-		}
 	}
 
 	public void update() {

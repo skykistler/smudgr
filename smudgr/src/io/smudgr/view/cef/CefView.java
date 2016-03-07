@@ -26,7 +26,7 @@ public class CefView implements View {
 	public void draw() {
 		Frame frame = source.getFrame();
 
-		window.drawToRenderFrame(frame);
+		window.getRenderFrame().draw(frame);
 	}
 
 	public CefWindow getWindow() {

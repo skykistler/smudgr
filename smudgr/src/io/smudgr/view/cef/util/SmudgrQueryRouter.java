@@ -2,6 +2,8 @@ package io.smudgr.view.cef.util;
 
 import java.io.File;
 
+import javax.swing.SwingUtilities;
+
 import org.cef.browser.CefBrowser;
 import org.cef.callback.CefQueryCallback;
 import org.cef.handler.CefMessageRouterHandlerAdapter;
@@ -28,32 +30,66 @@ public class SmudgrQueryRouter extends CefMessageRouterHandlerAdapter {
 			callback.success(file);
 		}
 
-		if (request.startsWith("open")) {
+		if (request.startsWith("action:open")) {
 
 			callback.success("Opening file dialog");
 
-			view.getController().pause();
-
-			(new Thread() {
+			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					FileDialog fileDialog = new FileDialog("Open Source");
-					fileDialog.show(view.getWindow());
+					FileDialog.getInstance().show(view.getWindow(), "Open Source");
 					SourceFactory sf = new SourceFactory();
-					File f = fileDialog.getSelectedFile();
+					File f = FileDialog.getInstance().getSelectedFile();
 
 					Smudge s = view.getController().getSmudge();
 					if (f != null) {
 						Source src = sf.makeSource(f.getAbsolutePath());
-						src.init();
 
-						s.setSource(src);
+						if (src != null) {
+							src.init();
+							s.setSource(src);
+						}
 					}
-
-					view.getController().start();
 				}
-			}).start();
-
+			});
 		}
+
+		if (request.startsWith("prop")) {
+			String[] parts = request.split(":");
+
+			if (parts.length != 3) {
+				callback.failure(0, "Invalid property request");
+				return true;
+			}
+
+			int intval = 0;
+			try {
+				intval = Integer.parseInt(parts[2]);
+			} catch (Exception e) {
+				e.printStackTrace();
+				callback.failure(0, "Invalid property value");
+				return true;
+			}
+
+			switch (parts[1]) {
+			case "renderOffsetX":
+				view.getWindow().getRenderFrame().setX(intval);
+				break;
+			case "renderOffsetY":
+				view.getWindow().getRenderFrame().setY(intval);
+				break;
+			case "renderViewWidth":
+				view.getWindow().getRenderFrame().setWidth(intval);
+				break;
+			case "renderViewHeight":
+				view.getWindow().getRenderFrame().setHeight(intval);
+				break;
+			default:
+				break;
+			}
+		}
+
+		if (request.startsWith("action:updateRenderView"))
+			view.getWindow().getRenderFrame().updateDimensions();
 
 		return true;
 	}
