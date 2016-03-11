@@ -6,8 +6,15 @@ import io.smudgr.source.Image;
 import io.smudgr.source.SourceSet;
 import io.smudgr.source.smudge.Smudge;
 import io.smudgr.source.smudge.alg.Algorithm;
+import io.smudgr.source.smudge.alg.bound.Bound;
+import io.smudgr.source.smudge.alg.coord.ColumnCoords;
 import io.smudgr.source.smudge.alg.coord.RadialCoordFunction;
+import io.smudgr.source.smudge.alg.coord.RowCoords;
+import io.smudgr.source.smudge.alg.op.ChannelDrift;
 import io.smudgr.source.smudge.alg.op.PixelShift;
+import io.smudgr.source.smudge.alg.op.PixelSort;
+import io.smudgr.source.smudge.alg.select.RangeSelect;
+import io.smudgr.source.smudge.alg.select.ThresholdSelect;
 import io.smudgr.view.JView;
 
 public class EricMain {
@@ -17,14 +24,14 @@ public class EricMain {
 
 		// Make a smudge
 		Smudge smudge = new Smudge();
-		smudge.setSource(new Image("data/flowers/flowers2.jpg"));
+		smudge.setSource(new Image("data/flowers/flowers_source.jpg"));
 		//new VideoControl(controller, "cars.mp4", 300);
 
 		// Set smudge before doing anything
 		controller.setSmudge(smudge);
 
-		SourceSet mySource = new SourceSet("data/mix");
-		mySource.init();
+//		SourceSet mySource = new SourceSet("data/mix");
+//		mySource.init();
 
 		//		SourceMixerHack mixer = new SourceMixerHack(mySource);
 		//		mixer.bind("Enable");
@@ -92,19 +99,43 @@ public class EricMain {
 		Algorithm shift = new Algorithm();
 		shift.bind("Enable");
 		shift.getParameter("Enable").setInitial(false);
-		shift.add(new RadialCoordFunction());
-
+		shift.add(new RowCoords());
+		
+		ThresholdSelect threshold = new ThresholdSelect();
+		threshold.bind("Threshold");
+		
+		RangeSelect range = new RangeSelect();
+		range.bind("Minimum Value");
+		range.bind("Range Length");
+		
+		shift.add(range);
+		
+		PixelSort sort = new PixelSort();
+		sort.bind("Function");
+		sort.bind("Reverse");
+		
+		ChannelDrift drift = new ChannelDrift();
+		drift.bind("Red Offset - X");
+		drift.bind("Red Offset - Y");
+		drift.bind("Green Offset - X");
+		drift.bind("Green Offset - Y");
+		drift.bind("Blue Offset - X");
+		drift.bind("Blue Offset - Y");
+		
 		PixelShift shift1 = new PixelShift();
-		//shift1.setBound(new EllipticalBound(1, 1));
-		//shift1.getParameter("Intervals").setInitial(3);
 		shift1.bind("Intervals");
 		shift1.getParameter("Amount").setInitial(.2);
 		shift1.bind("Amount");
-		shift1.bind("Bound X");
-		shift1.bind("Bound Y");
-		shift1.bind("Bound Width");
-		shift1.bind("Bound Height");
-		shift.add(shift1);
+		
+		shift.add(sort);
+		
+//		Bound b = new Bound();
+//		b.bind("Bound X");
+//		b.bind("Bound Y");
+//		b.bind("Bound Width");
+//		b.bind("Bound Height");
+//		
+//		shift.add(b);
 
 		smudge.add(shift);
 
