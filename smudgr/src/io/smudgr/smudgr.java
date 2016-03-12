@@ -12,7 +12,7 @@ import io.smudgr.source.smudge.alg.Algorithm;
 import io.smudgr.source.smudge.alg.coord.ColumnCoords;
 import io.smudgr.source.smudge.alg.op.Marbeler;
 import io.smudgr.source.smudge.alg.op.PixelSort;
-import io.smudgr.source.smudge.alg.select.ThresholdSelect;
+import io.smudgr.source.smudge.alg.select.RangeSelect;
 import io.smudgr.view.cef.CefView;
 
 public class smudgr {
@@ -26,7 +26,7 @@ public class smudgr {
 		Algorithm sort = new Algorithm();
 		sort.add(new ColumnCoords());
 
-		ThresholdSelect threshold = new ThresholdSelect();
+		RangeSelect threshold = new RangeSelect();
 		sort.add(threshold);
 
 		sort.add(new PixelSort());
@@ -43,7 +43,8 @@ public class smudgr {
 		boolean debug = true;
 		try {
 			if (debug) {
-				String this_path = URLDecoder.decode(smudgr.class.getProtectionDomain().getCodeSource().getLocation().getPath(), "UTF-8");
+				String this_path = URLDecoder
+						.decode(smudgr.class.getProtectionDomain().getCodeSource().getLocation().getPath(), "UTF-8");
 				String parent_path = (new File(this_path)).getParentFile().getAbsolutePath();
 
 				System.setErr(new PrintStream(new FileOutputStream(parent_path + "/smudgr_errors.log")));

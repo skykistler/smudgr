@@ -2,8 +2,8 @@ package io.smudgr.test;
 
 import io.smudgr.controller.controls.AnimateOnBeatControl;
 import io.smudgr.controller.controls.DownsampleControl;
-import io.smudgr.controller.controls.SourceSetControl;
 import io.smudgr.controller.device.MidiController;
+import io.smudgr.source.Image;
 import io.smudgr.source.smudge.Smudge;
 import io.smudgr.source.smudge.alg.Algorithm;
 import io.smudgr.source.smudge.alg.coord.ColumnCoords;
@@ -12,7 +12,7 @@ import io.smudgr.source.smudge.alg.coord.RowCoords;
 import io.smudgr.source.smudge.alg.op.PixelShift;
 import io.smudgr.source.smudge.alg.op.PixelSort;
 import io.smudgr.source.smudge.alg.op.SpectralShift;
-import io.smudgr.source.smudge.alg.select.ThresholdSelect;
+import io.smudgr.source.smudge.alg.select.RangeSelect;
 import io.smudgr.view.JView;
 
 public class SkyShowMain {
@@ -24,14 +24,14 @@ public class SkyShowMain {
 		// Make smudge
 		Smudge smudge = new Smudge();
 		smudge.bind("Enable");
-		new SourceSetControl(controller, "venture/noise show");
+		smudge.setSource(new Image("data/nicole.jpg"));
 
 		Algorithm sort = new Algorithm();
 		sort.bind("Enable");
 		sort.getParameter("Enable").setInitial(false);
 		sort.add(new ConvergeCoordFunction());
 
-		ThresholdSelect threshold = new ThresholdSelect();
+		RangeSelect threshold = new RangeSelect();
 		threshold.getParameter("Threshold").setInitial(.1);
 		threshold.bind("Threshold");
 		sort.add(threshold);
@@ -92,7 +92,7 @@ public class SkyShowMain {
 		sort1.bind("Enable");
 		sort1.getParameter("Enable").setInitial(false);
 		sort1.add(new ColumnCoords());
-		ThresholdSelect threshold2 = new ThresholdSelect();
+		RangeSelect threshold2 = new RangeSelect();
 		threshold2.bind("Threshold");
 		sort1.add(threshold2);
 
@@ -106,7 +106,7 @@ public class SkyShowMain {
 		sort2.bind("Enable");
 		sort2.getParameter("Enable").setInitial(false);
 		sort2.add(new RowCoords());
-		ThresholdSelect threshold3 = new ThresholdSelect();
+		RangeSelect threshold3 = new RangeSelect();
 		threshold3.bind("Threshold");
 		sort2.add(threshold3);
 
@@ -119,10 +119,10 @@ public class SkyShowMain {
 		new DownsampleControl(controller, 1);
 
 		// Declare your view
-		new JView(controller, -1, true);
+		new JView(controller, 0, false);
 
 		controller.setSmudge(smudge);
-		controller.bindDevice("Arturia BeatStepPro");
+		controller.bindDevice("Arturia BeatStep Pro");
 		controller.start();
 	}
 

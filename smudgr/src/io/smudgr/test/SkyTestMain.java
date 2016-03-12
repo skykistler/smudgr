@@ -7,7 +7,7 @@ import io.smudgr.source.smudge.Smudge;
 import io.smudgr.source.smudge.alg.Algorithm;
 import io.smudgr.source.smudge.alg.coord.ColumnCoords;
 import io.smudgr.source.smudge.alg.op.PixelSort;
-import io.smudgr.source.smudge.alg.select.ThresholdSelect;
+import io.smudgr.source.smudge.alg.select.RangeSelect;
 import io.smudgr.view.JView;
 
 public class SkyTestMain {
@@ -16,17 +16,17 @@ public class SkyTestMain {
 
 		Smudge smudge = new Smudge();
 		controller.setSmudge(smudge);
-		smudge.setSource(new Image("nicole.jpg"));
+		smudge.setSource(new Image("data/nicole.jpg"));
 
 		Algorithm sort = new Algorithm();
 		sort.add(new ColumnCoords());
 
-		ThresholdSelect threshold = new ThresholdSelect();
-		threshold.bind("Threshold");
+		RangeSelect threshold = new RangeSelect();
+		// threshold.bind("Threshold");
 		sort.add(threshold);
 
 		PixelSort sort_op = new PixelSort();
-		sort_op.bind("Function");
+		// sort_op.bind("Function");
 		sort.add(sort_op);
 
 		smudge.add(sort);
@@ -35,7 +35,7 @@ public class SkyTestMain {
 
 		new JView(controller, -1, true);
 
-		controller.bindDevice("Arturia BeatStepPro");
+		// controller.bindDevice("Arturia BeatStepPro");
 		controller.start();
 	}
 }
