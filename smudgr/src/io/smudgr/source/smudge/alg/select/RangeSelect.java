@@ -7,7 +7,8 @@ import io.smudgr.source.smudge.param.NumberParameter;
 
 public class RangeSelect extends Selector {
 	
-	NumberParameter min = new NumberParameter("Minimum Value", this, 0, -.01, 1, .01);
+	// 'Minimum Value' acts as the typical threshold when 'Range Length' is a full 1.0
+	NumberParameter min = new NumberParameter("Minimum Value", this, 1, -.01, 1, .01);
 	NumberParameter range = new NumberParameter("Range Length", this, 1, -.01, 1, .01);
 	
 	UnivariateFunction rangeFunc = new LumaFunction();

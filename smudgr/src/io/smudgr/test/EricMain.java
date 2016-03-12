@@ -14,7 +14,7 @@ import io.smudgr.source.smudge.alg.op.ChannelDrift;
 import io.smudgr.source.smudge.alg.op.PixelShift;
 import io.smudgr.source.smudge.alg.op.PixelSort;
 import io.smudgr.source.smudge.alg.select.RangeSelect;
-import io.smudgr.source.smudge.alg.select.ThresholdSelect;
+import io.smudgr.source.smudge.alg.select.RangeSelect;
 import io.smudgr.view.JView;
 
 public class EricMain {
@@ -101,12 +101,10 @@ public class EricMain {
 		shift.getParameter("Enable").setInitial(false);
 		shift.add(new RowCoords());
 		
-		ThresholdSelect threshold = new ThresholdSelect();
-		threshold.bind("Threshold");
-		
 		RangeSelect range = new RangeSelect();
 		range.bind("Minimum Value");
 		range.bind("Range Length");
+		range.getParameter("Minimum Value").setReverse(true);
 		
 		shift.add(range);
 		
