@@ -21,7 +21,7 @@ public class RangeSelect extends Selector {
 		return "Range Select";
 	}
 	
-	private boolean inRange(int value){	
+	private boolean inRange(int value) {	
 		double minRange = min.getValue();
 		double rangeLength = range.getValue();
 		
