@@ -1,5 +1,7 @@
 package io.smudgr.controller;
 
+import javax.swing.SwingUtilities;
+
 import io.smudgr.view.View;
 
 public class RenderThread implements Runnable {
@@ -67,7 +69,12 @@ public class RenderThread implements Runnable {
 			lastFrame = System.nanoTime();
 		}
 
-		view.dispose();
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				view.dispose();
+			}
+		});
+
 		finished = true;
 	}
 

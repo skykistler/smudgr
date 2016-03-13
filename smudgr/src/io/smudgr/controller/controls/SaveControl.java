@@ -10,10 +10,6 @@ public class SaveControl extends Controllable {
 		requestBind();
 	}
 
-	public void init() {
-
-	}
-
 	public void inputValue(int value) {
 	}
 

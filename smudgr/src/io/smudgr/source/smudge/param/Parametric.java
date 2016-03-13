@@ -6,9 +6,6 @@ import java.util.HashMap;
 import io.smudgr.controller.Controller;
 
 public abstract class Parametric {
-	private static int currentId = 0;
-
-	private int id = ++currentId;
 
 	private HashMap<String, Parameter> parameters = new HashMap<String, Parameter>();
 
@@ -50,10 +47,6 @@ public abstract class Parametric {
 
 	public String toString() {
 		return getName();
-	}
-
-	public int getID() {
-		return id;
 	}
 
 }

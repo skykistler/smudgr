@@ -1,6 +1,7 @@
 package io.smudgr.source.smudge.alg;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import io.smudgr.controller.Controller;
 import io.smudgr.source.Frame;
@@ -17,21 +18,30 @@ public class Algorithm extends Parametric {
 
 	private BooleanParameter enable = new BooleanParameter("Enable", this, true);
 
+	private int id;
 	private Smudge parent;
 	private Bound bound;
 	private CoordFunction coordFunction;
 
 	private ArrayList<AlgorithmComponent> components = new ArrayList<AlgorithmComponent>();
+	private ArrayList<Integer> component_ids = new ArrayList<Integer>(10000);
+	private Random idPicker = new Random();
+
 	private ArrayList<ColorIndexList> selectedPixels = new ArrayList<ColorIndexList>();
 
 	protected Frame lastFrame;
 
 	public Algorithm() {
-		add(new Bound());
-		add(new AllCoords());
+		for (int i = 0; i < 10000; i++)
+			component_ids.add(i);
 	}
 
 	public void init() {
+		if (bound == null)
+			add(new Bound());
+		if (coordFunction == null)
+			add(new AllCoords());
+
 		for (AlgorithmComponent c : components)
 			c.init();
 	}
@@ -42,15 +52,18 @@ public class Algorithm extends Parametric {
 	private double lastBoundH;
 
 	public void update() {
-
 	}
 
 	public void apply(Frame img) {
 		if (!enable.getValue())
 			return;
 
-		boolean boundChanged = lastBoundX != bound.getOffsetX() || lastBoundY != bound.getOffsetY() || lastBoundW != bound.getWidth() || lastBoundH != bound.getHeight();
-		boolean dimensionsChanged = lastFrame == null || (img.getWidth() != this.lastFrame.getWidth() || img.getHeight() != this.lastFrame.getHeight());
+		bound.update();
+
+		boolean boundChanged = lastBoundX != bound.getOffsetX() || lastBoundY != bound.getOffsetY()
+				|| lastBoundW != bound.getWidth() || lastBoundH != bound.getHeight();
+		boolean dimensionsChanged = lastFrame == null
+				|| (img.getWidth() != this.lastFrame.getWidth() || img.getHeight() != this.lastFrame.getHeight());
 
 		coordFunction.setDimensions(img);
 		coordFunction.setBound(bound);
@@ -80,8 +93,15 @@ public class Algorithm extends Parametric {
 	}
 
 	public void add(AlgorithmComponent component) {
+		add(component, getNewComponentID());
+	}
+
+	public void add(AlgorithmComponent component, int id_num) {
 		if (component == null)
 			return;
+
+		component.setID(id_num);
+		pluckID(id_num);
 
 		component.setAlgorithm(this);
 
@@ -92,6 +112,10 @@ public class Algorithm extends Parametric {
 			setCoordFunction((CoordFunction) component);
 
 		components.add(component);
+	}
+
+	public ArrayList<AlgorithmComponent> getComponents() {
+		return components;
 	}
 
 	private void setBound(Bound bound) {
@@ -108,10 +132,8 @@ public class Algorithm extends Parametric {
 
 		this.bound = bound;
 
-		if (coordFunction != null) {
+		if (coordFunction != null)
 			coordFunction.setBound(bound);
-			coordFunction.update();
-		}
 	}
 
 	public Bound getBound() {
@@ -176,5 +198,29 @@ public class Algorithm extends Parametric {
 
 	public Smudge getSmudge() {
 		return parent;
+	}
+
+	public void setID(int id) {
+		this.id = id;
+	}
+
+	public int getID() {
+		return id;
+	}
+
+	public int getNewComponentID() {
+		int index = idPicker.nextInt(component_ids.size());
+		int id = component_ids.get(index);
+
+		return id;
+	}
+
+	private void pluckID(int id) {
+		for (int i = 0; i < component_ids.size(); i++) {
+			if (component_ids.get(i) == id) {
+				component_ids.remove(i);
+				return;
+			}
+		}
 	}
 }

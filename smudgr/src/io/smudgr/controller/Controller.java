@@ -37,10 +37,6 @@ public class Controller implements KeyListener {
 			return;
 		}
 
-		System.out.println("Setting up controls...");
-		for (Controllable c : controls)
-			c.init();
-
 		smudge.init();
 		view.init();
 
@@ -113,8 +109,10 @@ public class Controller implements KeyListener {
 	}
 
 	public void addControl(Controllable c) {
-		if (!controls.contains(c))
+		if (!controls.contains(c)) {
+			c.init();
 			controls.add(c);
+		}
 	}
 
 	public void keyPressed(KeyEvent arg0) {

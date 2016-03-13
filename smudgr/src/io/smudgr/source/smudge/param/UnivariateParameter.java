@@ -8,7 +8,7 @@ public class UnivariateParameter extends Parameter {
 
 	private ArrayList<UnivariateFunction> univariates = new ArrayList<UnivariateFunction>();
 
-	private UnivariateFunction initial;
+	private Object initial;
 	private int current;
 
 	public UnivariateParameter(String name, Parametric parent, UnivariateFunction initial) {
@@ -25,23 +25,37 @@ public class UnivariateParameter extends Parameter {
 	}
 
 	public void setInitial(Object o) {
-		if (!(o instanceof UnivariateFunction))
-			return;
-
-		UnivariateFunction func = (UnivariateFunction) o;
-
-		add(func);
-		initial = func;
+		initial = o;
 	}
 
 	public void setValue(Object o) {
-		if (!(o instanceof UnivariateFunction))
-			return;
+		UnivariateFunction func = null;
 
-		UnivariateFunction func = (UnivariateFunction) o;
+		if (o instanceof UnivariateFunction)
+			func = (UnivariateFunction) o;
+		else {
+			String className = o.toString();
+			try {
+				Class<?> c = Class.forName(className);
+				func = (UnivariateFunction) c.newInstance();
+			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+				e.printStackTrace();
+				System.out.println("Unable to find univariate: " + o);
+			}
+		}
+
+		if (func == null)
+			return;
 
 		add(func);
 		current = univariates.indexOf(func);
+	}
+
+	public String getStringValue() {
+		if (univariates.size() == 0)
+			return "";
+
+		return univariates.get(current).getClass().getCanonicalName();
 	}
 
 	public UnivariateFunction getValue() {
@@ -57,16 +71,14 @@ public class UnivariateParameter extends Parameter {
 	}
 
 	public void inputValue(int value) {
-		// TODO do we need this
+		// TODO how should we implement this
 	}
 
 	public void inputOn(int value) {
-		// TODO do we need this
 
 	}
 
 	public void inputOff(int value) {
-		// TODO do we need this
 	}
 
 	public void increment() {

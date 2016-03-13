@@ -1,7 +1,7 @@
 package io.smudgr.source.smudge.param;
 
 public class NumberParameter extends Parameter {
-	private double initial;
+	private Object initial;
 	private double value;
 	private double min;
 	private double max;
@@ -19,7 +19,8 @@ public class NumberParameter extends Parameter {
 		this(name, parent, initial, minimum, maximum, (maximum - minimum) / 127);
 	}
 
-	public NumberParameter(String name, Parametric parent, double initial, double minimum, double maximum, double step) {
+	public NumberParameter(String name, Parametric parent, double initial, double minimum, double maximum,
+			double step) {
 		super(name, parent);
 		setInitial(initial);
 		min = minimum;
@@ -32,10 +33,7 @@ public class NumberParameter extends Parameter {
 	}
 
 	public void setInitial(Object o) {
-		if (o instanceof Double)
-			initial = (double) o;
-		else
-			initial = Double.parseDouble(o.toString());
+		initial = o;
 	}
 
 	public void setValue(Object o) {
@@ -84,6 +82,10 @@ public class NumberParameter extends Parameter {
 
 	public double getValue() {
 		return value;
+	}
+
+	public String getStringValue() {
+		return value + "";
 	}
 
 	public int getIntValue() {

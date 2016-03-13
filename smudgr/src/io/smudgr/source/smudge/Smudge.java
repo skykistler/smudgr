@@ -1,6 +1,7 @@
 package io.smudgr.source.smudge;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import io.smudgr.controller.Controller;
 import io.smudgr.out.GifOutput;
@@ -13,11 +14,15 @@ import io.smudgr.source.smudge.param.BooleanParameter;
 import io.smudgr.source.smudge.param.Parametric;
 
 public class Smudge extends Parametric implements Source {
+
+	private BooleanParameter enabled = new BooleanParameter("Enable", this, true);
+
 	private Controller controller;
 
 	private Source source;
-	private ArrayList<Algorithm> algorithms;
-	private BooleanParameter enabled = new BooleanParameter("Enable", this, true);
+	private ArrayList<Algorithm> algorithms = new ArrayList<Algorithm>();;
+	private ArrayList<Integer> algorithm_ids = new ArrayList<Integer>(10000);
+	private Random idPicker = new Random();
 
 	private Frame lastFrame;
 	private int downsample = 1;
@@ -25,7 +30,8 @@ public class Smudge extends Parametric implements Source {
 	private Output output;
 
 	public Smudge() {
-		algorithms = new ArrayList<Algorithm>();
+		for (int i = 0; i < 10000; i++)
+			algorithm_ids.add(i);
 	}
 
 	public void init() {
@@ -108,16 +114,29 @@ public class Smudge extends Parametric implements Source {
 	}
 
 	public void add(Algorithm alg) {
+		add(alg, getNewAlgorithmID());
+	}
+
+	public void add(Algorithm alg, int id_num) {
+		alg.setID(id_num);
+		pluckID(id_num);
+
 		algorithms.add(alg);
 		alg.setSmudge(this);
 	}
 
-	public void save(String path) {
+	public ArrayList<Algorithm> getAlgorithms() {
+		return algorithms;
+	}
 
+	public void save(String path) {
+		SmudgeXML xml = new SmudgeXML(path);
+		xml.save(this);
 	}
 
 	public void saveFrame() {
-		output = new ImageOutput(Long.toString(System.currentTimeMillis()), lastFrame.getWidth(), lastFrame.getHeight());
+		output = new ImageOutput(Long.toString(System.currentTimeMillis()), lastFrame.getWidth(),
+				lastFrame.getHeight());
 		output.addFrame(lastFrame);
 		output.close();
 	}
@@ -142,6 +161,22 @@ public class Smudge extends Parametric implements Source {
 
 	public String getName() {
 		return "Smudge";
+	}
+
+	public int getNewAlgorithmID() {
+		int index = idPicker.nextInt(algorithm_ids.size());
+		int id = algorithm_ids.get(index);
+
+		return id;
+	}
+
+	private void pluckID(int id) {
+		for (int i = 0; i < algorithm_ids.size(); i++) {
+			if (algorithm_ids.get(i) == id) {
+				algorithm_ids.remove(i);
+				return;
+			}
+		}
 	}
 
 }

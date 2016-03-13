@@ -64,9 +64,12 @@ public class MidiController extends Controller implements DeviceObserver {
 	}
 
 	public void bindDevice(String deviceName) {
-		devices.add(new Device(this, deviceName));
+		Device d = new Device(this, deviceName);
 
-		System.out.println("Bound to " + devices.get(devices.size() - 1));
+		if (!d.toString().equals("no device")) {
+			devices.add(d);
+			System.out.println("Bound to " + devices.get(devices.size() - 1));
+		}
 	}
 
 	public void start() {
@@ -165,7 +168,8 @@ public class MidiController extends Controller implements DeviceObserver {
 
 		if (!waitingForKey) {
 			synchronized (getSmudge()) {
-				// If it's a system message, check our manual system controls list. Otherwise get the bind
+				// If it's a system message, check our manual system controls
+				// list. Otherwise get the bind
 				Controllable bound = system_message ? systemControls.get(status) : midiMap.getKeyBind(channel, key);
 
 				if (bound != null)

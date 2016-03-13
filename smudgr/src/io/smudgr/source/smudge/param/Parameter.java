@@ -19,6 +19,8 @@ public abstract class Parameter extends Controllable {
 
 	public abstract void setValue(Object o);
 
+	public abstract String getStringValue();
+
 	public void setReverse(boolean rev) {
 		reverse = rev;
 	}
@@ -28,7 +30,7 @@ public abstract class Parameter extends Controllable {
 	}
 
 	public String toString() {
-		return parent + " " + parent.getID() + " - " + getName();
+		return parent + " - " + getName();
 	}
 
 	public Parametric getParent() {
