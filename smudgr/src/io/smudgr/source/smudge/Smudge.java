@@ -21,7 +21,7 @@ public class Smudge extends Parametric implements Source {
 
 	private Source source;
 	private ArrayList<Algorithm> algorithms = new ArrayList<Algorithm>();;
-	private ArrayList<Integer> algorithm_ids = new ArrayList<Integer>(10000);
+	private ArrayList<Integer> algorithm_ids = new ArrayList<Integer>(1000);
 	private Random idPicker = new Random();
 
 	private Frame lastFrame;
@@ -30,7 +30,7 @@ public class Smudge extends Parametric implements Source {
 	private Output output;
 
 	public Smudge() {
-		for (int i = 0; i < 10000; i++)
+		for (int i = 0; i < 1000; i++)
 			algorithm_ids.add(i);
 	}
 

@@ -24,7 +24,7 @@ public class Algorithm extends Parametric {
 	private CoordFunction coordFunction;
 
 	private ArrayList<AlgorithmComponent> components = new ArrayList<AlgorithmComponent>();
-	private ArrayList<Integer> component_ids = new ArrayList<Integer>(10000);
+	private ArrayList<Integer> component_ids = new ArrayList<Integer>(1000);
 	private Random idPicker = new Random();
 
 	private ArrayList<ColorIndexList> selectedPixels = new ArrayList<ColorIndexList>();
@@ -32,7 +32,7 @@ public class Algorithm extends Parametric {
 	protected Frame lastFrame;
 
 	public Algorithm() {
-		for (int i = 0; i < 10000; i++)
+		for (int i = 0; i < 1000; i++)
 			component_ids.add(i);
 	}
 
