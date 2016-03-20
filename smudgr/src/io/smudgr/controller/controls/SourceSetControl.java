@@ -4,19 +4,47 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import io.smudgr.controller.Controller;
 import io.smudgr.source.SourceSet;
 
 public class SourceSetControl extends Controllable {
 
+	private String location;
 	private int currentSet = -1;
 	private ArrayList<String> files = new ArrayList<String>();;
 	private ArrayList<SourceSet> sourceSets = new ArrayList<SourceSet>();;
 
-	public SourceSetControl(Controller c, String location) {
-		super(c, "Source Set Switcher");
+	public SourceSetControl() {
+		super("Source Set Switcher");
+	}
 
-		File directory = new File("data/" + location);
+	public SourceSetControl(String location) {
+		this();
+
+		setLocation(location);
+
+		requestBind();
+	}
+
+	public void init() {
+		System.out.println("Loading " + files.size() + " source files...");
+
+		for (String path : files) {
+			SourceSet set = new SourceSet(path);
+			if (set.size() > 0)
+				sourceSets.add(set);
+		}
+
+		setCurrentSet(0);
+		System.out.println("Successfully loaded " + sourceSets.size() + " source sets");
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+
+		if (location == null)
+			return;
+
+		File directory = new File(location);
 
 		if (!directory.exists()) {
 			System.out.println("File " + location + " does not exist!");
@@ -34,24 +62,7 @@ public class SourceSetControl extends Controllable {
 
 				files.add(path);
 			}
-
-			new SourceControl(c);
 		}
-
-		requestBind();
-	}
-
-	public void init() {
-		System.out.println("Loading " + files.size() + " source files...");
-
-		for (String path : files) {
-			SourceSet set = new SourceSet(path);
-			if (set.size() > 0)
-				sourceSets.add(set);
-		}
-
-		setCurrentSet(0);
-		System.out.println("Successfully loaded " + sourceSets.size() + " source sets");
 	}
 
 	public void increment() {
@@ -102,6 +113,14 @@ public class SourceSetControl extends Controllable {
 	}
 
 	public void inputOff(int value) {
+	}
+
+	public void saveProperties() {
+		getPropertyMap().setProperty("location", location);
+	}
+
+	public void loadProperties() {
+		setLocation(getPropertyMap().getProperty("location"));
 	}
 
 }

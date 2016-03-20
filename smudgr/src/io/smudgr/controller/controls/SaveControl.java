@@ -1,11 +1,19 @@
 package io.smudgr.controller.controls;
 
-import io.smudgr.controller.Controller;
+import io.smudgr.out.ProjectXML;
 
 public class SaveControl extends Controllable {
 
-	public SaveControl(Controller c) {
-		super(c, "Save Frame");
+	private String filepath;
+
+	public SaveControl() {
+		super("Save Project");
+	}
+
+	public SaveControl(String filepath) {
+		this();
+
+		this.filepath = filepath;
 
 		requestBind();
 	}
@@ -14,7 +22,8 @@ public class SaveControl extends Controllable {
 	}
 
 	public void inputOn(int value) {
-		getController().getSmudge().saveFrame();
+		ProjectXML xml = new ProjectXML(filepath);
+		xml.save(getController());
 	}
 
 	public void inputOff(int value) {
@@ -24,6 +33,14 @@ public class SaveControl extends Controllable {
 	}
 
 	public void decrement() {
+	}
+
+	public void saveProperties() {
+		getPropertyMap().setProperty("filepath", filepath);
+	}
+
+	public void loadProperties() {
+		filepath = getPropertyMap().getProperty("filepath");
 	}
 
 }

@@ -1,6 +1,8 @@
 package io.smudgr.source.smudge.alg;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Random;
 
 import io.smudgr.controller.Controller;
@@ -23,7 +25,7 @@ public class Algorithm extends Parametric {
 	private Bound bound;
 	private CoordFunction coordFunction;
 
-	private ArrayList<AlgorithmComponent> components = new ArrayList<AlgorithmComponent>();
+	private HashMap<Integer, AlgorithmComponent> components = new HashMap<Integer, AlgorithmComponent>();
 	private ArrayList<Integer> component_ids = new ArrayList<Integer>(1000);
 	private Random idPicker = new Random();
 
@@ -42,7 +44,7 @@ public class Algorithm extends Parametric {
 		if (coordFunction == null)
 			add(new AllCoords());
 
-		for (AlgorithmComponent c : components)
+		for (AlgorithmComponent c : getComponents())
 			c.init();
 	}
 
@@ -73,7 +75,7 @@ public class Algorithm extends Parametric {
 		if (lastFrame != img) {
 			setSelectedPixels(coordFunction.getCoordSet());
 
-			for (AlgorithmComponent component : components)
+			for (AlgorithmComponent component : getComponents())
 				if (component instanceof Selector) {
 					Selector selector = ((Selector) component);
 					selector.setFrame(img);
@@ -81,7 +83,7 @@ public class Algorithm extends Parametric {
 				}
 		}
 
-		for (AlgorithmComponent component : components)
+		for (AlgorithmComponent component : getComponents())
 			if (component instanceof Operation)
 				((Operation) component).execute(img);
 
@@ -111,11 +113,15 @@ public class Algorithm extends Parametric {
 		if (component instanceof CoordFunction)
 			setCoordFunction((CoordFunction) component);
 
-		components.add(component);
+		components.put(id_num, component);
 	}
 
-	public ArrayList<AlgorithmComponent> getComponents() {
-		return components;
+	public AlgorithmComponent getComponent(int id) {
+		return components.get(id);
+	}
+
+	public Collection<AlgorithmComponent> getComponents() {
+		return components.values();
 	}
 
 	private void setBound(Bound bound) {
@@ -124,7 +130,7 @@ public class Algorithm extends Parametric {
 
 		ArrayList<AlgorithmComponent> otherBounds = new ArrayList<AlgorithmComponent>();
 
-		for (AlgorithmComponent component : components)
+		for (AlgorithmComponent component : getComponents())
 			if (component instanceof CoordFunction)
 				otherBounds.add(component);
 
@@ -146,7 +152,7 @@ public class Algorithm extends Parametric {
 
 		ArrayList<AlgorithmComponent> otherCoordFunctions = new ArrayList<AlgorithmComponent>();
 
-		for (AlgorithmComponent component : components)
+		for (AlgorithmComponent component : getComponents())
 			if (component instanceof CoordFunction)
 				otherCoordFunctions.add(component);
 
@@ -169,11 +175,11 @@ public class Algorithm extends Parametric {
 	public String getName() {
 		StringBuffer name = new StringBuffer();
 
-		for (AlgorithmComponent component : components)
+		for (AlgorithmComponent component : getComponents())
 			if (component instanceof CoordFunction)
 				name.append(component instanceof AllCoords ? "" : coordFunction + " ");
 
-		for (AlgorithmComponent component : components)
+		for (AlgorithmComponent component : getComponents())
 			if (component instanceof Operation)
 				name.append(component + " ");
 
@@ -192,7 +198,7 @@ public class Algorithm extends Parametric {
 
 		super.setController(c);
 
-		for (AlgorithmComponent component : components)
+		for (AlgorithmComponent component : getComponents())
 			component.setController(c);
 	}
 

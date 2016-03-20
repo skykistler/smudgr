@@ -30,7 +30,7 @@ public abstract class Parameter extends Controllable {
 	}
 
 	public String toString() {
-		return parent + " - " + getName();
+		return getName();
 	}
 
 	public Parametric getParent() {

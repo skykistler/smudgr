@@ -1,12 +1,12 @@
 package io.smudgr.source.smudge;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Random;
 
 import io.smudgr.controller.Controller;
-import io.smudgr.out.GifOutput;
-import io.smudgr.out.ImageOutput;
-import io.smudgr.out.Output;
+import io.smudgr.out.FrameOutput;
 import io.smudgr.source.Frame;
 import io.smudgr.source.Source;
 import io.smudgr.source.smudge.alg.Algorithm;
@@ -20,14 +20,14 @@ public class Smudge extends Parametric implements Source {
 	private Controller controller;
 
 	private Source source;
-	private ArrayList<Algorithm> algorithms = new ArrayList<Algorithm>();;
+	private HashMap<Integer, Algorithm> algorithms = new HashMap<Integer, Algorithm>();
 	private ArrayList<Integer> algorithm_ids = new ArrayList<Integer>(1000);
 	private Random idPicker = new Random();
 
 	private Frame lastFrame;
 	private int downsample = 1;
 
-	private Output output;
+	private FrameOutput output;
 
 	public Smudge() {
 		for (int i = 0; i < 1000; i++)
@@ -41,7 +41,7 @@ public class Smudge extends Parametric implements Source {
 			source.init();
 
 		System.out.println("Setting up " + algorithms.size() + " algorithms...");
-		for (Algorithm a : algorithms)
+		for (Algorithm a : getAlgorithms())
 			a.init();
 
 		System.out.println("Smudge initialized.");
@@ -51,7 +51,7 @@ public class Smudge extends Parametric implements Source {
 		if (source != null)
 			source.update();
 
-		for (Algorithm a : algorithms)
+		for (Algorithm a : getAlgorithms())
 			a.update();
 	}
 
@@ -74,7 +74,7 @@ public class Smudge extends Parametric implements Source {
 		}
 
 		if (enabled.getValue())
-			for (Algorithm a : algorithms)
+			for (Algorithm a : getAlgorithms())
 				a.apply(toRender);
 
 		if (output != null)
@@ -99,12 +99,12 @@ public class Smudge extends Parametric implements Source {
 	public void setController(Controller c) {
 		controller = c;
 
-		if (controller.getSmudge() != this)
-			controller.setSmudge(this);
+		if (c.getSmudge() != this)
+			c.setSmudge(this);
 
 		super.setController(c);
 
-		for (Algorithm a : algorithms)
+		for (Algorithm a : getAlgorithms())
 			a.setController(c);
 	}
 
@@ -121,35 +121,36 @@ public class Smudge extends Parametric implements Source {
 		alg.setID(id_num);
 		pluckID(id_num);
 
-		algorithms.add(alg);
+		algorithms.put(id_num, alg);
 		alg.setSmudge(this);
 	}
 
-	public ArrayList<Algorithm> getAlgorithms() {
-		return algorithms;
+	public Algorithm getAlgorithm(int id) {
+		return algorithms.get(id);
 	}
 
-	public void save(String path) {
-		SmudgeXML xml = new SmudgeXML(path);
-		xml.save(this);
+	public Collection<Algorithm> getAlgorithms() {
+		return algorithms.values();
 	}
 
-	public void saveFrame() {
-		output = new ImageOutput(Long.toString(System.currentTimeMillis()), lastFrame.getWidth(),
-				lastFrame.getHeight());
-		output.addFrame(lastFrame);
-		output.close();
-	}
+	// public void saveFrame() {
+	// output = new ImageOutput(Long.toString(System.currentTimeMillis()),
+	// lastFrame.getWidth(),
+	// lastFrame.getHeight());
+	// output.addFrame(lastFrame);
+	// output.close();
+	// }
+	//
+	// public void startGifOutput() {
+	// output = new GifOutput(Long.toString(System.currentTimeMillis()), 30,
+	// true);
+	// output.addFrame(lastFrame);
+	// }
 
-	public void startGifOutput() {
-		output = new GifOutput(Long.toString(System.currentTimeMillis()), 30, true);
-		output.addFrame(lastFrame);
-	}
-
-	public void finishGifOutput() {
-		output.close();
-		output = null;
-	}
+	// public void finishGifOutput() {
+	// output.close();
+	// output = null;
+	// }
 
 	public void dispose() {
 		if (source != null)

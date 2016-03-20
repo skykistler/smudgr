@@ -1,6 +1,8 @@
 package io.smudgr.controller.controls;
 
-import io.smudgr.controller.Controller;
+import io.smudgr.controller.BaseController;
+import io.smudgr.source.smudge.alg.Algorithm;
+import io.smudgr.source.smudge.alg.AlgorithmComponent;
 import io.smudgr.source.smudge.param.NumberParameter;
 import io.smudgr.source.smudge.param.Parameter;
 
@@ -13,8 +15,12 @@ public class AnimateOnBeatControl extends Controllable {
 
 	private int speed = 5;
 
-	public AnimateOnBeatControl(Controller controller, Parameter p) {
-		super(controller, p.toString() + " Animator");
+	public AnimateOnBeatControl() {
+		super("Animator");
+	}
+
+	public AnimateOnBeatControl(Parameter p) {
+		super(p.toString() + " Animator");
 		parameter = (NumberParameter) p;
 
 		requestBind();
@@ -26,7 +32,7 @@ public class AnimateOnBeatControl extends Controllable {
 
 		double val = parameter.getValue();
 		double step = parameter.getStep();
-		val = val + step / (Controller.TICKS_PER_BEAT * SPEEDS[speed]);
+		val = val + step / (BaseController.TICKS_PER_BEAT * SPEEDS[speed]);
 
 		parameter.setValue(val);
 	}
@@ -58,6 +64,31 @@ public class AnimateOnBeatControl extends Controllable {
 			run = false;
 			speed = SPEEDS.length - 1;
 		}
+	}
+
+	public void saveProperties() {
+		AlgorithmComponent component = ((AlgorithmComponent) parameter.getParent());
+		Algorithm algorithm = component.getAlgorithm();
+		String parameterName = algorithm.getID() + ":" + component.getID() + ":" + parameter;
+
+		getPropertyMap().setProperty("parameter", parameterName);
+		getPropertyMap().setProperty("speed", speed);
+		getPropertyMap().setProperty("run", run);
+	}
+
+	public void loadProperties() {
+		speed = Integer.parseInt(getPropertyMap().getProperty("speed"));
+		run = Boolean.parseBoolean(getPropertyMap().getProperty("run"));
+
+		String[] parameter_id = getPropertyMap().getProperty("parameter").split(":");
+		int alg_id = Integer.parseInt(parameter_id[0]);
+		int component_id = Integer.parseInt(parameter_id[1]);
+		String parameterName = parameter_id[2];
+
+		parameter = (NumberParameter) getController().getSmudge().getAlgorithm(alg_id).getComponent(component_id)
+				.getParameter(parameterName);
+
+		setName(parameter + " Animator");
 	}
 
 }

@@ -1,8 +1,14 @@
 package io.smudgr.test;
 
+import io.smudgr.controller.BaseController;
+import io.smudgr.controller.Controller;
 import io.smudgr.controller.controls.AnimateOnBeatControl;
 import io.smudgr.controller.controls.DownsampleControl;
-import io.smudgr.controller.device.MidiController;
+import io.smudgr.controller.controls.SaveControl;
+import io.smudgr.controller.controls.SourceControl;
+import io.smudgr.controller.controls.SourceSetControl;
+import io.smudgr.midi.controller.MidiController;
+import io.smudgr.out.ProjectXML;
 import io.smudgr.source.Image;
 import io.smudgr.source.smudge.Smudge;
 import io.smudgr.source.smudge.alg.Algorithm;
@@ -13,18 +19,20 @@ import io.smudgr.source.smudge.alg.op.PixelShift;
 import io.smudgr.source.smudge.alg.op.PixelSort;
 import io.smudgr.source.smudge.alg.op.SpectralShift;
 import io.smudgr.source.smudge.alg.select.RangeSelect;
-import io.smudgr.view.JView;
+import io.smudgr.view.NativeView;
 
 public class SkyShowMain {
 
-	public static void main(String[] args) {
+	public static Controller make(String filepath) {
 		// Declare your controller
-		MidiController controller = new MidiController("show_test.map");
+
+		BaseController controller = new BaseController();
+		controller.add(new MidiController());
 
 		// Make smudge
 		Smudge smudge = new Smudge();
 		smudge.bind("Enable");
-		smudge.setSource(new Image("data/nicole.jpg"));
+		controller.add(new SourceSetControl("data/noise show"));
 
 		Algorithm sort = new Algorithm();
 		sort.bind("Enable");
@@ -32,8 +40,8 @@ public class SkyShowMain {
 		sort.add(new ConvergeCoordFunction());
 
 		RangeSelect threshold = new RangeSelect();
-		threshold.getParameter("Threshold").setInitial(.1);
-		threshold.bind("Threshold");
+		threshold.getParameter("Range Length").setInitial(.1);
+		threshold.bind("Range Length");
 		sort.add(threshold);
 
 		PixelSort sort_op = new PixelSort();
@@ -53,7 +61,7 @@ public class SkyShowMain {
 		spectral_op.bind("Colors");
 		spectral_op.bind("Palette");
 		spectral_op.bind("Sort");
-		new AnimateOnBeatControl(controller, spectral_op.getParameter("Shift"));
+		controller.add(new AnimateOnBeatControl(spectral_op.getParameter("Shift")));
 		spectral.add(spectral_op);
 
 		smudge.add(spectral);
@@ -68,7 +76,7 @@ public class SkyShowMain {
 		shift_op.bind("Intervals");
 		shift_op.getParameter("Amount").setInitial(.2);
 		shift_op.bind("Reverse");
-		new AnimateOnBeatControl(controller, shift_op.getParameter("Amount"));
+		controller.add(new AnimateOnBeatControl(shift_op.getParameter("Amount")));
 		shift.add(shift_op);
 
 		smudge.add(shift);
@@ -83,7 +91,7 @@ public class SkyShowMain {
 		shift1_op.bind("Intervals");
 		shift1_op.getParameter("Amount").setInitial(.2);
 		shift1_op.bind("Reverse");
-		new AnimateOnBeatControl(controller, shift1_op.getParameter("Amount"));
+		controller.add(new AnimateOnBeatControl(shift1_op.getParameter("Amount")));
 		shift1.add(shift1_op);
 
 		smudge.add(shift1);
@@ -93,7 +101,7 @@ public class SkyShowMain {
 		sort1.getParameter("Enable").setInitial(false);
 		sort1.add(new ColumnCoords());
 		RangeSelect threshold2 = new RangeSelect();
-		threshold2.bind("Threshold");
+		threshold2.bind("Range Length");
 		sort1.add(threshold2);
 
 		PixelSort sort1_op = new PixelSort();
@@ -107,7 +115,7 @@ public class SkyShowMain {
 		sort2.getParameter("Enable").setInitial(false);
 		sort2.add(new RowCoords());
 		RangeSelect threshold3 = new RangeSelect();
-		threshold3.bind("Threshold");
+		threshold3.bind("Range Length");
 		sort2.add(threshold3);
 
 		PixelSort sort2_op = new PixelSort();
@@ -116,14 +124,29 @@ public class SkyShowMain {
 
 		smudge.add(sort2);
 
-		new DownsampleControl(controller, 1);
-
-		// Declare your view
-		new JView(controller, 0, false);
+		controller.add(new DownsampleControl(1));
+		controller.add(new SaveControl(filepath));
+		controller.add(new SourceControl());
 
 		controller.setSmudge(smudge);
-		controller.bindDevice("Arturia BeatStep Pro");
-		controller.start();
+
+		return controller;
+	}
+
+	public static Controller load(String filepath) {
+		ProjectXML xml = new ProjectXML(filepath);
+		return xml.load();
+	}
+
+	public static void main(String[] args) {
+		Controller c = load("data/show.smudge");
+
+		c.getSmudge().setSource(new Image("data/noise show/a venture.png"));
+
+		NativeView view = new NativeView(c, 1, true);
+
+		((MidiController) c.getExtensions().get(0)).bindDevice("Arturia BeatStep Pro");
+		c.start();
 	}
 
 }

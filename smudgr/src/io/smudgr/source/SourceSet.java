@@ -10,7 +10,7 @@ public class SourceSet implements Source {
 	private int currentSource;
 
 	public SourceSet(String location) {
-		File directory = new File("data/" + location);
+		File directory = new File(location);
 
 		if (!directory.exists()) {
 			System.out.println("File " + location + " does not exist!");

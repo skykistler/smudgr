@@ -6,19 +6,19 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.URLDecoder;
 
-import io.smudgr.controller.Controller;
+import io.smudgr.cef.view.CefView;
+import io.smudgr.controller.BaseController;
 import io.smudgr.source.smudge.Smudge;
 import io.smudgr.source.smudge.alg.Algorithm;
 import io.smudgr.source.smudge.alg.coord.ColumnCoords;
 import io.smudgr.source.smudge.alg.op.Marbeler;
 import io.smudgr.source.smudge.alg.op.PixelSort;
 import io.smudgr.source.smudge.alg.select.RangeSelect;
-import io.smudgr.view.cef.CefView;
 
 public class smudgr {
 
 	private smudgr(boolean debug) {
-		Controller controller = new Controller();
+		BaseController controller = new BaseController();
 
 		Smudge smudge = new Smudge();
 		controller.setSmudge(smudge);

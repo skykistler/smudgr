@@ -1,7 +1,7 @@
 package io.smudgr.test;
 
 import io.smudgr.controller.controls.DownsampleControl;
-import io.smudgr.controller.device.MidiController;
+import io.smudgr.midi.controller.MidiController;
 import io.smudgr.source.Image;
 import io.smudgr.source.SourceSet;
 import io.smudgr.source.smudge.Smudge;
@@ -15,7 +15,7 @@ import io.smudgr.source.smudge.alg.op.PixelShift;
 import io.smudgr.source.smudge.alg.op.PixelSort;
 import io.smudgr.source.smudge.alg.select.RangeSelect;
 import io.smudgr.source.smudge.alg.select.RangeSelect;
-import io.smudgr.view.JView;
+import io.smudgr.view.NativeView;
 
 public class EricMain {
 	public static void main(String[] args) {
@@ -161,7 +161,7 @@ public class EricMain {
 		new DownsampleControl(controller, 1);
 
 		// Declare your view
-		new JView(controller);
+		new NativeView(controller);
 
 		controller.bindDevice("Arturia BeatStep");
 		controller.start();

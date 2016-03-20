@@ -7,7 +7,7 @@ import javax.imageio.ImageIO;
 
 import io.smudgr.source.Frame;
 
-public class ImageOutput implements Output {
+public class ImageOutput implements FrameOutput {
 	private String name;
 	private int width, height;
 	private int frameCount;

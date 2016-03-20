@@ -4,9 +4,11 @@ import io.smudgr.controller.Controller;
 import io.smudgr.source.Source;
 
 public interface View {
-	public void init();
+	public void start();
 
-	public void draw();
+	public void update();
+
+	public void stop();
 
 	public Source getSource();
 
@@ -15,7 +17,5 @@ public interface View {
 	public Controller getController();
 
 	public void setController(Controller c);
-
-	public void dispose();
 
 }

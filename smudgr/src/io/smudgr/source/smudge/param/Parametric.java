@@ -32,7 +32,7 @@ public abstract class Parametric {
 		if (p != null)
 			p.requestBind();
 		else
-			System.out.println("Could not bind parameter: " + parameterName);
+			System.out.println("Could not find parameter: " + parameterName);
 	}
 
 	public void setController(Controller c) {
@@ -40,7 +40,7 @@ public abstract class Parametric {
 			return;
 
 		for (Parameter p : parameters.values())
-			c.addControl(p);
+			c.add(p);
 	}
 
 	public abstract String getName();

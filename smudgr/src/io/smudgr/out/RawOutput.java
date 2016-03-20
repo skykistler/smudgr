@@ -2,7 +2,7 @@ package io.smudgr.out;
 
 import io.smudgr.source.Frame;
 
-public class RawOutput implements Output {
+public class RawOutput implements FrameOutput {
 
 	@Override
 	public void open() {

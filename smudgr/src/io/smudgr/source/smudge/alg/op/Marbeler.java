@@ -26,7 +26,12 @@ public class Marbeler extends Operation {
 		return "Cubic Marbeler";
 	}
 
-	@Override
+	public void init() {
+		offsetXY.setContinuous(true);
+		offsetX.setContinuous(true);
+		offsetY.setContinuous(true);
+	}
+
 	public void execute(Frame img) {
 		rand = new Random(seed.getIntValue());
 		horizontal = false;

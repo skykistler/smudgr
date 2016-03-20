@@ -4,31 +4,22 @@ import io.smudgr.controller.Controller;
 
 public abstract class Controllable {
 
+	private int id;
 	private Controller controller;
 	private String name;
 	private boolean bindRequested = false;
-
-	public Controllable(Controller controller, String name) {
-		this(name);
-
-		this.controller = controller;
-		controller.addControl(this);
-	}
+	private PropertyMap propertyMap = new PropertyMap();
 
 	public Controllable(String name) {
-		this.name = name;
+		setName(name);
 	}
 
-	public Controller getController() {
-		return controller;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getName() {
 		return name;
-	}
-
-	public String toString() {
-		return getName();
 	}
 
 	public void init() {
@@ -49,11 +40,43 @@ public abstract class Controllable {
 
 	public abstract void decrement();
 
+	public PropertyMap getPropertyMap() {
+		return propertyMap;
+	}
+
+	public void saveProperties() {
+
+	}
+
+	public void loadProperties() {
+
+	}
+
 	public void requestBind() {
 		bindRequested = true;
 	}
 
 	public boolean isBindRequested() {
 		return bindRequested;
+	}
+
+	public Controller getController() {
+		return controller;
+	}
+
+	public void setController(Controller c) {
+		controller = c;
+	}
+
+	public void setID(int id) {
+		this.id = id;
+	}
+
+	public int getID() {
+		return id;
+	}
+
+	public String toString() {
+		return getName();
 	}
 }

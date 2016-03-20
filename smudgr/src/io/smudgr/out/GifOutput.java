@@ -17,7 +17,7 @@ import javax.imageio.stream.ImageOutputStream;
 
 import io.smudgr.source.Frame;
 
-public class GifOutput implements Output {
+public class GifOutput implements FrameOutput {
 	private String path;
 	private int delay;
 	private int loop;

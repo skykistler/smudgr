@@ -3,7 +3,7 @@ package io.smudgr.test;
 import io.smudgr.controller.controls.AnimateOnBeatControl;
 import io.smudgr.controller.controls.DownsampleControl;
 import io.smudgr.controller.controls.SourceSetControl;
-import io.smudgr.controller.device.MidiController;
+import io.smudgr.midi.controller.MidiController;
 import io.smudgr.source.Gif;
 import io.smudgr.source.Image;
 import io.smudgr.source.Source;
@@ -16,7 +16,7 @@ import io.smudgr.source.smudge.alg.op.PixelShift;
 import io.smudgr.source.smudge.alg.op.PixelSort;
 import io.smudgr.source.smudge.alg.op.SourceMixerHack;
 import io.smudgr.source.smudge.alg.op.SpectralShift;
-import io.smudgr.view.JView;
+import io.smudgr.view.NativeView;
 
 public class SkyPCPMain {
 
@@ -113,7 +113,7 @@ public class SkyPCPMain {
 		new DownsampleControl(controller, 1);
 
 		// Declare your view
-		new JView(controller, 0, false);
+		new NativeView(controller, 0, false);
 
 		controller.setSmudge(smudge);
 		controller.bindDevice("User Port");

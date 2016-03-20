@@ -31,7 +31,7 @@ public class RenderThread implements Runnable {
 	}
 
 	public void run() {
-		long targetFrameNs = 1000000000 / Controller.TARGET_FPS;
+		long targetFrameNs = 1000000000 / BaseController.TARGET_FPS;
 
 		long lastFrame = System.nanoTime();
 		long timer = System.currentTimeMillis();
@@ -39,7 +39,7 @@ public class RenderThread implements Runnable {
 
 		while (running) {
 			try {
-				view.draw();
+				view.update();
 			} catch (IllegalStateException e) {
 				e.printStackTrace();
 				System.out.println("Rendering stopped.");
@@ -71,7 +71,7 @@ public class RenderThread implements Runnable {
 
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				view.dispose();
+				view.stop();
 			}
 		});
 
