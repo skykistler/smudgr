@@ -1,169 +1,81 @@
 package io.smudgr.test;
 
+import io.smudgr.controller.BaseController;
+import io.smudgr.controller.Controller;
+import io.smudgr.controller.controls.AnimateOnBeatControl;
 import io.smudgr.controller.controls.DownsampleControl;
+import io.smudgr.controller.controls.SaveControl;
+import io.smudgr.controller.controls.SourceControl;
+import io.smudgr.controller.controls.SourceSetControl;
 import io.smudgr.midi.controller.MidiController;
+import io.smudgr.out.ProjectXML;
 import io.smudgr.source.Image;
 import io.smudgr.source.SourceSet;
 import io.smudgr.source.smudge.Smudge;
 import io.smudgr.source.smudge.alg.Algorithm;
 import io.smudgr.source.smudge.alg.bound.Bound;
 import io.smudgr.source.smudge.alg.coord.ColumnCoords;
+import io.smudgr.source.smudge.alg.coord.ConvergeCoordFunction;
 import io.smudgr.source.smudge.alg.coord.RadialCoordFunction;
 import io.smudgr.source.smudge.alg.coord.RowCoords;
 import io.smudgr.source.smudge.alg.op.ChannelDrift;
 import io.smudgr.source.smudge.alg.op.PixelShift;
 import io.smudgr.source.smudge.alg.op.PixelSort;
+import io.smudgr.source.smudge.alg.op.SpectralShift;
 import io.smudgr.source.smudge.alg.select.RangeSelect;
 import io.smudgr.source.smudge.alg.select.RangeSelect;
 import io.smudgr.view.NativeView;
 
 public class EricMain {
-	public static void main(String[] args) {
+	public static Controller make(String filepath) {
 		// Declare your controller
-		MidiController controller = new MidiController();
 
-		// Make a smudge
+		BaseController controller = new BaseController();
+		controller.add(new MidiController());
+
+		// Make smudge
 		Smudge smudge = new Smudge();
-		smudge.setSource(new Image("data/flowers/flowers_source.jpg"));
-		//new VideoControl(controller, "cars.mp4", 300);
+		smudge.bind("Enable");
+		controller.add(new SourceSetControl("data/work"));
 
-		// Set smudge before doing anything
+		Algorithm spectral = new Algorithm();
+		spectral.bind("Enable");
+		spectral.getParameter("Enable").setInitial(false);
+
+		SpectralShift spectral_op = new SpectralShift();
+		spectral_op.getParameter("Colors").setInitial(60);
+		spectral_op.getParameter("Sort").setInitial(true);
+		spectral_op.bind("Function");
+		spectral_op.bind("Colors");
+		spectral_op.bind("Palette");
+		spectral_op.bind("Sort");
+		controller.add(new AnimateOnBeatControl(spectral_op.getParameter("Shift")));
+		spectral.add(spectral_op);
+
+		smudge.add(spectral);
+
+		controller.add(new DownsampleControl(1));
+		controller.add(new SaveControl(filepath));
+		controller.add(new SourceControl());
+
 		controller.setSmudge(smudge);
 
-//		SourceSet mySource = new SourceSet("data/mix");
-//		mySource.init();
+		return controller;
+	}
 
-		//		SourceMixerHack mixer = new SourceMixerHack(mySource);
-		//		mixer.bind("Enable");
-		//		mixer.getParameter("Enable").setInitial(false);
+	public static Controller load(String filepath) {
+		ProjectXML xml = new ProjectXML(filepath);
+		return xml.load();
+	}
 
-		//		BitSmear smear = new BitSmear(smudge);
-		//			smear.bind("Red Shift");
-		//			smear.bind("Green Shift");
-		//			smear.bind("Blue Shift");
-		//			smear.bind("Red Mask");
-		//			smear.bind("Green Mask");
-		//			smear.bind("Blue Mask");
-		//		
-		//		SpectralShift spectral = new SpectralShift(smudge);
-		//		spectral.getParameter("Colors").setInitial(60);
-		//		spectral.getParameter("Sort").setInitial(true);
-		//		spectral.bind("Colors");
-		//		spectral.bind("Palette");
-		//		spectral.bind("Sort");
-		//		spectral.bind("Enable");
-		//		spectral.getParameter("Reverse").setInitial(true);
-		//		spectral.setBound(new EllipticalBound(1, 1));
-		//		spectral.bind("Bound X");
-		//		spectral.bind("Bound Y");
-		//		spectral.bind("Bound Width");
-		//		spectral.bind("Bound Height");
-		//new AnimationControl(controller, spectral.getParameter("Shift"), .01);
+	public static void main(String[] args) {
+		Controller c = make("data/work.smudge");
 
-		//new AnimationControl(controller, shift.getParameter("Amount"));
+		c.getSmudge().setSource(new Image("data/work/flowers_source.jpg"));
 
-		//				RadialCoordFunction radialcoords = new RadialCoordFunction();
-		//				
-		//				PixelSort sort1 = new PixelSort(smudge);
-		//				sort1.setCoordFunction(radialcoords);
-		//				radialcoords.init(sort1);
-		//				sort1.bind("Threshold");
-		//				sort1.bind("Reverse");
-		//				sort1.bind("Enable");
-		//				sort1.getParameter("Enable").setInitial(false);
-		//				sort1.bind("Bound X");
-		//				sort1.bind("Bound Y");
-		//				sort1.bind("Bound Width");
-		//				sort1.bind("Bound Height");
-		//				//sort1.bind("Inner Radius");
+		new NativeView(c, 0, false);
 
-		//				PixelSort sort2 = new PixelSort(smudge);
-		//				sort2.setCoordFunction(new RowCoords());
-		//				sort2.bind("Threshold");
-		//				sort2.bind("Reverse");
-		//				sort2.bind("Enable");
-		//				sort2.getParameter("Enable").setInitial(false);
-		//		
-
-		//		PixelShift shift = new PixelShift(smudge);
-		//		shift.setCoordFunction(new ConvergeCoordFunction());
-		//		//shift.setBound(new EllipticalBound(1, 1));
-		//		shift.getParameter("Intervals").setInitial(3);
-		//		shift.bind("Intervals");
-		//		shift.getParameter("Amount").setInitial(.2);
-		//		shift.bind("Amount");
-		//		shift.bind("Enable");
-		//		shift.getParameter("Enable").setInitial(false);
-		//		new AnimationControl(controller, shift.getParameter("Amount"));
-
-		Algorithm shift = new Algorithm();
-		shift.bind("Enable");
-		shift.getParameter("Enable").setInitial(false);
-		shift.add(new RowCoords());
-		
-		RangeSelect range = new RangeSelect();
-		range.bind("Minimum Value");
-		range.bind("Range Length");
-		range.getParameter("Minimum Value").setReverse(true);
-		
-		shift.add(range);
-		
-		PixelSort sort = new PixelSort();
-		sort.bind("Function");
-		sort.bind("Reverse");
-		
-		ChannelDrift drift = new ChannelDrift();
-		drift.bind("Red Offset - X");
-		drift.bind("Red Offset - Y");
-		drift.bind("Green Offset - X");
-		drift.bind("Green Offset - Y");
-		drift.bind("Blue Offset - X");
-		drift.bind("Blue Offset - Y");
-		
-		PixelShift shift1 = new PixelShift();
-		shift1.bind("Intervals");
-		shift1.getParameter("Amount").setInitial(.2);
-		shift1.bind("Amount");
-		
-		shift.add(sort);
-		
-//		Bound b = new Bound();
-//		b.bind("Bound X");
-//		b.bind("Bound Y");
-//		b.bind("Bound Width");
-//		b.bind("Bound Height");
-//		
-//		shift.add(b);
-
-		smudge.add(shift);
-
-		//shift1.bind("Start");
-		//shift1.bind("End");
-
-		//new AnimateByStepControl(controller, shift1.getParameter("Amount"));
-		//new AnimationControl(controller, shift1.getParameter("End"));
-		//new AnimationControl(controller, shift1.getParameter("Start"));
-
-		//		HSVLModifier mod = new HSVLModifier(smudge);
-		//		mod.bind("Saturation");
-		//		mod.bind("Hue Rotation");
-		//		mod.bind("Value/Lightness");
-		//		mod.bind("Color Space");
-
-		//		ChannelDrift drift = new ChannelDrift(smudge);
-		//		drift.bind("Red Offset - X");
-		//		drift.bind("Red Offset - Y");
-		//		drift.bind("Green Offset - X");
-		//		drift.bind("Green Offset - Y");
-		//		drift.bind("Blue Offset - X");
-		//		drift.bind("Blue Offset - Y");
-
-		new DownsampleControl(controller, 1);
-
-		// Declare your view
-		new NativeView(controller);
-
-		controller.bindDevice("Arturia BeatStep");
-		controller.start();
+		((MidiController) c.getExtensions().get(0)).bindDevice("Arturia BeatStep");
+		c.start();
 	}
 }
