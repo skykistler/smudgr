@@ -82,17 +82,17 @@ public class MidiController extends ControllerExtension implements DeviceObserve
 	}
 
 	private void bindControl(Controllable c) {
-		if (!c.isBindRequested())
-			return;
-
 		String name = c.toString();
 		if (c instanceof Parameter)
 			name = ((Parameter) c).getParent().getName() + " - " + name;
 
-		if (midiMap.isSaved(c)) {
+		if (midiMap.isBound(c)) {
 			System.out.println("Assigned " + name + " from saved map.");
 			return;
 		}
+
+		if (!c.isBindRequested())
+			return;
 
 		System.out.println("Please touch a MIDI key to bind: " + name + " ...");
 

@@ -61,7 +61,7 @@ public class AnimateByStepControl extends Controllable {
 			speed = 0;
 	}
 
-	public void saveProperties() {
+	public void setProperties() {
 		AlgorithmComponent component = ((AlgorithmComponent) parameter.getParent());
 		Algorithm algorithm = component.getAlgorithm();
 		String parameterName = algorithm.getID() + ":" + component.getID() + ":" + parameter;
@@ -72,7 +72,7 @@ public class AnimateByStepControl extends Controllable {
 		getPropertyMap().setProperty("run", run);
 	}
 
-	public void loadProperties() {
+	public void getProperties() {
 		increment = Double.parseDouble(getPropertyMap().getProperty("increment"));
 		speed = Double.parseDouble(getPropertyMap().getProperty("speed"));
 		run = Boolean.parseBoolean(getPropertyMap().getProperty("run"));

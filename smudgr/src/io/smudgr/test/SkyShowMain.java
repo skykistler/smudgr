@@ -32,7 +32,7 @@ public class SkyShowMain {
 		// Make smudge
 		Smudge smudge = new Smudge();
 		smudge.bind("Enable");
-		controller.add(new SourceSetControl("data/noise show"));
+		controller.add(new SourceSetControl("data/oceans"));
 
 		Algorithm sort = new Algorithm();
 		sort.bind("Enable");
@@ -143,7 +143,7 @@ public class SkyShowMain {
 
 		c.getSmudge().setSource(new Image("data/noise show/a venture.png"));
 
-		NativeView view = new NativeView(c, 1, true);
+		new NativeView(c, 0, false);
 
 		((MidiController) c.getExtensions().get(0)).bindDevice("Arturia BeatStep Pro");
 		c.start();

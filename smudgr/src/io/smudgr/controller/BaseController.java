@@ -48,7 +48,8 @@ public class BaseController implements Controller {
 		smudge.init();
 
 		for (Controllable c : controls) {
-			c.loadProperties();
+			if (c.getPropertyMap().isSet())
+				c.getProperties();
 			c.init();
 		}
 

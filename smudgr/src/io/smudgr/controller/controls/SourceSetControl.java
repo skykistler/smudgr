@@ -115,11 +115,11 @@ public class SourceSetControl extends Controllable {
 	public void inputOff(int value) {
 	}
 
-	public void saveProperties() {
+	public void setProperties() {
 		getPropertyMap().setProperty("location", location);
 	}
 
-	public void loadProperties() {
+	public void getProperties() {
 		setLocation(getPropertyMap().getProperty("location"));
 	}
 

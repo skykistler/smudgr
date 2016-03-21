@@ -26,6 +26,7 @@ import io.smudgr.source.smudge.Smudge;
 import io.smudgr.source.smudge.alg.Algorithm;
 import io.smudgr.source.smudge.alg.AlgorithmComponent;
 import io.smudgr.source.smudge.param.Parameter;
+import io.smudgr.source.smudge.param.Parametric;
 
 public class ProjectXML {
 	public static final String extension = ".smudge";
@@ -96,19 +97,13 @@ public class ProjectXML {
 					controllable.getPropertyMap().setProperty(key, value);
 				}
 
-				NodeList midiBinds = controlNode.getElementsByTagName("midi");
-				for (int bind = 0; bind < midiBinds.getLength(); bind++) {
-					Element midiNode = (Element) midiBinds.item(bind);
-					int channel = Integer.parseInt(midiNode.getAttribute("channel"));
-					int key = Integer.parseInt(midiNode.getAttribute("key"));
-					midiMap.assign(controllable, channel, key);
-					controllable.requestBind();
-				}
+				loadMidi(controlNode, controllable, midiMap);
 
 				controller.add(controllable, id);
 			}
 
 			Element smudgeNode = (Element) projectNode.getElementsByTagName("smudge").item(0);
+			loadParameters(smudgeNode, smudge, midiMap);
 
 			NodeList algorithms = smudgeNode.getElementsByTagName("algorithm");
 			for (int i = 0; i < algorithms.getLength(); i++) {
@@ -117,30 +112,7 @@ public class ProjectXML {
 				Element algNode = (Element) algorithms.item(i);
 				int id = Integer.parseInt(algNode.getAttribute("id"));
 
-				// String enabled = algNode.getAttribute("enabled");
-				// if (enabled.length() > 0)
-				// alg.getParameter("Enable").setInitial(enabled);
-
-				NodeList parameters = algNode.getElementsByTagName("alg-parameter");
-				for (int param = 0; param < parameters.getLength(); param++) {
-					Element paramNode = (Element) parameters.item(param);
-
-					String name = paramNode.getAttribute("name").trim();
-					String value = paramNode.getAttribute("value").trim();
-
-					Parameter p = alg.getParameter(name);
-					if (name.length() > 0 && value.length() > 0)
-						p.setInitial(value);
-
-					NodeList midiBinds = paramNode.getElementsByTagName("midi");
-					for (int bind = 0; bind < midiBinds.getLength(); bind++) {
-						Element midiNode = (Element) midiBinds.item(bind);
-						int channel = Integer.parseInt(midiNode.getAttribute("channel"));
-						int key = Integer.parseInt(midiNode.getAttribute("key"));
-						midiMap.assign(p, channel, key);
-						p.requestBind();
-					}
-				}
+				loadParameters(algNode, alg, midiMap);
 
 				NodeList components = algNode.getElementsByTagName("component");
 				for (int comp = 0; comp < components.getLength(); comp++) {
@@ -163,26 +135,7 @@ public class ProjectXML {
 						continue;
 					}
 
-					parameters = compNode.getElementsByTagName("parameter");
-					for (int param = 0; param < parameters.getLength(); param++) {
-						Element paramNode = (Element) parameters.item(param);
-
-						String name = paramNode.getAttribute("name").trim();
-						String value = paramNode.getAttribute("value").trim();
-
-						Parameter p = component.getParameter(name);
-						if (name.length() > 0 && value.length() > 0)
-							p.setInitial(value);
-
-						NodeList midiBinds = paramNode.getElementsByTagName("midi");
-						for (int bind = 0; bind < midiBinds.getLength(); bind++) {
-							Element midiNode = (Element) midiBinds.item(bind);
-							int channel = Integer.parseInt(midiNode.getAttribute("channel"));
-							int key = Integer.parseInt(midiNode.getAttribute("key"));
-							midiMap.assign(p, channel, key);
-							p.requestBind();
-						}
-					}
+					loadParameters(compNode, component, midiMap);
 
 					alg.add(component, compID);
 				}
@@ -197,6 +150,34 @@ public class ProjectXML {
 			e.printStackTrace();
 			System.out.println("Problem loading smudge at " + filepath);
 			return null;
+		}
+	}
+
+	private void loadParameters(Element node, Parametric parametric, MidiControlMap midiMap) {
+		NodeList parameters = node.getElementsByTagName("parameter");
+		for (int param = 0; param < parameters.getLength(); param++) {
+			Element paramNode = (Element) parameters.item(param);
+			if (paramNode.getParentNode() != node)
+				continue;
+
+			String name = paramNode.getAttribute("name").trim();
+			String value = paramNode.getAttribute("value").trim();
+
+			Parameter p = parametric.getParameter(name);
+			if (name.length() > 0 && value.length() > 0)
+				p.setInitial(value);
+
+			loadMidi(paramNode, p, midiMap);
+		}
+	}
+
+	private void loadMidi(Element node, Controllable c, MidiControlMap midiMap) {
+		NodeList midiBinds = node.getElementsByTagName("midi");
+		for (int bind = 0; bind < midiBinds.getLength(); bind++) {
+			Element midiNode = (Element) midiBinds.item(bind);
+			int channel = Integer.parseInt(midiNode.getAttribute("channel"));
+			int key = Integer.parseInt(midiNode.getAttribute("key"));
+			midiMap.assign(c, channel, key);
 		}
 	}
 
@@ -219,59 +200,21 @@ public class ProjectXML {
 
 			Element smudgeNode = doc.createElement("smudge");
 
+			saveParameters(smudgeNode, smudge, midiMap, doc);
+
 			for (Algorithm alg : smudge.getAlgorithms()) {
 				Element algNode = doc.createElement("algorithm");
 				algNode.setAttribute("id", alg.getID() + "");
 				algNode.setAttribute("name", alg.getName());
 
-				// boolean enabled = ((BooleanParameter)
-				// alg.getParameter("Enable")).getValue();
-				// algNode.setAttribute("enabled", enabled ? "true" : "false");
-
-				for (Parameter param : alg.getParameters()) {
-					Element paramNode = doc.createElement("alg-parameter");
-					paramNode.setAttribute("name", param.getName());
-					paramNode.setAttribute("value", param.getStringValue());
-
-					algNode.appendChild(paramNode);
-
-					if (midiMap != null) {
-						int[] bind = midiMap.getKeyBind(param);
-
-						if (bind != null) {
-							Element midiNode = doc.createElement("midi");
-							midiNode.setAttribute("channel", bind[0] + "");
-							midiNode.setAttribute("key", bind[1] + "");
-
-							paramNode.appendChild(midiNode);
-						}
-					}
-				}
+				saveParameters(algNode, alg, midiMap, doc);
 
 				for (AlgorithmComponent component : alg.getComponents()) {
 					Element componentNode = doc.createElement("component");
 					componentNode.setAttribute("id", component.getID() + "");
 					componentNode.setAttribute("class", component.getClass().getCanonicalName());
 
-					for (Parameter param : component.getParameters()) {
-						Element paramNode = doc.createElement("parameter");
-						paramNode.setAttribute("name", param.getName());
-						paramNode.setAttribute("value", param.getStringValue());
-
-						componentNode.appendChild(paramNode);
-
-						if (midiMap != null) {
-							int[] bind = midiMap.getKeyBind(param);
-
-							if (bind != null) {
-								Element midiNode = doc.createElement("midi");
-								midiNode.setAttribute("channel", bind[0] + "");
-								midiNode.setAttribute("key", bind[1] + "");
-
-								paramNode.appendChild(midiNode);
-							}
-						}
-					}
+					saveParameters(componentNode, component, midiMap, doc);
 
 					algNode.appendChild(componentNode);
 				}
@@ -289,7 +232,7 @@ public class ProjectXML {
 				controlNode.setAttribute("class", c.getClass().getCanonicalName());
 				controlNode.setAttribute("id", c.getID() + "");
 
-				c.saveProperties();
+				c.setProperties();
 
 				HashMap<String, String> properties = c.getPropertyMap().getProperties();
 				for (String key : properties.keySet()) {
@@ -300,16 +243,7 @@ public class ProjectXML {
 					controlNode.appendChild(propertyNode);
 				}
 
-				if (midiMap != null) {
-					int[] bind = midiMap.getKeyBind(c);
-					if (bind != null) {
-						Element midiNode = doc.createElement("midi");
-						midiNode.setAttribute("channel", bind[0] + "");
-						midiNode.setAttribute("key", bind[1] + "");
-
-						controlNode.appendChild(midiNode);
-					}
-				}
+				saveMidi(controlNode, c, midiMap, doc);
 
 				projectNode.appendChild(controlNode);
 			}
@@ -328,6 +262,32 @@ public class ProjectXML {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("There was error saving the smudge.");
+		}
+	}
+
+	private void saveParameters(Element node, Parametric parametric, MidiControlMap midiMap, Document doc) {
+		for (Parameter param : parametric.getParameters()) {
+			Element paramNode = doc.createElement("parameter");
+			paramNode.setAttribute("name", param.getName());
+			paramNode.setAttribute("value", param.getStringValue());
+
+			node.appendChild(paramNode);
+
+			saveMidi(paramNode, param, midiMap, doc);
+		}
+	}
+
+	private void saveMidi(Element node, Controllable c, MidiControlMap midiMap, Document doc) {
+		if (midiMap == null)
+			return;
+
+		int[] bind = midiMap.getKeyBind(c);
+		if (bind != null) {
+			Element midiNode = doc.createElement("midi");
+			midiNode.setAttribute("channel", bind[0] + "");
+			midiNode.setAttribute("key", bind[1] + "");
+
+			node.appendChild(midiNode);
 		}
 	}
 }

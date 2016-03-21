@@ -35,11 +35,11 @@ public class SaveControl extends Controllable {
 	public void decrement() {
 	}
 
-	public void saveProperties() {
+	public void setProperties() {
 		getPropertyMap().setProperty("filepath", filepath);
 	}
 
-	public void loadProperties() {
+	public void getProperties() {
 		filepath = getPropertyMap().getProperty("filepath");
 	}
 

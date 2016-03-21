@@ -44,11 +44,11 @@ public abstract class Controllable {
 		return propertyMap;
 	}
 
-	public void saveProperties() {
+	public void setProperties() {
 
 	}
 
-	public void loadProperties() {
+	public void getProperties() {
 
 	}
 

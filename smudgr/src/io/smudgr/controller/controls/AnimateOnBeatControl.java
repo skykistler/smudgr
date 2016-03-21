@@ -20,7 +20,7 @@ public class AnimateOnBeatControl extends Controllable {
 	}
 
 	public AnimateOnBeatControl(Parameter p) {
-		super(p.toString() + " Animator");
+		super(p.getParent() + " - " + p.toString() + " Animator");
 		parameter = (NumberParameter) p;
 
 		requestBind();
@@ -66,7 +66,7 @@ public class AnimateOnBeatControl extends Controllable {
 		}
 	}
 
-	public void saveProperties() {
+	public void setProperties() {
 		AlgorithmComponent component = ((AlgorithmComponent) parameter.getParent());
 		Algorithm algorithm = component.getAlgorithm();
 		String parameterName = algorithm.getID() + ":" + component.getID() + ":" + parameter;
@@ -76,7 +76,7 @@ public class AnimateOnBeatControl extends Controllable {
 		getPropertyMap().setProperty("run", run);
 	}
 
-	public void loadProperties() {
+	public void getProperties() {
 		speed = Integer.parseInt(getPropertyMap().getProperty("speed"));
 		run = Boolean.parseBoolean(getPropertyMap().getProperty("run"));
 

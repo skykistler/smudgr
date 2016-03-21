@@ -41,11 +41,11 @@ public class DownsampleControl extends Controllable {
 
 	}
 
-	public void saveProperties() {
+	public void setProperties() {
 		getPropertyMap().setProperty("downsample", downsample);
 	}
 
-	public void loadProperties() {
+	public void getProperties() {
 		downsample = Integer.parseInt(getPropertyMap().getProperty("downsample"));
 	}
 

@@ -39,7 +39,7 @@ public class MidiControlMap {
 		return null;
 	}
 
-	public boolean isSaved(Controllable c) {
+	public boolean isBound(Controllable c) {
 		return getKeyBind(c) != null;
 
 	}

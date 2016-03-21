@@ -44,20 +44,24 @@ public class NativeView implements View, KeyListener {
 
 	public void start() {
 		if (displayNumber >= 0) {
-			display = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[displayNumber];
+			try {
+				display = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[displayNumber];
 
-			fullscreenWindow = new JFrame("smudgr");
+				fullscreenWindow = new JFrame("smudgr");
 
-			fullscreenWindow.setBounds(display.getDefaultConfiguration().getBounds());
-			fullscreenWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
-			fullscreenWindow.setUndecorated(true);
-			fullscreenWindow.addKeyListener(this);
+				fullscreenWindow.setBounds(display.getDefaultConfiguration().getBounds());
+				fullscreenWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
+				fullscreenWindow.setUndecorated(true);
+				fullscreenWindow.addKeyListener(this);
 
-			if (!System.getProperty("os.name").startsWith("Windows"))
-				display.setFullScreenWindow(fullscreenWindow);
-			fullscreenWindow.setVisible(true);
+				if (!System.getProperty("os.name").startsWith("Windows"))
+					display.setFullScreenWindow(fullscreenWindow);
+				fullscreenWindow.setVisible(true);
 
-			fullscreenWindow.createBufferStrategy(2);
+				fullscreenWindow.createBufferStrategy(2);
+			} catch (ArrayIndexOutOfBoundsException e) {
+				System.err.println("Unable to bind to monitor #: " + displayNumber);
+			}
 		}
 
 		if (showMonitor) {
