@@ -18,6 +18,7 @@ import io.smudgr.source.smudge.alg.coord.ColumnCoords;
 import io.smudgr.source.smudge.alg.coord.ConvergeCoordFunction;
 import io.smudgr.source.smudge.alg.coord.RadialCoordFunction;
 import io.smudgr.source.smudge.alg.coord.RowCoords;
+import io.smudgr.source.smudge.alg.coord.SkewedCoords;
 import io.smudgr.source.smudge.alg.op.ChannelDrift;
 import io.smudgr.source.smudge.alg.op.PixelShift;
 import io.smudgr.source.smudge.alg.op.PixelSort;
@@ -38,21 +39,25 @@ public class EricMain {
 		smudge.bind("Enable");
 		controller.add(new SourceSetControl("data/work"));
 
-		Algorithm spectral = new Algorithm();
-		spectral.bind("Enable");
-		spectral.getParameter("Enable").setInitial(false);
+		Algorithm sort = new Algorithm();
+		sort.bind("Enable");
+		sort.getParameter("Enable").setInitial(false);
+	
+		SkewedCoords coords = new SkewedCoords();
+		coords.bind("Skew Degree");
+		sort.add(coords);
+		
+		RangeSelect threshold = new RangeSelect();
+		threshold.getParameter("Range Length").setInitial(.1);
+		threshold.bind("Range Length");
+		sort.add(threshold);
 
-		SpectralShift spectral_op = new SpectralShift();
-		spectral_op.getParameter("Colors").setInitial(60);
-		spectral_op.getParameter("Sort").setInitial(true);
-		spectral_op.bind("Function");
-		spectral_op.bind("Colors");
-		spectral_op.bind("Palette");
-		spectral_op.bind("Sort");
-		controller.add(new AnimateOnBeatControl(spectral_op.getParameter("Shift")));
-		spectral.add(spectral_op);
+		PixelSort sort_op = new PixelSort();
+		sort_op.getParameter("Reverse").setInitial(true);
+		sort_op.bind("Reverse");
+		sort.add(sort_op);
 
-		smudge.add(spectral);
+		smudge.add(sort);
 
 		controller.add(new DownsampleControl(1));
 		controller.add(new SaveControl(filepath));
@@ -69,7 +74,7 @@ public class EricMain {
 	}
 
 	public static void main(String[] args) {
-		Controller c = make("data/work.smudge");
+		Controller c = load("data/work.smudge");
 
 		c.getSmudge().setSource(new Image("data/work/flowers_source.jpg"));
 
