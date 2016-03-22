@@ -1,7 +1,7 @@
 package io.smudgr.source.smudge.alg.op;
 
 import io.smudgr.source.Frame;
-import io.smudgr.source.smudge.alg.ColorIndexList;
+import io.smudgr.source.smudge.alg.PixelIndexList;
 import io.smudgr.source.smudge.param.BooleanParameter;
 import io.smudgr.source.smudge.param.NumberParameter;
 
@@ -56,7 +56,7 @@ public class PixelShift extends Operation {
 			for (int i = 0; i < intervalWidth; i++) {
 				int index = (int) (interval + i);
 				if (index < size) {
-					ColorIndexList coords = getAlgorithm().getSelectedPixels().get(index);
+					PixelIndexList coords = getAlgorithm().getSelectedPixels().get(index);
 					shift(coords, n, shift, i, ints);
 				}
 			}
@@ -65,7 +65,7 @@ public class PixelShift extends Operation {
 		img.setBufferedImage(shifted.getBufferedImage());
 	}
 
-	public void shift(ColorIndexList coords, int currentInterval, double amount, int indexIntoCurrentInt, double totalInts) {
+	public void shift(PixelIndexList coords, int currentInterval, double amount, int indexIntoCurrentInt, double totalInts) {
 
 		double shiftScale = 1;
 

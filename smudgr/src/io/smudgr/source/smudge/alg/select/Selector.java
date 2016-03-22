@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import io.smudgr.source.Frame;
 import io.smudgr.source.smudge.alg.AlgorithmComponent;
-import io.smudgr.source.smudge.alg.ColorIndexList;
+import io.smudgr.source.smudge.alg.PixelIndexList;
 
 public abstract class Selector extends AlgorithmComponent {
 
@@ -18,13 +18,13 @@ public abstract class Selector extends AlgorithmComponent {
 		if (frame == null)
 			return;
 
-		ArrayList<ColorIndexList> selected = getAlgorithm().getSelectedPixels();
-		ArrayList<ColorIndexList> newSelected = new ArrayList<ColorIndexList>();
+		ArrayList<PixelIndexList> selected = getAlgorithm().getSelectedPixels();
+		ArrayList<PixelIndexList> newSelected = new ArrayList<PixelIndexList>();
 
-		ColorIndexList currentSet = new ColorIndexList();
+		PixelIndexList currentSet = new PixelIndexList();
 
 		for (int i = 0; i < selected.size(); i++) {
-			ColorIndexList coords = selected.get(i);
+			PixelIndexList coords = selected.get(i);
 
 			for (int index = 0; index < coords.size(); index++) {
 				int coord = coords.get(index);
@@ -35,13 +35,13 @@ public abstract class Selector extends AlgorithmComponent {
 					currentSet.add(coord);
 				else if (currentSet.size() > 0) {
 					newSelected.add(currentSet);
-					currentSet = new ColorIndexList();
+					currentSet = new PixelIndexList();
 				}
 			}
 
 			if (currentSet.size() > 0) {
 				newSelected.add(currentSet);
-				currentSet = new ColorIndexList();
+				currentSet = new PixelIndexList();
 			}
 		}
 

@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import io.smudgr.source.Frame;
-import io.smudgr.source.smudge.alg.ColorIndexList;
+import io.smudgr.source.smudge.alg.PixelIndexList;
 import io.smudgr.source.smudge.alg.math.ChromaFunction;
 import io.smudgr.source.smudge.alg.math.HueFunction;
 import io.smudgr.source.smudge.alg.math.LogFunction;
@@ -29,11 +29,11 @@ public class PixelSort extends Operation {
 	}
 
 	public void execute(Frame img) {
-		for (ColorIndexList coords : getAlgorithm().getSelectedPixels())
+		for (PixelIndexList coords : getAlgorithm().getSelectedPixels())
 			sort(img, coords);
 	}
 
-	public void sort(Frame img, ColorIndexList coords) {
+	public void sort(Frame img, PixelIndexList coords) {
 		Integer[] toSort = new Integer[coords.size()];
 
 		for (int i = 0; i < toSort.length; i++) {

@@ -1,7 +1,7 @@
 package io.smudgr.source.smudge.alg.op;
 
 import io.smudgr.source.Frame;
-import io.smudgr.source.smudge.alg.ColorIndexList;
+import io.smudgr.source.smudge.alg.PixelIndexList;
 import io.smudgr.source.smudge.alg.math.ColorHelper;
 import io.smudgr.source.smudge.param.NumberParameter;
 
@@ -23,7 +23,7 @@ public class ChannelCrush extends Operation {
 
 	@Override
 	public void execute(Frame img) {
-		for (ColorIndexList coords : getAlgorithm().getSelectedPixels())
+		for (PixelIndexList coords : getAlgorithm().getSelectedPixels())
 			for (int index = 0; index < coords.size(); index++)
 				smear(coords.get(index), img);
 	}
