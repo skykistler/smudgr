@@ -11,7 +11,9 @@ import io.smudgr.out.ProjectXML;
 import io.smudgr.source.Image;
 import io.smudgr.source.smudge.Smudge;
 import io.smudgr.source.smudge.alg.Algorithm;
+import io.smudgr.source.smudge.alg.coord.SkewedCoords;
 import io.smudgr.source.smudge.alg.op.PixelSort;
+
 import io.smudgr.source.smudge.alg.select.RangeSelect;
 import io.smudgr.view.NativeView;
 
@@ -30,11 +32,11 @@ public class EricMain {
 		Algorithm sort = new Algorithm();
 		sort.bind("Enable");
 		sort.getParameter("Enable").setInitial(false);
-
-		// SkewedCoords coords = new SkewedCoords();
-		// coords.bind("Skew Degree");
-		// sort.add(coords);
-
+	
+		SkewedCoords coords = new SkewedCoords();
+		coords.bind("Skew Degree");
+		sort.add(coords);
+		
 		RangeSelect threshold = new RangeSelect();
 		threshold.getParameter("Range Length").setInitial(.1);
 		threshold.bind("Range Length");
@@ -62,6 +64,7 @@ public class EricMain {
 	}
 
 	public static void main(String[] args) {
+
 		Controller c = make("data/work.smudge");
 
 		c.getSmudge().setSource(new Image("data/work/flowers_source.jpg"));
