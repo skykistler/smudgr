@@ -1,7 +1,7 @@
 package io.smudgr.source.smudge.alg.op;
 
 import io.smudgr.source.Frame;
-import io.smudgr.source.smudge.alg.ColorIndexList;
+import io.smudgr.source.smudge.alg.PixelIndexList;
 import io.smudgr.source.smudge.alg.math.ColorHelper;
 import io.smudgr.source.smudge.param.NumberParameter;
 
@@ -24,7 +24,7 @@ public class HSVLModifier extends Operation {
 		if (lastSaturation == sat && lastValue == val && lastDegree == deg) {
 			img.setBufferedImage(lastFrame.getBufferedImage());
 		} else {
-			for (ColorIndexList coords : getAlgorithm().getSelectedPixels()) {
+			for (PixelIndexList coords : getAlgorithm().getSelectedPixels()) {
 				for (int index = 0; index < coords.size(); index++) {
 					int coord = coords.get(index);
 					img.pixels[coord] = manipulate(img.pixels[coord], deg, sat, val);

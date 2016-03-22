@@ -29,7 +29,7 @@ public class Algorithm extends Parametric {
 	private ArrayList<Integer> component_ids = new ArrayList<Integer>(1000);
 	private Random idPicker = new Random();
 
-	private ArrayList<ColorIndexList> selectedPixels = new ArrayList<ColorIndexList>();
+	private ArrayList<PixelIndexList> selectedPixels = new ArrayList<PixelIndexList>();
 
 	protected Frame lastFrame;
 
@@ -164,11 +164,11 @@ public class Algorithm extends Parametric {
 			coordFunction.setBound(bound);
 	}
 
-	public void setSelectedPixels(ArrayList<ColorIndexList> selected) {
+	public void setSelectedPixels(ArrayList<PixelIndexList> selected) {
 		selectedPixels = selected;
 	}
 
-	public ArrayList<ColorIndexList> getSelectedPixels() {
+	public ArrayList<PixelIndexList> getSelectedPixels() {
 		return selectedPixels;
 	}
 

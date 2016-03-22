@@ -3,7 +3,7 @@ package io.smudgr.source.smudge.alg.coord;
 import java.math.BigInteger;
 
 import io.smudgr.source.Frame;
-import io.smudgr.source.smudge.alg.ColorIndexList;
+import io.smudgr.source.smudge.alg.PixelIndexList;
 import io.smudgr.source.smudge.alg.bound.Bound;
 import io.smudgr.source.smudge.param.NumberParameter;
 
@@ -36,14 +36,14 @@ public class RadialCoordFunction extends CoordFunction {
 	}
 
 	public void bresenham(int radiusX, int radiusY, int centerX, int centerY, int width, int height, Bound b, Frame img) {
-		ColorIndexList c1 = new ColorIndexList();
-		ColorIndexList c2 = new ColorIndexList();
-		ColorIndexList c3 = new ColorIndexList();
-		ColorIndexList c4 = new ColorIndexList();
-		ColorIndexList c5 = new ColorIndexList();
-		ColorIndexList c6 = new ColorIndexList();
-		ColorIndexList c7 = new ColorIndexList();
-		ColorIndexList c8 = new ColorIndexList();
+		PixelIndexList c1 = new PixelIndexList();
+		PixelIndexList c2 = new PixelIndexList();
+		PixelIndexList c3 = new PixelIndexList();
+		PixelIndexList c4 = new PixelIndexList();
+		PixelIndexList c5 = new PixelIndexList();
+		PixelIndexList c6 = new PixelIndexList();
+		PixelIndexList c7 = new PixelIndexList();
+		PixelIndexList c8 = new PixelIndexList();
 
 		int x, y;
 
