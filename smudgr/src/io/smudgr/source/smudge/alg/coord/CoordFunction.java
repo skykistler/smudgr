@@ -13,6 +13,8 @@ public abstract class CoordFunction extends AlgorithmComponent {
 	private Frame frame;
 	private Bound bound;
 
+	private boolean wasChanged = true;
+
 	protected ArrayList<PixelIndexList> coordSet = null;
 	protected PixelIndexList currentSet = null;
 
@@ -22,6 +24,9 @@ public abstract class CoordFunction extends AlgorithmComponent {
 
 	public void update() {
 		if (frame == null)
+			return;
+
+		if (!wasChanged)
 			return;
 
 		reset();
@@ -73,6 +78,10 @@ public abstract class CoordFunction extends AlgorithmComponent {
 			nextSet();
 			wasInBound = false;
 		}
+	}
+
+	public void triggerChange() {
+		wasChanged = true;
 	}
 
 	public ArrayList<PixelIndexList> getCoordSet() {

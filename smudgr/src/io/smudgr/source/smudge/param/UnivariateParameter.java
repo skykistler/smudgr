@@ -51,6 +51,14 @@ public class UnivariateParameter extends Parameter {
 		current = univariates.indexOf(func);
 	}
 
+	public void setCurrent(int curr) {
+		int prev = current;
+		current = curr;
+
+		if (prev != current)
+			getParent().triggerChange();
+	}
+
 	public String getStringValue() {
 		if (univariates.size() == 0)
 			return "";

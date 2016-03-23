@@ -19,8 +19,7 @@ public class NumberParameter extends Parameter {
 		this(name, parent, initial, minimum, maximum, (maximum - minimum) / 127);
 	}
 
-	public NumberParameter(String name, Parametric parent, double initial, double minimum, double maximum,
-			double step) {
+	public NumberParameter(String name, Parametric parent, double initial, double minimum, double maximum, double step) {
 		super(name, parent);
 		setInitial(initial);
 		min = minimum;
@@ -37,12 +36,17 @@ public class NumberParameter extends Parameter {
 	}
 
 	public void setValue(Object o) {
+		double prevValue = value;
+
 		if (o instanceof Double)
 			value = (double) o;
 		else
 			value = Double.parseDouble(o.toString());
 
 		enforce();
+
+		if (value != prevValue)
+			getParent().triggerChange();
 	}
 
 	public void setMin(double m) {
@@ -51,7 +55,8 @@ public class NumberParameter extends Parameter {
 
 		double ratio = (value - min) / (max - min);
 		min = m;
-		value = ratio * (max - min) + min;
+
+		setValue(ratio * (max - min) + min);
 	}
 
 	public double getMin() {
@@ -63,7 +68,8 @@ public class NumberParameter extends Parameter {
 			return;
 		double ratio = (value - min) / (max - min);
 		max = m;
-		value = ratio * (max - min) + min;
+
+		setValue(ratio * (max - min) + min);
 	}
 
 	public double getMax() {
@@ -129,11 +135,11 @@ public class NumberParameter extends Parameter {
 	}
 
 	private void inc() {
-		value += step;
+		setValue(value + step);
 	}
 
 	private void dec() {
-		value -= step;
+		setValue(value - step);
 	}
 
 	private void enforce() {
@@ -144,12 +150,11 @@ public class NumberParameter extends Parameter {
 				value = min;
 		}
 
-		if (value > max) {
+		if (value > max)
 			if (continuous)
 				value -= (max - min);
 			else
 				value = max;
-		}
 	}
 
 }

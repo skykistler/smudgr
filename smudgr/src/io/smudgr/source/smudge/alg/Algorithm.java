@@ -53,24 +53,22 @@ public class Algorithm extends Parametric {
 	private double lastBoundW;
 	private double lastBoundH;
 
-	public void update() {
-	}
-
 	public void apply(Frame img) {
 		if (!enable.getValue())
 			return;
 
 		bound.update();
 
-		boolean boundChanged = lastBoundX != bound.getOffsetX() || lastBoundY != bound.getOffsetY()
-				|| lastBoundW != bound.getWidth() || lastBoundH != bound.getHeight();
-		boolean dimensionsChanged = lastFrame == null
-				|| (img.getWidth() != this.lastFrame.getWidth() || img.getHeight() != this.lastFrame.getHeight());
+		boolean boundChanged = lastBoundX != bound.getOffsetX() || lastBoundY != bound.getOffsetY() || lastBoundW != bound.getWidth() || lastBoundH != bound.getHeight();
+		boolean dimensionsChanged = lastFrame == null || (img.getWidth() != this.lastFrame.getWidth() || img.getHeight() != this.lastFrame.getHeight());
 
 		coordFunction.setDimensions(img);
 		coordFunction.setBound(bound);
+
 		if (dimensionsChanged || boundChanged)
-			coordFunction.update();
+			coordFunction.triggerChange();
+
+		coordFunction.update();
 
 		if (lastFrame != img) {
 			setSelectedPixels(coordFunction.getCoordSet());

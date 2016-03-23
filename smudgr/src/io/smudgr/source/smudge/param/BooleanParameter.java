@@ -27,6 +27,8 @@ public class BooleanParameter extends Parameter {
 			value = o.toString().equals("true") ? true : false;
 		else
 			value = (boolean) o;
+
+		getParent().triggerChange();
 	}
 
 	public String getStringValue() {
@@ -56,7 +58,7 @@ public class BooleanParameter extends Parameter {
 	}
 
 	public void increment() {
-		value = !value;
+		setValue(!value);
 	}
 
 	public void decrement() {

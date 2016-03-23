@@ -50,9 +50,6 @@ public class Smudge extends Parametric implements Source {
 	public void update() {
 		if (source != null)
 			source.update();
-
-		for (Algorithm a : getAlgorithms())
-			a.update();
 	}
 
 	public synchronized Frame getFrame() {

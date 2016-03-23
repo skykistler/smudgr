@@ -43,6 +43,10 @@ public abstract class Parametric {
 			c.add(p);
 	}
 
+	public void triggerChange() {
+		// Left empty to allow optional inheritance
+	}
+
 	public abstract String getName();
 
 	public String toString() {
