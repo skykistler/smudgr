@@ -42,6 +42,8 @@ public abstract class CoordFunction extends AlgorithmComponent {
 			currentSet.clear();
 
 		nextSet();
+
+		wasChanged = false;
 	}
 
 	protected abstract void generate(Bound b, Frame img);
