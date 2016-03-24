@@ -40,10 +40,10 @@ public class EdgeSelect extends Selector {
 		
 		double p0, p1, p2, p3, delta;
 		
-		/* Uses some basic image derivative kernel of the form:
+		/* Uses some basic image derivative kernels of the form:
 		* case 1:
 		* 		[ 0  0  0 ]
-		*	    [ 1 -2  1 ]
+		*	    	[ 1 -2  1 ]
 		*		[ 0  0  0 ]
 		*
 		*case 2:
