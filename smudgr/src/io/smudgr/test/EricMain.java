@@ -11,7 +11,9 @@ import io.smudgr.out.ProjectXML;
 import io.smudgr.source.Image;
 import io.smudgr.source.smudge.Smudge;
 import io.smudgr.source.smudge.alg.Algorithm;
+import io.smudgr.source.smudge.alg.coord.AllCoords;
 import io.smudgr.source.smudge.alg.coord.SkewedCoords;
+import io.smudgr.source.smudge.alg.op.ByteReplace;
 import io.smudgr.source.smudge.alg.op.PixelSort;
 
 import io.smudgr.source.smudge.alg.select.RangeSelect;
@@ -29,25 +31,34 @@ public class EricMain {
 		smudge.bind("Enable");
 		controller.add(new SourceSetControl("data/work"));
 
-		Algorithm sort = new Algorithm();
-		sort.bind("Enable");
-		sort.getParameter("Enable").setInitial(false);
+		Algorithm alg1 = new Algorithm();
+		alg1.bind("Enable");
+		alg1.getParameter("Enable").setInitial(false);
+		alg1.add(new AllCoords());
 	
-		SkewedCoords coords = new SkewedCoords();
-		coords.bind("Skew Degree");
-		sort.add(coords);
+		ByteReplace br = new ByteReplace();
+		br.bind("Enable");
+		br.bind("Precursor");
+		br.bind("Substitute 1");
+		br.bind("Substitute 2");
 		
-		RangeSelect threshold = new RangeSelect();
-		threshold.getParameter("Range Length").setInitial(.1);
-		threshold.bind("Range Length");
-		sort.add(threshold);
+		alg1.add(br);
+		
+//		SkewedCoords coords = new SkewedCoords();
+//		coords.bind("Skew Degree");
+//		sort.add(coords);
+		
+//		RangeSelect threshold = new RangeSelect();
+//		threshold.getParameter("Range Length").setInitial(.1);
+//		threshold.bind("Range Length");
+//		sort.add(threshold);
 
-		PixelSort sort_op = new PixelSort();
-		sort_op.getParameter("Reverse").setInitial(true);
-		sort_op.bind("Reverse");
-		sort.add(sort_op);
+//		PixelSort sort_op = new PixelSort();
+//		sort_op.getParameter("Reverse").setInitial(true);
+//		sort_op.bind("Reverse");
+//		sort.add(sort_op);
 
-		smudge.add(sort);
+		smudge.add(alg1);
 
 		controller.add(new DownsampleControl(1));
 		controller.add(new SaveControl(filepath));
