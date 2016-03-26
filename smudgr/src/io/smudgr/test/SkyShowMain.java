@@ -2,6 +2,7 @@ package io.smudgr.test;
 
 import io.smudgr.controller.BaseController;
 import io.smudgr.controller.Controller;
+import io.smudgr.controller.controls.AnimateByStepControl;
 import io.smudgr.controller.controls.AnimateOnBeatControl;
 import io.smudgr.controller.controls.DownsampleControl;
 import io.smudgr.controller.controls.SaveControl;
@@ -15,6 +16,7 @@ import io.smudgr.source.smudge.alg.Algorithm;
 import io.smudgr.source.smudge.alg.coord.ColumnCoords;
 import io.smudgr.source.smudge.alg.coord.ConvergeCoordFunction;
 import io.smudgr.source.smudge.alg.coord.RowCoords;
+import io.smudgr.source.smudge.alg.op.ByteReplace;
 import io.smudgr.source.smudge.alg.op.PixelShift;
 import io.smudgr.source.smudge.alg.op.PixelSort;
 import io.smudgr.source.smudge.alg.op.SpectralShift;
@@ -124,6 +126,21 @@ public class SkyShowMain {
 
 		smudge.add(sort2);
 
+		Algorithm byteRep = new Algorithm();
+		byteRep.bind("Enable");
+		;
+		byteRep.getParameter("Enable").setInitial(false);
+		RangeSelect threshold4 = new RangeSelect();
+		threshold4.bind("Range Length");
+		byteRep.add(threshold4);
+
+		ByteReplace byte_op = new ByteReplace();
+		byte_op.bind("Amount");
+		byteRep.add(byte_op);
+		controller.add(new AnimateByStepControl(byte_op.getParameter("Target Byte")));
+
+		smudge.add(byteRep);
+
 		controller.add(new DownsampleControl(1));
 		controller.add(new SaveControl(filepath));
 		controller.add(new SourceControl());
@@ -141,9 +158,9 @@ public class SkyShowMain {
 	public static void main(String[] args) {
 		Controller c = load("data/show.smudge");
 
-		c.getSmudge().setSource(new Image("data/noise show/a venture.png"));
+		c.getSmudge().setSource(new Image("data/moon ep/banner.png"));
 
-		new NativeView(c, 0, false);
+		new NativeView(c, 1, true);
 
 		((MidiController) c.getExtensions().get(0)).bindDevice("Arturia BeatStep Pro");
 		c.start();

@@ -17,6 +17,11 @@ public class ByteReplace extends Operation {
 		return "Byte Replace";
 	}
 
+	public void init() {
+		target.setContinuous(true);
+		subValue.setContinuous(true);
+	}
+
 	public void execute(Frame img) {
 		byte orig = (byte) target.getIntValue();
 		int subAmount = amount.getIntValue();
