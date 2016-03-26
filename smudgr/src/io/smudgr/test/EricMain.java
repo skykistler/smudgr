@@ -16,7 +16,7 @@ import io.smudgr.source.smudge.alg.coord.RowCoords;
 import io.smudgr.source.smudge.alg.coord.SkewedCoords;
 import io.smudgr.source.smudge.alg.op.ByteReplace;
 import io.smudgr.source.smudge.alg.op.PixelSort;
-
+import io.smudgr.source.smudge.alg.select.EdgeSelect;
 import io.smudgr.source.smudge.alg.select.RangeSelect;
 import io.smudgr.view.NativeView;
 
@@ -36,7 +36,7 @@ public class EricMain {
 		alg1.bind("Enable");
 		alg1.getParameter("Enable").setInitial(false);
 		alg1.add(new RowCoords());
-	
+
 		ByteReplace br = new ByteReplace();
 		br.bind("Enable");
 		br.bind("Precursor");
@@ -45,20 +45,17 @@ public class EricMain {
 		
 		alg1.add(br);
 		
-//		SkewedCoords coords = new SkewedCoords();
-//		coords.bind("Skew Degree");
-//		sort.add(coords);
-		
 		RangeSelect threshold = new RangeSelect();
 		threshold.getParameter("Range Length").setInitial(1.0);
 		threshold.bind("Range Length");
 		alg1.add(threshold);
 
-//		PixelSort sort_op = new PixelSort();
-//		sort_op.getParameter("Reverse").setInitial(true);
-//		sort_op.bind("Reverse");
-//		sort.add(sort_op);
-
+		EdgeSelect e_select = new EdgeSelect();
+		e_select.bind("Function");
+		e_select.bind("Max Edge Strength");
+		e_select.bind("Direction");
+		alg1.add(e_select);
+		
 		smudge.add(alg1);
 
 		controller.add(new DownsampleControl(1));
@@ -77,7 +74,7 @@ public class EricMain {
 
 	public static void main(String[] args) {
 
-		Controller c = make("data/work.smudge");
+		Controller c = load("data/work.smudge");
 
 		c.getSmudge().setSource(new Image("data/work/flowers_source.jpg"));
 
