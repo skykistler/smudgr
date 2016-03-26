@@ -12,6 +12,7 @@ import io.smudgr.source.Image;
 import io.smudgr.source.smudge.Smudge;
 import io.smudgr.source.smudge.alg.Algorithm;
 import io.smudgr.source.smudge.alg.coord.AllCoords;
+import io.smudgr.source.smudge.alg.coord.RowCoords;
 import io.smudgr.source.smudge.alg.coord.SkewedCoords;
 import io.smudgr.source.smudge.alg.op.ByteReplace;
 import io.smudgr.source.smudge.alg.op.PixelSort;
@@ -34,13 +35,13 @@ public class EricMain {
 		Algorithm alg1 = new Algorithm();
 		alg1.bind("Enable");
 		alg1.getParameter("Enable").setInitial(false);
-		alg1.add(new AllCoords());
+		alg1.add(new RowCoords());
 	
 		ByteReplace br = new ByteReplace();
 		br.bind("Enable");
 		br.bind("Precursor");
-		br.bind("Substitute 1");
-		br.bind("Substitute 2");
+		br.bind("Substitute Value");
+		br.bind("Amount");
 		
 		alg1.add(br);
 		
@@ -48,10 +49,10 @@ public class EricMain {
 //		coords.bind("Skew Degree");
 //		sort.add(coords);
 		
-//		RangeSelect threshold = new RangeSelect();
-//		threshold.getParameter("Range Length").setInitial(.1);
-//		threshold.bind("Range Length");
-//		sort.add(threshold);
+		RangeSelect threshold = new RangeSelect();
+		threshold.getParameter("Range Length").setInitial(1.0);
+		threshold.bind("Range Length");
+		alg1.add(threshold);
 
 //		PixelSort sort_op = new PixelSort();
 //		sort_op.getParameter("Reverse").setInitial(true);
