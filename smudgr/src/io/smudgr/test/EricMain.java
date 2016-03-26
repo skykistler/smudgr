@@ -11,8 +11,10 @@ import io.smudgr.out.ProjectXML;
 import io.smudgr.source.Image;
 import io.smudgr.source.smudge.Smudge;
 import io.smudgr.source.smudge.alg.Algorithm;
+import io.smudgr.source.smudge.alg.coord.AllCoords;
 import io.smudgr.source.smudge.alg.coord.RowCoords;
 import io.smudgr.source.smudge.alg.coord.SkewedCoords;
+import io.smudgr.source.smudge.alg.op.ByteReplace;
 import io.smudgr.source.smudge.alg.op.PixelSort;
 import io.smudgr.source.smudge.alg.select.EdgeSelect;
 import io.smudgr.source.smudge.alg.select.RangeSelect;
@@ -30,35 +32,31 @@ public class EricMain {
 		smudge.bind("Enable");
 		controller.add(new SourceSetControl("data/work"));
 
-		Algorithm sort = new Algorithm();
-		sort.bind("Enable");
-		sort.getParameter("Enable").setInitial(false);
-		sort.add(new RowCoords());
-	
-//		SkewedCoords coords = new SkewedCoords();
-//		coords.bind("Skew Degree");
-//		sort.add(coords);
+		Algorithm alg1 = new Algorithm();
+		alg1.bind("Enable");
+		alg1.getParameter("Enable").setInitial(false);
+		alg1.add(new RowCoords());
+
+		ByteReplace br = new ByteReplace();
+		br.bind("Enable");
+		br.bind("Precursor");
+		br.bind("Substitute Value");
+		br.bind("Amount");
 		
+		alg1.add(br);
+		
+		RangeSelect threshold = new RangeSelect();
+		threshold.getParameter("Range Length").setInitial(1.0);
+		threshold.bind("Range Length");
+		alg1.add(threshold);
+
 		EdgeSelect e_select = new EdgeSelect();
 		e_select.bind("Function");
 		e_select.bind("Max Edge Strength");
 		e_select.bind("Direction");
-		sort.add(e_select);
+		alg1.add(e_select);
 		
-//		RangeSelect threshold = new RangeSelect();
-//		threshold.getParameter("Range Length").setInitial(1);
-//		threshold.getParameter("Wrap Range").setValue(false);
-//		threshold.bind("Minimum Value");
-//		threshold.bind("Range Length");
-//		sort.add(threshold);
-		
-
-		PixelSort sort_op = new PixelSort();
-		sort_op.getParameter("Reverse").setInitial(true);
-		sort_op.bind("Reverse");
-		sort.add(sort_op);
-
-		smudge.add(sort);
+		smudge.add(alg1);
 
 		controller.add(new DownsampleControl(1));
 		controller.add(new SaveControl(filepath));
