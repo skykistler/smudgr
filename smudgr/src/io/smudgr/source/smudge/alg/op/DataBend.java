@@ -6,12 +6,13 @@ import io.smudgr.source.smudge.alg.PixelIndexList;
 import io.smudgr.source.smudge.alg.math.ColorHelper;
 import io.smudgr.source.smudge.param.NumberParameter;
 
-public class ByteReplace extends Operation {
+public class DataBend extends Operation {
 
 	NumberParameter target = new NumberParameter("Target Byte", this, 125, 0, 255, 1);
 
 	NumberParameter amount = new NumberParameter("Amount", this, 1, 1, 100, 1);
-	NumberParameter subValue = new NumberParameter("Replace Byte", this, 0, 0, 255, 1);
+
+	private byte replaceByte = 0x12;
 
 	public String getName() {
 		return "Byte Replace";
@@ -19,16 +20,14 @@ public class ByteReplace extends Operation {
 
 	public void init() {
 		target.setContinuous(true);
-		subValue.setContinuous(true);
 	}
 
 	public void execute(Frame img) {
 		byte orig = (byte) target.getIntValue();
 		int subAmount = amount.getIntValue();
-		byte sub = (byte) subValue.getIntValue();
 
 		for (PixelIndexList coords : getAlgorithm().getSelectedPixels()) {
-			process(coords, orig, img, sub, subAmount);
+			process(coords, orig, img, replaceByte, subAmount);
 		}
 	}
 
