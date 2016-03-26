@@ -8,10 +8,10 @@ import io.smudgr.source.smudge.param.NumberParameter;
 
 public class ByteReplace extends Operation {
 
-	NumberParameter target = new NumberParameter("Target", this, 125, 0, 255, 1);
+	NumberParameter target = new NumberParameter("Target Byte", this, 125, 0, 255, 1);
 
 	NumberParameter amount = new NumberParameter("Amount", this, 1, 1, 100, 1);
-	NumberParameter subValue = new NumberParameter("Substitute Value", this, 0, 0, 255, 1);
+	NumberParameter subValue = new NumberParameter("Replace Byte", this, 0, 0, 255, 1);
 
 	public String getName() {
 		return "Byte Replace";
