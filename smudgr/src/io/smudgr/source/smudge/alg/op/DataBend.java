@@ -15,7 +15,7 @@ public class DataBend extends Operation {
 	private byte replaceByte = 0x12;
 
 	public String getName() {
-		return "Byte Replace";
+		return "Data Bend";
 	}
 
 	public void init() {
