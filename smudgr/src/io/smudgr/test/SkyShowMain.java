@@ -16,7 +16,7 @@ import io.smudgr.source.smudge.alg.Algorithm;
 import io.smudgr.source.smudge.alg.coord.ColumnCoords;
 import io.smudgr.source.smudge.alg.coord.ConvergeCoordFunction;
 import io.smudgr.source.smudge.alg.coord.RowCoords;
-import io.smudgr.source.smudge.alg.op.ByteReplace;
+import io.smudgr.source.smudge.alg.op.DataBend;
 import io.smudgr.source.smudge.alg.op.PixelShift;
 import io.smudgr.source.smudge.alg.op.PixelSort;
 import io.smudgr.source.smudge.alg.op.SpectralShift;
@@ -134,7 +134,7 @@ public class SkyShowMain {
 		threshold4.bind("Range Length");
 		byteRep.add(threshold4);
 
-		ByteReplace byte_op = new ByteReplace();
+		DataBend byte_op = new DataBend();
 		byte_op.bind("Amount");
 		byteRep.add(byte_op);
 		controller.add(new AnimateByStepControl(byte_op.getParameter("Target Byte")));

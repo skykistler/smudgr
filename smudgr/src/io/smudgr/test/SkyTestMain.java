@@ -11,7 +11,7 @@ import io.smudgr.source.Image;
 import io.smudgr.source.smudge.Smudge;
 import io.smudgr.source.smudge.alg.Algorithm;
 import io.smudgr.source.smudge.alg.coord.ConvergeCoordFunction;
-import io.smudgr.source.smudge.alg.op.ByteReplace;
+import io.smudgr.source.smudge.alg.op.DataBend;
 import io.smudgr.source.smudge.alg.select.RangeSelect;
 import io.smudgr.view.NativeView;
 
@@ -31,7 +31,7 @@ public class SkyTestMain {
 		threshold.bind("Minimum Value");
 		alg.add(threshold);
 
-		ByteReplace byte_op = new ByteReplace();
+		DataBend byte_op = new DataBend();
 		byte_op.bind("Amount");
 		alg.add(byte_op);
 		controller.add(new AnimateByStepControl(byte_op.getParameter("Target Byte")));
