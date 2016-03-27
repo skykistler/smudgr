@@ -1,0 +1,41 @@
+[
+  {
+    "title": "File",
+    "items": [
+      {
+        "title": "Load smudge",
+        "action": "smudge.load"
+      },
+      {
+        "title": "Save smudge",
+        "action": "smudge.save"
+      }
+    ]
+  },
+  {
+    "title": "Edit",
+    "items": [
+      {
+        "title": "Do something",
+        "action": "smudge.load"
+      },
+      {
+        "title": "Do something else",
+        "action": "smudge.save"
+      }
+    ]
+  },
+  {
+    "title": "View",
+    "items": [
+      {
+        "title": "Fullscreen",
+        "action": "smudge.load"
+      },
+      {
+        "title": "Blah",
+        "action": "smudge.save"
+      }
+    ]
+  }
+]

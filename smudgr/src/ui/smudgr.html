@@ -1,0 +1,30 @@
+<html lang="en" >
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="angular/angular-material.min.css">
+
+  <script src="angular/angular.min.js"></script>
+  <script src="angular/angular-animate.min.js"></script>
+  <script src="angular/angular-aria.min.js"></script>
+  <script src="angular/angular-messages.min.js"></script>
+  <script src="angular/angular-material.min.js"></script>
+
+  <script src="/smudgr.js"></script>
+  <script src="components/menu/menu.js"></script>
+  <script src="components/navigator/navigator.js"></script>
+  <script src="components/canvas/canvas.js"></script>
+  <script src="components/rack/rack.js"></script>
+  <script src="components/rack/element.js"></script>
+</head>
+
+<body ng-app="smudgr" ng-controller="AppCtrl" layout="column" layout-wrap ng-cloak>
+
+  <smudgr-menu flex="none"></smudgr-menu>
+  <div flex layout="row">
+    <smudgr-navigator flex="none"></smudgr-navigator>
+    <smudgr-canvas flex></smudgr-canvas>
+  </div>
+  <smudgr-rack flex="none"></smudgr-rack>
+
+</body>
+</html>

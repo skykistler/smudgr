@@ -1,0 +1,16 @@
+<style>
+  .smudge-rack {
+    background-color: #333333;
+    max-height: 300px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+  }
+</style>
+
+<div class="smudge-rack md-whiteframe-20">
+  <div layout="row">
+    <div ng-repeat="element in rackElements track by $index">
+      <rack-element></rack-element>
+    </div>
+  </div>
+</div>
