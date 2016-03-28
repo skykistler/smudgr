@@ -1,0 +1,25 @@
+<style>
+  .smudgr-menu {
+    max-height: 30px !important;
+  }
+</style>
+
+<div class="smudgr-menu">
+  <md-toolbar
+    class="smudgr-menu md-primary md-whiteframe-5dp"
+    layout="row"
+    layout-align="start center">
+    <div ng-repeat="menu in menuBar">
+      <md-menu>
+        <md-button ng-click="$mdOpenMenu()">{{ menu.title }}</md-button>
+        <md-menu-content width="4">
+          <div ng-repeat="item in menu.items">
+            <md-menu-item>
+              <md-button>{{ item.title }}</md-button>
+            </md-menu-item>
+          </div>
+        </md-menu-content>
+      </md-menu>
+    </div>
+  </md-toolbar>
+</div>

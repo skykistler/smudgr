@@ -128,7 +128,6 @@ public class SkyShowMain {
 
 		Algorithm byteRep = new Algorithm();
 		byteRep.bind("Enable");
-		;
 		byteRep.getParameter("Enable").setInitial(false);
 		RangeSelect threshold4 = new RangeSelect();
 		threshold4.bind("Range Length");
@@ -156,7 +155,7 @@ public class SkyShowMain {
 	}
 
 	public static void main(String[] args) {
-		Controller c = load("data/show.smudge");
+		Controller c = make("data/show.smudge");
 
 		c.getSmudge().setSource(new Image("data/moon ep/banner.png"));
 

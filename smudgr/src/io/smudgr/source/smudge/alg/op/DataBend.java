@@ -8,7 +8,7 @@ import io.smudgr.source.smudge.param.NumberParameter;
 
 public class DataBend extends Operation {
 
-	NumberParameter target = new NumberParameter("Target Byte", this, 125, 0, 255, 1);
+	NumberParameter target = new NumberParameter("Target", this, 125, 0, 255, 1);
 
 	NumberParameter amount = new NumberParameter("Amount", this, 1, 1, 100, 1);
 
