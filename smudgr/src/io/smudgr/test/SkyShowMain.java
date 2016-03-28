@@ -2,8 +2,8 @@ package io.smudgr.test;
 
 import io.smudgr.controller.BaseController;
 import io.smudgr.controller.Controller;
-import io.smudgr.controller.controls.AnimateByStepControl;
-import io.smudgr.controller.controls.AnimateOnBeatControl;
+import io.smudgr.controller.controls.AutomateByStepControl;
+import io.smudgr.controller.controls.AutomateByBeatControl;
 import io.smudgr.controller.controls.DownsampleControl;
 import io.smudgr.controller.controls.SaveControl;
 import io.smudgr.controller.controls.SourceControl;
@@ -63,7 +63,7 @@ public class SkyShowMain {
 		spectral_op.bind("Colors");
 		spectral_op.bind("Palette");
 		spectral_op.bind("Sort");
-		controller.add(new AnimateOnBeatControl(spectral_op.getParameter("Shift")));
+		controller.add(new AutomateByBeatControl(spectral_op.getParameter("Shift")));
 		spectral.add(spectral_op);
 
 		smudge.add(spectral);
@@ -78,7 +78,7 @@ public class SkyShowMain {
 		shift_op.bind("Intervals");
 		shift_op.getParameter("Amount").setInitial(.2);
 		shift_op.bind("Reverse");
-		controller.add(new AnimateOnBeatControl(shift_op.getParameter("Amount")));
+		controller.add(new AutomateByBeatControl(shift_op.getParameter("Amount")));
 		shift.add(shift_op);
 
 		smudge.add(shift);
@@ -93,7 +93,7 @@ public class SkyShowMain {
 		shift1_op.bind("Intervals");
 		shift1_op.getParameter("Amount").setInitial(.2);
 		shift1_op.bind("Reverse");
-		controller.add(new AnimateOnBeatControl(shift1_op.getParameter("Amount")));
+		controller.add(new AutomateByBeatControl(shift1_op.getParameter("Amount")));
 		shift1.add(shift1_op);
 
 		smudge.add(shift1);
@@ -136,7 +136,7 @@ public class SkyShowMain {
 		DataBend byte_op = new DataBend();
 		byte_op.bind("Amount");
 		byteRep.add(byte_op);
-		controller.add(new AnimateByStepControl(byte_op.getParameter("Target Byte")));
+		controller.add(new AutomateByStepControl(byte_op.getParameter("Target Byte")));
 
 		smudge.add(byteRep);
 

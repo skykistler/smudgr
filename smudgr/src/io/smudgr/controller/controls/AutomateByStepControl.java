@@ -5,18 +5,18 @@ import io.smudgr.source.smudge.alg.AlgorithmComponent;
 import io.smudgr.source.smudge.param.NumberParameter;
 import io.smudgr.source.smudge.param.Parameter;
 
-public class AnimateByStepControl extends Controllable {
+public class AutomateByStepControl extends Controllable {
 
 	private NumberParameter parameter;
 	private boolean run = true;
 
 	private double increment, speed;
 
-	public AnimateByStepControl(Parameter p) {
+	public AutomateByStepControl(Parameter p) {
 		this(p, .25);
 	}
 
-	public AnimateByStepControl(Parameter p, double increment) {
+	public AutomateByStepControl(Parameter p, double increment) {
 		super(p.toString() + " Animator");
 		parameter = (NumberParameter) p;
 

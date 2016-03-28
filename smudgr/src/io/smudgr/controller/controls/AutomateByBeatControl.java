@@ -6,7 +6,7 @@ import io.smudgr.source.smudge.alg.AlgorithmComponent;
 import io.smudgr.source.smudge.param.NumberParameter;
 import io.smudgr.source.smudge.param.Parameter;
 
-public class AnimateOnBeatControl extends Controllable {
+public class AutomateByBeatControl extends Controllable {
 
 	private static final double[] SPEEDS = { 1 / 32.0, 1 / 16.0, 1 / 8.0, 1 / 4.0, 1 / 2.0, 1.0, 2.0, 4.0, 8.0 };
 
@@ -15,11 +15,11 @@ public class AnimateOnBeatControl extends Controllable {
 
 	private int speed = 5;
 
-	public AnimateOnBeatControl() {
+	public AutomateByBeatControl() {
 		super("Animator");
 	}
 
-	public AnimateOnBeatControl(Parameter p) {
+	public AutomateByBeatControl(Parameter p) {
 		super(p.getParent() + " - " + p.toString() + " Animator");
 		parameter = (NumberParameter) p;
 
