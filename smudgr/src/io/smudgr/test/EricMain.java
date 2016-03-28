@@ -14,7 +14,7 @@ import io.smudgr.source.smudge.alg.Algorithm;
 import io.smudgr.source.smudge.alg.coord.AllCoords;
 import io.smudgr.source.smudge.alg.coord.RowCoords;
 import io.smudgr.source.smudge.alg.coord.SkewedCoords;
-import io.smudgr.source.smudge.alg.op.ByteReplace;
+import io.smudgr.source.smudge.alg.op.DataBend;
 import io.smudgr.source.smudge.alg.op.PixelSort;
 import io.smudgr.source.smudge.alg.select.EdgeSelect;
 import io.smudgr.source.smudge.alg.select.RangeSelect;
@@ -37,7 +37,7 @@ public class EricMain {
 		alg1.getParameter("Enable").setInitial(false);
 		alg1.add(new RowCoords());
 
-		ByteReplace br = new ByteReplace();
+		DataBend br = new DataBend();
 		br.bind("Enable");
 		br.bind("Precursor");
 		br.bind("Substitute Value");

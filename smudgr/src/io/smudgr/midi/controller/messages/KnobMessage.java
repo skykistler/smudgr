@@ -6,9 +6,12 @@ public class KnobMessage implements MidiMessageStrategy {
 
 	public void input(Controllable c, int value) {
 		if (value < 64)
-			c.decrement();
+			for (int i = 0; i < 64 - value; i++)
+				c.decrement();
+
 		if (value > 64)
-			c.increment();
+			for (int i = 0; i < value - 64; i++)
+				c.increment();
 	}
 
 }
