@@ -17,7 +17,7 @@ public class AutomateByStepControl extends Controllable {
 	}
 
 	public AutomateByStepControl(Parameter p, double increment) {
-		super(p.toString() + " Animator");
+		super(p.toString() + " Automator");
 		parameter = (NumberParameter) p;
 
 		this.increment = increment;

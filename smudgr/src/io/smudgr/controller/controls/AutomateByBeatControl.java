@@ -16,11 +16,11 @@ public class AutomateByBeatControl extends Controllable {
 	private int speed = 5;
 
 	public AutomateByBeatControl() {
-		super("Animator");
+		super("Automate by Beat");
 	}
 
 	public AutomateByBeatControl(Parameter p) {
-		super(p.getParent() + " - " + p.toString() + " Animator");
+		super(p.getParent() + " - " + p.toString() + " Automator");
 		parameter = (NumberParameter) p;
 
 		requestBind();
