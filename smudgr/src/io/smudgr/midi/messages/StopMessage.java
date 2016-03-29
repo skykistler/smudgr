@@ -1,12 +1,12 @@
-package io.smudgr.midi.controller.messages;
+package io.smudgr.midi.messages;
 
 import io.smudgr.controller.controls.Controllable;
 
-public class ContinueMessage implements MidiMessageStrategy {
+public class StopMessage implements MidiMessageStrategy {
 
 	@Override
 	public void input(Controllable c, int value) {
-		c.inputOn(1);
+		c.inputOff(0);
 	}
 
 }

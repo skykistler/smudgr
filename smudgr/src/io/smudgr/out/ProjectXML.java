@@ -20,8 +20,8 @@ import io.smudgr.controller.BaseController;
 import io.smudgr.controller.Controller;
 import io.smudgr.controller.ControllerExtension;
 import io.smudgr.controller.controls.Controllable;
-import io.smudgr.midi.controller.MidiControlMap;
-import io.smudgr.midi.controller.MidiController;
+import io.smudgr.midi.MidiControlMap;
+import io.smudgr.midi.MidiExtension;
 import io.smudgr.source.smudge.Smudge;
 import io.smudgr.source.smudge.alg.Algorithm;
 import io.smudgr.source.smudge.alg.AlgorithmComponent;
@@ -58,7 +58,7 @@ public class ProjectXML {
 
 			MidiControlMap midiMap = null;
 			if (doc.getElementsByTagName("midi").getLength() > 0) {
-				MidiController midiExtension = new MidiController();
+				MidiExtension midiExtension = new MidiExtension();
 				controller.add(midiExtension);
 				midiMap = midiExtension.getMidiMap();
 			}
@@ -187,8 +187,8 @@ public class ProjectXML {
 
 			MidiControlMap midiMap = null;
 			for (ControllerExtension ext : controller.getExtensions())
-				if (ext instanceof MidiController) {
-					midiMap = ((MidiController) ext).getMidiMap();
+				if (ext instanceof MidiExtension) {
+					midiMap = ((MidiExtension) ext).getMidiMap();
 					break;
 				}
 

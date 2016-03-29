@@ -1,4 +1,4 @@
-package io.smudgr.midi.controller;
+package io.smudgr.midi;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,19 +8,19 @@ import javax.sound.midi.MidiMessage;
 import io.smudgr.controller.ControllerExtension;
 import io.smudgr.controller.controls.Controllable;
 import io.smudgr.controller.controls.TimingControl;
-import io.smudgr.midi.controller.messages.AftertouchMessage;
-import io.smudgr.midi.controller.messages.ContinueMessage;
-import io.smudgr.midi.controller.messages.KnobMessage;
-import io.smudgr.midi.controller.messages.MidiMessageStrategy;
-import io.smudgr.midi.controller.messages.NoteOffMessage;
-import io.smudgr.midi.controller.messages.NoteOnMessage;
-import io.smudgr.midi.controller.messages.ResetMessage;
-import io.smudgr.midi.controller.messages.StartMessage;
-import io.smudgr.midi.controller.messages.StopMessage;
-import io.smudgr.midi.controller.messages.TimingClockMessage;
+import io.smudgr.midi.messages.AftertouchMessage;
+import io.smudgr.midi.messages.ContinueMessage;
+import io.smudgr.midi.messages.KnobMessage;
+import io.smudgr.midi.messages.MidiMessageStrategy;
+import io.smudgr.midi.messages.NoteOffMessage;
+import io.smudgr.midi.messages.NoteOnMessage;
+import io.smudgr.midi.messages.ResetMessage;
+import io.smudgr.midi.messages.StartMessage;
+import io.smudgr.midi.messages.StopMessage;
+import io.smudgr.midi.messages.TimingClockMessage;
 import io.smudgr.source.smudge.param.Parameter;
 
-public class MidiController extends ControllerExtension implements DeviceObserver {
+public class MidiExtension extends ControllerExtension implements DeviceObserver {
 
 	private ArrayList<Device> devices;
 	private MidiControlMap midiMap;
@@ -35,7 +35,7 @@ public class MidiController extends ControllerExtension implements DeviceObserve
 	private int lastChannel = -1;
 	private int lastKeyPressed = -1;
 
-	public MidiController() {
+	public MidiExtension() {
 		devices = new ArrayList<Device>();
 		midiMap = new MidiControlMap();
 	}

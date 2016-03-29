@@ -1,4 +1,4 @@
-package io.smudgr.midi.controller.messages;
+package io.smudgr.midi.messages;
 
 import io.smudgr.controller.controls.Controllable;
 

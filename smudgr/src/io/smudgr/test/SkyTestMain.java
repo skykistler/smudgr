@@ -4,7 +4,7 @@ import io.smudgr.controller.BaseController;
 import io.smudgr.controller.Controller;
 import io.smudgr.controller.controls.DownsampleControl;
 import io.smudgr.controller.controls.SaveControl;
-import io.smudgr.midi.controller.MidiController;
+import io.smudgr.midi.MidiExtension;
 import io.smudgr.out.ProjectXML;
 import io.smudgr.source.Image;
 import io.smudgr.source.smudge.Smudge;
@@ -18,7 +18,7 @@ public class SkyTestMain {
 
 	public static Controller make(String filepath) {
 		BaseController controller = new BaseController();
-		controller.add(new MidiController());
+		controller.add(new MidiExtension());
 
 		Smudge smudge = new Smudge();
 
@@ -54,7 +54,7 @@ public class SkyTestMain {
 
 		new NativeView(c, -1, true);
 
-		((MidiController) c.getExtensions().get(0)).bindDevice("Arturia BeatStep Pro");
+		((MidiExtension) c.getExtensions().get(0)).bindDevice("Arturia BeatStep Pro");
 		c.start();
 	}
 }

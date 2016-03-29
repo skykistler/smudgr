@@ -1,4 +1,4 @@
-package io.smudgr.midi.controller;
+package io.smudgr.midi;
 
 import java.util.ArrayList;
 
