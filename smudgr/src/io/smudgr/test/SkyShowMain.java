@@ -8,7 +8,7 @@ import io.smudgr.controller.controls.DownsampleControl;
 import io.smudgr.controller.controls.SaveControl;
 import io.smudgr.controller.controls.SourceControl;
 import io.smudgr.controller.controls.SourceSetControl;
-import io.smudgr.midi.MidiExtension;
+import io.smudgr.ext.midi.MidiExtension;
 import io.smudgr.out.ProjectXML;
 import io.smudgr.source.Image;
 import io.smudgr.source.smudge.Smudge;

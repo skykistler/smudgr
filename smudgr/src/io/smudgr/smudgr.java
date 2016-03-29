@@ -6,8 +6,8 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.URLDecoder;
 
-import io.smudgr.cef.view.CefView;
 import io.smudgr.controller.BaseController;
+import io.smudgr.ext.cef.view.CefView;
 import io.smudgr.source.smudge.Smudge;
 import io.smudgr.source.smudge.alg.Algorithm;
 import io.smudgr.source.smudge.alg.coord.ColumnCoords;

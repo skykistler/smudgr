@@ -8,8 +8,8 @@ import java.util.Scanner;
 
 import javax.sound.midi.MidiMessage;
 
-import io.smudgr.midi.Device;
-import io.smudgr.midi.DeviceObserver;
+import io.smudgr.ext.midi.Device;
+import io.smudgr.ext.midi.DeviceObserver;
 
 public class DeviceTest implements DeviceObserver {
 
