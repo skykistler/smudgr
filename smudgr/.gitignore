@@ -5,3 +5,4 @@ data/*
 **/hs_err_pid*
 **/debug.log
 **/smudgr.jar
+.idea/*
