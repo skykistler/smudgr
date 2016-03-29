@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 import io.smudgr.controller.Controller;
-import io.smudgr.out.FrameOutput;
+import io.smudgr.output.FrameOutput;
 import io.smudgr.source.Frame;
 import io.smudgr.source.Source;
 import io.smudgr.source.smudge.alg.Algorithm;

@@ -5,7 +5,7 @@ import io.smudgr.controller.Controller;
 import io.smudgr.controller.controls.DownsampleControl;
 import io.smudgr.controller.controls.SaveControl;
 import io.smudgr.ext.midi.MidiExtension;
-import io.smudgr.out.ProjectXML;
+import io.smudgr.output.ProjectXML;
 import io.smudgr.source.Image;
 import io.smudgr.source.smudge.Smudge;
 import io.smudgr.source.smudge.alg.Algorithm;
