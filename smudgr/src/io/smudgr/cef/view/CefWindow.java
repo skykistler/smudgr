@@ -48,8 +48,7 @@ public class CefWindow extends JFrame {
 	public void init() {
 		startCef();
 
-		DisplayMode display = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice()
-				.getDisplayMode();
+		DisplayMode display = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode();
 		int width = display.getWidth();
 		int height = display.getHeight();
 		setSize(width, height);
@@ -140,7 +139,7 @@ public class CefWindow extends JFrame {
 
 		cefClient.addDialogHandler(new DialogHandler());
 
-		cefBrowser = cefClient.createBrowser("smudgr://ui/html/main.html", true, false);
+		cefBrowser = cefClient.createBrowser("smudgr://ui/smudgr.html", false, false);
 
 		cefBrowserUI = cefBrowser.getUIComponent();
 	}
