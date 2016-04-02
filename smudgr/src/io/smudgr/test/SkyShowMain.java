@@ -2,8 +2,8 @@ package io.smudgr.test;
 
 import io.smudgr.controller.BaseController;
 import io.smudgr.controller.Controller;
-import io.smudgr.controller.controls.AutomateByStepControl;
 import io.smudgr.controller.controls.AutomateByBeatControl;
+import io.smudgr.controller.controls.AutomateByStepControl;
 import io.smudgr.controller.controls.DownsampleControl;
 import io.smudgr.controller.controls.SaveControl;
 import io.smudgr.controller.controls.SourceControl;
@@ -136,7 +136,7 @@ public class SkyShowMain {
 		DataBend byte_op = new DataBend();
 		byte_op.bind("Amount");
 		byteRep.add(byte_op);
-		controller.add(new AutomateByStepControl(byte_op.getParameter("Target Byte")));
+		controller.add(new AutomateByStepControl(byte_op.getParameter("Target")));
 
 		smudge.add(byteRep);
 
@@ -155,11 +155,11 @@ public class SkyShowMain {
 	}
 
 	public static void main(String[] args) {
-		Controller c = make("data/show.smudge");
+		Controller c = load("data/show.smudge");
 
 		c.getSmudge().setSource(new Image("data/moon ep/banner.png"));
 
-		new NativeView(c, 1, true);
+		new NativeView(c, -1, true);
 
 		((MidiExtension) c.getExtensions().get(0)).bindDevice("Arturia BeatStep Pro");
 		c.start();
