@@ -12,6 +12,10 @@ public class AutomateByStepControl extends Controllable {
 
 	private double increment, speed;
 
+	public AutomateByStepControl() {
+		super("Automator");
+	}
+
 	public AutomateByStepControl(Parameter p) {
 		this(p, .25);
 	}
