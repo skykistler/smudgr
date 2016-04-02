@@ -53,7 +53,9 @@ public class UpdateThread implements Runnable {
 			double now = System.nanoTime();
 			while (now - lastUpdateTime >= timeForUpdate) {
 				try {
-					controller.update();
+					synchronized (controller.getSmudge()) {
+						controller.update();
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 					controller.stop();
