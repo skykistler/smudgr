@@ -43,7 +43,7 @@ public class RenderThread implements Runnable {
 		return finished;
 	}
 
-	private void setTargetFPS(int fps) {
+	public void setTargetFPS(int fps) {
 		targetFrameNs = 1000000000 / fps;
 	}
 

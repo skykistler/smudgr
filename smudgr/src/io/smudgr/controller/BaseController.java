@@ -143,6 +143,7 @@ public class BaseController implements Controller {
 		frameOutput.open();
 
 		updater.setPaused(true);
+		renderer.setTargetFPS(1000 / GifOutput.TARGET_GIF_MS);
 		renderer.startOutput(frameOutput, msToTicks(GifOutput.TARGET_GIF_MS));
 	}
 
@@ -151,6 +152,7 @@ public class BaseController implements Controller {
 			return;
 
 		frameOutput.close();
+		renderer.setTargetFPS(TARGET_FPS);
 		updater.setPaused(false);
 	}
 
