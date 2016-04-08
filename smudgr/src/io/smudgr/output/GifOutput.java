@@ -111,7 +111,7 @@ public class GifOutput implements FrameOutput {
 		graphicsControlExtensionNode.setAttribute("disposalMethod", "none");
 		graphicsControlExtensionNode.setAttribute("userInputFlag", "FALSE");
 		graphicsControlExtensionNode.setAttribute("transparentColorFlag", "FALSE");
-		graphicsControlExtensionNode.setAttribute("delayTime", (frame.getDelayMs() / 10) + "");
+		graphicsControlExtensionNode.setAttribute("delayTime", Integer.toString((int) (frame.getDelayMs() / 10d)));
 		graphicsControlExtensionNode.setAttribute("transparentColorIndex", "0");
 
 		// Reuse these nodes each frame

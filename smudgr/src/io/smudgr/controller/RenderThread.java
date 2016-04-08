@@ -37,6 +37,7 @@ public class RenderThread implements Runnable {
 
 	public void stopOutput() {
 		output = null;
+		everyXTicks = 0;
 	}
 
 	public boolean isFinished() {
@@ -55,7 +56,7 @@ public class RenderThread implements Runnable {
 		while (running) {
 			try {
 				if (output != null)
-					for (int i = 0; i < everyXTicks; i++)
+					for (int i = 0; i <= everyXTicks; i++)
 						controller.update();
 
 				controller.getSmudge().render();
@@ -78,8 +79,7 @@ public class RenderThread implements Runnable {
 				frames = 0;
 			}
 
-			if (output == null)
-				enforceFrameRate();
+			enforceFrameRate();
 
 			lastFrameNs = System.nanoTime();
 		}

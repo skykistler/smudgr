@@ -5,6 +5,7 @@ import io.smudgr.controller.Controller;
 import io.smudgr.controller.controls.AutomateByBeatControl;
 import io.smudgr.controller.controls.AutomateByStepControl;
 import io.smudgr.controller.controls.DownsampleControl;
+import io.smudgr.controller.controls.GifControl;
 import io.smudgr.controller.controls.SaveControl;
 import io.smudgr.controller.controls.SourceControl;
 import io.smudgr.controller.controls.SourceSetControl;
@@ -34,7 +35,7 @@ public class SkyShowMain {
 		// Make smudge
 		Smudge smudge = new Smudge();
 		smudge.bind("Enable");
-		controller.add(new SourceSetControl("data/oceans"));
+		controller.add(new SourceSetControl("data/venture/noise show"));
 
 		Algorithm sort = new Algorithm();
 		sort.bind("Enable");
@@ -142,6 +143,7 @@ public class SkyShowMain {
 
 		controller.add(new DownsampleControl(1));
 		controller.add(new SaveControl(filepath));
+		controller.add(new GifControl("show_record"));
 		controller.add(new SourceControl());
 
 		controller.setSmudge(smudge);
@@ -157,11 +159,11 @@ public class SkyShowMain {
 	public static void main(String[] args) {
 		Controller c = load("data/show.smudge");
 
-		c.getSmudge().setSource(new Image("data/moon ep/banner.png"));
+		c.getSmudge().setSource(new Image("data/venture/noise show/lilly 2.png"));
 
 		new NativeView(c, -1, true);
 
-		((MidiExtension) c.getExtensions().get(0)).bindDevice("Arturia BeatStep Pro");
+		((MidiExtension) c.getExtensions().get(0)).bindDevice("Arturia BeatStepPro");
 		c.start();
 	}
 

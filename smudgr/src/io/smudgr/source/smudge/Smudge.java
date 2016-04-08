@@ -49,13 +49,18 @@ public class Smudge extends Parametric implements Source {
 			source.update();
 	}
 
-	public synchronized void render() {
+	public void render() {
 		if (source == null || source == this) {
 			lastFrame = null;
 			return;
 		}
 
 		Frame toRender = source.getFrame();
+		if (toRender == null) {
+			lastFrame = null;
+			return;
+		}
+
 		if (downsample > 1) {
 			int w = Math.max(toRender.getWidth() / downsample, 1);
 			int h = Math.max(toRender.getHeight() / downsample, 1);

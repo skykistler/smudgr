@@ -46,8 +46,9 @@ public class Gif implements Source {
 
 		ticks++;
 
-		if (currentFrame >= buffer.size() || currentFrame < 0)
-			return;
+		if (currentFrame >= buffer.size() || currentFrame < 0) {
+			currentFrame = 0;
+		}
 
 		int delay = BaseController.getInstance().ticksToMs(ticks);
 		GifFrame frame = buffer.get(currentFrame);
@@ -62,7 +63,7 @@ public class Gif implements Source {
 	}
 
 	public Frame getFrame() {
-		if (bufferer == null || !bufferer.started || buffer.size() == 0 || currentFrame < 0 || currentFrame >= buffer.size()) {
+		if (bufferer == null || !bufferer.started || buffer == null || buffer.size() == 0 || currentFrame < 0 || currentFrame >= buffer.size()) {
 			return lastFrame;
 		}
 

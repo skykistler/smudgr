@@ -128,11 +128,11 @@ public class BaseController implements Controller {
 	}
 
 	public int ticksToMs(int ticks) {
-		return (int) (ticks * (updater.getTicksPerSecond() / 1000));
+		return (int) (ticks / (updater.getTicksPerSecond() / 1000));
 	}
 
 	public int msToTicks(int ms) {
-		return (int) (ms * (1000 / updater.getTicksPerSecond()));
+		return (int) (ms / (1000 / updater.getTicksPerSecond()));
 	}
 
 	public void startGifOutput(String filename) {
@@ -152,8 +152,11 @@ public class BaseController implements Controller {
 			return;
 
 		frameOutput.close();
+		renderer.stopOutput();
 		renderer.setTargetFPS(TARGET_FPS);
 		updater.setPaused(false);
+
+		frameOutput = null;
 	}
 
 	public Smudge getSmudge() {
