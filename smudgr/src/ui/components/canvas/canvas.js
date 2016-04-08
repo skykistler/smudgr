@@ -1,4 +1,4 @@
-function CanvasCtrl($scope, $element, $attrs) {
+function CanvasCtrl($scope, $http) {
 
 }
 
