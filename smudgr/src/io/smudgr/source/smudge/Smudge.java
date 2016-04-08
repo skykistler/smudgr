@@ -23,7 +23,7 @@ public class Smudge extends Parametric implements Source {
 	private ArrayList<Integer> algorithm_ids = new ArrayList<Integer>(1000);
 	private Random idPicker = new Random();
 
-	private Frame lastFrame;
+	private volatile Frame lastFrame;
 	private int downsample = 1;
 
 	public Smudge() {
@@ -49,7 +49,7 @@ public class Smudge extends Parametric implements Source {
 			source.update();
 	}
 
-	public void render() {
+	public synchronized void render() {
 		if (source == null || source == this) {
 			lastFrame = null;
 			return;
@@ -72,7 +72,7 @@ public class Smudge extends Parametric implements Source {
 		lastFrame = toRender;
 	}
 
-	public synchronized Frame getFrame() {
+	public Frame getFrame() {
 		return lastFrame;
 	}
 
