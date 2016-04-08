@@ -54,11 +54,9 @@ public class RenderThread implements Runnable {
 
 		while (running) {
 			try {
-				if (output != null) {
-					for (int i = 0; i < everyXTicks; i++) {
+				if (output != null)
+					for (int i = 0; i < everyXTicks; i++)
 						controller.update();
-					}
-				}
 
 				controller.getSmudge().render();
 
