@@ -1,8 +1,8 @@
 package io.smudgr.ext.cef.view;
 
 import io.smudgr.controller.Controller;
-import io.smudgr.source.Frame;
-import io.smudgr.source.Source;
+import io.smudgr.smudge.source.Frame;
+import io.smudgr.smudge.source.Source;
 import io.smudgr.view.View;
 
 public class CefView implements View {

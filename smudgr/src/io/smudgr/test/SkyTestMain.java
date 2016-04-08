@@ -8,11 +8,11 @@ import io.smudgr.controller.controls.GifControl;
 import io.smudgr.controller.controls.SaveControl;
 import io.smudgr.ext.midi.MidiExtension;
 import io.smudgr.output.ProjectXML;
-import io.smudgr.source.Image;
-import io.smudgr.source.smudge.Smudge;
-import io.smudgr.source.smudge.alg.Algorithm;
-import io.smudgr.source.smudge.alg.op.DataBend;
-import io.smudgr.source.smudge.alg.select.RangeSelect;
+import io.smudgr.smudge.Smudge;
+import io.smudgr.smudge.alg.Algorithm;
+import io.smudgr.smudge.alg.op.DataBend;
+import io.smudgr.smudge.alg.select.RangeSelect;
+import io.smudgr.smudge.source.Image;
 import io.smudgr.view.NativeView;
 
 public class SkyTestMain {

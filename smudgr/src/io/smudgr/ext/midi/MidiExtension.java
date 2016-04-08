@@ -18,7 +18,7 @@ import io.smudgr.ext.midi.messages.ResetMessage;
 import io.smudgr.ext.midi.messages.StartMessage;
 import io.smudgr.ext.midi.messages.StopMessage;
 import io.smudgr.ext.midi.messages.TimingClockMessage;
-import io.smudgr.source.smudge.param.Parameter;
+import io.smudgr.smudge.param.Parameter;
 
 public class MidiExtension extends ControllerExtension implements DeviceObserver {
 

@@ -6,7 +6,7 @@ import java.util.Random;
 import io.smudgr.controller.controls.Controllable;
 import io.smudgr.output.FrameOutput;
 import io.smudgr.output.GifOutput;
-import io.smudgr.source.smudge.Smudge;
+import io.smudgr.smudge.Smudge;
 import io.smudgr.view.View;
 
 public class BaseController implements Controller {

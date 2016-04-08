@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import io.smudgr.source.Frame;
+import io.smudgr.smudge.source.Frame;
 
 public class ImageOutput implements FrameOutput {
 	private String name;

@@ -1,9 +1,9 @@
 package io.smudgr.controller.controls;
 
-import io.smudgr.source.smudge.alg.Algorithm;
-import io.smudgr.source.smudge.alg.AlgorithmComponent;
-import io.smudgr.source.smudge.param.NumberParameter;
-import io.smudgr.source.smudge.param.Parameter;
+import io.smudgr.smudge.alg.Algorithm;
+import io.smudgr.smudge.alg.AlgorithmComponent;
+import io.smudgr.smudge.param.NumberParameter;
+import io.smudgr.smudge.param.Parameter;
 
 public class AutomateByStepControl extends Controllable {
 

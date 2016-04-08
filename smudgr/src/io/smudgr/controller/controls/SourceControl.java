@@ -1,7 +1,7 @@
 package io.smudgr.controller.controls;
 
-import io.smudgr.source.Source;
-import io.smudgr.source.SourceSet;
+import io.smudgr.smudge.source.Source;
+import io.smudgr.smudge.source.SourceSet;
 
 public class SourceControl extends Controllable {
 

@@ -9,7 +9,7 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
-import io.smudgr.source.Frame;
+import io.smudgr.smudge.source.Frame;
 
 public class RenderFrame extends JFrame {
 

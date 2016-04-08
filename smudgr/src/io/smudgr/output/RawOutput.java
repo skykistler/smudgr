@@ -1,6 +1,6 @@
 package io.smudgr.output;
 
-import io.smudgr.source.Frame;
+import io.smudgr.smudge.source.Frame;
 
 public class RawOutput implements FrameOutput {
 

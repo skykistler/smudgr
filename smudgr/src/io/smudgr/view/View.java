@@ -1,6 +1,6 @@
 package io.smudgr.view;
 
-import io.smudgr.source.Source;
+import io.smudgr.smudge.source.Source;
 
 public interface View {
 	public void start();

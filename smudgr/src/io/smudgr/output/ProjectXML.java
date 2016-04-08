@@ -22,11 +22,11 @@ import io.smudgr.controller.ControllerExtension;
 import io.smudgr.controller.controls.Controllable;
 import io.smudgr.ext.midi.MidiControlMap;
 import io.smudgr.ext.midi.MidiExtension;
-import io.smudgr.source.smudge.Smudge;
-import io.smudgr.source.smudge.alg.Algorithm;
-import io.smudgr.source.smudge.alg.AlgorithmComponent;
-import io.smudgr.source.smudge.param.Parameter;
-import io.smudgr.source.smudge.param.Parametric;
+import io.smudgr.smudge.Smudge;
+import io.smudgr.smudge.alg.Algorithm;
+import io.smudgr.smudge.alg.AlgorithmComponent;
+import io.smudgr.smudge.param.Parameter;
+import io.smudgr.smudge.param.Parametric;
 
 public class ProjectXML {
 	public static final String extension = ".smudge";

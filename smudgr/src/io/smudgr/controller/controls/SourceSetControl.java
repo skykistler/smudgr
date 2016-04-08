@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import io.smudgr.source.SourceSet;
+import io.smudgr.smudge.source.SourceSet;
 
 public class SourceSetControl extends Controllable {
 

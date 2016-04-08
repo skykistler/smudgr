@@ -16,7 +16,7 @@ import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.imageio.stream.ImageOutputStream;
 
-import io.smudgr.source.Frame;
+import io.smudgr.smudge.source.Frame;
 
 public class GifOutput implements FrameOutput {
 	public final static int TARGET_GIF_MS = 50;

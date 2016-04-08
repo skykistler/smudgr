@@ -8,16 +8,16 @@ import io.smudgr.controller.controls.SourceControl;
 import io.smudgr.controller.controls.SourceSetControl;
 import io.smudgr.ext.midi.MidiExtension;
 import io.smudgr.output.ProjectXML;
-import io.smudgr.source.Image;
-import io.smudgr.source.smudge.Smudge;
-import io.smudgr.source.smudge.alg.Algorithm;
-import io.smudgr.source.smudge.alg.coord.AllCoords;
-import io.smudgr.source.smudge.alg.coord.RowCoords;
-import io.smudgr.source.smudge.alg.coord.SkewedCoords;
-import io.smudgr.source.smudge.alg.op.DataBend;
-import io.smudgr.source.smudge.alg.op.PixelSort;
-import io.smudgr.source.smudge.alg.select.EdgeSelect;
-import io.smudgr.source.smudge.alg.select.RangeSelect;
+import io.smudgr.smudge.Smudge;
+import io.smudgr.smudge.alg.Algorithm;
+import io.smudgr.smudge.alg.coord.AllCoords;
+import io.smudgr.smudge.alg.coord.RowCoords;
+import io.smudgr.smudge.alg.coord.SkewedCoords;
+import io.smudgr.smudge.alg.op.DataBend;
+import io.smudgr.smudge.alg.op.PixelSort;
+import io.smudgr.smudge.alg.select.EdgeSelect;
+import io.smudgr.smudge.alg.select.RangeSelect;
+import io.smudgr.smudge.source.Image;
 import io.smudgr.view.NativeView;
 
 public class EricMain {

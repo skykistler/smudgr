@@ -3,7 +3,7 @@ package io.smudgr.controller;
 import java.util.ArrayList;
 
 import io.smudgr.controller.controls.Controllable;
-import io.smudgr.source.smudge.Smudge;
+import io.smudgr.smudge.Smudge;
 import io.smudgr.view.View;
 
 public interface Controller {

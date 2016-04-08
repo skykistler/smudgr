@@ -6,9 +6,9 @@ import javax.swing.SwingUtilities;
 
 import io.smudgr.ext.cef.controller.util.FileDialog;
 import io.smudgr.ext.cef.view.CefView;
-import io.smudgr.source.Source;
-import io.smudgr.source.SourceFactory;
-import io.smudgr.source.smudge.Smudge;
+import io.smudgr.smudge.Smudge;
+import io.smudgr.smudge.source.Source;
+import io.smudgr.smudge.source.SourceFactory;
 
 public class OpenFileDialog implements CefMessageStrategy {
 

@@ -8,12 +8,12 @@ import java.net.URLDecoder;
 
 import io.smudgr.controller.BaseController;
 import io.smudgr.ext.cef.view.CefView;
-import io.smudgr.source.smudge.Smudge;
-import io.smudgr.source.smudge.alg.Algorithm;
-import io.smudgr.source.smudge.alg.coord.ColumnCoords;
-import io.smudgr.source.smudge.alg.op.Marbeler;
-import io.smudgr.source.smudge.alg.op.PixelSort;
-import io.smudgr.source.smudge.alg.select.RangeSelect;
+import io.smudgr.smudge.Smudge;
+import io.smudgr.smudge.alg.Algorithm;
+import io.smudgr.smudge.alg.coord.ColumnCoords;
+import io.smudgr.smudge.alg.op.Marbeler;
+import io.smudgr.smudge.alg.op.PixelSort;
+import io.smudgr.smudge.alg.select.RangeSelect;
 
 public class smudgr {
 
