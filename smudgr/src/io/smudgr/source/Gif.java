@@ -18,13 +18,15 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import io.smudgr.controller.BaseController;
+
 public class Gif implements Source {
 	private String filename;
 
 	private BufferThread bufferer;
 	private volatile ArrayList<GifFrame> buffer;
 
-	private long lastFrameSwitch;
+	private int ticks;
 	private int currentFrame;
 
 	private Frame lastFrame;
@@ -42,23 +44,19 @@ public class Gif implements Source {
 		if (buffer == null || buffer.size() == 0)
 			return;
 
-		long now = System.currentTimeMillis();
-		if (lastFrameSwitch == 0) {
-			lastFrameSwitch = now;
-			return;
-		}
+		ticks++;
 
 		if (currentFrame >= buffer.size() || currentFrame < 0)
 			return;
 
-		long delay = now - lastFrameSwitch;
+		int delay = BaseController.getInstance().ticksToMs(ticks);
 		GifFrame frame = buffer.get(currentFrame);
 
 		if (frame != null)
 			if (frame.getDelay() <= delay) {
 				currentFrame++;
 				currentFrame %= buffer.size();
-				lastFrameSwitch = now;
+				ticks = 0;
 			}
 
 	}

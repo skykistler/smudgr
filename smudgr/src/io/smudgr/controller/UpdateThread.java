@@ -4,8 +4,8 @@ public class UpdateThread implements Runnable {
 
 	private BaseController controller;
 	private Thread thread;
-	private volatile boolean running, paused;
-	private boolean finished;
+	private double ticksPerSecond;
+	private boolean running, paused, finished;
 
 	public UpdateThread(BaseController c) {
 		controller = c;
@@ -24,6 +24,10 @@ public class UpdateThread implements Runnable {
 	public void stop() {
 		running = false;
 		thread.interrupt();
+	}
+
+	public double getTicksPerSecond() {
+		return ticksPerSecond;
 	}
 
 	public boolean isFinished() {
@@ -46,7 +50,7 @@ public class UpdateThread implements Runnable {
 			}
 
 			double beatsPerSecond = controller.getBPM() / 60.0;
-			double ticksPerSecond = Math.ceil(BaseController.TICKS_PER_BEAT * beatsPerSecond);
+			ticksPerSecond = Math.ceil(BaseController.TICKS_PER_BEAT * beatsPerSecond);
 			double timeForUpdate = nsInSecond / ticksPerSecond;
 
 			// Update enough to catch up

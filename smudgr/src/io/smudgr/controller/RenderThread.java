@@ -1,18 +1,22 @@
 package io.smudgr.controller;
 
-import javax.swing.SwingUtilities;
-
-import io.smudgr.view.View;
+import io.smudgr.output.FrameOutput;
 
 public class RenderThread implements Runnable {
 
-	private View view;
+	private Controller controller;
 	private Thread thread;
+	private long targetFrameNs, lastFrameNs;
 	private volatile boolean running;
 	private boolean finished;
 
-	public RenderThread(View v) {
-		view = v;
+	private FrameOutput output;
+	private int everyXTicks;
+
+	public RenderThread(Controller controller) {
+		this.controller = controller;
+
+		setTargetFPS(BaseController.TARGET_FPS);
 	}
 
 	public void start() {
@@ -26,24 +30,45 @@ public class RenderThread implements Runnable {
 		thread.interrupt();
 	}
 
+	public void startOutput(FrameOutput output, int everyXTicks) {
+		this.output = output;
+		this.everyXTicks = everyXTicks;
+	}
+
+	public void stopOutput() {
+		output = null;
+	}
+
 	public boolean isFinished() {
 		return finished;
 	}
 
-	public void run() {
-		long targetFrameNs = 1000000000 / BaseController.TARGET_FPS;
+	private void setTargetFPS(int fps) {
+		targetFrameNs = 1000000000 / fps;
+	}
 
-		long lastFrame = System.nanoTime();
+	public void run() {
+		lastFrameNs = System.nanoTime();
 		long timer = System.currentTimeMillis();
 		int frames = 0;
 
 		while (running) {
 			try {
-				view.update();
+				if (output != null) {
+					for (int i = 0; i < everyXTicks; i++) {
+						controller.update();
+					}
+				}
+
+				controller.getSmudge().render();
+
+				if (output != null)
+					output.addFrame(controller.getSmudge().getFrame());
+
 			} catch (IllegalStateException e) {
 				e.printStackTrace();
 				System.out.println("Rendering stopped.");
-				view.getController().stop();
+				controller.stop();
 			}
 
 			frames++;
@@ -55,27 +80,26 @@ public class RenderThread implements Runnable {
 				frames = 0;
 			}
 
-			long diff = System.nanoTime() - lastFrame;
-			if (diff < targetFrameNs) {
-				try {
-					diff = lastFrame - System.nanoTime() + targetFrameNs;
-					long ms = (long) Math.floor(diff / 1000000.0);
-					int ns = (int) (diff % 1000000);
-					Thread.sleep(Math.max(ms, 0), Math.max(ns, 0));
-				} catch (Exception e) {
-				}
-			}
+			if (output == null)
+				enforceFrameRate();
 
-			lastFrame = System.nanoTime();
+			lastFrameNs = System.nanoTime();
 		}
 
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				view.stop();
-			}
-		});
-
 		finished = true;
+	}
+
+	public void enforceFrameRate() {
+		long diff = System.nanoTime() - lastFrameNs;
+		if (diff < targetFrameNs) {
+			try {
+				diff = lastFrameNs - System.nanoTime() + targetFrameNs;
+				long ms = (long) Math.floor(diff / 1000000.0);
+				int ns = (int) (diff % 1000000);
+				Thread.sleep(Math.max(ms, 0), Math.max(ns, 0));
+			} catch (Exception e) {
+			}
+		}
 	}
 
 }

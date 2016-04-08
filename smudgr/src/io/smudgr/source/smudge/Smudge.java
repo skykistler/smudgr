@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Random;
 
 import io.smudgr.controller.Controller;
-import io.smudgr.output.FrameOutput;
 import io.smudgr.source.Frame;
 import io.smudgr.source.Source;
 import io.smudgr.source.smudge.alg.Algorithm;
@@ -26,8 +25,6 @@ public class Smudge extends Parametric implements Source {
 
 	private Frame lastFrame;
 	private int downsample = 1;
-
-	private FrameOutput output;
 
 	public Smudge() {
 		for (int i = 0; i < 1000; i++)
@@ -52,15 +49,13 @@ public class Smudge extends Parametric implements Source {
 			source.update();
 	}
 
-	public synchronized Frame getFrame() {
-		if (source == null || source == this)
-			return null;
+	public void render() {
+		if (source == null || source == this) {
+			lastFrame = null;
+			return;
+		}
 
 		Frame toRender = source.getFrame();
-
-		if (toRender == null)
-			return lastFrame;
-
 		if (downsample > 1) {
 			int w = Math.max(toRender.getWidth() / downsample, 1);
 			int h = Math.max(toRender.getHeight() / downsample, 1);
@@ -74,10 +69,11 @@ public class Smudge extends Parametric implements Source {
 			for (Algorithm a : getAlgorithms())
 				a.apply(toRender);
 
-		if (output != null)
-			output.addFrame(toRender);
+		lastFrame = toRender;
+	}
 
-		return lastFrame = toRender;
+	public synchronized Frame getFrame() {
+		return lastFrame;
 	}
 
 	public Source getSource() {
@@ -130,31 +126,9 @@ public class Smudge extends Parametric implements Source {
 		return algorithms.values();
 	}
 
-	// public void saveFrame() {
-	// output = new ImageOutput(Long.toString(System.currentTimeMillis()),
-	// lastFrame.getWidth(),
-	// lastFrame.getHeight());
-	// output.addFrame(lastFrame);
-	// output.close();
-	// }
-	//
-	// public void startGifOutput() {
-	// output = new GifOutput(Long.toString(System.currentTimeMillis()), 30,
-	// true);
-	// output.addFrame(lastFrame);
-	// }
-
-	// public void finishGifOutput() {
-	// output.close();
-	// output = null;
-	// }
-
 	public void dispose() {
 		if (source != null)
 			source.dispose();
-
-		if (output != null)
-			output.close();
 	}
 
 	public String getName() {

@@ -4,10 +4,19 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import io.smudgr.controller.controls.Controllable;
+import io.smudgr.output.FrameOutput;
+import io.smudgr.output.GifOutput;
 import io.smudgr.source.smudge.Smudge;
 import io.smudgr.view.View;
 
 public class BaseController implements Controller {
+
+	private static volatile BaseController instance;
+
+	public static BaseController getInstance() {
+		return instance;
+	}
+
 	public static final int TARGET_FPS = 60;
 	public static final int TICKS_PER_BEAT = 50;
 
@@ -16,6 +25,7 @@ public class BaseController implements Controller {
 
 	private UpdateThread updater;
 	private RenderThread renderer;
+	private ViewThread viewer;
 	private boolean started;
 	private int beatsPerMinute = 120;
 
@@ -25,9 +35,13 @@ public class BaseController implements Controller {
 
 	private ArrayList<ControllerExtension> extensions = new ArrayList<ControllerExtension>();
 
+	private FrameOutput frameOutput;
+
 	public BaseController() {
 		for (int i = 0; i < 1000; i++)
 			control_ids.add(i);
+
+		instance = this;
 	}
 
 	public void start() {
@@ -61,11 +75,13 @@ public class BaseController implements Controller {
 		view.setSource(smudge);
 
 		updater = new UpdateThread(this);
-		renderer = new RenderThread(view);
+		renderer = new RenderThread(this);
+		viewer = new ViewThread(this);
 
 		started = true;
 		updater.start();
 		renderer.start();
+		viewer.start();
 	}
 
 	public void pause() {
@@ -97,6 +113,7 @@ public class BaseController implements Controller {
 		System.out.println("Stopping...");
 		updater.stop();
 		renderer.stop();
+		viewer.stop();
 
 		if (smudge != null)
 			smudge.dispose();
@@ -108,6 +125,33 @@ public class BaseController implements Controller {
 		} finally {
 			System.exit(0);
 		}
+	}
+
+	public int ticksToMs(int ticks) {
+		return (int) (ticks * (updater.getTicksPerSecond() / 1000));
+	}
+
+	public int msToTicks(int ms) {
+		return (int) (ms * (1000 / updater.getTicksPerSecond()));
+	}
+
+	public void startGifOutput(String filename) {
+		if (frameOutput != null)
+			return;
+
+		frameOutput = new GifOutput("data/" + filename + "_" + System.currentTimeMillis() + ".gif");
+		frameOutput.open();
+
+		updater.setPaused(true);
+		renderer.startOutput(frameOutput, msToTicks(GifOutput.TARGET_GIF_MS));
+	}
+
+	public void stopGifOutput() {
+		if (frameOutput == null || !(frameOutput instanceof GifOutput))
+			return;
+
+		frameOutput.close();
+		updater.setPaused(false);
 	}
 
 	public Smudge getSmudge() {

@@ -3,6 +3,7 @@ package io.smudgr.output;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.imageio.IIOImage;
@@ -18,19 +19,24 @@ import javax.imageio.stream.ImageOutputStream;
 import io.smudgr.source.Frame;
 
 public class GifOutput implements FrameOutput {
+	public final static int TARGET_GIF_MS = 50;
+
 	private String path;
-	private int delay;
-	private int loop;
+
+	private ArrayList<GifFrame> frames = new ArrayList<GifFrame>();
 
 	private ImageOutputStream output;
 	private ImageWriter gifWriter;
 	private ImageWriteParam imageWriteParam;
-	private IIOMetadata imageMetaData;
+	private ImageTypeSpecifier imageTypeSpecifier;
 
-	public GifOutput(String path, int delayMS, boolean loop) {
+	private IIOMetadataNode commentsNode;
+	private IIOMetadataNode appExtensionsNode;
+
+	private boolean closed;
+
+	public GifOutput(String path) {
 		this.path = path;
-		this.delay = delayMS;
-		this.loop = loop ? 0 : 1;
 	}
 
 	public void open() {
@@ -39,74 +45,101 @@ public class GifOutput implements FrameOutput {
 		gifWriter = iter.next();
 
 		imageWriteParam = gifWriter.getDefaultWriteParam();
-		ImageTypeSpecifier imageTypeSpecifier = ImageTypeSpecifier.createFromBufferedImageType(BufferedImage.TYPE_INT_RGB);
+		imageTypeSpecifier = ImageTypeSpecifier.createFromBufferedImageType(BufferedImage.TYPE_INT_RGB);
 
-		imageMetaData = gifWriter.getDefaultImageMetadata(imageTypeSpecifier, imageWriteParam);
+		// Make necessary comment node
+		commentsNode = new IIOMetadataNode("CommentExtensions");
+		commentsNode.setAttribute("CommentExtension", "Made with smudgr");
 
-		String metaFormatName = imageMetaData.getNativeMetadataFormatName();
-
-		IIOMetadataNode root = (IIOMetadataNode) imageMetaData.getAsTree(metaFormatName);
-
-		IIOMetadataNode graphicsControlExtensionNode = getNode(root, "GraphicControlExtension");
-
-		graphicsControlExtensionNode.setAttribute("disposalMethod", "none");
-		graphicsControlExtensionNode.setAttribute("userInputFlag", "FALSE");
-		graphicsControlExtensionNode.setAttribute("transparentColorFlag", "FALSE");
-		graphicsControlExtensionNode.setAttribute("delayTime", Integer.toString(delay / 10));
-		graphicsControlExtensionNode.setAttribute("transparentColorIndex", "0");
-
-		IIOMetadataNode commentsNode = getNode(root, "CommentExtensions");
-		commentsNode.setAttribute("CommentExtension", "Created by MAH");
-
-		IIOMetadataNode appEntensionsNode = getNode(root, "ApplicationExtensions");
-
+		// Make necessary app extensions node
+		appExtensionsNode = new IIOMetadataNode("ApplicationExtensions");
 		IIOMetadataNode child = new IIOMetadataNode("ApplicationExtension");
-
 		child.setAttribute("applicationID", "NETSCAPE");
 		child.setAttribute("authenticationCode", "2.0");
+		child.setUserObject(new byte[] { 0x1, 0, 0 });
+		appExtensionsNode.appendChild(child);
 
-		child.setUserObject(new byte[] { 0x1, (byte) (loop & 0xFF), (byte) ((loop >> 8) & 0xFF) });
-		appEntensionsNode.appendChild(child);
+		// Set output file
 		try {
-			imageMetaData.setFromTree(metaFormatName, root);
-
 			output = new FileImageOutputStream(new File(path));
 			gifWriter.setOutput(output);
-
-			gifWriter.prepareWriteSequence(null);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public void addFrame(Frame f) {
-		try {
-			gifWriter.writeToSequence(new IIOImage(f.getBufferedImage(), null, imageMetaData), imageWriteParam);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		if (closed)
+			return;
+
+		frames.add(new GifFrame(f, TARGET_GIF_MS));
 	}
 
 	public void close() {
-		try {
-			gifWriter.endWriteSequence();
-			output.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
+		if (closed || frames.size() == 0)
+			return;
+
+		closed = true;
+
+		(new Thread() {
+			public void run() {
+				try {
+					gifWriter.prepareWriteSequence(null);
+
+					for (GifFrame gf : frames)
+						writeFrame(gf);
+
+					gifWriter.endWriteSequence();
+					output.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
 	}
 
-	private static IIOMetadataNode getNode(IIOMetadataNode rootNode, String nodeName) {
-		int nNodes = rootNode.getLength();
-		for (int i = 0; i < nNodes; i++) {
-			if (rootNode.item(i).getNodeName().compareToIgnoreCase(nodeName) == 0) {
-				return ((IIOMetadataNode) rootNode.item(i));
-			}
-		}
-		IIOMetadataNode node = new IIOMetadataNode(nodeName);
-		rootNode.appendChild(node);
+	private void writeFrame(GifFrame frame) throws IOException {
+		IIOMetadata imageMetaData = gifWriter.getDefaultImageMetadata(imageTypeSpecifier, imageWriteParam);
 
-		return node;
+		String metaFormatName = imageMetaData.getNativeMetadataFormatName();
+
+		IIOMetadataNode root = (IIOMetadataNode) imageMetaData.getAsTree(metaFormatName);
+
+		// Make new graphics node for each frame, in order to set delay
+		IIOMetadataNode graphicsControlExtensionNode = new IIOMetadataNode("GraphicControlExtension");
+		graphicsControlExtensionNode.setAttribute("disposalMethod", "none");
+		graphicsControlExtensionNode.setAttribute("userInputFlag", "FALSE");
+		graphicsControlExtensionNode.setAttribute("transparentColorFlag", "FALSE");
+		graphicsControlExtensionNode.setAttribute("delayTime", (frame.getDelayMs() / 10) + "");
+		graphicsControlExtensionNode.setAttribute("transparentColorIndex", "0");
+
+		// Reuse these nodes each frame
+		root.appendChild(commentsNode);
+		root.appendChild(appExtensionsNode);
+
+		imageMetaData.setFromTree(metaFormatName, root);
+
+		gifWriter.writeToSequence(new IIOImage(frame.getFrame().getBufferedImage(), null, imageMetaData), imageWriteParam);
+	}
+
+	private class GifFrame {
+		private Frame frame;
+		private int delayMs;
+
+		public GifFrame(Frame frame, int delayMs) {
+			this.frame = frame;
+			this.delayMs = delayMs;
+		}
+
+		public Frame getFrame() {
+			return frame;
+		}
+
+		public int getDelayMs() {
+			return delayMs;
+		}
+
 	}
 
 }
