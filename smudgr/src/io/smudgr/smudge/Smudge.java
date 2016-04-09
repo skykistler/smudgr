@@ -1,7 +1,6 @@
 package io.smudgr.smudge;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -20,6 +19,7 @@ public class Smudge extends Parametric implements Source {
 
 	private Source source;
 	private HashMap<Integer, Algorithm> algorithms = new HashMap<Integer, Algorithm>();
+	private ArrayList<Algorithm> orderedAlgorithms = new ArrayList<Algorithm>();
 	private ArrayList<Integer> algorithm_ids = new ArrayList<Integer>(1000);
 	private Random idPicker = new Random();
 
@@ -121,14 +121,16 @@ public class Smudge extends Parametric implements Source {
 
 		algorithms.put(id_num, alg);
 		alg.setSmudge(this);
+
+		orderedAlgorithms.add(alg);
 	}
 
 	public Algorithm getAlgorithm(int id) {
 		return algorithms.get(id);
 	}
 
-	public Collection<Algorithm> getAlgorithms() {
-		return algorithms.values();
+	public ArrayList<Algorithm> getAlgorithms() {
+		return orderedAlgorithms;
 	}
 
 	public void dispose() {
