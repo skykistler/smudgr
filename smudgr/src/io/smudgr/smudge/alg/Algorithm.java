@@ -1,7 +1,6 @@
 package io.smudgr.smudge.alg;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -26,6 +25,7 @@ public class Algorithm extends Parametric {
 	private CoordFunction coordFunction;
 
 	private HashMap<Integer, AlgorithmComponent> components = new HashMap<Integer, AlgorithmComponent>();
+	private ArrayList<AlgorithmComponent> orderedComponents = new ArrayList<AlgorithmComponent>();
 	private ArrayList<Integer> component_ids = new ArrayList<Integer>(1000);
 	private Random idPicker = new Random();
 
@@ -112,14 +112,15 @@ public class Algorithm extends Parametric {
 			setCoordFunction((CoordFunction) component);
 
 		components.put(id_num, component);
+		orderedComponents.add(component);
 	}
 
 	public AlgorithmComponent getComponent(int id) {
 		return components.get(id);
 	}
 
-	public Collection<AlgorithmComponent> getComponents() {
-		return components.values();
+	public ArrayList<AlgorithmComponent> getComponents() {
+		return orderedComponents;
 	}
 
 	private void setBound(Bound bound) {
