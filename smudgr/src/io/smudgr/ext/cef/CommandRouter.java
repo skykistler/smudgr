@@ -10,11 +10,11 @@ import org.cef.handler.CefMessageRouterHandlerAdapter;
 import io.smudgr.ext.cef.messages.CefMessageStrategy;
 import io.smudgr.reflect.Reflect;
 
-public class SmudgrQueryRouter extends CefMessageRouterHandlerAdapter {
+public class CommandRouter extends CefMessageRouterHandlerAdapter {
 
 	private HashMap<String, CefMessageStrategy> messageStrategies = new HashMap<String, CefMessageStrategy>();
 
-	public SmudgrQueryRouter() {
+	public CommandRouter() {
 		Reflect messageReflection = new Reflect("io.smudgr.ext.cef.messages", CefMessageStrategy.class);
 
 		Set<Class<?>> messages = messageReflection.get();
