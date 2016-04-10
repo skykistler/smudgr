@@ -7,7 +7,7 @@ import org.cef.browser.CefBrowser;
 import org.cef.callback.CefQueryCallback;
 import org.cef.handler.CefMessageRouterHandlerAdapter;
 
-import io.smudgr.ext.cef.messages.CefCommand;
+import io.smudgr.ext.cef.commands.CefCommand;
 import io.smudgr.reflect.Reflect;
 
 public class CommandRouter extends CefMessageRouterHandlerAdapter {
@@ -15,10 +15,10 @@ public class CommandRouter extends CefMessageRouterHandlerAdapter {
 	private HashMap<String, CefCommand> commands = new HashMap<String, CefCommand>();
 
 	public CommandRouter() {
-		Reflect messageReflection = new Reflect("io.smudgr.ext.cef.messages", CefCommand.class);
+		Reflect commandReflect = new Reflect("io.smudgr.ext.cef.messages", CefCommand.class);
 
-		Set<Class<?>> messages = messageReflection.get();
-		for (Class<?> c : messages) {
+		Set<Class<?>> commandClasses = commandReflect.get();
+		for (Class<?> c : commandClasses) {
 			try {
 				CefCommand command = (CefCommand) c.newInstance();
 				commands.put(command.getCommand(), command);

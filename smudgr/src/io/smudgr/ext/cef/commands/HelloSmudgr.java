@@ -1,4 +1,4 @@
-package io.smudgr.ext.cef.messages;
+package io.smudgr.ext.cef.commands;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
