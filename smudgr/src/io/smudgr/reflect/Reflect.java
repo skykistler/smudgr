@@ -136,8 +136,8 @@ public class Reflect {
 
 				try {
 					add(Class.forName(className, false, contextClassLoader));
-				} catch (Throwable ex) {
-					ex.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
 				}
 			}
 		}
