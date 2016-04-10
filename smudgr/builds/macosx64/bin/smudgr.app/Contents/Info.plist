@@ -31,9 +31,9 @@
 	<key>NSSupportsAutomaticGraphicsSwitching</key>
 	<true/>
 	<key>JVMVersion</key>
-	<string>1.7</string>
+	<string>1.8</string>
 	<key>JVMMainClassName</key>
-	<string>io.smudgr.smudgr</string>
+	<string>io.smudgr.app.smudgr</string>
 	<key>CFBundleDocumentTypes</key>
 	<array/>
 	<key>LSArchitecturePriority</key>

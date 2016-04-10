@@ -21,17 +21,11 @@ public class SmudgrJar {
 
 	public SmudgrJar(String resource) {
 		this.resource = resource;
-
-		try {
-			jarFile = new JarFile(resource);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public byte[] getData() {
 		InputStream inStream = ClassLoader.getSystemResourceAsStream(resource);
-		if (inStream != null) {
+		if (inStream != null)
 			try {
 				ByteArrayOutputStream outFile = new ByteArrayOutputStream();
 				int readByte = -1;
@@ -40,12 +34,19 @@ public class SmudgrJar {
 				return outFile.toByteArray();
 			} catch (IOException e) {
 			}
-		}
+
 		return null;
 	}
 
 	public Enumeration<JarEntry> entries() {
-		return jarFile.entries();
+		try {
+			jarFile = new JarFile(resource);
+			return jarFile.entries();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 }

@@ -7,7 +7,6 @@ app.config(function($mdThemingProvider) {
 });
 
 app.controller("smudgrCtrl", function($scope, smudgr) {
-  smudgr.exec("hello!");
 });
 
 app.factory('smudgr', function() {

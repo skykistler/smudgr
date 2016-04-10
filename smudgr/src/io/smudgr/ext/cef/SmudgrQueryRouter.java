@@ -15,7 +15,7 @@ public class SmudgrQueryRouter extends CefMessageRouterHandlerAdapter {
 	private HashMap<String, CefMessageStrategy> messageStrategies = new HashMap<String, CefMessageStrategy>();
 
 	public SmudgrQueryRouter() {
-		Reflect<CefMessageStrategy> messageReflection = new Reflect<CefMessageStrategy>("io.smudgr.ext.cef.controller.messages");
+		Reflect messageReflection = new Reflect("io.smudgr.ext.cef.messages", CefMessageStrategy.class);
 
 		Set<Class<?>> messages = messageReflection.get();
 		for (Class<?> c : messages) {
@@ -33,7 +33,7 @@ public class SmudgrQueryRouter extends CefMessageRouterHandlerAdapter {
 		String[] parts = request.split(":");
 
 		String type = parts[0].toLowerCase().trim();
-		String content = parts.length > 1 ? request.substring(request.indexOf(":")) : "";
+		String content = parts.length > 1 ? request.substring(request.indexOf(":") + 1) : "";
 
 		CefMessageStrategy strategy = messageStrategies.get(type);
 

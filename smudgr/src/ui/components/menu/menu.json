@@ -3,8 +3,12 @@
     "title": "File",
     "items": [
       {
-        "title": "Load smudge",
-        "action": "smudge.load"
+        "title": "Say hello",
+        "action": "smudge.hello"
+      },
+      {
+        "title": "Open smudge",
+        "action": "smudge.open"
       },
       {
         "title": "Save smudge",

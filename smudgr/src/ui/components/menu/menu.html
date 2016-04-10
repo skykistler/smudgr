@@ -16,7 +16,7 @@
         <md-menu-content width="4">
           <div ng-repeat="item in menu.items">
             <md-menu-item>
-              <md-button>{{ item.title }}</md-button>
+              <md-button ng-click="action(item.action)">{{ item.title }}</md-button>
             </md-menu-item>
           </div>
         </md-menu-content>

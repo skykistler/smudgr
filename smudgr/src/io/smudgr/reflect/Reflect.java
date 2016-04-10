@@ -19,8 +19,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Arrays;
@@ -29,23 +27,23 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.jar.JarEntry;
 
-public class Reflect<T> {
+public class Reflect {
 
 	private boolean fullSearch = false;
 	private String parentPackage;
-	private Type type;
+	private Class<?> type;
 
 	private Set<Class<?>> results = new HashSet<Class<?>>();
 
-	public Reflect() {
-		this("*");
+	public Reflect(Class<?> type) {
+		this("*", type);
 	}
 
-	public Reflect(String parentPackage) {
+	public Reflect(String parentPackage, Class<?> type) {
 		this.parentPackage = parentPackage == null || parentPackage.isEmpty() ? "*" : parentPackage;
 		fullSearch = parentPackage.equals("*");
 
-		type = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+		this.type = type;
 	}
 
 	public Set<Class<?>> get() {
@@ -58,7 +56,7 @@ public class Reflect<T> {
 		}
 
 		long elapsed = System.currentTimeMillis() - start;
-		System.out.println("Reflect found " + results.size() + " implementations of " + type.getTypeName() + " from package " + parentPackage + "(" + elapsed + ")");
+		System.out.println("Reflect found " + results.size() + " implementations of " + type.getTypeName() + " from package " + parentPackage + " (" + elapsed + " ms)");
 
 		return results;
 	}
@@ -146,7 +144,7 @@ public class Reflect<T> {
 	}
 
 	private void add(Class<?> c) {
-		if (!c.getTypeName().equals(type.getTypeName()))
+		if (!type.isAssignableFrom(c))
 			return;
 
 		int mods = c.getModifiers();
