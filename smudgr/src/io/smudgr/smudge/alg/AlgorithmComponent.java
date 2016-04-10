@@ -5,7 +5,6 @@ import io.smudgr.smudge.param.Parametric;
 public abstract class AlgorithmComponent extends Parametric {
 
 	private Algorithm parent;
-	private int id;
 
 	public abstract void init();
 

@@ -2,7 +2,6 @@ package io.smudgr.smudge.alg;
 
 import java.util.ArrayList;
 
-import io.smudgr.smudge.Smudge;
 import io.smudgr.smudge.alg.bound.Bound;
 import io.smudgr.smudge.alg.coord.AllCoords;
 import io.smudgr.smudge.alg.coord.CoordFunction;
@@ -16,7 +15,6 @@ public class Algorithm extends Parametric {
 
 	private BooleanParameter enable = new BooleanParameter("Enable", this, true);
 
-	private Smudge parent;
 	private Bound bound;
 	private CoordFunction coordFunction;
 
