@@ -67,7 +67,6 @@ public class ProjectXML {
 
 				if (midiExtension == null) {
 					midiExtension = new MidiExtension();
-					midiExtension.bindDevice("Arturia BeatStepPro");
 					controller.add(midiExtension);
 				}
 
