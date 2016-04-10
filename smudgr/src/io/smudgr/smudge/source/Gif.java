@@ -18,7 +18,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import io.smudgr.controller.BaseController;
+import io.smudgr.controller.Controller;
 
 public class Gif implements Source {
 	private String filename;
@@ -50,7 +50,7 @@ public class Gif implements Source {
 			currentFrame = 0;
 		}
 
-		int delay = BaseController.getInstance().ticksToMs(ticks);
+		int delay = Controller.getInstance().ticksToMs(ticks);
 		GifFrame frame = buffer.get(currentFrame);
 
 		if (frame != null)

@@ -1,6 +1,6 @@
 package io.smudgr.controller.controls;
 
-import io.smudgr.controller.BaseController;
+import io.smudgr.controller.Controller;
 
 public class TimingControl extends Controllable {
 
@@ -10,19 +10,19 @@ public class TimingControl extends Controllable {
 
 	public void inputValue(int value) {
 		if (value > 0 && value <= 300)
-			BaseController.getInstance().setBPM(value);
+			Controller.getInstance().setBPM(value);
 	}
 
 	public void inputOn(int value) {
-		BaseController.getInstance().start();
+		Controller.getInstance().start();
 	}
 
 	public void inputOff(int value) {
 		if (value == 0)
-			BaseController.getInstance().pause();
+			Controller.getInstance().pause();
 
 		if (value == 1)
-			BaseController.getInstance().stop();
+			Controller.getInstance().stop();
 	}
 
 	public void increment() {

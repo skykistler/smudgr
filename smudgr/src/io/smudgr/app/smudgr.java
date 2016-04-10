@@ -6,7 +6,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.URLDecoder;
 
-import io.smudgr.controller.BaseController;
+import io.smudgr.controller.Controller;
 import io.smudgr.ext.cef.view.CefView;
 import io.smudgr.smudge.Smudge;
 import io.smudgr.smudge.alg.Algorithm;
@@ -18,7 +18,7 @@ import io.smudgr.smudge.alg.select.RangeSelect;
 public class smudgr {
 
 	private smudgr(boolean debug) {
-		BaseController controller = new BaseController();
+		Controller controller = new Controller();
 
 		Smudge smudge = new Smudge();
 		controller.setSmudge(smudge);

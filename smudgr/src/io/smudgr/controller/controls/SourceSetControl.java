@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import io.smudgr.controller.BaseController;
+import io.smudgr.controller.Controller;
 import io.smudgr.smudge.source.SourceSet;
 
 public class SourceSetControl extends Controllable {
@@ -105,7 +105,7 @@ public class SourceSetControl extends Controllable {
 		current = sourceSets.get(currentSet);
 		current.init();
 
-		BaseController.getInstance().getSmudge().setSource(current);
+		Controller.getInstance().getSmudge().setSource(current);
 	}
 
 	public void inputValue(int value) {

@@ -15,7 +15,7 @@ public class ViewThread implements Runnable {
 	public ViewThread(View view) {
 		this.view = view;
 
-		setTargetFPS(BaseController.TARGET_FPS);
+		setTargetFPS(Controller.TARGET_FPS);
 	}
 
 	public void start() {

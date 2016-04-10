@@ -14,7 +14,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
-import io.smudgr.controller.BaseController;
+import io.smudgr.controller.Controller;
 import io.smudgr.smudge.source.Frame;
 
 public class NativeView implements View, KeyListener {
@@ -67,7 +67,7 @@ public class NativeView implements View, KeyListener {
 				monitor.addKeyListener(this);
 				monitor.addWindowListener(new WindowAdapter() {
 					public void windowClosing(WindowEvent e) {
-						BaseController.getInstance().stop();
+						Controller.getInstance().stop();
 					}
 				});
 			}
@@ -75,7 +75,7 @@ public class NativeView implements View, KeyListener {
 	}
 
 	public void update() {
-		Frame frame = BaseController.getInstance().getSmudge().getFrame();
+		Frame frame = Controller.getInstance().getSmudge().getFrame();
 
 		if (frame == null)
 			return;
@@ -135,7 +135,7 @@ public class NativeView implements View, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		if (arg0.getKeyCode() == KeyEvent.VK_ESCAPE)
-			BaseController.getInstance().stop();
+			Controller.getInstance().stop();
 	}
 
 	@Override

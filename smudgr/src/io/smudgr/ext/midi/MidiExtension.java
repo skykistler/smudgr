@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import javax.sound.midi.MidiMessage;
 
-import io.smudgr.controller.BaseController;
+import io.smudgr.controller.Controller;
 import io.smudgr.controller.controls.Controllable;
 import io.smudgr.controller.controls.TimingControl;
 import io.smudgr.ext.ControllerExtension;
@@ -57,7 +57,7 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 		messageStrategies.put(0xFF, new ResetMessage());
 
 		timingControl = new TimingControl();
-		BaseController.getInstance().add(timingControl);
+		Controller.getInstance().add(timingControl);
 		timingCalculator = new TimingClockMessage();
 
 		systemControls = new HashMap<Integer, Controllable>();
@@ -88,7 +88,7 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 	}
 
 	private void bindParameters() {
-		for (Controllable c : BaseController.getInstance().getControls())
+		for (Controllable c : Controller.getInstance().getControls())
 			bindControl(c);
 
 		parametersBound = true;
@@ -178,7 +178,7 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 		}
 
 		if (!waitingForKey) {
-			synchronized (BaseController.getInstance().getSmudge()) {
+			synchronized (Controller.getInstance().getSmudge()) {
 				// If it's a system message, check our manual system controls
 				// list. Otherwise get the bind
 				Controllable bound = system_message ? systemControls.get(status) : midiMap.getControl(channel, key);

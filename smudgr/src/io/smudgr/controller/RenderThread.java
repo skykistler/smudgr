@@ -16,7 +16,7 @@ public class RenderThread implements Runnable {
 	public RenderThread(Controller controller) {
 		this.controller = controller;
 
-		setTargetFPS(BaseController.TARGET_FPS);
+		setTargetFPS(Controller.TARGET_FPS);
 	}
 
 	public void start() {

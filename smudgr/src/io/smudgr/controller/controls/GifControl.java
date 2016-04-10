@@ -1,6 +1,6 @@
 package io.smudgr.controller.controls;
 
-import io.smudgr.controller.BaseController;
+import io.smudgr.controller.Controller;
 
 public class GifControl extends Controllable {
 
@@ -23,11 +23,11 @@ public class GifControl extends Controllable {
 	}
 
 	public void inputOn(int value) {
-		BaseController.getInstance().startGifOutput(filename);
+		Controller.getInstance().startGifOutput(filename);
 	}
 
 	public void inputOff(int value) {
-		BaseController.getInstance().stopGifOutput();
+		Controller.getInstance().stopGifOutput();
 	}
 
 	public void increment() {

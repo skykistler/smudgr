@@ -1,7 +1,6 @@
 package io.smudgr.test;
 
 import io.smudgr.app.ProjectXML;
-import io.smudgr.controller.BaseController;
 import io.smudgr.controller.Controller;
 import io.smudgr.controller.controls.AutomateByBeatControl;
 import io.smudgr.controller.controls.AutomateByStepControl;
@@ -26,10 +25,9 @@ import io.smudgr.view.NativeView;
 
 public class SkyShowMain {
 
-	public static Controller make(String filepath) {
+	public static void make(String filepath) {
 		// Declare your controller
-
-		BaseController controller = new BaseController();
+		Controller controller = new Controller();
 		controller.add(new MidiExtension());
 
 		// Make smudge
@@ -147,17 +145,16 @@ public class SkyShowMain {
 		controller.add(new SourceControl());
 
 		controller.setSmudge(smudge);
-
-		return controller;
 	}
 
-	public static Controller load(String filepath) {
+	public static void load(String filepath) {
 		ProjectXML xml = new ProjectXML(filepath);
-		return xml.load();
+		xml.load();
 	}
 
 	public static void main(String[] args) {
-		Controller c = load("data/show.smudge");
+		load("data/show.smudge");
+		Controller c = Controller.getInstance();
 
 		c.getSmudge().setSource(new Image("data/venture/noise show/lilly 2.png"));
 

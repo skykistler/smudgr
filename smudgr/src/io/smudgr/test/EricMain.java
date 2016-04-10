@@ -1,7 +1,6 @@
 package io.smudgr.test;
 
 import io.smudgr.app.ProjectXML;
-import io.smudgr.controller.BaseController;
 import io.smudgr.controller.Controller;
 import io.smudgr.controller.controls.DownsampleControl;
 import io.smudgr.controller.controls.SaveControl;
@@ -17,10 +16,10 @@ import io.smudgr.smudge.alg.select.RangeSelect;
 import io.smudgr.smudge.source.Image;
 
 public class EricMain {
-	public static Controller make(String filepath) {
+	public static void make(String filepath) {
 		// Declare your controller
 
-		BaseController controller = new BaseController();
+		Controller controller = new Controller();
 		controller.add(new MidiExtension());
 
 		// Make smudge
@@ -59,18 +58,17 @@ public class EricMain {
 		controller.add(new SourceControl());
 
 		controller.setSmudge(smudge);
-
-		return controller;
 	}
 
-	public static Controller load(String filepath) {
+	public static void load(String filepath) {
 		ProjectXML xml = new ProjectXML(filepath);
-		return xml.load();
+		xml.load();
 	}
 
 	public static void main(String[] args) {
-		Controller c = load("data/work.smudge");
+		load("data/work.smudge");
 
+		Controller c = Controller.getInstance();
 		c.getSmudge().setSource(new Image("data/work/flowers_source.jpg"));
 
 		((MidiExtension) c.getExtension("MIDI Extension")).bindDevice("Arturia BeatStep");

@@ -22,7 +22,7 @@ import org.cef.OS;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefMessageRouter;
 
-import io.smudgr.controller.BaseController;
+import io.smudgr.controller.Controller;
 import io.smudgr.ext.cef.CommandRouter;
 import io.smudgr.ext.cef.util.CefAppHandler;
 import io.smudgr.ext.cef.util.DialogHandler;
@@ -81,7 +81,7 @@ public class CefView extends JFrame implements View {
 			}
 
 			public void windowClosing(WindowEvent e) {
-				BaseController.getInstance().stop();
+				Controller.getInstance().stop();
 			}
 		});
 
@@ -123,7 +123,7 @@ public class CefView extends JFrame implements View {
 	}
 
 	public void update() {
-		Frame frame = BaseController.getInstance().getSmudge().getFrame();
+		Frame frame = Controller.getInstance().getSmudge().getFrame();
 
 		getRenderFrame().draw(frame);
 	}

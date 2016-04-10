@@ -1,6 +1,6 @@
 package io.smudgr.controller.controls;
 
-import io.smudgr.controller.BaseController;
+import io.smudgr.controller.Controller;
 import io.smudgr.smudge.param.NumberParameter;
 import io.smudgr.smudge.param.Parameter;
 
@@ -38,7 +38,7 @@ public class AutomateByBeatControl extends Controllable {
 
 		double val = parameter.getValue();
 		double step = parameter.getStep();
-		val = val + step / (BaseController.TICKS_PER_BEAT * SPEEDS[speed]);
+		val = val + step / (Controller.TICKS_PER_BEAT * SPEEDS[speed]);
 
 		parameter.setValue(val);
 	}

@@ -1,6 +1,6 @@
 package io.smudgr.controller.controls;
 
-import io.smudgr.controller.BaseController;
+import io.smudgr.controller.Controller;
 
 public class DownsampleControl extends Controllable {
 
@@ -20,7 +20,7 @@ public class DownsampleControl extends Controllable {
 	}
 
 	public void update() {
-		BaseController.getInstance().getSmudge().setDownsample(downsample);
+		Controller.getInstance().getSmudge().setDownsample(downsample);
 	}
 
 	public void increment() {

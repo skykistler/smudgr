@@ -2,12 +2,12 @@ package io.smudgr.controller;
 
 public class UpdateThread implements Runnable {
 
-	private BaseController controller;
+	private Controller controller;
 	private Thread thread;
 	private double ticksPerSecond;
 	private boolean running, paused, finished;
 
-	public UpdateThread(BaseController c) {
+	public UpdateThread(Controller c) {
 		controller = c;
 	}
 
@@ -55,7 +55,7 @@ public class UpdateThread implements Runnable {
 			}
 
 			double beatsPerSecond = controller.getBPM() / 60.0;
-			ticksPerSecond = Math.ceil(BaseController.TICKS_PER_BEAT * beatsPerSecond);
+			ticksPerSecond = Math.ceil(Controller.TICKS_PER_BEAT * beatsPerSecond);
 			double timeForUpdate = nsInSecond / ticksPerSecond;
 
 			// Update enough to catch up

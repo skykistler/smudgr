@@ -9,7 +9,7 @@ import org.cef.handler.CefAppHandlerAdapter;
 import org.cef.handler.CefResourceHandler;
 import org.cef.network.CefRequest;
 
-import io.smudgr.controller.BaseController;
+import io.smudgr.controller.Controller;
 
 public class CefAppHandler extends CefAppHandlerAdapter {
 
@@ -38,6 +38,6 @@ public class CefAppHandler extends CefAppHandlerAdapter {
 	@Override
 	public void stateHasChanged(CefAppState state) {
 		if (state == CefAppState.TERMINATED)
-			BaseController.getInstance().stop();
+			Controller.getInstance().stop();
 	}
 }

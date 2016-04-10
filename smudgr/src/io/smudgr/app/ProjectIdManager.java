@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import io.smudgr.controller.BaseController;
+import io.smudgr.controller.Controller;
 
 public class ProjectIdManager {
 	private static final int MAX_ID = 100000;
@@ -84,7 +84,7 @@ public class ProjectIdManager {
 	public interface HasProjectId {
 
 		public default ProjectIdManager getIdManager() {
-			return BaseController.getInstance().getIdManager();
+			return Controller.getInstance().getIdManager();
 		}
 
 	}

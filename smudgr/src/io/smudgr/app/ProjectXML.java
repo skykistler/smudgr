@@ -16,7 +16,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import io.smudgr.controller.BaseController;
 import io.smudgr.controller.Controller;
 import io.smudgr.controller.controls.Controllable;
 import io.smudgr.ext.ControllerExtension;
@@ -41,11 +40,11 @@ public class ProjectXML {
 		}
 	}
 
-	public Controller load() {
+	public void load() {
 		File xml = new File(filepath);
 		if (!xml.exists()) {
 			System.out.println("Did not find file: " + xml.getAbsolutePath());
-			return null;
+			return;
 		}
 
 		try {
@@ -54,13 +53,21 @@ public class ProjectXML {
 			Document doc = dBuilder.parse(xml);
 			doc.getDocumentElement().normalize();
 
-			BaseController controller = new BaseController();
-			ProjectIdManager idManager = BaseController.getInstance().getIdManager();
+			Controller controller = Controller.getInstance();
+			if (controller == null)
+				controller = new Controller();
+
+			ProjectIdManager idManager = Controller.getInstance().getIdManager();
 
 			MidiControlMap midiMap = null;
 			if (doc.getElementsByTagName("midi").getLength() > 0) {
-				MidiExtension midiExtension = new MidiExtension();
-				controller.add(midiExtension);
+				MidiExtension midiExtension = (MidiExtension) controller.getExtension("MIDI Extension");
+
+				if (midiExtension == null) {
+					midiExtension = new MidiExtension();
+					controller.add(midiExtension);
+				}
+
 				midiMap = midiExtension.getMidiMap();
 			}
 
@@ -152,11 +159,11 @@ public class ProjectXML {
 
 			controller.setSmudge(smudge);
 
-			return controller;
+			return;
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Problem loading smudge at " + filepath);
-			return null;
+			return;
 		}
 	}
 
@@ -192,12 +199,12 @@ public class ProjectXML {
 
 	public void save() {
 		try {
-			ProjectIdManager idManager = BaseController.getInstance().getIdManager();
+			ProjectIdManager idManager = Controller.getInstance().getIdManager();
 
-			Smudge smudge = BaseController.getInstance().getSmudge();
+			Smudge smudge = Controller.getInstance().getSmudge();
 
 			MidiControlMap midiMap = null;
-			for (ControllerExtension ext : BaseController.getInstance().getExtensions())
+			for (ControllerExtension ext : Controller.getInstance().getExtensions())
 				if (ext instanceof MidiExtension) {
 					midiMap = ((MidiExtension) ext).getMidiMap();
 					break;
@@ -235,7 +242,7 @@ public class ProjectXML {
 
 			projectNode.appendChild(smudgeNode);
 
-			for (Controllable c : BaseController.getInstance().getControls()) {
+			for (Controllable c : Controller.getInstance().getControls()) {
 				if (c instanceof Parameter)
 					continue;
 

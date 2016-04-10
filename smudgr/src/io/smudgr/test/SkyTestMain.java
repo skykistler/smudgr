@@ -1,7 +1,6 @@
 package io.smudgr.test;
 
 import io.smudgr.app.ProjectXML;
-import io.smudgr.controller.BaseController;
 import io.smudgr.controller.Controller;
 import io.smudgr.controller.controls.AutomateByStepControl;
 import io.smudgr.controller.controls.DownsampleControl;
@@ -17,8 +16,8 @@ import io.smudgr.view.NativeView;
 
 public class SkyTestMain {
 
-	public static Controller make(String filepath) {
-		BaseController controller = new BaseController();
+	public static void make(String filepath) {
+		Controller controller = new Controller();
 		controller.add(new MidiExtension());
 
 		Smudge smudge = new Smudge();
@@ -40,17 +39,17 @@ public class SkyTestMain {
 		controller.add(new DownsampleControl(1));
 		controller.add(new GifControl("test"));
 		controller.add(new SaveControl(filepath));
-
-		return controller;
 	}
 
-	public static Controller load(String filepath) {
+	public static void load(String filepath) {
 		ProjectXML xml = new ProjectXML(filepath);
-		return xml.load();
+		xml.load();
 	}
 
 	public static void main(String[] args) {
-		Controller c = make("data/test.smudge");
+		make("data/test.smudge");
+
+		Controller c = Controller.getInstance();
 		c.getSmudge().setSource(new Image("data/nicole.jpg"));
 
 		c.add(new NativeView(-1, true));

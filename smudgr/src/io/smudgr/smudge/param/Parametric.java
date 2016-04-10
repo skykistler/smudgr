@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import io.smudgr.app.ProjectIdManager.HasProjectId;
-import io.smudgr.controller.BaseController;
+import io.smudgr.controller.Controller;
 
 public abstract class Parametric implements HasProjectId {
 
@@ -13,7 +13,7 @@ public abstract class Parametric implements HasProjectId {
 	public void addParameter(Parameter p) {
 		parameters.put(p.getName(), p);
 
-		BaseController.getInstance().add(p);
+		Controller.getInstance().add(p);
 	}
 
 	public Parameter getParameter(String name) {
