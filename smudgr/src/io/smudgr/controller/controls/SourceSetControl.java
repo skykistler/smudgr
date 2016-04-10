@@ -118,7 +118,7 @@ public class SourceSetControl extends Controllable {
 	}
 
 	public void savePropertyMap() {
-		getPropertyMap().setProperty("location", location);
+		getPropertyMap().setProperty("location", (new File(location)).getAbsolutePath());
 	}
 
 	public void loadPropertyMap() {

@@ -74,12 +74,7 @@ public class NativeView implements View, KeyListener {
 		}
 	}
 
-	public void update() {
-		Frame frame = Controller.getInstance().getSmudge().getFrame();
-
-		if (frame == null)
-			return;
-
+	public void update(Frame frame) {
 		if (fullscreenWindow != null)
 			drawFittedImageToFrame(fullscreenWindow, frame.getBufferedImage());
 

@@ -21,6 +21,8 @@ public class RenderThread implements Runnable {
 
 	public void start() {
 		running = true;
+		finished = false;
+
 		thread = new Thread(this);
 		thread.start();
 	}

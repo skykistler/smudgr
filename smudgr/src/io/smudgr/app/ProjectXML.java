@@ -57,7 +57,7 @@ public class ProjectXML {
 			if (controller == null)
 				controller = new Controller();
 			else
-				controller.stop();
+				controller.stop(false);
 
 			ProjectIdManager idManager = Controller.getInstance().getIdManager();
 
@@ -67,6 +67,7 @@ public class ProjectXML {
 
 				if (midiExtension == null) {
 					midiExtension = new MidiExtension();
+					midiExtension.bindDevice("Arturia BeatStepPro");
 					controller.add(midiExtension);
 				}
 

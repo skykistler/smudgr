@@ -13,6 +13,9 @@ public class UpdateThread implements Runnable {
 
 	public void start() {
 		running = true;
+		finished = false;
+		paused = false;
+
 		thread = new Thread(this);
 		thread.start();
 	}
@@ -48,7 +51,6 @@ public class UpdateThread implements Runnable {
 		while (running) {
 			while (paused) {
 				lastUpdateTime = System.nanoTime();
-				System.out.println(paused);
 
 				if (!running)
 					break;

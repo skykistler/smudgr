@@ -6,6 +6,7 @@ import io.smudgr.app.ProjectXML;
 import io.smudgr.controller.Controller;
 import io.smudgr.view.FileDialog;
 import io.smudgr.view.FileDialog.FileDialogCallback;
+import io.smudgr.view.FileDialog.FileDialogFilter;
 
 public class OpenSmudge implements CefCommand {
 
@@ -14,7 +15,8 @@ public class OpenSmudge implements CefCommand {
 	}
 
 	public boolean request(String content) {
-		FileDialog.getInstance().show("Open Smudge", new OpenSmudgeCallback());
+		FileDialogFilter filter = new FileDialogFilter("smudge", "Project files");
+		FileDialog.getInstance().show("Open Smudge", false, filter, new OpenSmudgeCallback());
 		return true;
 	}
 
@@ -32,6 +34,10 @@ public class OpenSmudge implements CefCommand {
 			project.load();
 
 			Controller.getInstance().start();
+		}
+
+		public void onFailure(String reason) {
+			System.out.println("Open smudge failed: " + reason);
 		}
 	}
 

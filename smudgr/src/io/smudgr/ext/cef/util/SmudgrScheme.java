@@ -22,7 +22,7 @@ public class SmudgrScheme extends CefResourceHandlerAdapter {
 		String path = url.substring(url.indexOf("://") + 3);
 		String ext = path.substring(path.lastIndexOf(".") + 1);
 
-		System.out.println("Loading element: " + path);
+		System.out.println("Frontend requested: " + path);
 
 		SmudgrJar resource = new SmudgrJar(path);
 		data = resource.getData();

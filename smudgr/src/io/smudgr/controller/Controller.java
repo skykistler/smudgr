@@ -29,7 +29,7 @@ public class Controller {
 
 	private UpdateThread updater;
 	private RenderThread renderer;
-	private ArrayList<ViewThread> viewers;
+	private ArrayList<ViewThread> viewers = new ArrayList<ViewThread>();;
 
 	private boolean started;
 	private int beatsPerMinute = 120;
@@ -48,7 +48,6 @@ public class Controller {
 	private void reset() {
 		idManager = new ProjectIdManager();
 		controls = new ArrayList<Controllable>();
-		viewers = new ArrayList<ViewThread>();
 		smudge = null;
 	}
 
@@ -82,9 +81,11 @@ public class Controller {
 		updater.start();
 		renderer.start();
 
-		System.out.println("Starting views...");
-		for (View view : views)
-			startView(view);
+		if (viewers.size() == 0) {
+			System.out.println("Starting views...");
+			for (View view : views)
+				startView(view);
+		}
 	}
 
 	public void update() {
@@ -119,8 +120,9 @@ public class Controller {
 		started = false;
 		System.out.println("Stopping...");
 
-		for (ViewThread viewer : viewers)
-			viewer.stop();
+		if (fullStop)
+			for (ViewThread viewer : viewers)
+				viewer.stop();
 
 		renderer.stop();
 		updater.stop();

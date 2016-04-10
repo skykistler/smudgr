@@ -2,12 +2,15 @@ package io.smudgr.controller;
 
 import javax.swing.SwingUtilities;
 
+import io.smudgr.smudge.Smudge;
+import io.smudgr.smudge.source.Frame;
 import io.smudgr.view.View;
 
 public class ViewThread implements Runnable {
 
 	private View view;
 	private Thread thread;
+	private int currentFps;
 	private long targetFrameNs;
 	private volatile boolean running;
 	private boolean finished;
@@ -29,6 +32,10 @@ public class ViewThread implements Runnable {
 		thread.interrupt();
 	}
 
+	public int getCurrentFPS() {
+		return currentFps;
+	}
+
 	public void setTargetFPS(int fps) {
 		targetFrameNs = 1000000000 / fps;
 	}
@@ -44,7 +51,15 @@ public class ViewThread implements Runnable {
 
 		while (running) {
 			try {
-				view.update();
+				Smudge smudge = Controller.getInstance().getSmudge();
+				if (smudge == null)
+					continue;
+
+				Frame frame = smudge.getFrame();
+				if (frame == null)
+					continue;
+
+				view.update(frame);
 			} catch (IllegalStateException e) {
 				e.printStackTrace();
 				System.out.println("View updating stopped.");
@@ -56,8 +71,8 @@ public class ViewThread implements Runnable {
 
 			if (System.currentTimeMillis() - timer >= 1000) {
 				timer += 1000;
-				System.out.println(frames + " fps");
 
+				currentFps = frames;
 				frames = 0;
 			}
 

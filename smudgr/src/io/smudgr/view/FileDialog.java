@@ -6,6 +6,7 @@ import java.net.URLDecoder;
 
 import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileFilter;
 
 public class FileDialog {
 
@@ -35,16 +36,37 @@ public class FileDialog {
 		fileChooser = new JFileChooser(parent_path);
 	}
 
-	public void show(String name, FileDialogCallback callback) {
+	public void show(String name, boolean multiSelect, FileDialogFilter filter, FileDialogCallback callback) {
 		(new Thread() {
 			public void run() {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
+						fileChooser.setMultiSelectionEnabled(multiSelect);
+
+						for (FileFilter f : fileChooser.getChoosableFileFilters())
+							fileChooser.removeChoosableFileFilter(f);
+
+						fileChooser.addChoosableFileFilter(filter);
+
 						int ret = fileChooser.showDialog(null, name);
 
-						File[] selected = fileChooser.getSelectedFiles();
-						if (ret == JFileChooser.APPROVE_OPTION && selected != null && selected.length > 1)
-							callback.onSelection(selected);
+						if (ret != JFileChooser.APPROVE_OPTION) {
+							callback.onFailure("Cancelled.");
+							return;
+						}
+
+						File[] selected = null;
+						if (multiSelect)
+							selected = fileChooser.getSelectedFiles();
+						else
+							selected = new File[] { fileChooser.getSelectedFile() };
+
+						if (selected == null || selected.length == 0) {
+							callback.onFailure("No file chosen.");
+							return;
+						}
+
+						callback.onSelection(selected);
 					}
 				});
 			}
@@ -53,5 +75,32 @@ public class FileDialog {
 
 	public interface FileDialogCallback {
 		public void onSelection(File[] selectedFiles);
+
+		public void onFailure(String reason);
+	}
+
+	public static class FileDialogFilter extends FileFilter {
+
+		String description = "";
+		String fileExt = "";
+
+		public FileDialogFilter(String extension) {
+			fileExt = extension;
+		}
+
+		public FileDialogFilter(String extension, String typeDescription) {
+			fileExt = extension;
+			this.description = typeDescription;
+		}
+
+		public boolean accept(File f) {
+			if (f.isDirectory())
+				return true;
+			return (f.getName().toLowerCase().endsWith("." + fileExt));
+		}
+
+		public String getDescription() {
+			return description;
+		}
 	}
 }

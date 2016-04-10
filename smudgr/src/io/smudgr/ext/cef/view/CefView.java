@@ -44,6 +44,7 @@ public class CefView extends JFrame implements View {
 		this.debug = debug;
 
 		renderFrame = new RenderFrame(this);
+		Controller.getInstance().add(renderFrame);
 	}
 
 	public void start() {
@@ -107,7 +108,7 @@ public class CefView extends JFrame implements View {
 
 		add(cefBrowserUI);
 
-		renderFrame.setVisible(false);
+		renderFrame.setVisible(true);
 		setVisible(true);
 
 		setSize(width - 100, height);
@@ -122,10 +123,7 @@ public class CefView extends JFrame implements View {
 			setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
 	}
 
-	public void update() {
-		Frame frame = Controller.getInstance().getSmudge().getFrame();
-
-		getRenderFrame().draw(frame);
+	public void update(Frame frame) {
 	}
 
 	private void startCef() {

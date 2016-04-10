@@ -1,11 +1,12 @@
 package io.smudgr.view;
 
 import io.smudgr.app.ProjectIdManager.HasProjectId;
+import io.smudgr.smudge.source.Frame;
 
 public interface View extends HasProjectId {
 	public void start();
 
-	public void update();
+	public void update(Frame frame);
 
 	public void stop();
 

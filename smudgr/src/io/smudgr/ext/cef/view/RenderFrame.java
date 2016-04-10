@@ -10,8 +10,15 @@ import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 
 import io.smudgr.smudge.source.Frame;
+import io.smudgr.view.View;
 
-public class RenderFrame extends JFrame {
+public class RenderFrame extends JFrame implements View {
+
+	private static RenderFrame instance;
+
+	public static RenderFrame getInstance() {
+		return instance;
+	}
 
 	private JFrame parent;
 	private Frame currentFrame;
@@ -19,6 +26,8 @@ public class RenderFrame extends JFrame {
 	private int viewWidth, viewHeight;
 
 	public RenderFrame(JFrame parent) {
+		instance = this;
+
 		this.parent = parent;
 
 		getRootPane().putClientProperty("Window.shadow", Boolean.FALSE);
@@ -39,22 +48,21 @@ public class RenderFrame extends JFrame {
 		});
 	}
 
-	public void init() {
+	public void start() {
 		setVisible(true);
 		createBufferStrategy(2);
 	}
 
-	public void draw(Frame image) {
+	public void update(Frame frame) {
 		Frame lastFrame = currentFrame;
 
-		currentFrame = image;
+		currentFrame = frame;
 
 		updateIsVisible();
 		if (!isVisible())
 			return;
 
-		if (lastFrame == null || lastFrame.getWidth() != currentFrame.getWidth()
-				|| lastFrame.getHeight() != currentFrame.getHeight())
+		if (lastFrame == null || lastFrame.getWidth() != currentFrame.getWidth() || lastFrame.getHeight() != currentFrame.getHeight())
 			updateDimensions();
 
 		BufferStrategy st = getBufferStrategy();
@@ -66,7 +74,7 @@ public class RenderFrame extends JFrame {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, getWidth(), getHeight());
 
-		g.drawImage(image.getBufferedImage(), 0, 0, getWidth(), getHeight(), null);
+		g.drawImage(frame.getBufferedImage(), 0, 0, getWidth(), getHeight(), null);
 
 		g.dispose();
 
@@ -75,6 +83,10 @@ public class RenderFrame extends JFrame {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void stop() {
+		dispose();
 	}
 
 	public void updateIsVisible() {
@@ -96,14 +108,14 @@ public class RenderFrame extends JFrame {
 		int width = currentFrame.getWidth();
 
 		boolean needsResize = (height > viewHeight || width > viewWidth) || (height < viewHeight && width < viewWidth);
-		boolean byHeight = (height * ((double) viewWidth / width)) > viewHeight;
+
 		if (needsResize) {
-			if (byHeight) {
+			if (height > viewHeight || width > viewWidth) {
 				width = (int) (width * ((double) viewHeight / height));
 				height = viewHeight;
-			} else {
-				height = (int) (height * ((double) viewWidth / width));
-				width = viewWidth;
+			} else if (height < viewHeight && width < viewWidth) {
+				width = (int) (width * ((double) viewHeight / height));
+				height = viewHeight;
 			}
 
 			setSize(width, height);

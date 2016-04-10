@@ -14,11 +14,20 @@ app.factory('smudgr', function() {
     exec: function (command, payload) {
       console.log("Executing " + command + "...");
 
-      if (payload)
+      var data = command;
+
+      if (payload) {
         console.log("Payload: " + payload);
 
+        if (!Array.isArray(payload))
+          payload = [ payload ];
+
+        payload.forEach(function (elem) {
+          data += ":" + elem;
+        });
+      }
+
       if (window.cefQuery) {
-        var data = command + ":" + payload;
         window.cefQuery({
           request: data,
           onSuccess: function(response) {
