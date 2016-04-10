@@ -3,7 +3,7 @@ package io.smudgr.ext.cef.messages;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-public class HelloSmudgr implements CefMessageStrategy {
+public class HelloSmudgr implements CefCommand {
 
 	public String getCommand() {
 		return "smudge.hello";

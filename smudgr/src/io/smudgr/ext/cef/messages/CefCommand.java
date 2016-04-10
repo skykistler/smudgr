@@ -1,6 +1,6 @@
 package io.smudgr.ext.cef.messages;
 
-public interface CefMessageStrategy {
+public interface CefCommand {
 
 	public String getCommand();
 

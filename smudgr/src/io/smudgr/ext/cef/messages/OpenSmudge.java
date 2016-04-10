@@ -6,7 +6,7 @@ import io.smudgr.app.ProjectXML;
 import io.smudgr.view.FileDialog;
 import io.smudgr.view.FileDialog.FileDialogCallback;
 
-public class OpenSmudge implements CefMessageStrategy {
+public class OpenSmudge implements CefCommand {
 
 	public String getCommand() {
 		return "smudge.open";

@@ -7,20 +7,20 @@ import org.cef.browser.CefBrowser;
 import org.cef.callback.CefQueryCallback;
 import org.cef.handler.CefMessageRouterHandlerAdapter;
 
-import io.smudgr.ext.cef.messages.CefMessageStrategy;
+import io.smudgr.ext.cef.messages.CefCommand;
 import io.smudgr.reflect.Reflect;
 
 public class CommandRouter extends CefMessageRouterHandlerAdapter {
 
-	private HashMap<String, CefMessageStrategy> messageStrategies = new HashMap<String, CefMessageStrategy>();
+	private HashMap<String, CefCommand> messageStrategies = new HashMap<String, CefCommand>();
 
 	public CommandRouter() {
-		Reflect messageReflection = new Reflect("io.smudgr.ext.cef.messages", CefMessageStrategy.class);
+		Reflect messageReflection = new Reflect("io.smudgr.ext.cef.messages", CefCommand.class);
 
 		Set<Class<?>> messages = messageReflection.get();
 		for (Class<?> c : messages) {
 			try {
-				CefMessageStrategy strategy = (CefMessageStrategy) c.newInstance();
+				CefCommand strategy = (CefCommand) c.newInstance();
 
 				messageStrategies.put(strategy.getCommand(), strategy);
 			} catch (InstantiationException | IllegalAccessException e) {
@@ -35,7 +35,7 @@ public class CommandRouter extends CefMessageRouterHandlerAdapter {
 		String type = parts[0].toLowerCase().trim();
 		String content = parts.length > 1 ? request.substring(request.indexOf(":") + 1) : "";
 
-		CefMessageStrategy strategy = messageStrategies.get(type);
+		CefCommand strategy = messageStrategies.get(type);
 
 		if (strategy == null) {
 			callback.failure(0, "No message strategy found for: " + request);
