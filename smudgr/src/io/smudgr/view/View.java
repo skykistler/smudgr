@@ -1,6 +1,6 @@
 package io.smudgr.view;
 
-import io.smudgr.controller.ProjectIdManager.HasProjectId;
+import io.smudgr.app.ProjectIdManager.HasProjectId;
 
 public interface View extends HasProjectId {
 	public void start();

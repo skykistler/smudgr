@@ -1,4 +1,4 @@
-package io.smudgr;
+package io.smudgr.app;
 
 import java.io.File;
 import java.io.FileOutputStream;

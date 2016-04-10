@@ -1,5 +1,6 @@
 package io.smudgr.test;
 
+import io.smudgr.app.ProjectXML;
 import io.smudgr.controller.BaseController;
 import io.smudgr.controller.Controller;
 import io.smudgr.controller.controls.AutomateByStepControl;
@@ -7,7 +8,6 @@ import io.smudgr.controller.controls.DownsampleControl;
 import io.smudgr.controller.controls.GifControl;
 import io.smudgr.controller.controls.SaveControl;
 import io.smudgr.ext.midi.MidiExtension;
-import io.smudgr.output.ProjectXML;
 import io.smudgr.smudge.Smudge;
 import io.smudgr.smudge.alg.Algorithm;
 import io.smudgr.smudge.alg.op.DataBend;

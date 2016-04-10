@@ -3,8 +3,8 @@ package io.smudgr.smudge.param;
 import java.util.Collection;
 import java.util.HashMap;
 
+import io.smudgr.app.ProjectIdManager.HasProjectId;
 import io.smudgr.controller.BaseController;
-import io.smudgr.controller.ProjectIdManager.HasProjectId;
 
 public abstract class Parametric implements HasProjectId {
 

@@ -1,7 +1,7 @@
 package io.smudgr.ext;
 
-import io.smudgr.controller.ProjectIdManager;
-import io.smudgr.controller.ProjectIdManager.HasProjectId;
+import io.smudgr.app.ProjectIdManager;
+import io.smudgr.app.ProjectIdManager.HasProjectId;
 
 public interface ControllerExtension extends HasProjectId {
 

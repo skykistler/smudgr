@@ -1,8 +1,10 @@
-package io.smudgr.controller;
+package io.smudgr.app;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+
+import io.smudgr.controller.BaseController;
 
 public class ProjectIdManager {
 	private static final int MAX_ID = 100000;

@@ -2,7 +2,7 @@ package io.smudgr.ext.cef.messages;
 
 import java.io.File;
 
-import io.smudgr.output.ProjectXML;
+import io.smudgr.app.ProjectXML;
 import io.smudgr.view.FileDialog;
 import io.smudgr.view.FileDialog.FileDialogCallback;
 
