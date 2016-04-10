@@ -1,10 +1,14 @@
 [
   {
-    "title": "File",
+    "title": "Project",
     "items": [
       {
         "title": "Say hello",
         "action": "smudge.hello"
+      },
+      {
+        "title": "New smudge",
+        "action": "smudge.new"
       },
       {
         "title": "Open smudge",
