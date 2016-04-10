@@ -56,6 +56,8 @@ public class ProjectXML {
 			Controller controller = Controller.getInstance();
 			if (controller == null)
 				controller = new Controller();
+			else
+				controller.stop();
 
 			ProjectIdManager idManager = Controller.getInstance().getIdManager();
 

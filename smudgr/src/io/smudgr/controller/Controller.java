@@ -29,21 +29,27 @@ public class Controller {
 
 	private UpdateThread updater;
 	private RenderThread renderer;
+	private ArrayList<ViewThread> viewers;
+
 	private boolean started;
 	private int beatsPerMinute = 120;
 
-	private HashMap<String, ControllerExtension> extensions = new HashMap<String, ControllerExtension>();
-
-	private ArrayList<Controllable> controls;
-
 	private ArrayList<View> views = new ArrayList<View>();
-	private ArrayList<ViewThread> viewers;
+	private HashMap<String, ControllerExtension> extensions = new HashMap<String, ControllerExtension>();
+	private ArrayList<Controllable> controls;
 
 	private FrameOutput frameOutput;
 
 	public Controller() {
 		instance = this;
 		reset();
+	}
+
+	private void reset() {
+		idManager = new ProjectIdManager();
+		controls = new ArrayList<Controllable>();
+		viewers = new ArrayList<ViewThread>();
+		smudge = null;
 	}
 
 	public void start() {
@@ -99,6 +105,10 @@ public class Controller {
 	}
 
 	public void stop() {
+		stop(true);
+	}
+
+	public void stop(boolean fullStop) {
 		if (!started)
 			return;
 
@@ -118,48 +128,16 @@ public class Controller {
 		if (smudge != null)
 			smudge.dispose();
 
-		try {
-			Thread.sleep(300);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} finally {
-			System.exit(0);
-		}
-	}
-
-	public void reset() {
-		idManager = new ProjectIdManager();
-		controls = new ArrayList<Controllable>();
-		viewers = new ArrayList<ViewThread>();
-		smudge = null;
-	}
-
-	public int ticksToMs(int ticks) {
-		return (int) (ticks / (updater.getTicksPerSecond() / 1000));
-	}
-
-	public void startGifOutput(String filename) {
-		if (frameOutput != null)
-			return;
-
-		frameOutput = new GifOutput("data/" + filename + "_" + System.currentTimeMillis() + ".gif");
-		frameOutput.open();
-
-		updater.setPaused(true);
-		renderer.setTargetFPS(1000 / GifOutput.TARGET_GIF_MS);
-		renderer.startOutput(frameOutput, updater.msToTicks(GifOutput.TARGET_GIF_MS));
-	}
-
-	public void stopGifOutput() {
-		if (frameOutput == null || !(frameOutput instanceof GifOutput))
-			return;
-
-		frameOutput.close();
-		renderer.stopOutput();
-		renderer.setTargetFPS(TARGET_FPS);
-		updater.setPaused(false);
-
-		frameOutput = null;
+		if (fullStop) {
+			try {
+				Thread.sleep(300);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} finally {
+				System.exit(0);
+			}
+		} else
+			reset();
 	}
 
 	public void add(Object o) {
@@ -210,6 +188,35 @@ public class Controller {
 		viewer.start();
 
 		viewers.add(viewer);
+	}
+
+	public int ticksToMs(int ticks) {
+		return (int) (ticks / (updater.getTicksPerSecond() / 1000));
+	}
+
+	// TODO move this shit somewhere else
+	public void startGifOutput(String filename) {
+		if (frameOutput != null)
+			return;
+
+		frameOutput = new GifOutput("data/" + filename + "_" + System.currentTimeMillis() + ".gif");
+		frameOutput.open();
+
+		updater.setPaused(true);
+		renderer.setTargetFPS(1000 / GifOutput.TARGET_GIF_MS);
+		renderer.startOutput(frameOutput, updater.msToTicks(GifOutput.TARGET_GIF_MS));
+	}
+
+	public void stopGifOutput() {
+		if (frameOutput == null || !(frameOutput instanceof GifOutput))
+			return;
+
+		frameOutput.close();
+		renderer.stopOutput();
+		renderer.setTargetFPS(TARGET_FPS);
+		updater.setPaused(false);
+
+		frameOutput = null;
 	}
 
 	public ProjectIdManager getIdManager() {
