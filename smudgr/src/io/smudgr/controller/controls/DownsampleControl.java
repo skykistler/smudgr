@@ -1,22 +1,23 @@
 package io.smudgr.controller.controls;
 
+import io.smudgr.controller.BaseController;
+
 public class DownsampleControl extends Controllable {
+
+	public String getName() {
+		return "Downsampler";
+	}
 
 	private int downsample;
 
-	public DownsampleControl() {
-		super("Downsampler");
-	}
-
 	public DownsampleControl(int initial) {
-		this();
 		downsample = initial;
 
 		requestBind();
 	}
 
 	public void update() {
-		getController().getSmudge().setDownsample(downsample);
+		BaseController.getInstance().getSmudge().setDownsample(downsample);
 	}
 
 	public void increment() {
@@ -41,11 +42,11 @@ public class DownsampleControl extends Controllable {
 
 	}
 
-	public void setProperties() {
+	public void savePropertyMap() {
 		getPropertyMap().setProperty("downsample", downsample);
 	}
 
-	public void getProperties() {
+	public void loadPropertyMap() {
 		downsample = Integer.parseInt(getPropertyMap().getProperty("downsample"));
 	}
 

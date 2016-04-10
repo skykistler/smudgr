@@ -2,16 +2,18 @@ package io.smudgr.controller;
 
 import javax.swing.SwingUtilities;
 
+import io.smudgr.view.View;
+
 public class ViewThread implements Runnable {
 
-	private Controller controller;
+	private View view;
 	private Thread thread;
 	private long targetFrameNs;
 	private volatile boolean running;
 	private boolean finished;
 
-	public ViewThread(Controller controller) {
-		this.controller = controller;
+	public ViewThread(View view) {
+		this.view = view;
 
 		setTargetFPS(BaseController.TARGET_FPS);
 	}
@@ -42,11 +44,12 @@ public class ViewThread implements Runnable {
 
 		while (running) {
 			try {
-				controller.getView().update();
+				view.update();
 			} catch (IllegalStateException e) {
 				e.printStackTrace();
 				System.out.println("View updating stopped.");
-				controller.stop();
+				running = false;
+				break;
 			}
 
 			frames++;
@@ -74,7 +77,7 @@ public class ViewThread implements Runnable {
 
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				controller.getView().stop();
+				view.stop();
 			}
 		});
 

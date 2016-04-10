@@ -1,5 +1,5 @@
 function CanvasCtrl($scope, $http) {
-
+  $scope.image = [];
 }
 
 angular.module('smudgr').component('smudgrCanvas', {

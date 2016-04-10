@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import javax.sound.midi.MidiMessage;
 
+import io.smudgr.controller.BaseController;
 import io.smudgr.controller.ControllerExtension;
 import io.smudgr.controller.controls.Controllable;
 import io.smudgr.controller.controls.TimingControl;
@@ -20,7 +21,11 @@ import io.smudgr.ext.midi.messages.StopMessage;
 import io.smudgr.ext.midi.messages.TimingClockMessage;
 import io.smudgr.smudge.param.Parameter;
 
-public class MidiExtension extends ControllerExtension implements DeviceObserver {
+public class MidiExtension implements ControllerExtension, DeviceObserver {
+
+	public String getName() {
+		return "MIDI Extension";
+	}
 
 	private ArrayList<Device> devices;
 	private MidiControlMap midiMap;
@@ -52,7 +57,7 @@ public class MidiExtension extends ControllerExtension implements DeviceObserver
 		messageStrategies.put(0xFF, new ResetMessage());
 
 		timingControl = new TimingControl();
-		getParent().add(timingControl);
+		BaseController.getInstance().add(timingControl);
 		timingCalculator = new TimingClockMessage();
 
 		systemControls = new HashMap<Integer, Controllable>();
@@ -65,6 +70,14 @@ public class MidiExtension extends ControllerExtension implements DeviceObserver
 			bindParameters();
 	}
 
+	public void update() {
+
+	}
+
+	public void stop() {
+
+	}
+
 	public void bindDevice(String deviceName) {
 		Device d = new Device(this, deviceName);
 
@@ -75,7 +88,7 @@ public class MidiExtension extends ControllerExtension implements DeviceObserver
 	}
 
 	private void bindParameters() {
-		for (Controllable c : getParent().getControls())
+		for (Controllable c : BaseController.getInstance().getControls())
 			bindControl(c);
 
 		parametersBound = true;
@@ -165,7 +178,7 @@ public class MidiExtension extends ControllerExtension implements DeviceObserver
 		}
 
 		if (!waitingForKey) {
-			synchronized (getParent().getSmudge()) {
+			synchronized (BaseController.getInstance().getSmudge()) {
 				// If it's a system message, check our manual system controls
 				// list. Otherwise get the bind
 				Controllable bound = system_message ? systemControls.get(status) : midiMap.getControl(channel, key);

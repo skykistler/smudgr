@@ -1,12 +1,14 @@
 package io.smudgr.controller;
 
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Collection;
+import java.util.HashMap;
 
 import io.smudgr.controller.controls.Controllable;
 import io.smudgr.output.FrameOutput;
 import io.smudgr.output.GifOutput;
 import io.smudgr.smudge.Smudge;
+import io.smudgr.view.NativeView;
 import io.smudgr.view.View;
 
 public class BaseController implements Controller {
@@ -21,27 +23,26 @@ public class BaseController implements Controller {
 	public static final int TICKS_PER_BEAT = 50;
 
 	private Smudge smudge;
-	private View view;
+	private ProjectIdManager idManager;
 
 	private UpdateThread updater;
 	private RenderThread renderer;
-	private ViewThread viewer;
 	private boolean started;
 	private int beatsPerMinute = 120;
 
-	private ArrayList<Controllable> controls = new ArrayList<Controllable>();
-	private ArrayList<Integer> control_ids = new ArrayList<Integer>(1000);
-	private Random idPicker = new Random();
+	private HashMap<String, ControllerExtension> extensions = new HashMap<String, ControllerExtension>();
 
-	private ArrayList<ControllerExtension> extensions = new ArrayList<ControllerExtension>();
+	private ArrayList<Controllable> controls = new ArrayList<Controllable>();
+
+	private ArrayList<View> views = new ArrayList<View>();
+	private ArrayList<ViewThread> viewers = new ArrayList<ViewThread>();
 
 	private FrameOutput frameOutput;
 
 	public BaseController() {
-		for (int i = 0; i < 1000; i++)
-			control_ids.add(i);
-
 		instance = this;
+
+		idManager = new ProjectIdManager();
 	}
 
 	public void start() {
@@ -50,38 +51,33 @@ public class BaseController implements Controller {
 			return;
 		}
 
-		if (smudge == null) {
-			System.out.println("Smudge not set... can not start");
-			return;
-		}
-		if (view == null) {
-			System.out.println("View not set... can not start");
-			return;
-		}
+		if (smudge == null)
+			setSmudge(new Smudge());
+
+		if (views.size() == 0)
+			add(new NativeView());
 
 		smudge.init();
 
-		for (Controllable c : controls) {
-			if (c.getPropertyMap().isSet())
-				c.getProperties();
+		for (Controllable c : controls)
 			c.init();
-		}
 
 		System.out.println("Starting controller extensions...");
-		for (ControllerExtension ext : extensions)
+		for (ControllerExtension ext : getExtensions())
 			ext.init();
 
-		view.start();
-		view.setSource(smudge);
+		System.out.println("Starting processes...");
+		started = true;
 
 		updater = new UpdateThread(this);
 		renderer = new RenderThread(this);
-		viewer = new ViewThread(this);
 
-		started = true;
 		updater.start();
 		renderer.start();
-		viewer.start();
+
+		System.out.println("Starting views...");
+		for (View view : views)
+			startView(view);
 	}
 
 	public void pause() {
@@ -95,7 +91,7 @@ public class BaseController implements Controller {
 		for (Controllable c : controls)
 			c.update();
 
-		for (ControllerExtension ext : extensions)
+		for (ControllerExtension ext : getExtensions())
 			ext.update();
 
 		smudge.update();
@@ -106,14 +102,17 @@ public class BaseController implements Controller {
 			return;
 
 		System.out.println("Stopping controller extensions...");
-		for (ControllerExtension ext : extensions)
+		for (ControllerExtension ext : getExtensions())
 			ext.stop();
 
 		started = false;
 		System.out.println("Stopping...");
-		updater.stop();
+
+		for (ViewThread viewer : viewers)
+			viewer.stop();
+
 		renderer.stop();
-		viewer.stop();
+		updater.stop();
 
 		if (smudge != null)
 			smudge.dispose();
@@ -131,10 +130,6 @@ public class BaseController implements Controller {
 		return (int) (ticks / (updater.getTicksPerSecond() / 1000));
 	}
 
-	public int msToTicks(int ms) {
-		return (int) (ms / (1000 / updater.getTicksPerSecond()));
-	}
-
 	public void startGifOutput(String filename) {
 		if (frameOutput != null)
 			return;
@@ -144,7 +139,7 @@ public class BaseController implements Controller {
 
 		updater.setPaused(true);
 		renderer.setTargetFPS(1000 / GifOutput.TARGET_GIF_MS);
-		renderer.startOutput(frameOutput, msToTicks(GifOutput.TARGET_GIF_MS));
+		renderer.startOutput(frameOutput, updater.msToTicks(GifOutput.TARGET_GIF_MS));
 	}
 
 	public void stopGifOutput() {
@@ -159,23 +154,67 @@ public class BaseController implements Controller {
 		frameOutput = null;
 	}
 
+	public void add(Object o) {
+		if (o instanceof Controllable)
+			addControl((Controllable) o);
+		else if (o instanceof ControllerExtension)
+			addExtension((ControllerExtension) o);
+		else if (o instanceof View)
+			addView((View) o);
+	}
+
+	private void addControl(Controllable c) {
+		if (!controls.contains(c)) {
+			idManager.add(c);
+
+			if (started)
+				c.init();
+
+			controls.add(c);
+		}
+	}
+
+	private void addExtension(ControllerExtension ext) {
+		if (!getExtensions().contains(ext)) {
+			idManager.add(ext);
+
+			if (started)
+				ext.init();
+
+			extensions.put(ext.getName(), ext);
+		}
+	}
+
+	private void addView(View view) {
+		if (!views.contains(view)) {
+			idManager.add(view);
+
+			if (started)
+				startView(view);
+
+			views.add(view);
+		}
+	}
+
+	private void startView(View view) {
+		view.start();
+
+		ViewThread viewer = new ViewThread(view);
+		viewer.start();
+
+		viewers.add(viewer);
+	}
+
+	public ProjectIdManager getIdManager() {
+		return idManager;
+	}
+
 	public Smudge getSmudge() {
 		return smudge;
 	}
 
 	public void setSmudge(Smudge s) {
 		smudge = s;
-
-		if (smudge.getController() != this)
-			s.setController(this);
-	}
-
-	public View getView() {
-		return view;
-	}
-
-	public void setView(View view) {
-		this.view = view;
 	}
 
 	public void setBPM(int bpm) {
@@ -190,68 +229,12 @@ public class BaseController implements Controller {
 		return controls;
 	}
 
-	public void add(Object o) {
-		if (o instanceof Controllable) {
-			addControl((Controllable) o);
-		} else if (o instanceof ControllerExtension) {
-			addExtension((ControllerExtension) o);
-		}
+	public ControllerExtension getExtension(String name) {
+		return extensions.get(name);
 	}
 
-	public void add(Object o, int id) {
-		if (o instanceof Controllable)
-			addControl((Controllable) o, id);
-		else if (o instanceof ControllerExtension)
-			addExtension((ControllerExtension) o);
-	}
-
-	private void addControl(Controllable c) {
-		addControl(c, getNewControlID());
-	}
-
-	private void addControl(Controllable c, int id) {
-		if (!controls.contains(c)) {
-			c.setID(id);
-			pluckID(id);
-
-			c.setController(this);
-
-			if (started)
-				c.init();
-
-			controls.add(c);
-		}
-	}
-
-	private void addExtension(ControllerExtension ext) {
-		if (!extensions.contains(ext)) {
-			extensions.add(ext);
-
-			ext.setParent(this);
-
-			if (started)
-				ext.init();
-		}
-	}
-
-	public ArrayList<ControllerExtension> getExtensions() {
-		return extensions;
-	}
-
-	public int getNewControlID() {
-		int index = idPicker.nextInt(control_ids.size());
-		int id = control_ids.get(index);
-
-		return id;
-	}
-
-	private void pluckID(int id) {
-		for (int i = 0; i < control_ids.size(); i++) {
-			if (control_ids.get(i) == id) {
-				control_ids.remove(i);
-				return;
-			}
-		}
+	public Collection<ControllerExtension> getExtensions() {
+		return extensions.values();
 	}
 
 }

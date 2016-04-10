@@ -10,15 +10,11 @@ import org.cef.handler.CefResourceHandler;
 import org.cef.network.CefRequest;
 
 import io.smudgr.controller.BaseController;
-import io.smudgr.view.View;
 
-public class CefHandler extends CefAppHandlerAdapter {
+public class CefAppHandler extends CefAppHandlerAdapter {
 
-	private View view;
-
-	public CefHandler(View view) {
+	public CefAppHandler() {
 		super(null);
-		this.view = view;
 	}
 
 	public void onRegisterCustomSchemes(CefSchemeRegistrar registrar) {

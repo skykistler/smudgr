@@ -1,11 +1,11 @@
-package io.smudgr.ext.cef.controller.util;
+package io.smudgr.view;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 public class FileDialog {
 
@@ -19,9 +19,8 @@ public class FileDialog {
 	}
 
 	private JFileChooser fileChooser;
-	private File[] selectedFiles;
 
-	public FileDialog() {
+	private FileDialog() {
 		String parent_path = null;
 		try {
 			String this_path = URLDecoder.decode(FileDialog.class.getProtectionDomain().getCodeSource().getLocation().getPath(), "UTF-8");
@@ -36,24 +35,23 @@ public class FileDialog {
 		fileChooser = new JFileChooser(parent_path);
 	}
 
-	public File getSelectedFile() {
-		if (selectedFiles == null || selectedFiles.length == 0)
-			return null;
+	public void show(String name, FileDialogCallback callback) {
+		(new Thread() {
+			public void run() {
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						int ret = fileChooser.showDialog(null, name);
 
-		return selectedFiles[0];
+						File[] selected = fileChooser.getSelectedFiles();
+						if (ret == JFileChooser.APPROVE_OPTION && selected != null && selected.length > 1)
+							callback.onSelection(selected);
+					}
+				});
+			}
+		}).start();
 	}
 
-	public File[] getSelectedFiles() {
-		return selectedFiles;
+	public interface FileDialogCallback {
+		public void onSelection(File[] selectedFiles);
 	}
-
-	public void show(JFrame frame, String name) {
-		int ret = fileChooser.showDialog(frame, name);
-
-		if (ret == JFileChooser.APPROVE_OPTION)
-			selectedFiles = new File[] { fileChooser.getSelectedFile() };
-		else
-			selectedFiles = null;
-	}
-
 }

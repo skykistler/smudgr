@@ -1,10 +1,10 @@
 package io.smudgr.controller;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import io.smudgr.controller.controls.Controllable;
 import io.smudgr.smudge.Smudge;
-import io.smudgr.view.View;
 
 public interface Controller {
 
@@ -18,18 +18,16 @@ public interface Controller {
 
 	public void add(Object o);
 
-	public void add(Object o, int id);
+	public ProjectIdManager getIdManager();
 
 	public ArrayList<Controllable> getControls();
 
-	public ArrayList<ControllerExtension> getExtensions();
+	public ControllerExtension getExtension(String name);
+
+	public Collection<ControllerExtension> getExtensions();
 
 	public Smudge getSmudge();
 
 	public void setSmudge(Smudge smudge);
-
-	public View getView();
-
-	public void setView(View view);
 
 }

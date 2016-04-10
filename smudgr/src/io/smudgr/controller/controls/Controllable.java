@@ -1,26 +1,15 @@
 package io.smudgr.controller.controls;
 
-import io.smudgr.controller.Controller;
+import io.smudgr.controller.ProjectIdManager.HasProjectId;
+import io.smudgr.controller.PropertyMap;
 
-public abstract class Controllable {
+public abstract class Controllable implements HasProjectId {
 
-	private int id;
-	private Controller controller;
-	private String name;
 	private boolean bindRequested = false;
-	private PropertyMap propertyMap = new PropertyMap();
 
-	public Controllable(String name) {
-		setName(name);
-	}
+	protected PropertyMap propertyMap = new PropertyMap();
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getName() {
-		return name;
-	}
+	public abstract String getName();
 
 	public void init() {
 
@@ -30,25 +19,35 @@ public abstract class Controllable {
 
 	}
 
-	public abstract void inputValue(int value);
+	public void inputValue(int value) {
 
-	public abstract void inputOn(int value);
+	}
 
-	public abstract void inputOff(int value);
+	public void inputOn(int value) {
 
-	public abstract void increment();
+	}
 
-	public abstract void decrement();
+	public void inputOff(int value) {
+
+	}
+
+	public void increment() {
+
+	}
+
+	public void decrement() {
+
+	}
 
 	public PropertyMap getPropertyMap() {
 		return propertyMap;
 	}
 
-	public void setProperties() {
+	public void savePropertyMap() {
 
 	}
 
-	public void getProperties() {
+	public void loadPropertyMap() {
 
 	}
 
@@ -58,22 +57,6 @@ public abstract class Controllable {
 
 	public boolean isBindRequested() {
 		return bindRequested;
-	}
-
-	public Controller getController() {
-		return controller;
-	}
-
-	public void setController(Controller c) {
-		controller = c;
-	}
-
-	public void setID(int id) {
-		this.id = id;
-	}
-
-	public int getID() {
-		return id;
 	}
 
 	public String toString() {

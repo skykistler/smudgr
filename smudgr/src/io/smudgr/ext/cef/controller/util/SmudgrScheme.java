@@ -7,6 +7,8 @@ import org.cef.misc.StringRef;
 import org.cef.network.CefRequest;
 import org.cef.network.CefResponse;
 
+import io.smudgr.reflect.SmudgrJar;
+
 public class SmudgrScheme extends CefResourceHandlerAdapter {
 	public static final String scheme = "smudgr";
 
@@ -22,7 +24,7 @@ public class SmudgrScheme extends CefResourceHandlerAdapter {
 
 		System.out.println("Loading element: " + path);
 
-		JarFile resource = new JarFile(path);
+		SmudgrJar resource = new SmudgrJar(path);
 		data = resource.getData();
 
 		if (data != null)

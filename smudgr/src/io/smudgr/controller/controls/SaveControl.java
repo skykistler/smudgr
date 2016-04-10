@@ -4,15 +4,13 @@ import io.smudgr.output.ProjectXML;
 
 public class SaveControl extends Controllable {
 
-	private String filepath;
-
-	public SaveControl() {
-		super("Save Project");
+	public String getName() {
+		return "Save Project";
 	}
 
-	public SaveControl(String filepath) {
-		this();
+	private String filepath;
 
+	public SaveControl(String filepath) {
 		this.filepath = filepath;
 
 		requestBind();
@@ -23,7 +21,7 @@ public class SaveControl extends Controllable {
 
 	public void inputOn(int value) {
 		ProjectXML xml = new ProjectXML(filepath);
-		xml.save(getController());
+		xml.save();
 	}
 
 	public void inputOff(int value) {
@@ -35,11 +33,11 @@ public class SaveControl extends Controllable {
 	public void decrement() {
 	}
 
-	public void setProperties() {
+	public void savePropertyMap() {
 		getPropertyMap().setProperty("filepath", filepath);
 	}
 
-	public void getProperties() {
+	public void loadPropertyMap() {
 		filepath = getPropertyMap().getProperty("filepath");
 	}
 

@@ -34,7 +34,7 @@ public class smudgr {
 
 		smudge.add(sort);
 
-		new CefView(controller, debug);
+		controller.add(new CefView(debug));
 
 		controller.start();
 	}
@@ -43,8 +43,7 @@ public class smudgr {
 		boolean debug = true;
 		try {
 			if (debug) {
-				String this_path = URLDecoder
-						.decode(smudgr.class.getProtectionDomain().getCodeSource().getLocation().getPath(), "UTF-8");
+				String this_path = URLDecoder.decode(smudgr.class.getProtectionDomain().getCodeSource().getLocation().getPath(), "UTF-8");
 				String parent_path = (new File(this_path)).getParentFile().getAbsolutePath();
 
 				System.setErr(new PrintStream(new FileOutputStream(parent_path + "/smudgr_errors.log")));

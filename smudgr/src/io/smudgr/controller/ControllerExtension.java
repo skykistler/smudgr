@@ -1,27 +1,15 @@
 package io.smudgr.controller;
 
-public abstract class ControllerExtension {
+import io.smudgr.controller.ProjectIdManager.HasProjectId;
 
-	private Controller parent;
+public interface ControllerExtension extends HasProjectId {
 
-	public void init() {
+	public String getName();
 
-	}
+	public void init();
 
-	public void update() {
+	public void update();
 
-	}
-
-	public void stop() {
-
-	}
-
-	public void setParent(Controller parent) {
-		this.parent = parent;
-	}
-
-	public Controller getParent() {
-		return parent;
-	}
+	public void stop();
 
 }

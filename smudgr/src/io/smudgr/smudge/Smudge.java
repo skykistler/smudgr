@@ -1,10 +1,7 @@
 package io.smudgr.smudge;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
 
-import io.smudgr.controller.Controller;
 import io.smudgr.smudge.alg.Algorithm;
 import io.smudgr.smudge.param.BooleanParameter;
 import io.smudgr.smudge.param.Parametric;
@@ -15,21 +12,11 @@ public class Smudge extends Parametric implements Source {
 
 	private BooleanParameter enabled = new BooleanParameter("Enable", this, true);
 
-	private Controller controller;
-
 	private Source source;
-	private HashMap<Integer, Algorithm> algorithms = new HashMap<Integer, Algorithm>();
-	private ArrayList<Algorithm> orderedAlgorithms = new ArrayList<Algorithm>();
-	private ArrayList<Integer> algorithm_ids = new ArrayList<Integer>(1000);
-	private Random idPicker = new Random();
+	private ArrayList<Algorithm> algorithms = new ArrayList<Algorithm>();
 
 	private volatile Frame lastFrame;
 	private int downsample = 1;
-
-	public Smudge() {
-		for (int i = 0; i < 1000; i++)
-			algorithm_ids.add(i);
-	}
 
 	public void init() {
 		System.out.println("Initializing smudge...");
@@ -50,7 +37,7 @@ public class Smudge extends Parametric implements Source {
 	}
 
 	public void render() {
-		if (source == null || source == this) {
+		if (source == null) {
 			lastFrame = null;
 			return;
 		}
@@ -90,39 +77,18 @@ public class Smudge extends Parametric implements Source {
 			this.source = source;
 	}
 
-	public Controller getController() {
-		return controller;
-	}
-
-	public void setController(Controller c) {
-		controller = c;
-
-		if (c.getSmudge() != this)
-			c.setSmudge(this);
-
-		super.setController(c);
-
-		for (Algorithm a : getAlgorithms())
-			a.setController(c);
-	}
-
 	public void setDownsample(int amount) {
 		if (amount > 0)
 			downsample = amount;
 	}
 
 	public void add(Algorithm alg) {
-		add(alg, getNewAlgorithmID());
-	}
+		if (algorithms.contains(alg))
+			return;
 
-	public void add(Algorithm alg, int id_num) {
-		alg.setID(id_num);
-		pluckID(id_num);
+		getIdManager().add(alg);
 
-		algorithms.put(id_num, alg);
-		alg.setSmudge(this);
-
-		orderedAlgorithms.add(alg);
+		algorithms.add(alg);
 	}
 
 	public Algorithm getAlgorithm(int id) {
@@ -130,7 +96,7 @@ public class Smudge extends Parametric implements Source {
 	}
 
 	public ArrayList<Algorithm> getAlgorithms() {
-		return orderedAlgorithms;
+		return algorithms;
 	}
 
 	public void dispose() {
@@ -140,22 +106,6 @@ public class Smudge extends Parametric implements Source {
 
 	public String getName() {
 		return "Smudge";
-	}
-
-	public int getNewAlgorithmID() {
-		int index = idPicker.nextInt(algorithm_ids.size());
-		int id = algorithm_ids.get(index);
-
-		return id;
-	}
-
-	private void pluckID(int id) {
-		for (int i = 0; i < algorithm_ids.size(); i++) {
-			if (algorithm_ids.get(i) == id) {
-				algorithm_ids.remove(i);
-				return;
-			}
-		}
 	}
 
 }

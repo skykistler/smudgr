@@ -4,13 +4,17 @@ import io.smudgr.controller.controls.Controllable;
 
 public abstract class Parameter extends Controllable {
 
+	public String getName() {
+		return name;
+	}
+
+	private String name;
 	private Parametric parent;
 	protected boolean reverse;
 	protected boolean continuous;
 
 	public Parameter(String name, Parametric parent) {
-		super(name);
-
+		this.name = name;
 		this.parent = parent;
 		this.parent.addParameter(this);
 	}

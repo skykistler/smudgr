@@ -37,8 +37,6 @@ public class SkyTestMain {
 
 		smudge.add(byteRep);
 
-		smudge.setController(controller);
-
 		controller.add(new DownsampleControl(1));
 		controller.add(new GifControl("test"));
 		controller.add(new SaveControl(filepath));
@@ -55,9 +53,9 @@ public class SkyTestMain {
 		Controller c = make("data/test.smudge");
 		c.getSmudge().setSource(new Image("data/nicole.jpg"));
 
-		new NativeView(c, -1, true);
+		c.add(new NativeView(-1, true));
 
-		((MidiExtension) c.getExtensions().get(0)).bindDevice("Arturia BeatStepPro");
+		((MidiExtension) c.getExtension("MIDI Extension")).bindDevice("Arturia BeatStepPro");
 		c.start();
 	}
 }

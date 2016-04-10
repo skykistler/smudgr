@@ -19,6 +19,7 @@ import org.w3c.dom.NodeList;
 import io.smudgr.controller.BaseController;
 import io.smudgr.controller.Controller;
 import io.smudgr.controller.ControllerExtension;
+import io.smudgr.controller.ProjectIdManager;
 import io.smudgr.controller.controls.Controllable;
 import io.smudgr.ext.midi.MidiControlMap;
 import io.smudgr.ext.midi.MidiExtension;
@@ -55,6 +56,7 @@ public class ProjectXML {
 			doc.getDocumentElement().normalize();
 
 			BaseController controller = new BaseController();
+			ProjectIdManager idManager = new ProjectIdManager();
 
 			MidiControlMap midiMap = null;
 			if (doc.getElementsByTagName("midi").getLength() > 0) {
@@ -99,7 +101,8 @@ public class ProjectXML {
 
 				loadMidi(controlNode, controllable, midiMap);
 
-				controller.add(controllable, id);
+				idManager.put(controllable, id);
+				controller.add(controllable);
 			}
 
 			Element smudgeNode = (Element) projectNode.getElementsByTagName("smudge").item(0);
@@ -137,11 +140,16 @@ public class ProjectXML {
 
 					loadParameters(compNode, component, midiMap);
 
-					alg.add(component, compID);
+					idManager.put(component, compID);
+					alg.add(component);
 				}
 
-				smudge.add(alg, id);
+				idManager.put(alg, id);
+				smudge.add(alg);
 			}
+
+			for (Controllable c : controller.getControls())
+				c.loadPropertyMap();
 
 			controller.setSmudge(smudge);
 
@@ -181,12 +189,14 @@ public class ProjectXML {
 		}
 	}
 
-	public void save(Controller controller) {
+	public void save() {
 		try {
-			Smudge smudge = controller.getSmudge();
+			ProjectIdManager idManager = BaseController.getInstance().getIdManager();
+
+			Smudge smudge = BaseController.getInstance().getSmudge();
 
 			MidiControlMap midiMap = null;
-			for (ControllerExtension ext : controller.getExtensions())
+			for (ControllerExtension ext : BaseController.getInstance().getExtensions())
 				if (ext instanceof MidiExtension) {
 					midiMap = ((MidiExtension) ext).getMidiMap();
 					break;
@@ -204,14 +214,14 @@ public class ProjectXML {
 
 			for (Algorithm alg : smudge.getAlgorithms()) {
 				Element algNode = doc.createElement("algorithm");
-				algNode.setAttribute("id", alg.getID() + "");
+				algNode.setAttribute("id", idManager.getId(alg) + "");
 				algNode.setAttribute("name", alg.getName());
 
 				saveParameters(algNode, alg, midiMap, doc);
 
 				for (AlgorithmComponent component : alg.getComponents()) {
 					Element componentNode = doc.createElement("component");
-					componentNode.setAttribute("id", component.getID() + "");
+					componentNode.setAttribute("id", idManager.getId(component) + "");
 					componentNode.setAttribute("class", component.getClass().getCanonicalName());
 
 					saveParameters(componentNode, component, midiMap, doc);
@@ -224,15 +234,15 @@ public class ProjectXML {
 
 			projectNode.appendChild(smudgeNode);
 
-			for (Controllable c : controller.getControls()) {
+			for (Controllable c : BaseController.getInstance().getControls()) {
 				if (c instanceof Parameter)
 					continue;
 
 				Element controlNode = doc.createElement("control");
 				controlNode.setAttribute("class", c.getClass().getCanonicalName());
-				controlNode.setAttribute("id", c.getID() + "");
+				controlNode.setAttribute("id", idManager.getId(c) + "");
 
-				c.setProperties();
+				c.savePropertyMap();
 
 				HashMap<String, String> properties = c.getPropertyMap().getProperties();
 				for (String key : properties.keySet()) {

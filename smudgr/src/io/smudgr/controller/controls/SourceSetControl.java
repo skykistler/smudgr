@@ -4,22 +4,21 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import io.smudgr.controller.BaseController;
 import io.smudgr.smudge.source.SourceSet;
 
 public class SourceSetControl extends Controllable {
+
+	public String getName() {
+		return "Source Set Switcher";
+	}
 
 	private String location;
 	private int currentSet = -1;
 	private ArrayList<String> files = new ArrayList<String>();;
 	private ArrayList<SourceSet> sourceSets = new ArrayList<SourceSet>();;
 
-	public SourceSetControl() {
-		super("Source Set Switcher");
-	}
-
 	public SourceSetControl(String location) {
-		this();
-
 		setLocation(location);
 
 		requestBind();
@@ -103,7 +102,7 @@ public class SourceSetControl extends Controllable {
 		current = sourceSets.get(currentSet);
 		current.init();
 
-		getController().getSmudge().setSource(current);
+		BaseController.getInstance().getSmudge().setSource(current);
 	}
 
 	public void inputValue(int value) {
@@ -115,11 +114,11 @@ public class SourceSetControl extends Controllable {
 	public void inputOff(int value) {
 	}
 
-	public void setProperties() {
+	public void savePropertyMap() {
 		getPropertyMap().setProperty("location", location);
 	}
 
-	public void getProperties() {
+	public void loadPropertyMap() {
 		setLocation(getPropertyMap().getProperty("location"));
 	}
 

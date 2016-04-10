@@ -1,16 +1,12 @@
 package io.smudgr.view;
 
-import io.smudgr.smudge.source.Source;
+import io.smudgr.controller.ProjectIdManager.HasProjectId;
 
-public interface View {
+public interface View extends HasProjectId {
 	public void start();
 
 	public void update();
 
 	public void stop();
-
-	public Source getSource();
-
-	public void setSource(Source s);
 
 }

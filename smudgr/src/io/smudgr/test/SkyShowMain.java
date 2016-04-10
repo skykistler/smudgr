@@ -161,9 +161,9 @@ public class SkyShowMain {
 
 		c.getSmudge().setSource(new Image("data/venture/noise show/lilly 2.png"));
 
-		new NativeView(c, -1, true);
+		c.add(new NativeView(-1, true));
 
-		((MidiExtension) c.getExtensions().get(0)).bindDevice("Arturia BeatStepPro");
+		((MidiExtension) c.getExtension("MIDI Extension")).bindDevice("Arturia BeatStepPro");
 		c.start();
 	}
 

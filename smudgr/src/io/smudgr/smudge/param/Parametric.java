@@ -3,14 +3,17 @@ package io.smudgr.smudge.param;
 import java.util.Collection;
 import java.util.HashMap;
 
-import io.smudgr.controller.Controller;
+import io.smudgr.controller.BaseController;
+import io.smudgr.controller.ProjectIdManager.HasProjectId;
 
-public abstract class Parametric {
+public abstract class Parametric implements HasProjectId {
 
 	private HashMap<String, Parameter> parameters = new HashMap<String, Parameter>();
 
 	public void addParameter(Parameter p) {
 		parameters.put(p.getName(), p);
+
+		BaseController.getInstance().add(p);
 	}
 
 	public Parameter getParameter(String name) {
@@ -33,14 +36,6 @@ public abstract class Parametric {
 			p.requestBind();
 		else
 			System.out.println("Could not find parameter: " + parameterName);
-	}
-
-	public void setController(Controller c) {
-		if (c == null)
-			return;
-
-		for (Parameter p : parameters.values())
-			c.add(p);
 	}
 
 	public void triggerChange() {

@@ -1,10 +1,7 @@
 package io.smudgr.smudge.alg;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
 
-import io.smudgr.controller.Controller;
 import io.smudgr.smudge.Smudge;
 import io.smudgr.smudge.alg.bound.Bound;
 import io.smudgr.smudge.alg.coord.AllCoords;
@@ -19,24 +16,15 @@ public class Algorithm extends Parametric {
 
 	private BooleanParameter enable = new BooleanParameter("Enable", this, true);
 
-	private int id;
 	private Smudge parent;
 	private Bound bound;
 	private CoordFunction coordFunction;
 
-	private HashMap<Integer, AlgorithmComponent> components = new HashMap<Integer, AlgorithmComponent>();
-	private ArrayList<AlgorithmComponent> orderedComponents = new ArrayList<AlgorithmComponent>();
-	private ArrayList<Integer> component_ids = new ArrayList<Integer>(1000);
-	private Random idPicker = new Random();
+	private ArrayList<AlgorithmComponent> components = new ArrayList<AlgorithmComponent>();
 
 	private ArrayList<PixelIndexList> selectedPixels = new ArrayList<PixelIndexList>();
 
 	protected Frame lastFrame;
-
-	public Algorithm() {
-		for (int i = 0; i < 1000; i++)
-			component_ids.add(i);
-	}
 
 	public void init() {
 		if (bound == null)
@@ -93,26 +81,19 @@ public class Algorithm extends Parametric {
 	}
 
 	public void add(AlgorithmComponent component) {
-		add(component, getNewComponentID());
-	}
-
-	public void add(AlgorithmComponent component, int id_num) {
-		if (component == null)
+		if (components.contains(component))
 			return;
 
-		component.setID(id_num);
-		pluckID(id_num);
+		getIdManager().add(component);
 
 		component.setAlgorithm(this);
+		components.add(component);
 
 		if (component instanceof Bound)
 			setBound((Bound) component);
 
 		if (component instanceof CoordFunction)
 			setCoordFunction((CoordFunction) component);
-
-		components.put(id_num, component);
-		orderedComponents.add(component);
 	}
 
 	public AlgorithmComponent getComponent(int id) {
@@ -120,7 +101,7 @@ public class Algorithm extends Parametric {
 	}
 
 	public ArrayList<AlgorithmComponent> getComponents() {
-		return orderedComponents;
+		return components;
 	}
 
 	private void setBound(Bound bound) {
@@ -185,47 +166,4 @@ public class Algorithm extends Parametric {
 		return name.toString().trim();
 	}
 
-	public void setSmudge(Smudge s) {
-		parent = s;
-
-		setController(s.getController());
-	}
-
-	public void setController(Controller c) {
-		if (c == null)
-			return;
-
-		super.setController(c);
-
-		for (AlgorithmComponent component : getComponents())
-			component.setController(c);
-	}
-
-	public Smudge getSmudge() {
-		return parent;
-	}
-
-	public void setID(int id) {
-		this.id = id;
-	}
-
-	public int getID() {
-		return id;
-	}
-
-	public int getNewComponentID() {
-		int index = idPicker.nextInt(component_ids.size());
-		int id = component_ids.get(index);
-
-		return id;
-	}
-
-	private void pluckID(int id) {
-		for (int i = 0; i < component_ids.size(); i++) {
-			if (component_ids.get(i) == id) {
-				component_ids.remove(i);
-				return;
-			}
-		}
-	}
 }

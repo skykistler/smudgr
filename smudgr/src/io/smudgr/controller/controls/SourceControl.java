@@ -1,37 +1,28 @@
 package io.smudgr.controller.controls;
 
+import io.smudgr.controller.BaseController;
 import io.smudgr.smudge.source.Source;
 import io.smudgr.smudge.source.SourceSet;
 
 public class SourceControl extends Controllable {
 
-	public SourceControl() {
-		super("Source Switcher");
+	public String getName() {
+		return "Source Switcher";
+	}
 
+	public SourceControl() {
 		requestBind();
 	}
 
-	public void inputValue(int value) {
-
-	}
-
-	public void inputOn(int value) {
-
-	}
-
-	public void inputOff(int value) {
-
-	}
-
 	public void increment() {
-		Source s = getController().getSmudge().getSource();
+		Source s = BaseController.getInstance().getSmudge().getSource();
 		if (s instanceof SourceSet) {
 			((SourceSet) s).increment();
 		}
 	}
 
 	public void decrement() {
-		Source s = getController().getSmudge().getSource();
+		Source s = BaseController.getInstance().getSmudge().getSource();
 		if (s instanceof SourceSet) {
 			((SourceSet) s).decrement();
 		}

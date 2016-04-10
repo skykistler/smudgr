@@ -1,13 +1,37 @@
-var smudgr = angular.module('smudgr', ['ngMaterial']);
+var app = angular.module('smudgr', ['ngMaterial']);
 
-smudgr.config(function($mdThemingProvider) {
+app.config(function($mdThemingProvider) {
   $mdThemingProvider.theme('default')
     .primaryPalette('blue-grey')
     .accentPalette('cyan');
 });
 
-smudgr.controller("AppCtrl", ['$scope', function($scope) {
-  // var element1 = { name: "Test Element", test: "Test String" };
-  // var element2 = { name: "Test Element 2", test: "Test String 2" };
-  // this.elementList = { element1, element2 };
-}]);
+app.controller("smudgrCtrl", function($scope, smudgr) {
+  smudgr.exec("hello!");
+});
+
+app.factory('smudgr', function() {
+  return {
+    exec: function (command, payload) {
+      console.log("Executing " + command + "...");
+
+      if (payload)
+        console.log("Payload: " + payload);
+
+      if (window.cefQuery) {
+        var data = command + ":" + payload;
+        window.cefQuery({
+          request: data,
+          onSuccess: function(response) {
+            console.log("Success: " + response);
+          },
+          onFailure: function(error_code, error_message) {
+            console.log("Error: " + error_code + " - " + error_message);
+          }
+        });
+      } else {
+        console.log("CEF disconnected.");
+      }
+    }
+  };
+});

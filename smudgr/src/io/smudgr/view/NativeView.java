@@ -14,12 +14,10 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
-import io.smudgr.controller.Controller;
+import io.smudgr.controller.BaseController;
 import io.smudgr.smudge.source.Frame;
-import io.smudgr.smudge.source.Source;
 
 public class NativeView implements View, KeyListener {
-	private Controller controller;
 
 	private int displayNumber = 0;
 	private JFrame fullscreenWindow;
@@ -28,18 +26,13 @@ public class NativeView implements View, KeyListener {
 	private JFrame monitor;
 	private boolean showMonitor;
 
-	private Source source;
-
-	public NativeView(Controller controller) {
-		this(controller, 0, false);
+	public NativeView() {
+		this(0, false);
 	}
 
-	public NativeView(Controller controller, int displayNumber, boolean showMonitor) {
-		this.controller = controller;
+	public NativeView(int displayNumber, boolean showMonitor) {
 		this.displayNumber = displayNumber;
 		this.showMonitor = showMonitor;
-
-		controller.setView(this);
 	}
 
 	public void start() {
@@ -74,7 +67,7 @@ public class NativeView implements View, KeyListener {
 				monitor.addKeyListener(this);
 				monitor.addWindowListener(new WindowAdapter() {
 					public void windowClosing(WindowEvent e) {
-						getController().stop();
+						BaseController.getInstance().stop();
 					}
 				});
 			}
@@ -82,10 +75,7 @@ public class NativeView implements View, KeyListener {
 	}
 
 	public void update() {
-		if (source == null)
-			return;
-
-		Frame frame = source.getFrame();
+		Frame frame = BaseController.getInstance().getSmudge().getFrame();
 
 		if (frame == null)
 			return;
@@ -95,25 +85,6 @@ public class NativeView implements View, KeyListener {
 
 		if (showMonitor)
 			drawFittedImageToFrame(monitor, frame.getBufferedImage());
-	}
-
-	public Source getSource() {
-		return source;
-	}
-
-	public void setSource(Source s) {
-		source = s;
-	}
-
-	public Controller getController() {
-		return controller;
-	}
-
-	public void setController(Controller c) {
-		controller = c;
-
-		if (controller.getView() != this)
-			controller.setView(this);
 	}
 
 	public void stop() {
@@ -164,7 +135,7 @@ public class NativeView implements View, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		if (arg0.getKeyCode() == KeyEvent.VK_ESCAPE)
-			getController().stop();
+			BaseController.getInstance().stop();
 	}
 
 	@Override

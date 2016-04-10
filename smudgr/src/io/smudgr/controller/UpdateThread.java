@@ -30,6 +30,10 @@ public class UpdateThread implements Runnable {
 		return ticksPerSecond;
 	}
 
+	public int msToTicks(int ms) {
+		return (int) (ms / (1000 / ticksPerSecond));
+	}
+
 	public boolean isFinished() {
 		return finished;
 	}

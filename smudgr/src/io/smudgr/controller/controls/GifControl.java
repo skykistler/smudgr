@@ -4,15 +4,13 @@ import io.smudgr.controller.BaseController;
 
 public class GifControl extends Controllable {
 
-	private String filename;
-
-	public GifControl() {
-		super("Record GIF");
+	public String getName() {
+		return "Record GIF";
 	}
 
-	public GifControl(String filename) {
-		this();
+	private String filename;
 
+	public GifControl(String filename) {
 		this.filename = filename;
 		requestBind();
 	}
@@ -34,11 +32,11 @@ public class GifControl extends Controllable {
 	public void decrement() {
 	}
 
-	public void setProperties() {
+	public void savePropertyMap() {
 		getPropertyMap().setProperty("filename", filename);
 	}
 
-	public void getProperties() {
+	public void loadPropertyMap() {
 		filename = getPropertyMap().getProperty("filename");
 	}
 
