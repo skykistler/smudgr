@@ -12,7 +12,7 @@ import io.smudgr.reflect.Reflect;
 
 public class CommandRouter extends CefMessageRouterHandlerAdapter {
 
-	private HashMap<String, CefCommand> messageStrategies = new HashMap<String, CefCommand>();
+	private HashMap<String, CefCommand> commands = new HashMap<String, CefCommand>();
 
 	public CommandRouter() {
 		Reflect messageReflection = new Reflect("io.smudgr.ext.cef.messages", CefCommand.class);
@@ -20,9 +20,8 @@ public class CommandRouter extends CefMessageRouterHandlerAdapter {
 		Set<Class<?>> messages = messageReflection.get();
 		for (Class<?> c : messages) {
 			try {
-				CefCommand strategy = (CefCommand) c.newInstance();
-
-				messageStrategies.put(strategy.getCommand(), strategy);
+				CefCommand command = (CefCommand) c.newInstance();
+				commands.put(command.getCommand(), command);
 			} catch (InstantiationException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
@@ -35,7 +34,7 @@ public class CommandRouter extends CefMessageRouterHandlerAdapter {
 		String type = parts[0].toLowerCase().trim();
 		String content = parts.length > 1 ? request.substring(request.indexOf(":") + 1) : "";
 
-		CefCommand strategy = messageStrategies.get(type);
+		CefCommand strategy = commands.get(type);
 
 		if (strategy == null) {
 			callback.failure(0, "No message strategy found for: " + request);
