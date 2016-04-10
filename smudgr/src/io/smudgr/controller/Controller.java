@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import io.smudgr.controller.controls.Controllable;
+import io.smudgr.ext.ControllerExtension;
 import io.smudgr.smudge.Smudge;
 
 public interface Controller {

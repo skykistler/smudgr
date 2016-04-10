@@ -10,10 +10,13 @@ public class SaveControl extends Controllable {
 
 	private String filepath;
 
-	public SaveControl(String filepath) {
-		this.filepath = filepath;
-
+	public SaveControl() {
 		requestBind();
+	}
+
+	public SaveControl(String filepath) {
+		this();
+		this.filepath = filepath;
 	}
 
 	public void inputValue(int value) {

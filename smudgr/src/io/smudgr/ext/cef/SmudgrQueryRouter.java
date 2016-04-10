@@ -1,4 +1,4 @@
-package io.smudgr.ext.cef.controller;
+package io.smudgr.ext.cef;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -7,7 +7,7 @@ import org.cef.browser.CefBrowser;
 import org.cef.callback.CefQueryCallback;
 import org.cef.handler.CefMessageRouterHandlerAdapter;
 
-import io.smudgr.ext.cef.controller.messages.CefMessageStrategy;
+import io.smudgr.ext.cef.messages.CefMessageStrategy;
 import io.smudgr.reflect.Reflect;
 
 public class SmudgrQueryRouter extends CefMessageRouterHandlerAdapter {

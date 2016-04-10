@@ -1,4 +1,4 @@
-package io.smudgr.ext.cef.controller.messages;
+package io.smudgr.ext.cef.messages;
 
 public interface CefMessageStrategy {
 

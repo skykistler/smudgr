@@ -10,9 +10,13 @@ public class GifControl extends Controllable {
 
 	private String filename;
 
-	public GifControl(String filename) {
-		this.filename = filename;
+	public GifControl() {
 		requestBind();
+	}
+
+	public GifControl(String filename) {
+		this();
+		this.filename = filename;
 	}
 
 	public void inputValue(int value) {

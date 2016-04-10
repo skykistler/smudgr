@@ -19,7 +19,7 @@ public class ProjectIdManager {
 	}
 
 	public void add(HasProjectId component) {
-		if (componentToId.containsKey(component))
+		if (getId(component) > -1)
 			return;
 
 		put(component, getNewId());
@@ -35,6 +35,7 @@ public class ProjectIdManager {
 
 		idToComponent.put(id, component);
 		componentToId.put(component, id);
+
 		consumeId(id);
 	}
 
@@ -57,6 +58,9 @@ public class ProjectIdManager {
 	}
 
 	public int getId(HasProjectId component) {
+		if (!componentToId.containsKey(component))
+			return -1;
+
 		return componentToId.get(component);
 	}
 
@@ -68,12 +72,11 @@ public class ProjectIdManager {
 	}
 
 	private void consumeId(int id) {
-		for (int i = 0; i < available_ids.size(); i++) {
+		for (int i = 0; i < available_ids.size(); i++)
 			if (available_ids.get(i) == id) {
 				available_ids.remove(i);
 				return;
 			}
-		}
 	}
 
 	public interface HasProjectId {

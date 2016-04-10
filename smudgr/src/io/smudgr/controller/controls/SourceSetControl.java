@@ -18,10 +18,13 @@ public class SourceSetControl extends Controllable {
 	private ArrayList<String> files = new ArrayList<String>();;
 	private ArrayList<SourceSet> sourceSets = new ArrayList<SourceSet>();;
 
-	public SourceSetControl(String location) {
-		setLocation(location);
-
+	public SourceSetControl() {
 		requestBind();
+	}
+
+	public SourceSetControl(String location) {
+		this();
+		setLocation(location);
 	}
 
 	public void init() {

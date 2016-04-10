@@ -1,6 +1,6 @@
-package io.smudgr.ext.cef.controller;
+package io.smudgr.ext.cef;
 
-import io.smudgr.controller.ControllerExtension;
+import io.smudgr.ext.ControllerExtension;
 
 public class CefExtension implements ControllerExtension {
 

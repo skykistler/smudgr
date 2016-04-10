@@ -1,7 +1,6 @@
 package io.smudgr.controller.controls;
 
 import io.smudgr.controller.BaseController;
-import io.smudgr.controller.PropertyMap;
 import io.smudgr.smudge.param.NumberParameter;
 import io.smudgr.smudge.param.Parameter;
 
@@ -24,10 +23,13 @@ public class AutomateByBeatControl extends Controllable {
 
 	private int speed = 5;
 
-	public AutomateByBeatControl(Parameter p) {
-		parameter = (NumberParameter) p;
-
+	public AutomateByBeatControl() {
 		requestBind();
+	}
+
+	public AutomateByBeatControl(Parameter p) {
+		this();
+		parameter = (NumberParameter) p;
 	}
 
 	public void update() {
@@ -68,10 +70,6 @@ public class AutomateByBeatControl extends Controllable {
 			run = false;
 			speed = SPEEDS.length - 1;
 		}
-	}
-
-	public class AutomateByBeatPropertyMap extends PropertyMap {
-
 	}
 
 	public void savePropertyMap() {

@@ -6,9 +6,9 @@ import java.util.HashMap;
 import javax.sound.midi.MidiMessage;
 
 import io.smudgr.controller.BaseController;
-import io.smudgr.controller.ControllerExtension;
 import io.smudgr.controller.controls.Controllable;
 import io.smudgr.controller.controls.TimingControl;
+import io.smudgr.ext.ControllerExtension;
 import io.smudgr.ext.midi.messages.AftertouchMessage;
 import io.smudgr.ext.midi.messages.ContinueMessage;
 import io.smudgr.ext.midi.messages.KnobMessage;

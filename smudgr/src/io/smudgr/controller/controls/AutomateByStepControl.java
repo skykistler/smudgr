@@ -20,17 +20,20 @@ public class AutomateByStepControl extends Controllable {
 
 	private double increment, speed;
 
+	public AutomateByStepControl() {
+		requestBind();
+	}
+
 	public AutomateByStepControl(Parameter p) {
 		this(p, .25);
 	}
 
 	public AutomateByStepControl(Parameter p, double increment) {
+		this();
 		parameter = (NumberParameter) p;
 
 		this.increment = increment;
 		this.speed = 1;
-
-		requestBind();
 	}
 
 	public void update() {

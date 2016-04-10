@@ -23,9 +23,9 @@ import org.cef.browser.CefBrowser;
 import org.cef.browser.CefMessageRouter;
 
 import io.smudgr.controller.BaseController;
-import io.smudgr.ext.cef.controller.SmudgrQueryRouter;
-import io.smudgr.ext.cef.controller.util.CefAppHandler;
-import io.smudgr.ext.cef.controller.util.DialogHandler;
+import io.smudgr.ext.cef.SmudgrQueryRouter;
+import io.smudgr.ext.cef.util.CefAppHandler;
+import io.smudgr.ext.cef.util.DialogHandler;
 import io.smudgr.smudge.source.Frame;
 import io.smudgr.view.View;
 

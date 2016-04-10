@@ -10,10 +10,13 @@ public class DownsampleControl extends Controllable {
 
 	private int downsample;
 
-	public DownsampleControl(int initial) {
-		downsample = initial;
-
+	public DownsampleControl() {
 		requestBind();
+	}
+
+	public DownsampleControl(int initial) {
+		this();
+		downsample = initial;
 	}
 
 	public void update() {

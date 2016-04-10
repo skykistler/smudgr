@@ -18,9 +18,9 @@ import org.w3c.dom.NodeList;
 
 import io.smudgr.controller.BaseController;
 import io.smudgr.controller.Controller;
-import io.smudgr.controller.ControllerExtension;
 import io.smudgr.controller.ProjectIdManager;
 import io.smudgr.controller.controls.Controllable;
+import io.smudgr.ext.ControllerExtension;
 import io.smudgr.ext.midi.MidiControlMap;
 import io.smudgr.ext.midi.MidiExtension;
 import io.smudgr.smudge.Smudge;
@@ -56,7 +56,7 @@ public class ProjectXML {
 			doc.getDocumentElement().normalize();
 
 			BaseController controller = new BaseController();
-			ProjectIdManager idManager = new ProjectIdManager();
+			ProjectIdManager idManager = BaseController.getInstance().getIdManager();
 
 			MidiControlMap midiMap = null;
 			if (doc.getElementsByTagName("midi").getLength() > 0) {
@@ -106,7 +106,7 @@ public class ProjectXML {
 			}
 
 			Element smudgeNode = (Element) projectNode.getElementsByTagName("smudge").item(0);
-			loadParameters(smudgeNode, smudge, midiMap);
+			loadParameters(smudgeNode, smudge, midiMap, idManager);
 
 			NodeList algorithms = smudgeNode.getElementsByTagName("algorithm");
 			for (int i = 0; i < algorithms.getLength(); i++) {
@@ -115,7 +115,7 @@ public class ProjectXML {
 				Element algNode = (Element) algorithms.item(i);
 				int id = Integer.parseInt(algNode.getAttribute("id"));
 
-				loadParameters(algNode, alg, midiMap);
+				loadParameters(algNode, alg, midiMap, idManager);
 
 				NodeList components = algNode.getElementsByTagName("component");
 				for (int comp = 0; comp < components.getLength(); comp++) {
@@ -138,7 +138,7 @@ public class ProjectXML {
 						continue;
 					}
 
-					loadParameters(compNode, component, midiMap);
+					loadParameters(compNode, component, midiMap, idManager);
 
 					idManager.put(component, compID);
 					alg.add(component);
@@ -161,7 +161,7 @@ public class ProjectXML {
 		}
 	}
 
-	private void loadParameters(Element node, Parametric parametric, MidiControlMap midiMap) {
+	private void loadParameters(Element node, Parametric parametric, MidiControlMap midiMap, ProjectIdManager idManager) {
 		NodeList parameters = node.getElementsByTagName("parameter");
 		for (int param = 0; param < parameters.getLength(); param++) {
 			Element paramNode = (Element) parameters.item(param);
@@ -169,12 +169,14 @@ public class ProjectXML {
 				continue;
 
 			String name = paramNode.getAttribute("name").trim();
+			int id = Integer.parseInt(paramNode.getAttribute("id"));
 			String value = paramNode.getAttribute("value").trim();
 
 			Parameter p = parametric.getParameter(name);
 			if (name.length() > 0 && value.length() > 0)
 				p.setInitial(value);
 
+			idManager.put(p, id);
 			loadMidi(paramNode, p, midiMap);
 		}
 	}
@@ -210,21 +212,21 @@ public class ProjectXML {
 
 			Element smudgeNode = doc.createElement("smudge");
 
-			saveParameters(smudgeNode, smudge, midiMap, doc);
+			saveParameters(smudgeNode, smudge, midiMap, doc, idManager);
 
 			for (Algorithm alg : smudge.getAlgorithms()) {
 				Element algNode = doc.createElement("algorithm");
 				algNode.setAttribute("id", idManager.getId(alg) + "");
 				algNode.setAttribute("name", alg.getName());
 
-				saveParameters(algNode, alg, midiMap, doc);
+				saveParameters(algNode, alg, midiMap, doc, idManager);
 
 				for (AlgorithmComponent component : alg.getComponents()) {
 					Element componentNode = doc.createElement("component");
 					componentNode.setAttribute("id", idManager.getId(component) + "");
 					componentNode.setAttribute("class", component.getClass().getCanonicalName());
 
-					saveParameters(componentNode, component, midiMap, doc);
+					saveParameters(componentNode, component, midiMap, doc, idManager);
 
 					algNode.appendChild(componentNode);
 				}
@@ -275,10 +277,11 @@ public class ProjectXML {
 		}
 	}
 
-	private void saveParameters(Element node, Parametric parametric, MidiControlMap midiMap, Document doc) {
+	private void saveParameters(Element node, Parametric parametric, MidiControlMap midiMap, Document doc, ProjectIdManager idManager) {
 		for (Parameter param : parametric.getParameters()) {
 			Element paramNode = doc.createElement("parameter");
 			paramNode.setAttribute("name", param.getName());
+			paramNode.setAttribute("id", idManager.getId(param) + "");
 			paramNode.setAttribute("value", param.getStringValue());
 
 			node.appendChild(paramNode);

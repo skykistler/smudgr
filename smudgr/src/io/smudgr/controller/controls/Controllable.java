@@ -5,11 +5,10 @@ import io.smudgr.controller.PropertyMap;
 
 public abstract class Controllable implements HasProjectId {
 
+	public abstract String getName();
 	private boolean bindRequested = false;
-
 	protected PropertyMap propertyMap = new PropertyMap();
 
-	public abstract String getName();
 
 	public void init() {
 

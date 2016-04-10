@@ -1,4 +1,4 @@
-package io.smudgr.ext.cef.controller.util;
+package io.smudgr.ext.cef.util;
 
 import org.cef.callback.CefCallback;
 import org.cef.handler.CefResourceHandlerAdapter;
