@@ -39,6 +39,7 @@ public class SkyTestMain {
 		controller.add(new DownsampleControl(1));
 		controller.add(new GifControl("test"));
 		controller.add(new SaveControl(filepath));
+		controller.setSmudge(smudge);
 	}
 
 	public static void load(String filepath) {
@@ -50,7 +51,7 @@ public class SkyTestMain {
 		make("data/test.smudge");
 
 		Controller c = Controller.getInstance();
-		c.getSmudge().setSource(new Image("data/nicole.jpg"));
+		c.getSmudge().setSource(new Image("data/texture.png"));
 
 		c.add(new NativeView(-1, true));
 
