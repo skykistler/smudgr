@@ -8,6 +8,7 @@ import io.smudgr.smudge.alg.math.ChromaFunction;
 import io.smudgr.smudge.alg.math.HueFunction;
 import io.smudgr.smudge.alg.math.LogFunction;
 import io.smudgr.smudge.alg.math.LumaFunction;
+import io.smudgr.smudge.alg.math.UnivariateFunction;
 import io.smudgr.smudge.param.BooleanParameter;
 import io.smudgr.smudge.param.UnivariateParameter;
 import io.smudgr.smudge.source.Frame;
@@ -35,6 +36,7 @@ public class PixelSort extends Operation {
 
 	public void sort(Frame img, PixelIndexList coords) {
 		Integer[] toSort = new Integer[coords.size()];
+		UnivariateFunction sortFunc = function.getValue();
 
 		for (int i = 0; i < toSort.length; i++) {
 			toSort[i] = img.pixels[coords.get(i)];
@@ -43,8 +45,8 @@ public class PixelSort extends Operation {
 		Arrays.sort(toSort, new Comparator<Integer>() {
 			@Override
 			public int compare(Integer o1, Integer o2) {
-				double o1l = function.getValue().calculate(o1);
-				double o2l = function.getValue().calculate(o2);
+				double o1l = sortFunc.calculate(o1);
+				double o2l = sortFunc.calculate(o2);
 
 				int ret = 0;
 				if (o1l < o2l)
