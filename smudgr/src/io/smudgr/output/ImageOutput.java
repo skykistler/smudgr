@@ -23,7 +23,7 @@ public class ImageOutput implements FrameOutput {
 	}
 
 	public void addFrame(Frame f) {
-		String output = "output/" + name + frameCount + ".png";
+		String output = name + "_" + frameCount + ".png";
 		System.out.println("Saving image to " + output);
 
 		Frame toSave = f.resize(width, height);

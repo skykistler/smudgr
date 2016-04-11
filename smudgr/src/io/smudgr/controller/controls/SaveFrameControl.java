@@ -1,20 +1,22 @@
 package io.smudgr.controller.controls;
 
 import io.smudgr.controller.Controller;
+import io.smudgr.output.ImageOutput;
+import io.smudgr.smudge.source.Frame;
 
-public class GifControl extends Controllable {
+public class SaveFrameControl extends Controllable {
 
 	public String getName() {
-		return "Record GIF";
+		return "Save Frame";
 	}
 
 	private String filename;
 
-	public GifControl() {
+	public SaveFrameControl() {
 		requestBind();
 	}
 
-	public GifControl(String filename) {
+	public SaveFrameControl(String filename) {
 		this();
 		this.filename = filename;
 	}
@@ -23,11 +25,13 @@ public class GifControl extends Controllable {
 	}
 
 	public void inputOn(int value) {
-		Controller.getInstance().startGifOutput(filename);
+		Frame frame = Controller.getInstance().getSmudge().getFrame();
+
+		ImageOutput out = new ImageOutput(filename, frame.getWidth(), frame.getHeight());
+		out.addFrame(frame);
 	}
 
 	public void inputOff(int value) {
-		Controller.getInstance().stopGifOutput();
 	}
 
 	public void increment() {
@@ -43,5 +47,4 @@ public class GifControl extends Controllable {
 	public void loadPropertyMap() {
 		filename = getPropertyMap().getProperty("filename");
 	}
-
 }

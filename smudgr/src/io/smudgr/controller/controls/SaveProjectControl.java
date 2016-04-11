@@ -2,7 +2,7 @@ package io.smudgr.controller.controls;
 
 import io.smudgr.app.ProjectXML;
 
-public class SaveControl extends Controllable {
+public class SaveProjectControl extends Controllable {
 
 	public String getName() {
 		return "Save Project";
@@ -10,11 +10,11 @@ public class SaveControl extends Controllable {
 
 	private String filepath;
 
-	public SaveControl() {
+	public SaveProjectControl() {
 		requestBind();
 	}
 
-	public SaveControl(String filepath) {
+	public SaveProjectControl(String filepath) {
 		this();
 		this.filepath = filepath;
 	}

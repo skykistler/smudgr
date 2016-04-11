@@ -3,7 +3,7 @@ package io.smudgr.test;
 import io.smudgr.app.ProjectXML;
 import io.smudgr.controller.Controller;
 import io.smudgr.controller.controls.DownsampleControl;
-import io.smudgr.controller.controls.SaveControl;
+import io.smudgr.controller.controls.SaveProjectControl;
 import io.smudgr.controller.controls.SourceControl;
 import io.smudgr.controller.controls.SourceSetControl;
 import io.smudgr.ext.midi.MidiExtension;
@@ -54,7 +54,7 @@ public class EricMain {
 		smudge.add(alg1);
 
 		controller.add(new DownsampleControl(1));
-		controller.add(new SaveControl(filepath));
+		controller.add(new SaveProjectControl(filepath));
 		controller.add(new SourceControl());
 
 		controller.setSmudge(smudge);
