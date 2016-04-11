@@ -1,6 +1,6 @@
-package io.smudgr.controller.controls;
+package io.smudgr.app.controls;
 
-import io.smudgr.controller.Controller;
+import io.smudgr.app.Controller;
 
 public class DownsampleControl extends Controllable {
 

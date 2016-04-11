@@ -9,7 +9,7 @@ import org.cef.handler.CefAppHandlerAdapter;
 import org.cef.handler.CefResourceHandler;
 import org.cef.network.CefRequest;
 
-import io.smudgr.controller.Controller;
+import io.smudgr.app.Controller;
 
 public class CefAppHandler extends CefAppHandlerAdapter {
 

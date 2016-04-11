@@ -18,7 +18,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import io.smudgr.controller.Controller;
+import io.smudgr.app.Controller;
 
 public class Gif implements Source {
 	private String filename;

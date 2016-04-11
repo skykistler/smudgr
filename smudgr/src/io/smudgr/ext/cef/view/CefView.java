@@ -22,7 +22,7 @@ import org.cef.OS;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefMessageRouter;
 
-import io.smudgr.controller.Controller;
+import io.smudgr.app.Controller;
 import io.smudgr.ext.cef.CommandRouter;
 import io.smudgr.ext.cef.util.CefAppHandler;
 import io.smudgr.ext.cef.util.DialogHandler;

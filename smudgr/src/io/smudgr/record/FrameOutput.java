@@ -1,4 +1,4 @@
-package io.smudgr.output;
+package io.smudgr.record;
 
 import io.smudgr.smudge.source.Frame;
 

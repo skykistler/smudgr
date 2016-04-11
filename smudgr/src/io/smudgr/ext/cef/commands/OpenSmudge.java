@@ -2,8 +2,8 @@ package io.smudgr.ext.cef.commands;
 
 import java.io.File;
 
-import io.smudgr.app.ProjectXML;
-import io.smudgr.controller.Controller;
+import io.smudgr.app.Controller;
+import io.smudgr.project.ProjectXML;
 import io.smudgr.view.FileDialog;
 import io.smudgr.view.FileDialog.FileDialogCallback;
 import io.smudgr.view.FileDialog.FileDialogFilter;

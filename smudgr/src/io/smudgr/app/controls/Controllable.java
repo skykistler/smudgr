@@ -1,7 +1,7 @@
-package io.smudgr.controller.controls;
+package io.smudgr.app.controls;
 
-import io.smudgr.app.ProjectIdManager.HasProjectId;
-import io.smudgr.controller.PropertyMap;
+import io.smudgr.project.PropertyMap;
+import io.smudgr.project.ProjectIdManager.HasProjectId;
 
 public abstract class Controllable implements HasProjectId {
 

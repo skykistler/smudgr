@@ -1,6 +1,6 @@
 package io.smudgr.view;
 
-import io.smudgr.app.ProjectIdManager.HasProjectId;
+import io.smudgr.project.ProjectIdManager.HasProjectId;
 import io.smudgr.smudge.source.Frame;
 
 public interface View extends HasProjectId {

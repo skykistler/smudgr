@@ -14,7 +14,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
-import io.smudgr.controller.Controller;
+import io.smudgr.app.Controller;
 import io.smudgr.smudge.source.Frame;
 
 public class NativeView implements View, KeyListener {

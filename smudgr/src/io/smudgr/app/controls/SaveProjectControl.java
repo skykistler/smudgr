@@ -1,6 +1,6 @@
-package io.smudgr.controller.controls;
+package io.smudgr.app.controls;
 
-import io.smudgr.app.ProjectXML;
+import io.smudgr.project.ProjectXML;
 
 public class SaveProjectControl extends Controllable {
 

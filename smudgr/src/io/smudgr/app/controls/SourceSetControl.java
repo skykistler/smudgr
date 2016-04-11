@@ -1,10 +1,10 @@
-package io.smudgr.controller.controls;
+package io.smudgr.app.controls;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import io.smudgr.controller.Controller;
+import io.smudgr.app.Controller;
 import io.smudgr.smudge.source.SourceSet;
 
 public class SourceSetControl extends Controllable {

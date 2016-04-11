@@ -1,12 +1,12 @@
 package io.smudgr.test;
 
-import io.smudgr.app.ProjectXML;
-import io.smudgr.controller.Controller;
-import io.smudgr.controller.controls.AutomateByStepControl;
-import io.smudgr.controller.controls.DownsampleControl;
-import io.smudgr.controller.controls.RecordGifControl;
-import io.smudgr.controller.controls.SaveProjectControl;
+import io.smudgr.app.Controller;
+import io.smudgr.app.controls.AutomateByStepControl;
+import io.smudgr.app.controls.DownsampleControl;
+import io.smudgr.app.controls.RecordGifControl;
+import io.smudgr.app.controls.SaveProjectControl;
 import io.smudgr.ext.midi.MidiExtension;
+import io.smudgr.project.ProjectXML;
 import io.smudgr.smudge.Smudge;
 import io.smudgr.smudge.alg.Algorithm;
 import io.smudgr.smudge.alg.op.DataBend;

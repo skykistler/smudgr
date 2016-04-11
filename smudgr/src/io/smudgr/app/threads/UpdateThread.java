@@ -1,4 +1,6 @@
-package io.smudgr.controller;
+package io.smudgr.app.threads;
+
+import io.smudgr.app.Controller;
 
 public class UpdateThread implements Runnable {
 

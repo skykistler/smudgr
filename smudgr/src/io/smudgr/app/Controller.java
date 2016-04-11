@@ -1,14 +1,17 @@
-package io.smudgr.controller;
+package io.smudgr.app;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
-import io.smudgr.app.ProjectIdManager;
-import io.smudgr.controller.controls.Controllable;
+import io.smudgr.app.controls.Controllable;
+import io.smudgr.app.threads.RenderThread;
+import io.smudgr.app.threads.UpdateThread;
+import io.smudgr.app.threads.ViewThread;
 import io.smudgr.ext.ControllerExtension;
-import io.smudgr.output.FrameOutput;
-import io.smudgr.output.GifOutput;
+import io.smudgr.project.ProjectIdManager;
+import io.smudgr.record.FrameOutput;
+import io.smudgr.record.GifOutput;
 import io.smudgr.smudge.Smudge;
 import io.smudgr.view.NativeView;
 import io.smudgr.view.View;

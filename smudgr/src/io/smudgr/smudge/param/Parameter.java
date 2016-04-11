@@ -1,6 +1,6 @@
 package io.smudgr.smudge.param;
 
-import io.smudgr.controller.controls.Controllable;
+import io.smudgr.app.controls.Controllable;
 
 public abstract class Parameter extends Controllable {
 

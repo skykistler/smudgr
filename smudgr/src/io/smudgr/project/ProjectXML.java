@@ -1,4 +1,4 @@
-package io.smudgr.app;
+package io.smudgr.project;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -16,8 +16,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import io.smudgr.controller.Controller;
-import io.smudgr.controller.controls.Controllable;
+import io.smudgr.app.Controller;
+import io.smudgr.app.controls.Controllable;
 import io.smudgr.ext.ControllerExtension;
 import io.smudgr.ext.midi.MidiControlMap;
 import io.smudgr.ext.midi.MidiExtension;

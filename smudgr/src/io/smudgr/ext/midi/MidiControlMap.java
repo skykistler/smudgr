@@ -2,7 +2,7 @@ package io.smudgr.ext.midi;
 
 import java.util.HashMap;
 
-import io.smudgr.controller.controls.Controllable;
+import io.smudgr.app.controls.Controllable;
 
 public class MidiControlMap {
 

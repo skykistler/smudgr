@@ -1,6 +1,6 @@
 package io.smudgr.ext.midi.messages;
 
-import io.smudgr.controller.controls.Controllable;
+import io.smudgr.app.controls.Controllable;
 
 public class StartMessage implements MidiMessageStrategy {
 

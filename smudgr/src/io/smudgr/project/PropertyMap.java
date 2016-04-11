@@ -1,4 +1,4 @@
-package io.smudgr.controller;
+package io.smudgr.project;
 
 import java.util.HashMap;
 

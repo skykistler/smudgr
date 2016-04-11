@@ -1,7 +1,8 @@
-package io.smudgr.controller;
+package io.smudgr.app.threads;
 
 import javax.swing.SwingUtilities;
 
+import io.smudgr.app.Controller;
 import io.smudgr.smudge.Smudge;
 import io.smudgr.smudge.source.Frame;
 import io.smudgr.view.View;

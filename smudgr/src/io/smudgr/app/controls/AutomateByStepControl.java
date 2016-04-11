@@ -1,4 +1,4 @@
-package io.smudgr.controller.controls;
+package io.smudgr.app.controls;
 
 import io.smudgr.smudge.param.NumberParameter;
 import io.smudgr.smudge.param.Parameter;
