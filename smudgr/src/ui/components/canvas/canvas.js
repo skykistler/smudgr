@@ -1,24 +1,32 @@
 function CanvasCtrl($scope, $http, smudgr, $document) {
   $scope.image = [];
 
-  var w = angular.element($document[0]);
+  $scope.canvasX = 0;
+  $scope.canvasY = 0;
+  $scope.canvasWidth = 0;
+  $scope.canvasHeight = 0;
 
-  $scope.getWindowDimensions = function () {
-      return {
-          'h': w.height(),
-          'w': w.width()
-      };
-  };
-
-  $scope.$watch($scope.getWindowDimensions, function(newValue, oldValue) {
+  $scope.canvasSizeChanged = function() {
     var canvas = $document.find("smudgr-canvas");
 
-    var x = canvas.offset().left;
-    var y = canvas.offset().top;
-    var w = canvas.width();
-    var h = canvas.height();
+    var x = parseInt(canvas.offset().left);
+    var y = parseInt(canvas.offset().top);
+    var w = parseInt(canvas.width());
+    var h = parseInt(canvas.height());
 
-    smudgr.exec("canvas.size", [x, y, w, h ]);
+    if (x == $scope.canvasX && y == $scope.canvasY && w == $scope.canvasWidth && h == $scope.canvasHeight)
+      return false;
+
+    $scope.canvasX = x;
+    $scope.canvasY = y;
+    $scope.canvasWidth = w;
+    $scope.canvasHeight = h;
+
+    return true;
+  }
+
+  $scope.$watch('canvasSizeChanged()', function(newValue, oldValue) {
+    smudgr.exec("canvas.size", [$scope.canvasX, $scope.canvasY, $scope.canvasWidth, $scope.canvasHeight] );
   });
 }
 
