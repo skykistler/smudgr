@@ -18,9 +18,9 @@ import org.w3c.dom.NodeList;
 
 import io.smudgr.app.Controller;
 import io.smudgr.app.controls.Controllable;
-import io.smudgr.ext.ControllerExtension;
-import io.smudgr.ext.midi.MidiControlMap;
-import io.smudgr.ext.midi.MidiExtension;
+import io.smudgr.extensions.ControllerExtension;
+import io.smudgr.extensions.midi.MidiControlMap;
+import io.smudgr.extensions.midi.MidiExtension;
 import io.smudgr.smudge.Smudge;
 import io.smudgr.smudge.alg.Algorithm;
 import io.smudgr.smudge.alg.AlgorithmComponent;

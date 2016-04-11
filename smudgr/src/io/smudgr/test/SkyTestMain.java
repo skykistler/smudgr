@@ -5,7 +5,7 @@ import io.smudgr.app.controls.AutomateByStepControl;
 import io.smudgr.app.controls.DownsampleControl;
 import io.smudgr.app.controls.RecordGifControl;
 import io.smudgr.app.controls.SaveProjectControl;
-import io.smudgr.ext.midi.MidiExtension;
+import io.smudgr.extensions.midi.MidiExtension;
 import io.smudgr.project.ProjectXML;
 import io.smudgr.smudge.Smudge;
 import io.smudgr.smudge.alg.Algorithm;
@@ -39,6 +39,7 @@ public class SkyTestMain {
 		controller.add(new DownsampleControl(1));
 		controller.add(new RecordGifControl("test"));
 		controller.add(new SaveProjectControl(filepath));
+
 		controller.setSmudge(smudge);
 	}
 

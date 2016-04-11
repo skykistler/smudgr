@@ -8,7 +8,7 @@ import io.smudgr.app.controls.Controllable;
 import io.smudgr.app.threads.RenderThread;
 import io.smudgr.app.threads.UpdateThread;
 import io.smudgr.app.threads.ViewThread;
-import io.smudgr.ext.ControllerExtension;
+import io.smudgr.extensions.ControllerExtension;
 import io.smudgr.project.ProjectIdManager;
 import io.smudgr.record.FrameOutput;
 import io.smudgr.record.GifOutput;

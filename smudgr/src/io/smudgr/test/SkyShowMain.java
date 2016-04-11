@@ -8,7 +8,7 @@ import io.smudgr.app.controls.RecordGifControl;
 import io.smudgr.app.controls.SaveProjectControl;
 import io.smudgr.app.controls.SourceControl;
 import io.smudgr.app.controls.SourceSetControl;
-import io.smudgr.ext.midi.MidiExtension;
+import io.smudgr.extensions.midi.MidiExtension;
 import io.smudgr.project.ProjectXML;
 import io.smudgr.smudge.Smudge;
 import io.smudgr.smudge.alg.Algorithm;
