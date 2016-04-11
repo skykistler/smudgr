@@ -82,7 +82,7 @@ public class Reflect {
 	}
 
 	private void searchDirectory_r(File directory, String packageName) {
-		String packagePrefix = packageName.isEmpty() ? "" : ".";
+		String packagePrefix = packageName.equals("*") ? "" : (packageName + ".");
 
 		if (directory.exists()) {
 			File[] files = directory.listFiles();
@@ -116,7 +116,11 @@ public class Reflect {
 			JarEntry jarEntry = entries.nextElement();
 			String entryName = jarEntry.getName();
 
-			if (!jarEntry.isDirectory() && entryName.startsWith(packagePathFilter) && entryName.endsWith(".class")) {
+			boolean isDirectory = jarEntry.isDirectory();
+			boolean isInPackage = entryName.startsWith(packagePathFilter) || packageName.equals("*");
+			boolean isClass = entryName.endsWith(".class");
+
+			if (!isDirectory && isInPackage && isClass) {
 				String className = jarEntry.getName().replaceFirst("\\.class$", "").replace("/", ".");
 
 				try {
