@@ -3,7 +3,7 @@ package io.smudgr.smudge.alg;
 import java.util.ArrayList;
 
 import io.smudgr.smudge.alg.bound.Bound;
-import io.smudgr.smudge.alg.coord.AllCoords;
+import io.smudgr.smudge.alg.coord.ColumnCoords;
 import io.smudgr.smudge.alg.coord.CoordFunction;
 import io.smudgr.smudge.alg.op.Operation;
 import io.smudgr.smudge.alg.select.Selector;
@@ -28,7 +28,7 @@ public class Algorithm extends Parametric {
 		if (bound == null)
 			add(new Bound());
 		if (coordFunction == null)
-			add(new AllCoords());
+			add(new ColumnCoords());
 
 		for (AlgorithmComponent c : getComponents())
 			c.init();
@@ -155,7 +155,7 @@ public class Algorithm extends Parametric {
 
 		for (AlgorithmComponent component : getComponents())
 			if (component instanceof CoordFunction)
-				name.append(component instanceof AllCoords ? "" : coordFunction + " ");
+				name.append(coordFunction + " ");
 
 		for (AlgorithmComponent component : getComponents())
 			if (component instanceof Operation)

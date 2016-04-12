@@ -4,7 +4,7 @@ import io.smudgr.smudge.alg.bound.Bound;
 import io.smudgr.smudge.param.NumberParameter;
 import io.smudgr.smudge.source.Frame;
 
-public class ConvergeCoordFunction extends CoordFunction {
+public class ConvergeCoords extends CoordFunction {
 
 	private NumberParameter centerX = new NumberParameter("Gravity Center X", this, .5, 0, 1, 0.005);
 	private NumberParameter centerY = new NumberParameter("Gravity Center Y", this, .5, 0, 1, 0.005);

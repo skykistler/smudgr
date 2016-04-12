@@ -6,9 +6,13 @@ import io.smudgr.smudge.alg.Algorithm;
 import io.smudgr.smudge.alg.AlgorithmComponent;
 import io.smudgr.smudge.alg.PixelIndexList;
 import io.smudgr.smudge.alg.bound.Bound;
+import io.smudgr.smudge.param.BooleanParameter;
 import io.smudgr.smudge.source.Frame;
 
 public abstract class CoordFunction extends AlgorithmComponent {
+
+	private BooleanParameter continuous = new BooleanParameter("Continuous", this, false);
+
 	private Algorithm parent;
 	private Frame frame;
 	private Bound bound;
@@ -57,8 +61,10 @@ public abstract class CoordFunction extends AlgorithmComponent {
 		if (currentSet != null && currentSet.size() > 0)
 			coordSet.add(currentSet);
 
-		// Finally, reset the current set and our in-bound flag
-		currentSet = new PixelIndexList();
+		// Finally, reset the current set (if not continuous)
+		if (currentSet == null || !continuous.getValue())
+			currentSet = new PixelIndexList();
+
 		wasInBound = false;
 	}
 

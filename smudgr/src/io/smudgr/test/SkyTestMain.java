@@ -9,6 +9,7 @@ import io.smudgr.extensions.midi.MidiExtension;
 import io.smudgr.project.ProjectXML;
 import io.smudgr.smudge.Smudge;
 import io.smudgr.smudge.alg.Algorithm;
+import io.smudgr.smudge.alg.bound.Bound;
 import io.smudgr.smudge.alg.op.DataBend;
 import io.smudgr.smudge.alg.select.RangeSelect;
 import io.smudgr.smudge.source.Image;
@@ -22,19 +23,27 @@ public class SkyTestMain {
 
 		Smudge smudge = new Smudge();
 
-		Algorithm byteRep = new Algorithm();
-		byteRep.bind("Enable");
-		byteRep.getParameter("Enable").setInitial(false);
-		RangeSelect threshold4 = new RangeSelect();
-		threshold4.bind("Range Length");
-		byteRep.add(threshold4);
+		Algorithm alg = new Algorithm();
+		alg.bind("Enable");
+		alg.getParameter("Enable").setInitial(false);
+
+		Bound bound = new Bound();
+		bound.bind("Bound X");
+		bound.bind("Bound Y");
+		bound.bind("Bound Width");
+		bound.bind("Bound Height");
+		alg.add(bound);
+
+		RangeSelect threshold = new RangeSelect();
+		threshold.bind("Range Length");
+		alg.add(threshold);
 
 		DataBend byte_op = new DataBend();
 		byte_op.bind("Amount");
-		byteRep.add(byte_op);
+		alg.add(byte_op);
 		controller.add(new AutomateByStepControl(byte_op.getParameter("Target")));
 
-		smudge.add(byteRep);
+		smudge.add(alg);
 
 		controller.add(new DownsampleControl(1));
 		controller.add(new RecordGifControl("test"));
@@ -49,10 +58,10 @@ public class SkyTestMain {
 	}
 
 	public static void main(String[] args) {
-		make("data/test.smudge");
+		load("data/test.smudge");
 
 		Controller c = Controller.getInstance();
-		c.getSmudge().setSource(new Image("data/texture.png"));
+		c.getSmudge().setSource(new Image("data/lilly.png"));
 
 		c.add(new NativeView(-1, true));
 

@@ -13,7 +13,7 @@ import io.smudgr.project.ProjectXML;
 import io.smudgr.smudge.Smudge;
 import io.smudgr.smudge.alg.Algorithm;
 import io.smudgr.smudge.alg.coord.ColumnCoords;
-import io.smudgr.smudge.alg.coord.ConvergeCoordFunction;
+import io.smudgr.smudge.alg.coord.ConvergeCoords;
 import io.smudgr.smudge.alg.coord.RowCoords;
 import io.smudgr.smudge.alg.op.DataBend;
 import io.smudgr.smudge.alg.op.PixelShift;
@@ -38,7 +38,7 @@ public class SkyShowMain {
 		Algorithm sort = new Algorithm();
 		sort.bind("Enable");
 		sort.getParameter("Enable").setInitial(false);
-		sort.add(new ConvergeCoordFunction());
+		sort.add(new ConvergeCoords());
 
 		RangeSelect threshold = new RangeSelect();
 		threshold.getParameter("Range Length").setInitial(.1);
@@ -70,7 +70,7 @@ public class SkyShowMain {
 		Algorithm shift = new Algorithm();
 		shift.bind("Enable");
 		shift.getParameter("Enable").setInitial(false);
-		shift.add(new ConvergeCoordFunction());
+		shift.add(new ConvergeCoords());
 
 		PixelShift shift_op = new PixelShift();
 		shift_op.getParameter("Intervals").setInitial(3);
