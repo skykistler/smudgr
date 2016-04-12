@@ -27,8 +27,13 @@ public class Algorithm extends Parametric {
 	public void init() {
 		if (bound == null)
 			add(new Bound());
-		if (coordFunction == null)
-			add(new RowCoords());
+
+		if (coordFunction == null) {
+			RowCoords defaultCoords = new RowCoords();
+			defaultCoords.getParameter("Continuous").setInitial(true);
+
+			add(defaultCoords);
+		}
 
 		for (AlgorithmComponent c : getComponents())
 			c.init();
