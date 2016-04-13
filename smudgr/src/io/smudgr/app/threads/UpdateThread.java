@@ -54,6 +54,8 @@ public class UpdateThread implements Runnable {
 			while (paused) {
 				lastUpdateTime = System.nanoTime();
 
+				System.out.println("Update paused");
+
 				if (!running)
 					break;
 			}

@@ -53,16 +53,20 @@ public abstract class CoordFunction extends AlgorithmComponent {
 	protected abstract void generate(Bound b, Frame img);
 
 	protected void nextSet() {
+		boolean breakSet = !continuous.getValue();
+
 		// If our total set of coords doesn't exist yet, make it
 		if (coordSet == null)
 			coordSet = new ArrayList<PixelIndexList>();
 
-		// If a current set was being generated, add it if not empty
-		if (currentSet != null && currentSet.size() > 0)
-			coordSet.add(currentSet);
+		// If we should put breaks in the set, or we haven't added our first set
+		if (breakSet || coordSet.size() == 0)
+			// And our current set isn't empty, then add it
+			if (currentSet != null && currentSet.size() > 0)
+				coordSet.add(currentSet);
 
-		// Finally, reset the current set (if not continuous)
-		if (currentSet == null || !continuous.getValue())
+		// Finally, reset the current set if needed
+		if (currentSet == null || breakSet)
 			currentSet = new PixelIndexList();
 
 		wasInBound = false;
