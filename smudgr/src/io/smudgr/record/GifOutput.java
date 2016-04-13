@@ -22,7 +22,7 @@ public class GifOutput implements FrameOutput {
 	public void open() {
 		gifEncoder = new AnimatedGifEncoder();
 		gifEncoder.setDelay(TARGET_GIF_MS);
-		gifEncoder.setRepeat(1);
+		gifEncoder.setRepeat(0);
 		//		gifEncoder.setQuality();
 	}
 
