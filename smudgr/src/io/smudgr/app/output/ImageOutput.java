@@ -1,4 +1,4 @@
-package io.smudgr.record;
+package io.smudgr.app.output;
 
 import java.io.File;
 import java.io.IOException;

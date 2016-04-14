@@ -1,7 +1,7 @@
 package io.smudgr.app.threads;
 
 import io.smudgr.app.Controller;
-import io.smudgr.record.FrameOutput;
+import io.smudgr.app.output.FrameOutput;
 
 public class RenderThread implements Runnable {
 

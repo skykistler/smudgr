@@ -1,7 +1,7 @@
 package io.smudgr.app.controls;
 
 import io.smudgr.app.Controller;
-import io.smudgr.record.ImageOutput;
+import io.smudgr.app.output.ImageOutput;
 import io.smudgr.smudge.source.Frame;
 
 public class SaveFrameControl extends Controllable {
