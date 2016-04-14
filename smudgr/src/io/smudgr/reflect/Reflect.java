@@ -14,20 +14,11 @@ import java.util.jar.JarEntry;
 
 public class Reflect {
 
-	private boolean fullSearch = false;
-	private String parentPackage;
 	private Class<?> type;
 
 	private Set<Class<?>> results = new HashSet<Class<?>>();
 
 	public Reflect(Class<?> type) {
-		this("*", type);
-	}
-
-	public Reflect(String parentPackage, Class<?> type) {
-		this.parentPackage = parentPackage == null || parentPackage.isEmpty() ? "*" : parentPackage;
-		fullSearch = parentPackage.equals("*");
-
 		this.type = type;
 	}
 
@@ -41,48 +32,45 @@ public class Reflect {
 		}
 
 		long elapsed = System.currentTimeMillis() - start;
-		System.out.println("Reflect found " + results.size() + " implementations of " + type.getTypeName() + " from package " + parentPackage + " (" + elapsed + " ms)");
+		System.out.println("Reflect found " + results.size() + " implementations of " + type.getTypeName() + " (" + elapsed + " ms)");
 
 		return results;
 	}
 
 	private void searchPackage() throws IOException {
-		String packagePath = parentPackage.replace('.', '/');
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-		Enumeration<URL> resources = classLoader.getResources(packagePath);
+		Enumeration<URL> resources = classLoader.getResources("META-INF");
 
 		while (resources.hasMoreElements()) {
 			URL resource = resources.nextElement();
 
 			if (resource.toString().startsWith("jar:file:")) {
-				searchJarFile(resource, parentPackage);
+				searchJarFile(resource, "");
 				continue;
 			}
 
 			File file = new File(URLDecoder.decode(resource.getFile(), "UTF-8"));
 			if (file.exists() && file.isDirectory())
-				searchDirectory_r(file, parentPackage);
+				searchDirectory_r(file, "");
 		}
 
-		if (fullSearch) {
-			String[] classPaths = System.getProperty("java.class.path").split(";");
-			Set<String> classPathSet = new HashSet<String>(Arrays.asList(classPaths));
+		String[] classPaths = System.getProperty("java.class.path").split(";");
+		Set<String> classPathSet = new HashSet<String>(Arrays.asList(classPaths));
 
-			for (String string : classPathSet) {
-				File file = new File(string);
+		for (String string : classPathSet) {
+			File file = new File(string);
 
-				if (file.exists() && file.isFile() && file.getName().endsWith(".jar")) {
-					URL jarUrl = file.toURI().toURL();
+			if (file.exists() && file.isFile() && file.getName().endsWith(".jar")) {
+				URL jarUrl = file.toURI().toURL();
 
-					if (jarUrl != null)
-						searchJarFile(jarUrl, packagePath);
-				}
+				if (jarUrl != null)
+					searchJarFile(jarUrl, "");
 			}
 		}
 	}
 
 	private void searchDirectory_r(File directory, String packageName) {
-		String packagePrefix = packageName.equals("*") ? "" : (packageName + ".");
+		String packagePrefix = packageName.isEmpty() ? "" : (packageName + ".");
 
 		if (directory.exists()) {
 			File[] files = directory.listFiles();
@@ -117,7 +105,7 @@ public class Reflect {
 			String entryName = jarEntry.getName();
 
 			boolean isDirectory = jarEntry.isDirectory();
-			boolean isInPackage = entryName.startsWith(packagePathFilter) || packageName.equals("*");
+			boolean isInPackage = entryName.startsWith(packagePathFilter) || packageName.isEmpty();
 			boolean isClass = entryName.endsWith(".class");
 
 			if (!isDirectory && isInPackage && isClass) {

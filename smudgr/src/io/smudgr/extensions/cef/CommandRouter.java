@@ -15,7 +15,7 @@ public class CommandRouter extends CefMessageRouterHandlerAdapter {
 	private HashMap<String, CefCommand> commands = new HashMap<String, CefCommand>();
 
 	public CommandRouter() {
-		Reflect commandReflect = new Reflect("io.smudgr.extensions.cef.commands", CefCommand.class);
+		Reflect commandReflect = new Reflect(CefCommand.class);
 
 		Set<Class<?>> commandClasses = commandReflect.get();
 		for (Class<?> c : commandClasses) {
