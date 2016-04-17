@@ -2,32 +2,31 @@ package io.smudgr.app.controls;
 
 import io.smudgr.app.Controller;
 import io.smudgr.app.output.ImageOutput;
-import io.smudgr.smudge.source.Frame;
+import io.smudgr.project.PropertyMap;
+import io.smudgr.project.smudge.source.Frame;
 
-public class SaveFrameControl extends Controllable {
+public class SaveFrameControl implements AppControl {
 
 	public String getName() {
 		return "Save Frame";
 	}
 
-	private String filename;
+	public void init() {
 
-	public SaveFrameControl() {
-		requestBind();
 	}
 
-	public SaveFrameControl(String filename) {
-		this();
-		this.filename = filename;
+	public void update() {
+
 	}
 
 	public void inputValue(int value) {
 	}
 
 	public void inputOn(int value) {
-		Frame frame = Controller.getInstance().getSmudge().getFrame();
+		Frame frame = Controller.getInstance().getProject().getSmudge().getFrame();
 
-		ImageOutput out = new ImageOutput(filename, frame.getWidth(), frame.getHeight());
+		// TODO project wide output folder
+		ImageOutput out = new ImageOutput("frame", frame.getWidth(), frame.getHeight());
 		out.addFrame(frame);
 	}
 
@@ -40,11 +39,10 @@ public class SaveFrameControl extends Controllable {
 	public void decrement() {
 	}
 
-	public void savePropertyMap() {
-		getPropertyMap().setProperty("filename", filename);
+	public void save(PropertyMap pm) {
 	}
 
-	public void loadPropertyMap() {
-		filename = getPropertyMap().getProperty("filename");
+	public void load(PropertyMap pm) {
 	}
+
 }

@@ -5,9 +5,8 @@ import java.util.HashMap;
 
 import javax.sound.midi.MidiMessage;
 
+import io.smudgr.app.Controllable;
 import io.smudgr.app.Controller;
-import io.smudgr.app.controls.Controllable;
-import io.smudgr.app.controls.TimingControl;
 import io.smudgr.extensions.ControllerExtension;
 import io.smudgr.extensions.midi.messages.AftertouchMessage;
 import io.smudgr.extensions.midi.messages.ContinueMessage;
@@ -18,24 +17,20 @@ import io.smudgr.extensions.midi.messages.NoteOnMessage;
 import io.smudgr.extensions.midi.messages.ResetMessage;
 import io.smudgr.extensions.midi.messages.StartMessage;
 import io.smudgr.extensions.midi.messages.StopMessage;
-import io.smudgr.extensions.midi.messages.TimingClockMessage;
-import io.smudgr.smudge.param.Parameter;
+import io.smudgr.project.PropertyMap;
 
-public class MidiExtension implements ControllerExtension, DeviceObserver {
+public class MidiExtension implements ControllerExtension {
 
 	public String getName() {
-		return "MIDI Extension";
+		return "MIDI";
 	}
 
 	private ArrayList<Device> devices;
 	private MidiControlMap midiMap;
 	private HashMap<Integer, MidiMessageStrategy> messageStrategies;
-	private HashMap<Integer, Controllable> systemControls;
 
-	private TimingControl timingControl;
-	private TimingClockMessage timingCalculator;
+	private TimingCalculator timingCalculator;
 
-	private boolean parametersBound = false;
 	private boolean waitingForKey = false;
 	private int lastChannel = -1;
 	private int lastKeyPressed = -1;
@@ -56,18 +51,7 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 		messageStrategies.put(0xFC, new StopMessage());
 		messageStrategies.put(0xFF, new ResetMessage());
 
-		timingControl = new TimingControl();
-		Controller.getInstance().add(timingControl);
-		timingCalculator = new TimingClockMessage();
-
-		systemControls = new HashMap<Integer, Controllable>();
-		systemControls.put(0xFA, timingControl);
-		systemControls.put(0xFB, timingControl);
-		systemControls.put(0xFC, timingControl);
-		systemControls.put(0xFF, timingControl);
-
-		if (!parametersBound && devices.size() > 0)
-			bindParameters();
+		timingCalculator = new TimingCalculator();
 	}
 
 	public void update() {
@@ -79,7 +63,7 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 	}
 
 	public void bindDevice(String deviceName) {
-		Device d = new Device(this, deviceName);
+		Device d = new Device(deviceName);
 
 		if (!d.toString().equals("no device")) {
 			devices.add(d);
@@ -87,27 +71,14 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 		}
 	}
 
-	private void bindParameters() {
-		for (Controllable c : Controller.getInstance().getControls())
-			bindControl(c);
+	public void bindControl(int control) {
 
-		parametersBound = true;
-	}
-
-	private void bindControl(Controllable c) {
-		String name = c.toString();
-		if (c instanceof Parameter)
-			name = ((Parameter) c).getParent().getName() + " - " + name;
-
-		if (midiMap.isBound(c)) {
-			System.out.println("Assigned " + name + " from saved map.");
+		if (midiMap.hasBind(control)) {
+			System.out.println("Already assigned control ID: " + control);
 			return;
 		}
 
-		if (!c.isBindRequested())
-			return;
-
-		System.out.println("Please touch a MIDI key to bind: " + name + " ...");
+		System.out.println("Waiting for MIDI input...");
 
 		lastKeyPressed = -1;
 		lastChannel = -1;
@@ -121,21 +92,22 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 			}
 		}
 
-		Controllable assigned = midiMap.getControl(lastChannel, lastKeyPressed);
-		if (assigned == null) {
-			midiMap.assign(c, lastChannel, lastKeyPressed);
+		int assigned = midiMap.getBind(lastChannel, lastKeyPressed);
+		if (assigned == -1) {
+			midiMap.setBind(control, lastChannel, lastKeyPressed);
 			waitingForKey = false;
 		} else {
-			bindControl(c);
+			System.out.println("Something already bound at given MIDI input");
+			bindControl(control);
 		}
 	}
 
-	public void midiInput(MidiMessage message, long timestamp) {
+	public void midiInput(MidiMessage message) {
 		int status = message.getStatus();
 
 		if (status == 0xF8) {
 			// tick the timing calculator without overhead
-			timingCalculator.input(timingControl, 0);
+			timingCalculator.tick();
 			return;
 		}
 
@@ -178,19 +150,44 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 		}
 
 		if (!waitingForKey) {
-			synchronized (Controller.getInstance().getSmudge()) {
-				// If it's a system message, check our manual system controls
-				// list. Otherwise get the bind
-				Controllable bound = system_message ? systemControls.get(status) : midiMap.getControl(channel, key);
+			synchronized (Controller.getInstance()) {
+				// If it's a system message, pass it along
+				if (system_message) {
+					messageStrategies.get(status).input(null, value);
+				}
+				// Otherwise get the bind
+				else {
+					Controllable bound = getControlFromId(midiMap.getBind(channel, key));
 
-				if (bound != null)
-					messageStrategies.get(status).input(bound, value);
+					if (bound != null)
+						messageStrategies.get(status).input(bound, value);
+				}
 			}
 		}
 	}
 
-	public MidiControlMap getMidiMap() {
-		return midiMap;
+	public Controllable getControlFromId(int id) {
+		return (Controllable) Controller.getInstance().getProject().getIdProvider().getElement(id);
+	}
+
+	public void save(PropertyMap pm) {
+		ArrayList<PropertyMap> children = midiMap.getBinds();
+
+		for (PropertyMap mapping : children) {
+			pm.add(mapping);
+		}
+	}
+
+	public void load(PropertyMap pm) {
+		ArrayList<PropertyMap> mappings = pm.getChildren("midi");
+
+		for (PropertyMap mapping : mappings) {
+			int control = Integer.parseInt(mapping.getAttribute("control"));
+			int channel = Integer.parseInt(mapping.getAttribute("channel"));
+			int key = Integer.parseInt(mapping.getAttribute("key"));
+
+			midiMap.setBind(control, channel, key);
+		}
 	}
 
 }

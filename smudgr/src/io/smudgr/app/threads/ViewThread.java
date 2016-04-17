@@ -3,9 +3,9 @@ package io.smudgr.app.threads;
 import javax.swing.SwingUtilities;
 
 import io.smudgr.app.Controller;
-import io.smudgr.smudge.Smudge;
-import io.smudgr.smudge.source.Frame;
-import io.smudgr.view.View;
+import io.smudgr.app.view.View;
+import io.smudgr.project.smudge.Smudge;
+import io.smudgr.project.smudge.source.Frame;
 
 public class ViewThread implements Runnable {
 
@@ -52,7 +52,7 @@ public class ViewThread implements Runnable {
 
 		while (running) {
 			try {
-				Smudge smudge = Controller.getInstance().getSmudge();
+				Smudge smudge = Controller.getInstance().getProject().getSmudge();
 				if (smudge == null)
 					continue;
 

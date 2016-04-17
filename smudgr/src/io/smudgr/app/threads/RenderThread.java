@@ -5,18 +5,14 @@ import io.smudgr.app.output.FrameOutput;
 
 public class RenderThread implements Runnable {
 
-	private Controller controller;
 	private Thread thread;
 	private long targetFrameNs, lastFrameNs;
-	private volatile boolean running;
-	private boolean finished;
+	private volatile boolean running, paused, finished;
 
 	private FrameOutput output;
 	private int everyXTicks;
 
-	public RenderThread(Controller controller) {
-		this.controller = controller;
-
+	public RenderThread() {
 		setTargetFPS(Controller.TARGET_FPS);
 	}
 
@@ -26,6 +22,10 @@ public class RenderThread implements Runnable {
 
 		thread = new Thread(this);
 		thread.start();
+	}
+
+	public void setPaused(boolean paused) {
+		this.paused = paused;
 	}
 
 	public void stop() {
@@ -57,20 +57,28 @@ public class RenderThread implements Runnable {
 		int frames = 0;
 
 		while (running) {
+			while (paused) {
+				lastFrameNs = System.nanoTime();
+
+				if (!running)
+					break;
+			}
+
 			try {
 				if (output != null)
 					for (int i = 0; i <= everyXTicks; i++)
-						controller.update();
+						Controller.getInstance().update();
 
-				controller.getSmudge().render();
+				synchronized (Controller.getInstance()) {
+					Controller.getInstance().getProject().getSmudge().render();
+				}
 
 				if (output != null)
-					output.addFrame(controller.getSmudge().getFrame());
+					output.addFrame(Controller.getInstance().getProject().getSmudge().getFrame());
 
 			} catch (IllegalStateException e) {
 				e.printStackTrace();
 				System.out.println("Rendering stopped.");
-				controller.stop();
 			}
 
 			frames++;

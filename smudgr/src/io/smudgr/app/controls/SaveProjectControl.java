@@ -1,29 +1,25 @@
 package io.smudgr.app.controls;
 
-import io.smudgr.project.ProjectXML;
+import io.smudgr.project.ProjectSaver;
+import io.smudgr.project.PropertyMap;
 
-public class SaveProjectControl extends Controllable {
+public class SaveProjectControl implements AppControl {
 
 	public String getName() {
 		return "Save Project";
 	}
 
-	private String filepath;
-
-	public SaveProjectControl() {
-		requestBind();
+	public void init() {
 	}
 
-	public SaveProjectControl(String filepath) {
-		this();
-		this.filepath = filepath;
+	public void update() {
 	}
 
 	public void inputValue(int value) {
 	}
 
 	public void inputOn(int value) {
-		ProjectXML xml = new ProjectXML(filepath);
+		ProjectSaver xml = new ProjectSaver();
 		xml.save();
 	}
 
@@ -36,12 +32,10 @@ public class SaveProjectControl extends Controllable {
 	public void decrement() {
 	}
 
-	public void savePropertyMap() {
-		getPropertyMap().setProperty("filepath", filepath);
+	public void save(PropertyMap pm) {
 	}
 
-	public void loadPropertyMap() {
-		filepath = getPropertyMap().getProperty("filepath");
+	public void load(PropertyMap pm) {
 	}
 
 }

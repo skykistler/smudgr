@@ -1,19 +1,18 @@
 package io.smudgr.test;
 
 import io.smudgr.app.Controller;
-import io.smudgr.app.controls.AutomateByStepControl;
-import io.smudgr.app.controls.DownsampleControl;
-import io.smudgr.app.controls.RecordGifControl;
+import io.smudgr.app.controls.RecordGIFControl;
 import io.smudgr.app.controls.SaveProjectControl;
+import io.smudgr.app.view.NativeView;
+import io.smudgr.extensions.automate.controls.AutomateByStepControl;
 import io.smudgr.extensions.midi.MidiExtension;
 import io.smudgr.project.ProjectXML;
-import io.smudgr.smudge.Smudge;
-import io.smudgr.smudge.alg.Algorithm;
-import io.smudgr.smudge.alg.bound.Bound;
-import io.smudgr.smudge.alg.op.DataBend;
-import io.smudgr.smudge.alg.select.RangeSelect;
-import io.smudgr.smudge.source.Image;
-import io.smudgr.view.NativeView;
+import io.smudgr.project.smudge.Smudge;
+import io.smudgr.project.smudge.alg.Algorithm;
+import io.smudgr.project.smudge.alg.bound.Bound;
+import io.smudgr.project.smudge.alg.op.DataBend;
+import io.smudgr.project.smudge.alg.select.RangeSelect;
+import io.smudgr.project.smudge.source.Image;
 
 public class SkyTestMain {
 
@@ -46,7 +45,7 @@ public class SkyTestMain {
 		smudge.add(alg);
 
 		controller.add(new DownsampleControl(1));
-		controller.add(new RecordGifControl("test"));
+		controller.add(new RecordGIFControl("test"));
 		controller.add(new SaveProjectControl(filepath));
 
 		controller.setSmudge(smudge);
@@ -65,7 +64,7 @@ public class SkyTestMain {
 
 		c.add(new NativeView(-1, true));
 
-		((MidiExtension) c.getExtension("MIDI Extension")).bindDevice("Arturia BeatStepPro");
+		((MidiExtension) c.getExtension("MIDI")).bindDevice("Arturia BeatStepPro");
 		c.start();
 	}
 }

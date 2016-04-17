@@ -5,32 +5,33 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import io.smudgr.smudge.source.Frame;
+import io.smudgr.app.Controller;
+import io.smudgr.project.smudge.source.Frame;
 
 public class ImageOutput implements FrameOutput {
-	private String name;
+	private String path;
 	private int width, height;
-	private int frameCount;
 
 	public ImageOutput(String name, int width, int height) {
-		this.name = name;
+		path = Controller.getInstance().getProject().getOutputPath() + name + "_" + System.currentTimeMillis() + ".png";
 		this.width = width;
 		this.height = height;
 	}
 
+	public int getTargetFPS() {
+		return 1;
+	}
+
 	public void open() {
-		frameCount = 0;
 	}
 
 	public void addFrame(Frame f) {
-		String output = name + "_" + frameCount + ".png";
-		System.out.println("Saving image to " + output);
+		System.out.println("Saving image to " + path);
 
 		Frame toSave = f.resize(width, height);
 
 		try {
-			ImageIO.write(toSave.getBufferedImage(), "png", new File(output));
-			frameCount++;
+			ImageIO.write(toSave.getBufferedImage(), "png", new File(path));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

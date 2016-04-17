@@ -23,11 +23,11 @@ import org.cef.browser.CefBrowser;
 import org.cef.browser.CefMessageRouter;
 
 import io.smudgr.app.Controller;
+import io.smudgr.app.view.View;
 import io.smudgr.extensions.cef.CommandRouter;
 import io.smudgr.extensions.cef.util.CefAppHandler;
 import io.smudgr.extensions.cef.util.DialogHandler;
-import io.smudgr.smudge.source.Frame;
-import io.smudgr.view.View;
+import io.smudgr.project.smudge.source.Frame;
 
 public class CefView extends JFrame implements View {
 

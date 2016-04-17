@@ -1,21 +1,57 @@
 package io.smudgr.project;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 public class PropertyMap {
 
-	private HashMap<String, String> properties = new HashMap<String, String>();
+	private String tag;
 
-	public HashMap<String, String> getProperties() {
-		return properties;
+	private HashMap<String, String> attributes = new HashMap<String, String>();
+	private HashMap<String, ArrayList<PropertyMap>> children = new HashMap<String, ArrayList<PropertyMap>>();
+
+	public PropertyMap(String tag) {
+		this.tag = tag;
 	}
 
-	public String getProperty(String property) {
-		return properties.get(property);
+	public String getTag() {
+		return tag;
 	}
 
-	public void setProperty(String property, Object value) {
-		properties.put(property, value.toString());
+	public boolean hasAttribute(String attribute) {
+		return attributes.containsKey(attribute);
+	}
+
+	public String getAttribute(String attribute) {
+		return attributes.get(attribute);
+	}
+
+	public void setAttribute(String attribute, Object value) {
+		attributes.put(attribute, value.toString());
+	}
+
+	public Collection<String> getAttributeKeys() {
+		return attributes.keySet();
+	}
+
+	public void add(PropertyMap pm) {
+		ArrayList<PropertyMap> existingChildren = children.get(pm.getTag());
+
+		if (existingChildren == null) {
+			existingChildren = new ArrayList<PropertyMap>();
+			children.put(tag, existingChildren);
+		}
+
+		existingChildren.add(pm);
+	}
+
+	public ArrayList<PropertyMap> getChildren(String tag) {
+		return children.get(tag);
+	}
+
+	public Collection<String> getChildrenTags() {
+		return children.keySet();
 	}
 
 }

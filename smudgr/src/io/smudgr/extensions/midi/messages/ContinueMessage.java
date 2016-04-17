@@ -1,12 +1,12 @@
 package io.smudgr.extensions.midi.messages;
 
-import io.smudgr.app.controls.Controllable;
+import io.smudgr.app.Controllable;
+import io.smudgr.app.Controller;
 
 public class ContinueMessage implements MidiMessageStrategy {
 
-	@Override
 	public void input(Controllable c, int value) {
-		c.inputOn(1);
+		Controller.getInstance().start();
 	}
 
 }

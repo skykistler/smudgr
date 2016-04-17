@@ -1,0 +1,105 @@
+package io.smudgr.extensions.automate;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import io.smudgr.app.Controller;
+import io.smudgr.extensions.ControllerExtension;
+import io.smudgr.extensions.automate.controls.AutomatorControl;
+import io.smudgr.project.IdProvider;
+import io.smudgr.project.PropertyMap;
+import io.smudgr.reflect.Reflect;
+
+public class AutomatorExtension implements ControllerExtension {
+
+	public String getName() {
+		return "Automator";
+	}
+
+	private HashMap<String, Class<?>> automatorTypes;
+	private ArrayList<AutomatorControl> automators;
+
+	public void init() {
+		for (AutomatorControl automator : automators)
+			automator.init();
+	}
+
+	public void update() {
+		for (AutomatorControl automator : automators)
+			automator.update();
+	}
+
+	public void stop() {
+
+	}
+
+	public void add(String type, PropertyMap properties) {
+		AutomatorControl control = getNewAutomator(type);
+
+		control.load(properties);
+		automators.add(control);
+
+		Controller.getInstance().getProject().add(control);
+	}
+
+	public void save(PropertyMap pm) {
+		IdProvider idProvider = Controller.getInstance().getProject().getIdProvider();
+
+		for (AutomatorControl automator : automators) {
+			PropertyMap map = new PropertyMap("automator");
+
+			map.setAttribute("id", idProvider.getId(automator));
+			map.setAttribute("name", automator.getName());
+
+			pm.add(map);
+
+		}
+	}
+
+	public void load(PropertyMap pm) {
+		IdProvider idProvider = Controller.getInstance().getProject().getIdProvider();
+
+		reflectAutomators();
+
+		for (PropertyMap map : pm.getChildren("automator")) {
+			AutomatorControl control = getNewAutomator(map.getAttribute("name"));
+
+			idProvider.put(control, Integer.parseInt(map.getAttribute("id")));
+
+			control.load(map);
+		}
+	}
+
+	private void reflectAutomators() {
+		automatorTypes = new HashMap<String, Class<?>>();
+
+		Reflect reflectControls = new Reflect(AutomatorControl.class);
+
+		for (Class<?> c : reflectControls.get()) {
+			try {
+				AutomatorControl control = (AutomatorControl) c.newInstance();
+
+				automatorTypes.put(c.getName(), control.getClass());
+			} catch (InstantiationException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private AutomatorControl getNewAutomator(String name) {
+		try {
+
+			Class<?> type = automatorTypes.get(name);
+
+			if (type == null)
+				return null;
+
+			return (AutomatorControl) type.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+}

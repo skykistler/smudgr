@@ -4,14 +4,9 @@ import io.smudgr.app.Controller;
 
 public class UpdateThread implements Runnable {
 
-	private Controller controller;
 	private Thread thread;
 	private double ticksPerSecond;
 	private boolean running, paused, finished;
-
-	public UpdateThread(Controller c) {
-		controller = c;
-	}
 
 	public void start() {
 		running = true;
@@ -54,13 +49,11 @@ public class UpdateThread implements Runnable {
 			while (paused) {
 				lastUpdateTime = System.nanoTime();
 
-				System.out.println("Update paused");
-
 				if (!running)
 					break;
 			}
 
-			double beatsPerSecond = controller.getBPM() / 60.0;
+			double beatsPerSecond = Controller.getInstance().getProject().getBPM() / 60.0;
 			ticksPerSecond = Math.ceil(Controller.TICKS_PER_BEAT * beatsPerSecond);
 			double timeForUpdate = nsInSecond / ticksPerSecond;
 
@@ -68,12 +61,11 @@ public class UpdateThread implements Runnable {
 			double now = System.nanoTime();
 			while (now - lastUpdateTime >= timeForUpdate) {
 				try {
-					synchronized (controller.getSmudge()) {
-						controller.update();
+					synchronized (Controller.getInstance()) {
+						Controller.getInstance().update();
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
-					controller.stop();
 				}
 				lastUpdateTime += timeForUpdate;
 				updates++;

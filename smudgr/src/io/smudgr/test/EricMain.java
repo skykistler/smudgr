@@ -1,19 +1,17 @@
 package io.smudgr.test;
 
 import io.smudgr.app.Controller;
-import io.smudgr.app.controls.DownsampleControl;
 import io.smudgr.app.controls.SaveProjectControl;
-import io.smudgr.app.controls.SourceControl;
 import io.smudgr.app.controls.SourceSetControl;
 import io.smudgr.extensions.midi.MidiExtension;
 import io.smudgr.project.ProjectXML;
-import io.smudgr.smudge.Smudge;
-import io.smudgr.smudge.alg.Algorithm;
-import io.smudgr.smudge.alg.coord.RowCoords;
-import io.smudgr.smudge.alg.op.DataBend;
-import io.smudgr.smudge.alg.select.EdgeSelect;
-import io.smudgr.smudge.alg.select.RangeSelect;
-import io.smudgr.smudge.source.Image;
+import io.smudgr.project.smudge.Smudge;
+import io.smudgr.project.smudge.alg.Algorithm;
+import io.smudgr.project.smudge.alg.coord.RowCoords;
+import io.smudgr.project.smudge.alg.op.DataBend;
+import io.smudgr.project.smudge.alg.select.EdgeSelect;
+import io.smudgr.project.smudge.alg.select.RangeSelect;
+import io.smudgr.project.smudge.source.Image;
 
 public class EricMain {
 	public static void make(String filepath) {
@@ -71,7 +69,7 @@ public class EricMain {
 		Controller c = Controller.getInstance();
 		c.getSmudge().setSource(new Image("data/work/flowers_source.jpg"));
 
-		((MidiExtension) c.getExtension("MIDI Extension")).bindDevice("Arturia BeatStep");
+		((MidiExtension) c.getExtension("MIDI")).bindDevice("Arturia BeatStep");
 		c.start();
 	}
 }

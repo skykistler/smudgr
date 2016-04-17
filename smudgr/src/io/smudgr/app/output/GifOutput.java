@@ -2,10 +2,12 @@ package io.smudgr.app.output;
 
 import java.util.ArrayList;
 
-import io.smudgr.smudge.source.Frame;
+import io.smudgr.app.Controller;
+import io.smudgr.project.smudge.source.Frame;
 
 public class GifOutput implements FrameOutput {
-	public final static int TARGET_GIF_MS = 50;
+
+	private final static int TARGET_GIF_MS = 50;
 
 	private String path;
 
@@ -15,8 +17,12 @@ public class GifOutput implements FrameOutput {
 
 	private boolean closed;
 
-	public GifOutput(String path) {
-		this.path = path;
+	public GifOutput(String name) {
+		path = Controller.getInstance().getProject().getOutputPath() + name + "_" + System.currentTimeMillis() + ".png";
+	}
+
+	public int getTargetFPS() {
+		return 1000 / TARGET_GIF_MS;
 	}
 
 	public void open() {

@@ -1,8 +1,14 @@
 package io.smudgr.app.output;
 
-import io.smudgr.smudge.source.Frame;
+import io.smudgr.project.smudge.source.Frame;
 
 public class RawOutput implements FrameOutput {
+
+	@Override
+	public int getTargetFPS() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 	@Override
 	public void open() {

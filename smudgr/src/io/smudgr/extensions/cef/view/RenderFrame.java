@@ -9,8 +9,8 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
-import io.smudgr.smudge.source.Frame;
-import io.smudgr.view.View;
+import io.smudgr.app.view.View;
+import io.smudgr.project.smudge.source.Frame;
 
 public class RenderFrame extends JFrame implements View {
 

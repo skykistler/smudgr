@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import io.smudgr.app.Controller;
-import io.smudgr.smudge.source.SourceSet;
+import io.smudgr.project.PropertyMap;
+import io.smudgr.project.smudge.source.SourceSet;
 
-public class SourceSetControl extends Controllable {
+public class SourceSetControl implements AppControl {
 
 	public String getName() {
 		return "Source Set Switcher";
@@ -17,15 +18,6 @@ public class SourceSetControl extends Controllable {
 	private int currentSet = -1;
 	private ArrayList<String> files = new ArrayList<String>();;
 	private ArrayList<SourceSet> sourceSets = new ArrayList<SourceSet>();;
-
-	public SourceSetControl() {
-		requestBind();
-	}
-
-	public SourceSetControl(String location) {
-		this();
-		setLocation(location);
-	}
 
 	public void init() {
 		System.out.println("Loading " + files.size() + " source files...");
@@ -38,6 +30,9 @@ public class SourceSetControl extends Controllable {
 
 		setCurrentSet(0);
 		System.out.println("Successfully loaded " + sourceSets.size() + " source sets");
+	}
+
+	public void update() {
 	}
 
 	public void setLocation(String location) {
@@ -105,7 +100,7 @@ public class SourceSetControl extends Controllable {
 		current = sourceSets.get(currentSet);
 		current.init();
 
-		Controller.getInstance().getSmudge().setSource(current);
+		Controller.getInstance().getProject().getSmudge().setSource(current);
 	}
 
 	public void inputValue(int value) {
@@ -117,12 +112,16 @@ public class SourceSetControl extends Controllable {
 	public void inputOff(int value) {
 	}
 
-	public void savePropertyMap() {
-		getPropertyMap().setProperty("location", (new File(location)).getAbsolutePath());
+	public PropertyMap getPropertyMap() {
+		PropertyMap map = new PropertyMap();
+
+		map.setProperty("location", (new File(location)).getAbsolutePath());
+
+		return map;
 	}
 
-	public void loadPropertyMap() {
-		setLocation(getPropertyMap().getProperty("location"));
+	public void setPropertyMap(PropertyMap pm) {
+		setLocation(pm.getProperty("location"));
 	}
 
 }

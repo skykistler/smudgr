@@ -1,27 +1,27 @@
 package io.smudgr.test;
 
 import io.smudgr.app.Controller;
-import io.smudgr.app.controls.AutomateByBeatControl;
-import io.smudgr.app.controls.AutomateByStepControl;
 import io.smudgr.app.controls.DownsampleControl;
-import io.smudgr.app.controls.RecordGifControl;
+import io.smudgr.app.controls.RecordGIFControl;
 import io.smudgr.app.controls.SaveProjectControl;
 import io.smudgr.app.controls.SourceControl;
 import io.smudgr.app.controls.SourceSetControl;
+import io.smudgr.app.view.NativeView;
+import io.smudgr.extensions.automate.controls.AutomateByBeatControl;
+import io.smudgr.extensions.automate.controls.AutomateByStepControl;
 import io.smudgr.extensions.midi.MidiExtension;
 import io.smudgr.project.ProjectXML;
-import io.smudgr.smudge.Smudge;
-import io.smudgr.smudge.alg.Algorithm;
-import io.smudgr.smudge.alg.coord.ColumnCoords;
-import io.smudgr.smudge.alg.coord.ConvergeCoords;
-import io.smudgr.smudge.alg.coord.RowCoords;
-import io.smudgr.smudge.alg.op.DataBend;
-import io.smudgr.smudge.alg.op.PixelShift;
-import io.smudgr.smudge.alg.op.PixelSort;
-import io.smudgr.smudge.alg.op.SpectralShift;
-import io.smudgr.smudge.alg.select.RangeSelect;
-import io.smudgr.smudge.source.Image;
-import io.smudgr.view.NativeView;
+import io.smudgr.project.smudge.Smudge;
+import io.smudgr.project.smudge.alg.Algorithm;
+import io.smudgr.project.smudge.alg.coord.ColumnCoords;
+import io.smudgr.project.smudge.alg.coord.ConvergeCoords;
+import io.smudgr.project.smudge.alg.coord.RowCoords;
+import io.smudgr.project.smudge.alg.op.DataBend;
+import io.smudgr.project.smudge.alg.op.PixelShift;
+import io.smudgr.project.smudge.alg.op.PixelSort;
+import io.smudgr.project.smudge.alg.op.SpectralShift;
+import io.smudgr.project.smudge.alg.select.RangeSelect;
+import io.smudgr.project.smudge.source.Image;
 
 public class SkyShowMain {
 
@@ -141,7 +141,7 @@ public class SkyShowMain {
 
 		controller.add(new DownsampleControl(1));
 		controller.add(new SaveProjectControl(filepath));
-		controller.add(new RecordGifControl("show_record"));
+		controller.add(new RecordGIFControl("show_record"));
 		controller.add(new SourceControl());
 
 		controller.setSmudge(smudge);

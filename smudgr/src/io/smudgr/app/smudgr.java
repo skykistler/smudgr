@@ -7,20 +7,23 @@ import java.io.PrintStream;
 import java.net.URLDecoder;
 
 import io.smudgr.extensions.cef.view.CefView;
-import io.smudgr.smudge.Smudge;
-import io.smudgr.smudge.alg.Algorithm;
-import io.smudgr.smudge.alg.coord.ColumnCoords;
-import io.smudgr.smudge.alg.op.Marbeler;
-import io.smudgr.smudge.alg.op.PixelSort;
-import io.smudgr.smudge.alg.select.RangeSelect;
+import io.smudgr.project.Project;
+import io.smudgr.project.smudge.Smudge;
+import io.smudgr.project.smudge.alg.Algorithm;
+import io.smudgr.project.smudge.alg.coord.ColumnCoords;
+import io.smudgr.project.smudge.alg.op.Marbeler;
+import io.smudgr.project.smudge.alg.op.PixelSort;
+import io.smudgr.project.smudge.alg.select.RangeSelect;
 
 public class smudgr {
 
 	private smudgr(boolean debug) {
 		Controller controller = new Controller();
 
+		Project project = new Project();
+
 		Smudge smudge = new Smudge();
-		controller.setSmudge(smudge);
+		project.setSmudge(smudge);
 
 		Algorithm sort = new Algorithm();
 		sort.add(new ColumnCoords());
@@ -33,8 +36,9 @@ public class smudgr {
 
 		smudge.add(sort);
 
-		controller.add(new CefView(debug));
+		controller.setProject(project);
 
+		controller.add(new CefView(debug));
 		controller.start();
 	}
 

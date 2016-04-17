@@ -2,11 +2,10 @@ package io.smudgr.extensions.cef.commands;
 
 import java.io.File;
 
-import io.smudgr.app.Controller;
-import io.smudgr.project.ProjectXML;
-import io.smudgr.view.FileDialog;
-import io.smudgr.view.FileDialog.FileDialogCallback;
-import io.smudgr.view.FileDialog.FileDialogFilter;
+import io.smudgr.app.view.FileDialog;
+import io.smudgr.app.view.FileDialog.FileDialogCallback;
+import io.smudgr.app.view.FileDialog.FileDialogFilter;
+import io.smudgr.project.ProjectLoader;
 
 public class OpenSmudge implements CefCommand {
 
@@ -30,10 +29,8 @@ public class OpenSmudge implements CefCommand {
 
 	private class OpenSmudgeCallback implements FileDialogCallback {
 		public void onSelection(File[] selectedFiles) {
-			ProjectXML project = new ProjectXML(selectedFiles[0].getAbsolutePath());
+			ProjectLoader project = new ProjectLoader(selectedFiles[0].getAbsolutePath());
 			project.load();
-
-			Controller.getInstance().start();
 		}
 
 		public void onFailure(String reason) {
