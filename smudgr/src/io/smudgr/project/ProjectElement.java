@@ -9,11 +9,11 @@ public interface ProjectElement {
 	}
 
 	public default void save(PropertyMap pm) {
-		pm.setAttribute("id", getProject().getIdProvider().getId(this));
+		pm.setAttribute("id", getProject().getId(this));
 	}
 
 	public default void load(PropertyMap pm) {
-		getProject().getIdProvider().put(this, Integer.parseInt(pm.getAttribute("id")));
+		getProject().put(this, Integer.parseInt(pm.getAttribute("id")));
 	}
 
 }

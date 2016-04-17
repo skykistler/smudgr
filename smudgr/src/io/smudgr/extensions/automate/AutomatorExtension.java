@@ -6,7 +6,6 @@ import java.util.HashMap;
 import io.smudgr.app.Controller;
 import io.smudgr.extensions.ControllerExtension;
 import io.smudgr.extensions.automate.controls.AutomatorControl;
-import io.smudgr.project.IdProvider;
 import io.smudgr.project.PropertyMap;
 import io.smudgr.reflect.Reflect;
 
@@ -43,12 +42,10 @@ public class AutomatorExtension implements ControllerExtension {
 	}
 
 	public void save(PropertyMap pm) {
-		IdProvider idProvider = Controller.getInstance().getProject().getIdProvider();
-
 		for (AutomatorControl automator : automators) {
 			PropertyMap map = new PropertyMap("automator");
 
-			map.setAttribute("id", idProvider.getId(automator));
+			map.setAttribute("id", getProject().getId(automator));
 			map.setAttribute("name", automator.getName());
 
 			pm.add(map);
@@ -57,14 +54,12 @@ public class AutomatorExtension implements ControllerExtension {
 	}
 
 	public void load(PropertyMap pm) {
-		IdProvider idProvider = Controller.getInstance().getProject().getIdProvider();
-
 		reflectAutomators();
 
 		for (PropertyMap map : pm.getChildren("automator")) {
 			AutomatorControl control = getNewAutomator(map.getAttribute("name"));
 
-			idProvider.put(control, Integer.parseInt(map.getAttribute("id")));
+			getProject().put(control, Integer.parseInt(map.getAttribute("id")));
 
 			control.load(map);
 		}

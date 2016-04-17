@@ -12,7 +12,6 @@ import io.smudgr.app.threads.ViewThread;
 import io.smudgr.app.view.NativeView;
 import io.smudgr.app.view.View;
 import io.smudgr.extensions.ControllerExtension;
-import io.smudgr.project.IdProvider;
 import io.smudgr.project.Project;
 import io.smudgr.project.PropertyMap;
 import io.smudgr.reflect.Reflect;
@@ -53,14 +52,18 @@ public class Controller {
 			return;
 		}
 
-		if (project == null)
-			setProject(new Project());
+		if (project == null) {
+			System.out.println("Must load a project before starting controller");
+			return;
+		}
 
 		if (views.size() == 0)
 			add(new NativeView());
 
+		System.out.println("Inititalizing smudge...");
 		project.getSmudge().init();
 
+		System.out.println("Inititalizing app controls..");
 		for (AppControl c : getAppControls())
 			c.init();
 
@@ -200,13 +203,11 @@ public class Controller {
 	}
 
 	public void save(PropertyMap pm) {
-		IdProvider idProvider = getProject().getIdProvider();
-
 		for (AppControl control : getAppControls()) {
 			PropertyMap map = new PropertyMap("control");
 
 			control.save(map);
-			map.setAttribute("id", idProvider.getId(control));
+			map.setAttribute("id", getProject().getId(control));
 			map.setAttribute("name", control.getName());
 
 			pm.add(map);
@@ -231,14 +232,13 @@ public class Controller {
 
 			if (control != null) {
 				int id = Integer.parseInt(mapping.getAttribute("id"));
-
-				getProject().getIdProvider().put(control, id);
+				getProject().put(control, id);
 			}
 		}
 
 		// Add any project controls that weren't saved
 		for (AppControl control : getAppControls()) {
-			if (getProject().getIdProvider().getId(control) == -1)
+			if (getProject().getId(control) == -1)
 				getProject().add(control);
 		}
 
@@ -274,9 +274,7 @@ public class Controller {
 
 		for (Class<?> c : reflectExt.get()) {
 			try {
-				ControllerExtension ext = (ControllerExtension) c.newInstance();
-
-				add(ext);
+				add((ControllerExtension) c.newInstance());
 			} catch (InstantiationException | IllegalAccessException e) {
 				e.printStackTrace();
 			}

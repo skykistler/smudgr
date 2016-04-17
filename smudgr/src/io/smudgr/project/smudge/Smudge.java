@@ -116,8 +116,9 @@ public class Smudge extends Parametric implements Source {
 
 		for (PropertyMap map : children) {
 			Algorithm alg = new Algorithm();
-
 			alg.load(map);
+
+			add(alg);
 		}
 	}
 

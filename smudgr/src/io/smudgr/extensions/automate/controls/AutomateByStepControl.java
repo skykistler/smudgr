@@ -59,7 +59,7 @@ public class AutomateByStepControl implements AutomatorControl {
 	}
 
 	public void save(PropertyMap pm) {
-		int parameterId = getProject().getIdProvider().getId(parameter);
+		int parameterId = getProject().getId(parameter);
 
 		pm.setAttribute("parameter", parameterId);
 		pm.setAttribute("increment", increment);
@@ -80,7 +80,7 @@ public class AutomateByStepControl implements AutomatorControl {
 		if (pm.hasAttribute("parameter")) {
 			int parameterId = Integer.parseInt(pm.getAttribute("parameter"));
 
-			parameter = (NumberParameter) getProject().getIdProvider().getElement(parameterId);
+			parameter = (NumberParameter) getProject().getElement(parameterId);
 		}
 	}
 

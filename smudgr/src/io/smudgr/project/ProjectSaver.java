@@ -26,14 +26,14 @@ public class ProjectSaver {
 
 	private Document doc;
 
-	public ProjectSaver() {
+	public void save() {
 		path = Controller.getInstance().getProject().getProjectPath();
 
-		if (!path.endsWith(Project.PROJECT_EXTENSION))
-			path += Project.PROJECT_EXTENSION;
-	}
+		if (path == null) {
+			System.out.println("Could not save project: No valid save path set for project.");
+			return;
+		}
 
-	public void save() {
 		Project project = Controller.getInstance().getProject();
 		try {
 			openXML();

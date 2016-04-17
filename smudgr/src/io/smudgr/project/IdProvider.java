@@ -32,15 +32,15 @@ public class IdProvider {
 		}
 	}
 
-	protected void add(ProjectElement element) {
+	public void add(ProjectElement element) {
+		if (getId(element) > -1)
+			return;
+
 		if (loading) {
 			if (!toAdd.contains(element))
 				toAdd.add(element);
 			return;
 		}
-
-		if (getId(element) > -1)
-			return;
 
 		put(element, getNewId());
 	}
@@ -52,6 +52,9 @@ public class IdProvider {
 		}
 
 		ProjectElement curr = idToElement.get(id);
+		if (curr == element)
+			return;
+
 		if (curr != null) {
 			System.out.println("Project ID collision: " + element + " trying to replace " + curr + " at ID: " + id);
 			return;
@@ -67,15 +70,12 @@ public class IdProvider {
 	}
 
 	public void remove(ProjectElement element) {
-		remove(getId(element));
-	}
-
-	public void remove(int id) {
-		if (available_ids.contains(id))
-			return;
-
-		elementToId.remove(getElement(id));
+		int id = getId(element);
+		elementToId.remove(element);
 		idToElement.remove(id);
+
+		if (id < 0 || available_ids.contains(id))
+			return;
 
 		available_ids.add(id);
 	}

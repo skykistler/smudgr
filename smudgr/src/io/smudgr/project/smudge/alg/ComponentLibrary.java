@@ -1,8 +1,7 @@
-package io.smudgr.project.smudge;
+package io.smudgr.project.smudge.alg;
 
 import java.util.HashMap;
 
-import io.smudgr.project.smudge.alg.AlgorithmComponent;
 import io.smudgr.reflect.Reflect;
 
 public class ComponentLibrary {
@@ -30,8 +29,10 @@ public class ComponentLibrary {
 	}
 
 	public AlgorithmComponent getNewComponent(String type, String name) {
-		try {
+		if (type == null || name == null)
+			return null;
 
+		try {
 			HashMap<String, Class<?>> ofType = components.get(type);
 			if (ofType == null)
 				return null;
@@ -42,7 +43,6 @@ public class ComponentLibrary {
 				return null;
 
 			return (AlgorithmComponent) compClass.newInstance();
-
 		} catch (InstantiationException | IllegalAccessException e) {
 			e.printStackTrace();
 		}

@@ -1,10 +1,11 @@
 package io.smudgr.project;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import io.smudgr.app.Controller;
-import io.smudgr.project.smudge.ComponentLibrary;
 import io.smudgr.project.smudge.Smudge;
+import io.smudgr.project.smudge.alg.ComponentLibrary;
 
 public class Project {
 
@@ -21,6 +22,7 @@ public class Project {
 	public Project() {
 		idProvider = new IdProvider();
 		componentLibrary = new ComponentLibrary();
+		smudge = new Smudge();
 	}
 
 	public void save(PropertyMap pm) {
@@ -39,18 +41,53 @@ public class Project {
 	}
 
 	public void load(PropertyMap pm) {
+		if (Controller.getInstance().getProject() != this)
+			Controller.getInstance().setProject(this);
+
 		setOutputPath(pm.getAttribute("outputPath"));
-		setBPM(Integer.parseInt(pm.getAttribute("bpm")));
 
-		smudge.load(pm.getChildren("smudge").get(0));
+		if (pm.hasAttribute("bpm"))
+			setBPM(Integer.parseInt(pm.getAttribute("bpm")));
 
-		Controller.getInstance().load(pm.getChildren("app").get(0));
+		// If our smudge tag existed, load with it; else make a new smudge entry
+		ArrayList<PropertyMap> smudgeMap = pm.getChildren("smudge");
+		if (smudgeMap.size() == 1)
+			smudge.load(smudgeMap.get(0));
+		else
+			smudge.load(new PropertyMap("smudge"));
+
+		// If our app tag existed, load with it; else make a new app entry
+		ArrayList<PropertyMap> appMap = pm.getChildren("app");
+		if (appMap.size() == 1)
+			Controller.getInstance().load(appMap.get(0));
+		else
+			Controller.getInstance().load(new PropertyMap("app"));
 
 		idProvider.finishLoading();
 	}
 
 	public void add(ProjectElement element) {
 		idProvider.add(element);
+	}
+
+	public void put(ProjectElement element, int id) {
+		idProvider.put(element, id);
+	}
+
+	public void remove(ProjectElement element) {
+		idProvider.remove(element);
+	}
+
+	public boolean contains(ProjectElement element) {
+		return idProvider.getId(element) > -1;
+	}
+
+	public int getId(ProjectElement element) {
+		return idProvider.getId(element);
+	}
+
+	public ProjectElement getElement(int id) {
+		return idProvider.getElement(id);
 	}
 
 	public String getOutputPath() {
@@ -62,6 +99,17 @@ public class Project {
 	}
 
 	public void setProjectPath(String path) {
+		File output = new File(path);
+
+		path = output.getAbsolutePath();
+
+		if (output.isDirectory()) {
+			if (!path.endsWith(File.separator))
+				path += File.separator;
+
+			path += "Untitled" + PROJECT_EXTENSION;
+		}
+
 		location = path;
 	}
 
@@ -81,10 +129,6 @@ public class Project {
 		}
 
 		outputPath = path;
-	}
-
-	public IdProvider getIdProvider() {
-		return idProvider;
 	}
 
 	public Smudge getSmudge() {

@@ -35,12 +35,12 @@ public abstract class Parametric implements ProjectElement {
 	}
 
 	public void save(PropertyMap pm) {
-		pm.setAttribute("id", getProject().getIdProvider().getId(this));
+		pm.setAttribute("id", getProject().getId(this));
 
 		for (Parameter param : getParameters()) {
 			PropertyMap map = new PropertyMap("parameter");
 
-			map.setAttribute("id", getProject().getIdProvider().getId(param));
+			map.setAttribute("id", getProject().getId(param));
 			map.setAttribute("name", getName());
 
 			param.save(map);
@@ -50,15 +50,15 @@ public abstract class Parametric implements ProjectElement {
 	}
 
 	public void load(PropertyMap pm) {
-		getProject().getIdProvider().put(this, Integer.parseInt(pm.getAttribute("id")));
+		if (pm.hasAttribute("id"))
+			getProject().put(this, Integer.parseInt(pm.getAttribute("id")));
 
 		ArrayList<PropertyMap> children = pm.getChildren("parameter");
-
 		for (PropertyMap map : children) {
 			Parameter param = getParameter(map.getAttribute("name"));
 
 			if (param != null) {
-				getProject().getIdProvider().put(param, Integer.parseInt(map.getAttribute("id")));
+				getProject().put(param, Integer.parseInt(map.getAttribute("id")));
 				param.load(map);
 			}
 		}

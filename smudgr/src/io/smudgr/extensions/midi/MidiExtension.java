@@ -17,6 +17,7 @@ import io.smudgr.extensions.midi.messages.NoteOnMessage;
 import io.smudgr.extensions.midi.messages.ResetMessage;
 import io.smudgr.extensions.midi.messages.StartMessage;
 import io.smudgr.extensions.midi.messages.StopMessage;
+import io.smudgr.project.ProjectElement;
 import io.smudgr.project.PropertyMap;
 
 public class MidiExtension implements ControllerExtension {
@@ -157,17 +158,13 @@ public class MidiExtension implements ControllerExtension {
 				}
 				// Otherwise get the bind
 				else {
-					Controllable bound = getControlFromId(midiMap.getBind(channel, key));
+					ProjectElement bound = getProject().getElement(midiMap.getBind(channel, key));
 
-					if (bound != null)
-						messageStrategies.get(status).input(bound, value);
+					if (bound != null && bound instanceof Controllable)
+						messageStrategies.get(status).input((Controllable) bound, value);
 				}
 			}
 		}
-	}
-
-	public Controllable getControlFromId(int id) {
-		return (Controllable) Controller.getInstance().getProject().getIdProvider().getElement(id);
 	}
 
 	public void save(PropertyMap pm) {

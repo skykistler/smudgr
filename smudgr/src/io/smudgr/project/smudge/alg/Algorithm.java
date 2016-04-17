@@ -179,7 +179,10 @@ public class Algorithm extends Parametric {
 
 			AlgorithmComponent comp = getProject().getComponentLibrary().getNewComponent(type, name);
 
-			comp.load(map);
+			if (comp != null) {
+				comp.load(map);
+				add(comp);
+			}
 		}
 	}
 

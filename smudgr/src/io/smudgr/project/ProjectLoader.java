@@ -33,9 +33,17 @@ public class ProjectLoader {
 		controller.pause();
 
 		Project project = new Project();
-		controller.setProject(project);
+		project.setProjectPath(path);
 
-		project.load(projectMap);
+		try {
+			project.load(projectMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Could not load save file. Possibly corrupted");
+
+			project = new Project();
+			project.load(new PropertyMap("project"));
+		}
 
 		controller.start();
 	}
@@ -46,6 +54,7 @@ public class ProjectLoader {
 		File xml = new File(path);
 		if (!xml.exists()) {
 			System.out.println("Did not find file: " + xml.getAbsolutePath());
+			System.out.println("Creating new project...");
 		} else
 			try {
 				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
