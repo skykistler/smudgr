@@ -41,7 +41,7 @@ public abstract class Parametric implements ProjectElement {
 			PropertyMap map = new PropertyMap("parameter");
 
 			map.setAttribute("id", getProject().getId(param));
-			map.setAttribute("name", getName());
+			map.setAttribute("name", param.getName());
 
 			param.save(map);
 

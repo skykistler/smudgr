@@ -1,7 +1,6 @@
 package io.smudgr.app.controls;
 
 import io.smudgr.project.ProjectSaver;
-import io.smudgr.project.PropertyMap;
 
 public class SaveProjectControl implements AppControl {
 
@@ -30,12 +29,6 @@ public class SaveProjectControl implements AppControl {
 	}
 
 	public void decrement() {
-	}
-
-	public void save(PropertyMap pm) {
-	}
-
-	public void load(PropertyMap pm) {
 	}
 
 }

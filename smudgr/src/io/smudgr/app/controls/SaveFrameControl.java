@@ -1,8 +1,6 @@
 package io.smudgr.app.controls;
 
-import io.smudgr.app.Controller;
 import io.smudgr.app.output.ImageOutput;
-import io.smudgr.project.PropertyMap;
 import io.smudgr.project.smudge.source.Frame;
 
 public class SaveFrameControl implements AppControl {
@@ -23,7 +21,7 @@ public class SaveFrameControl implements AppControl {
 	}
 
 	public void inputOn(int value) {
-		Frame frame = Controller.getInstance().getProject().getSmudge().getFrame();
+		Frame frame = getProject().getSmudge().getFrame();
 
 		// TODO project wide output folder
 		ImageOutput out = new ImageOutput("frame", frame.getWidth(), frame.getHeight());
@@ -37,12 +35,6 @@ public class SaveFrameControl implements AppControl {
 	}
 
 	public void decrement() {
-	}
-
-	public void save(PropertyMap pm) {
-	}
-
-	public void load(PropertyMap pm) {
 	}
 
 }

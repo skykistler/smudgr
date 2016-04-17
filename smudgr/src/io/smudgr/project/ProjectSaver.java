@@ -27,15 +27,15 @@ public class ProjectSaver {
 	private Document doc;
 
 	public void save() {
-		path = Controller.getInstance().getProject().getProjectPath();
-
-		if (path == null) {
-			System.out.println("Could not save project: No valid save path set for project.");
-			return;
-		}
-
-		Project project = Controller.getInstance().getProject();
 		try {
+			Project project = Controller.getInstance().getProject();
+
+			path = project.getProjectPath();
+			if (path == null) {
+				System.out.println("Could not save project: No valid save path set for project.");
+				return;
+			}
+
 			openXML();
 
 			PropertyMap map = new PropertyMap("project");

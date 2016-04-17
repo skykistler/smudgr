@@ -72,8 +72,7 @@ public class MidiExtension implements ControllerExtension {
 		}
 	}
 
-	public void bindControl(int control) {
-
+	public void waitForBind(int control) {
 		if (midiMap.hasBind(control)) {
 			System.out.println("Already assigned control ID: " + control);
 			return;
@@ -99,7 +98,7 @@ public class MidiExtension implements ControllerExtension {
 			waitingForKey = false;
 		} else {
 			System.out.println("Something already bound at given MIDI input");
-			bindControl(control);
+			waitForBind(control);
 		}
 	}
 
@@ -168,11 +167,8 @@ public class MidiExtension implements ControllerExtension {
 	}
 
 	public void save(PropertyMap pm) {
-		ArrayList<PropertyMap> children = midiMap.getBinds();
-
-		for (PropertyMap mapping : children) {
+		for (PropertyMap mapping : midiMap.getBinds())
 			pm.add(mapping);
-		}
 	}
 
 	public void load(PropertyMap pm) {

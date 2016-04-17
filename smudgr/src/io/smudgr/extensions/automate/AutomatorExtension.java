@@ -3,7 +3,6 @@ package io.smudgr.extensions.automate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import io.smudgr.app.Controller;
 import io.smudgr.extensions.ControllerExtension;
 import io.smudgr.extensions.automate.controls.AutomatorControl;
 import io.smudgr.project.PropertyMap;
@@ -38,7 +37,7 @@ public class AutomatorExtension implements ControllerExtension {
 		control.load(properties);
 		automators.add(control);
 
-		Controller.getInstance().getProject().add(control);
+		getProject().add(control);
 	}
 
 	public void save(PropertyMap pm) {
@@ -49,7 +48,6 @@ public class AutomatorExtension implements ControllerExtension {
 			map.setAttribute("name", automator.getName());
 
 			pm.add(map);
-
 		}
 	}
 

@@ -2,7 +2,6 @@ package io.smudgr.app.controls;
 
 import io.smudgr.app.Controller;
 import io.smudgr.app.output.GifOutput;
-import io.smudgr.project.PropertyMap;
 
 public class RecordGIFControl implements AppControl {
 
@@ -32,12 +31,6 @@ public class RecordGIFControl implements AppControl {
 	}
 
 	public void decrement() {
-	}
-
-	public void save(PropertyMap pm) {
-	}
-
-	public void load(PropertyMap pm) {
 	}
 
 }
