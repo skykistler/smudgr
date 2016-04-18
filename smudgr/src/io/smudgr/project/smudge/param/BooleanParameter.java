@@ -13,14 +13,6 @@ public class BooleanParameter extends Parameter {
 		setValue(initial);
 	}
 
-	public void init() {
-
-	}
-
-	public void update() {
-
-	}
-
 	public void setValue(Object o) {
 		if (o instanceof String)
 			value = o.toString().equals("true") ? true : false;
@@ -42,14 +34,14 @@ public class BooleanParameter extends Parameter {
 		// No need for this
 	}
 
-	public void inputOn(int value) {
+	public void inputOn() {
 		if (reverse)
 			setValue(false);
 		else
 			setValue(true);
 	}
 
-	public void inputOff(int value) {
+	public void inputOff() {
 		if (reverse)
 			setValue(true);
 		else

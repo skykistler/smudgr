@@ -37,11 +37,11 @@ public class AutomateByBeatControl implements AutomatorControl {
 
 	}
 
-	public void inputOn(int value) {
+	public void inputOn() {
 		run = true;
 	}
 
-	public void inputOff(int value) {
+	public void inputOff() {
 		run = false;
 	}
 

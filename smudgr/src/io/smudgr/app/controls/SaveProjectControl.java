@@ -11,12 +11,12 @@ public class SaveProjectControl implements AppControl {
 	public void inputValue(int value) {
 	}
 
-	public void inputOn(int value) {
+	public void inputOn() {
 		ProjectSaver xml = new ProjectSaver();
 		xml.save();
 	}
 
-	public void inputOff(int value) {
+	public void inputOff() {
 	}
 
 	public void increment() {

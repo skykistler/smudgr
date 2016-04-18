@@ -101,11 +101,11 @@ public class NumberParameter extends Parameter {
 		setValue(m * (max - min));
 	}
 
-	public void inputOn(int value) {
+	public void inputOn() {
 		setValue(reverse ? min : max);
 	}
 
-	public void inputOff(int value) {
+	public void inputOff() {
 		setValue(reverse ? max : min);
 	}
 

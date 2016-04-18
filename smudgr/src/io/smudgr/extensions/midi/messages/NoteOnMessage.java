@@ -6,9 +6,9 @@ public class NoteOnMessage implements MidiMessageStrategy {
 
 	public void input(Controllable c, int value) {
 		if (value == 0)
-			c.inputOff(value);
+			c.inputOff();
 		else
-			c.inputOn(value);
+			c.inputOn();
 	}
 
 }

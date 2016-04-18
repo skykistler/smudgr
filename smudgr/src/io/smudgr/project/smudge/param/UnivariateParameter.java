@@ -78,11 +78,11 @@ public class UnivariateParameter extends Parameter {
 		setCurrent(value);
 	}
 
-	public void inputOn(int value) {
+	public void inputOn() {
 
 	}
 
-	public void inputOff(int value) {
+	public void inputOff() {
 	}
 
 	public void increment() {

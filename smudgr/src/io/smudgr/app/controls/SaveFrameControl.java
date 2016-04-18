@@ -12,7 +12,7 @@ public class SaveFrameControl implements AppControl {
 	public void inputValue(int value) {
 	}
 
-	public void inputOn(int value) {
+	public void inputOn() {
 		Frame frame = getProject().getSmudge().getFrame();
 
 		// TODO project wide output folder
@@ -20,7 +20,7 @@ public class SaveFrameControl implements AppControl {
 		out.addFrame(frame);
 	}
 
-	public void inputOff(int value) {
+	public void inputOff() {
 	}
 
 	public void increment() {

@@ -12,12 +12,12 @@ public class RecordGIFControl implements AppControl {
 	public void inputValue(int value) {
 	}
 
-	public void inputOn(int value) {
+	public void inputOn() {
 		// TODO project wide output folder
 		Controller.getInstance().startOutput(new GifOutput("record"));
 	}
 
-	public void inputOff(int value) {
+	public void inputOff() {
 		Controller.getInstance().stopOutput();
 	}
 
