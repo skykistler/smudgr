@@ -14,7 +14,7 @@ import io.smudgr.project.smudge.alg.op.DataBend;
 import io.smudgr.project.smudge.alg.select.RangeSelect;
 import io.smudgr.project.smudge.param.Parameter;
 
-public class SkyTestMain {
+public class SampleMain {
 
 	public static void main(String[] args) {
 		appStart("data/test.smudge", "data", "Arturia BeatStepPro");
