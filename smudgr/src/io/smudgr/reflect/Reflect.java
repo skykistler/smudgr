@@ -26,7 +26,7 @@ public class Reflect {
 		long start = System.currentTimeMillis();
 
 		try {
-			searchPackage();
+			search();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -37,9 +37,9 @@ public class Reflect {
 		return results;
 	}
 
-	private void searchPackage() throws IOException {
+	private void search() throws IOException {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-		Enumeration<URL> resources = classLoader.getResources("META-INF");
+		Enumeration<URL> resources = classLoader.getResources("");
 
 		while (resources.hasMoreElements()) {
 			URL resource = resources.nextElement();

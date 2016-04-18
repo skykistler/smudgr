@@ -14,7 +14,8 @@ public abstract class Parametric implements ProjectElement {
 	public void addParameter(Parameter p) {
 		parameters.put(p.getName(), p);
 
-		getProject().add(p);
+		if (getProject() != null)
+			getProject().add(p);
 	}
 
 	public Parameter getParameter(String name) {
@@ -52,6 +53,8 @@ public abstract class Parametric implements ProjectElement {
 	public void load(PropertyMap pm) {
 		if (pm.hasAttribute("id"))
 			getProject().put(this, Integer.parseInt(pm.getAttribute("id")));
+		else
+			getProject().add(this);
 
 		ArrayList<PropertyMap> children = pm.getChildren("parameter");
 		for (PropertyMap map : children) {
@@ -61,6 +64,12 @@ public abstract class Parametric implements ProjectElement {
 				getProject().put(param, Integer.parseInt(map.getAttribute("id")));
 				param.load(map);
 			}
+		}
+
+		// Add any unloaded parameters to the project
+		for (Parameter param : getParameters()) {
+			if (getProject().getId(param) == -1)
+				getProject().add(param);
 		}
 	}
 

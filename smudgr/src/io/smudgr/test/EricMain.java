@@ -2,7 +2,7 @@ package io.smudgr.test;
 
 import io.smudgr.app.Controller;
 import io.smudgr.app.controls.SaveProjectControl;
-import io.smudgr.app.controls.SourceSetControl;
+import io.smudgr.app.controls.SourceLibraryControl;
 import io.smudgr.extensions.midi.MidiExtension;
 import io.smudgr.project.ProjectXML;
 import io.smudgr.project.smudge.Smudge;
@@ -23,7 +23,7 @@ public class EricMain {
 		// Make smudge
 		Smudge smudge = new Smudge();
 		smudge.bind("Enable");
-		controller.add(new SourceSetControl("data/work"));
+		controller.add(new SourceLibraryControl("data/work"));
 
 		Algorithm alg1 = new Algorithm();
 		alg1.bind("Enable");

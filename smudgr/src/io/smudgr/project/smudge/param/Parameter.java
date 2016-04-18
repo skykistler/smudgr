@@ -21,8 +21,6 @@ public abstract class Parameter implements Controllable, ProjectElement {
 		this.parent.addParameter(this);
 	}
 
-	public abstract void setInitial(Object o);
-
 	public abstract void setValue(Object o);
 
 	public abstract String getStringValue();
@@ -40,7 +38,8 @@ public abstract class Parameter implements Controllable, ProjectElement {
 	}
 
 	public void load(PropertyMap pm) {
-		setValue(pm.getAttribute("value"));
+		if (pm.hasAttribute("value"))
+			setValue(pm.getAttribute("value"));
 	}
 
 	public String toString() {

@@ -8,27 +8,18 @@ public class UnivariateParameter extends Parameter {
 
 	private ArrayList<UnivariateFunction> univariates = new ArrayList<UnivariateFunction>();
 
-	private Object initial;
 	private int current;
 
 	public UnivariateParameter(String name, Parametric parent, UnivariateFunction initial) {
 		this(name, parent);
-		setInitial(initial);
+		setValue(initial);
 	}
 
 	public UnivariateParameter(String name, Parametric parent) {
 		super(name, parent);
 	}
 
-	public void init() {
-		setValue(initial);
-	}
-
 	public void update() {
-	}
-
-	public void setInitial(Object o) {
-		initial = o;
 	}
 
 	public void setValue(Object o) {

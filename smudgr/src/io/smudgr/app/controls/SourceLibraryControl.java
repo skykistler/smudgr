@@ -1,30 +1,28 @@
 package io.smudgr.app.controls;
 
 import io.smudgr.app.Controller;
-import io.smudgr.app.output.GifOutput;
 
-public class RecordGIFControl implements AppControl {
+public class SourceLibraryControl implements AppControl {
 
 	public String getName() {
-		return "Record GIF";
+		return "Source Set Switcher";
 	}
 
 	public void inputValue(int value) {
 	}
 
 	public void inputOn(int value) {
-		// TODO project wide output folder
-		Controller.getInstance().startOutput(new GifOutput("record"));
 	}
 
 	public void inputOff(int value) {
-		Controller.getInstance().stopOutput();
 	}
 
 	public void increment() {
+		Controller.getInstance().getProject().getSourceLibrary().nextSet();
 	}
 
 	public void decrement() {
+		Controller.getInstance().getProject().getSourceLibrary().previousSet();
 	}
 
 }

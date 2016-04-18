@@ -10,10 +10,6 @@ public class SourceMixer extends Operation {
 	private Frame mixFrame;
 	private Source source;
 
-	public SourceMixer(Source mySource) {
-		this.source = mySource;
-	}
-
 	public void init() {
 		source.init();
 	}

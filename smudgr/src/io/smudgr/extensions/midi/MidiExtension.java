@@ -8,6 +8,7 @@ import javax.sound.midi.MidiMessage;
 import io.smudgr.app.Controllable;
 import io.smudgr.app.Controller;
 import io.smudgr.extensions.ControllerExtension;
+import io.smudgr.extensions.automate.controls.AutomatorControl;
 import io.smudgr.extensions.midi.messages.AftertouchMessage;
 import io.smudgr.extensions.midi.messages.ContinueMessage;
 import io.smudgr.extensions.midi.messages.KnobMessage;
@@ -19,6 +20,7 @@ import io.smudgr.extensions.midi.messages.StartMessage;
 import io.smudgr.extensions.midi.messages.StopMessage;
 import io.smudgr.project.ProjectElement;
 import io.smudgr.project.PropertyMap;
+import io.smudgr.project.smudge.param.Parameter;
 
 public class MidiExtension implements ControllerExtension {
 
@@ -72,13 +74,36 @@ public class MidiExtension implements ControllerExtension {
 		}
 	}
 
-	public void waitForBind(int control) {
-		if (midiMap.hasBind(control)) {
-			System.out.println("Already assigned control ID: " + control);
+	public void waitForBind(int control_id) {
+		if (devices.size() == 0)
+			return;
+
+		ProjectElement element = getProject().getElement(control_id);
+		if (element == null || !(element instanceof Controllable)) {
+			System.out.println("Unable to bind " + element);
+		}
+
+		Controllable control = (Controllable) element;
+
+		String name = control.getName();
+		if (control instanceof Parameter) {
+			Parameter param = (Parameter) control;
+			name = param.getParent().getName() + " - " + param.getName();
+		}
+
+		if (control instanceof AutomatorControl) {
+			Parameter param = ((AutomatorControl) control).getParameter();
+
+			if (param != null)
+				name = control.getName() + " Automator on " + param.getParent().getName() + " - " + param.getName();
+		}
+
+		if (midiMap.hasBind(control_id)) {
+			System.out.println("Already assigned control: " + name);
 			return;
 		}
 
-		System.out.println("Waiting for MIDI input...");
+		System.out.println("Please touch a key to bind: " + name);
 
 		lastKeyPressed = -1;
 		lastChannel = -1;
@@ -94,11 +119,11 @@ public class MidiExtension implements ControllerExtension {
 
 		int assigned = midiMap.getBind(lastChannel, lastKeyPressed);
 		if (assigned == -1) {
-			midiMap.setBind(control, lastChannel, lastKeyPressed);
+			midiMap.setBind(control_id, lastChannel, lastKeyPressed);
 			waitingForKey = false;
 		} else {
-			System.out.println("Something already bound at given MIDI input");
-			waitForBind(control);
+			// Something already bound at given input, so try again
+			waitForBind(control_id);
 		}
 	}
 

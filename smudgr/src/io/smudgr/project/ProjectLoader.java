@@ -27,9 +27,6 @@ public class ProjectLoader {
 
 		Controller controller = Controller.getInstance();
 
-		if (controller == null)
-			controller = new Controller();
-
 		controller.pause();
 
 		Project project = new Project();

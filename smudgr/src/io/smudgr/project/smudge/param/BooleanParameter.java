@@ -2,7 +2,6 @@ package io.smudgr.project.smudge.param;
 
 public class BooleanParameter extends Parameter {
 
-	private Object initial;
 	private boolean value;
 
 	public BooleanParameter(String name, Parametric parent) {
@@ -11,19 +10,15 @@ public class BooleanParameter extends Parameter {
 
 	public BooleanParameter(String name, Parametric parent, boolean initial) {
 		super(name, parent);
-		this.initial = initial;
+		setValue(initial);
 	}
 
 	public void init() {
-		setValue(initial);
+
 	}
 
 	public void update() {
 
-	}
-
-	public void setInitial(Object o) {
-		initial = o;
 	}
 
 	public void setValue(Object o) {

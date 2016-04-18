@@ -9,14 +9,6 @@ public class SaveFrameControl implements AppControl {
 		return "Save Frame";
 	}
 
-	public void init() {
-
-	}
-
-	public void update() {
-
-	}
-
 	public void inputValue(int value) {
 	}
 

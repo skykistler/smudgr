@@ -25,7 +25,7 @@ public class MidiControlMap {
 	public int getBind(int channel, int key) {
 		HashMap<Integer, Integer> channelMap = midiMap.get(channel);
 
-		if (!channelMap.containsKey(key))
+		if (channelMap == null || !channelMap.containsKey(key))
 			return -1;
 
 		return channelMap.get(key);

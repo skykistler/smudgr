@@ -127,18 +127,15 @@ public class NativeView implements View, KeyListener {
 		st.show();
 	}
 
-	@Override
 	public void keyPressed(KeyEvent arg0) {
 		if (arg0.getKeyCode() == KeyEvent.VK_ESCAPE)
 			Controller.getInstance().stop();
 	}
 
-	@Override
 	public void keyReleased(KeyEvent arg0) {
 
 	}
 
-	@Override
 	public void keyTyped(KeyEvent arg0) {
 
 	}

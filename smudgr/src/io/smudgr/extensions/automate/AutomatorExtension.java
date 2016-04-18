@@ -15,7 +15,7 @@ public class AutomatorExtension implements ControllerExtension {
 	}
 
 	private HashMap<String, Class<?>> automatorTypes;
-	private ArrayList<AutomatorControl> automators;
+	private ArrayList<AutomatorControl> automators = new ArrayList<AutomatorControl>();
 
 	public void init() {
 		for (AutomatorControl automator : automators)
@@ -31,13 +31,20 @@ public class AutomatorExtension implements ControllerExtension {
 
 	}
 
-	public void add(String type, PropertyMap properties) {
+	public AutomatorControl add(String type, PropertyMap properties) {
 		AutomatorControl control = getNewAutomator(type);
+
+		if (control == null) {
+			System.out.println("Could not make automator of type: " + type);
+			return null;
+		}
 
 		control.load(properties);
 		automators.add(control);
 
 		getProject().add(control);
+
+		return control;
 	}
 
 	public void save(PropertyMap pm) {
@@ -72,7 +79,7 @@ public class AutomatorExtension implements ControllerExtension {
 			try {
 				AutomatorControl control = (AutomatorControl) c.newInstance();
 
-				automatorTypes.put(c.getName(), control.getClass());
+				automatorTypes.put(control.getName(), control.getClass());
 			} catch (InstantiationException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
@@ -81,7 +88,6 @@ public class AutomatorExtension implements ControllerExtension {
 
 	private AutomatorControl getNewAutomator(String name) {
 		try {
-
 			Class<?> type = automatorTypes.get(name);
 
 			if (type == null)

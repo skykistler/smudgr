@@ -5,7 +5,7 @@ import io.smudgr.app.controls.DownsampleControl;
 import io.smudgr.app.controls.RecordGIFControl;
 import io.smudgr.app.controls.SaveProjectControl;
 import io.smudgr.app.controls.SourceControl;
-import io.smudgr.app.controls.SourceSetControl;
+import io.smudgr.app.controls.SourceLibraryControl;
 import io.smudgr.app.view.NativeView;
 import io.smudgr.extensions.automate.controls.AutomateByBeatControl;
 import io.smudgr.extensions.automate.controls.AutomateByStepControl;
@@ -33,7 +33,7 @@ public class SkyShowMain {
 		// Make smudge
 		Smudge smudge = new Smudge();
 		smudge.bind("Enable");
-		controller.add(new SourceSetControl("data/venture/noise show"));
+		controller.add(new SourceLibraryControl("data/venture/noise show"));
 
 		Algorithm sort = new Algorithm();
 		sort.bind("Enable");

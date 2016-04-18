@@ -36,17 +36,15 @@ public class PropertyMap {
 	}
 
 	public void add(PropertyMap pm) {
-		ArrayList<PropertyMap> existingChildren = children.get(pm.getTag());
-
-		if (existingChildren == null) {
-			existingChildren = new ArrayList<PropertyMap>();
-			children.put(tag, existingChildren);
-		}
-
-		existingChildren.add(pm);
+		getChildren(pm.getTag()).add(pm);
 	}
 
 	public ArrayList<PropertyMap> getChildren(String tag) {
+		if (!children.containsKey(tag)) {
+			ArrayList<PropertyMap> childs = new ArrayList<PropertyMap>();
+			children.put(tag, childs);
+		}
+
 		return children.get(tag);
 	}
 

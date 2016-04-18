@@ -6,23 +6,34 @@ import java.util.ArrayList;
 import io.smudgr.app.Controller;
 import io.smudgr.project.smudge.Smudge;
 import io.smudgr.project.smudge.alg.ComponentLibrary;
+import io.smudgr.project.smudge.source.SourceLibrary;
 
 public class Project {
 
 	public static final String PROJECT_EXTENSION = ".smudge";
 
 	private IdProvider idProvider;
-	private Smudge smudge;
 	private ComponentLibrary componentLibrary;
+	private SourceLibrary sourceLibrary;
+
+	private Smudge smudge;
 
 	private String location;
 	private String outputPath;
-	private int bpm;
+	private int bpm = 120;
 
 	public Project() {
 		idProvider = new IdProvider();
 		componentLibrary = new ComponentLibrary();
-		smudge = new Smudge();
+		sourceLibrary = new SourceLibrary();
+	}
+
+	public void init() {
+		smudge.init();
+	}
+
+	public void update() {
+		smudge.update();
 	}
 
 	public void save(PropertyMap pm) {
@@ -44,7 +55,10 @@ public class Project {
 		if (Controller.getInstance().getProject() != this)
 			Controller.getInstance().setProject(this);
 
-		setOutputPath(pm.getAttribute("outputPath"));
+		smudge = new Smudge();
+
+		if (pm.hasAttribute("outputPath"))
+			setOutputPath(pm.getAttribute("outputPath"));
 
 		if (pm.hasAttribute("bpm"))
 			setBPM(Integer.parseInt(pm.getAttribute("bpm")));
@@ -62,6 +76,13 @@ public class Project {
 			Controller.getInstance().load(appMap.get(0));
 		else
 			Controller.getInstance().load(new PropertyMap("app"));
+
+		// If our sources tag existed, load with it; else make a new sources tag
+		ArrayList<PropertyMap> sources = pm.getChildren("sources");
+		if (sources.size() == 1)
+			sourceLibrary.load(sources.get(0));
+		else
+			sourceLibrary.load(new PropertyMap("sources"));
 
 		idProvider.finishLoading();
 	}
@@ -114,6 +135,9 @@ public class Project {
 	}
 
 	public void setOutputPath(String path) {
+		if (path == null)
+			return;
+
 		File output = new File(path);
 		if (!output.exists()) {
 			outputPath = null;
@@ -141,6 +165,10 @@ public class Project {
 
 	public ComponentLibrary getComponentLibrary() {
 		return componentLibrary;
+	}
+
+	public SourceLibrary getSourceLibrary() {
+		return sourceLibrary;
 	}
 
 	public int getBPM() {

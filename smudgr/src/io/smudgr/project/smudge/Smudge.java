@@ -26,10 +26,6 @@ public class Smudge extends Parametric implements Source {
 		if (source != null)
 			source.init();
 
-		System.out.println("Setting up " + algorithms.size() + " algorithms...");
-		for (Algorithm a : getAlgorithms())
-			a.init();
-
 		System.out.println("Smudge initialized.");
 	}
 
@@ -60,9 +56,10 @@ public class Smudge extends Parametric implements Source {
 			toRender = toRender.copy();
 		}
 
-		if (enabled.getValue())
+		if (enabled.getValue()) {
 			for (Algorithm a : getAlgorithms())
 				a.apply(toRender);
+		}
 
 		lastFrame = toRender;
 	}
@@ -87,6 +84,8 @@ public class Smudge extends Parametric implements Source {
 		getProject().add(alg);
 
 		algorithms.add(alg);
+
+		alg.init();
 	}
 
 	public Algorithm getAlgorithm(int id) {

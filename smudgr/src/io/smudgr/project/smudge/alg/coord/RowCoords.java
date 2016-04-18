@@ -6,7 +6,7 @@ import io.smudgr.project.smudge.source.Frame;
 public class RowCoords extends CoordFunction {
 
 	public String getName() {
-		return "Row";
+		return "Rows";
 	}
 
 	public void generate(Bound b, Frame img) {

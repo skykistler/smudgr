@@ -28,8 +28,9 @@ public class IdProvider {
 
 		for (ProjectElement element : toAdd) {
 			add(element);
-			toAdd.remove(element);
 		}
+
+		toAdd.clear();
 	}
 
 	public void add(ProjectElement element) {

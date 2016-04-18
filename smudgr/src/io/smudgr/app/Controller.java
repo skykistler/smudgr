@@ -9,7 +9,6 @@ import io.smudgr.app.output.FrameOutput;
 import io.smudgr.app.threads.RenderThread;
 import io.smudgr.app.threads.UpdateThread;
 import io.smudgr.app.threads.ViewThread;
-import io.smudgr.app.view.NativeView;
 import io.smudgr.app.view.View;
 import io.smudgr.extensions.ControllerExtension;
 import io.smudgr.project.Project;
@@ -24,6 +23,9 @@ public class Controller {
 	private static volatile Controller instance;
 
 	public static Controller getInstance() {
+		if (instance == null)
+			new Controller();
+
 		return instance;
 	}
 
@@ -42,13 +44,14 @@ public class Controller {
 
 	private FrameOutput frameOutput;
 
-	public Controller() {
+	private Controller() {
 		instance = this;
 	}
 
 	public void start() {
 		if (started) {
 			updater.setPaused(false);
+			renderer.setPaused(false);
 			return;
 		}
 
@@ -57,15 +60,7 @@ public class Controller {
 			return;
 		}
 
-		if (views.size() == 0)
-			add(new NativeView());
-
-		System.out.println("Inititalizing smudge...");
-		project.getSmudge().init();
-
-		System.out.println("Inititalizing app controls..");
-		for (AppControl c : getAppControls())
-			c.init();
+		project.init();
 
 		System.out.println("Starting controller extensions...");
 		for (ControllerExtension ext : getExtensions())
@@ -75,6 +70,8 @@ public class Controller {
 		started = true;
 
 		updater = new UpdateThread();
+		setUpdateSpeed();
+
 		renderer = new RenderThread();
 
 		updater.start();
@@ -92,13 +89,18 @@ public class Controller {
 		if (!started)
 			return;
 
-		for (Controllable c : getAppControls())
-			c.update();
+		setUpdateSpeed();
 
 		for (ControllerExtension ext : getExtensions())
 			ext.update();
 
-		project.getSmudge().update();
+		project.update();
+	}
+
+	private void setUpdateSpeed() {
+		double beatsPerSecond = getProject().getBPM() / 60.0;
+		double ticksPerSecond = Math.ceil(TICKS_PER_BEAT * beatsPerSecond);
+		updater.setTarget((int) ticksPerSecond);
 	}
 
 	public void pause() {
@@ -174,7 +176,7 @@ public class Controller {
 	}
 
 	public int ticksToMs(int ticks) {
-		return (int) (ticks / (updater.getTicksPerSecond() / 1000));
+		return (int) (ticks / (updater.getTarget() / 1000d));
 	}
 
 	// TODO move this shit somewhere else
@@ -186,7 +188,7 @@ public class Controller {
 		frameOutput.open();
 
 		updater.setPaused(true);
-		renderer.setTargetFPS(output.getTargetFPS());
+		renderer.setTarget(output.getTargetFPS());
 		renderer.startOutput(frameOutput, updater.msToTicks(1000 / output.getTargetFPS()));
 	}
 
@@ -196,7 +198,7 @@ public class Controller {
 
 		frameOutput.close();
 		renderer.stopOutput();
-		renderer.setTargetFPS(TARGET_FPS);
+		renderer.setTarget(TARGET_FPS);
 		updater.setPaused(false);
 
 		frameOutput = null;
@@ -244,11 +246,20 @@ public class Controller {
 
 		reflectExtensions();
 
+		ArrayList<ControllerExtension> loadedExtensions = new ArrayList<ControllerExtension>();
 		for (PropertyMap mapping : pm.getChildren("extension")) {
 			ControllerExtension ext = getExtension(mapping.getAttribute("name"));
 
-			if (ext != null)
+			if (ext != null) {
 				ext.load(mapping);
+				loadedExtensions.add(ext);
+			}
+		}
+
+		// Dry load any controller extensions that weren't saved
+		for (ControllerExtension ext : getExtensions()) {
+			if (!loadedExtensions.contains(ext))
+				ext.load(new PropertyMap("extension"));
 		}
 	}
 
@@ -260,7 +271,7 @@ public class Controller {
 		for (Class<?> c : reflectControls.get()) {
 			try {
 				AppControl control = (AppControl) c.newInstance();
-				appControls.put(c.getName(), control);
+				appControls.put(control.getName(), control);
 			} catch (InstantiationException | IllegalAccessException e) {
 				e.printStackTrace();
 			}

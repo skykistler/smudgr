@@ -14,7 +14,7 @@ import io.smudgr.project.smudge.source.Frame;
 
 public class Algorithm extends Parametric {
 
-	private BooleanParameter enable = new BooleanParameter("Enable", this, true);
+	private BooleanParameter enabled = new BooleanParameter("Enable", this, true);
 
 	private Bound bound;
 	private CoordFunction coordFunction;
@@ -31,13 +31,10 @@ public class Algorithm extends Parametric {
 
 		if (coordFunction == null) {
 			RowCoords defaultCoords = new RowCoords();
-			defaultCoords.getParameter("Continuous").setInitial(true);
+			defaultCoords.getParameter("Continuous").setValue(true);
 
 			add(defaultCoords);
 		}
-
-		for (AlgorithmComponent c : getComponents())
-			c.init();
 	}
 
 	private double lastBoundX;
@@ -46,7 +43,7 @@ public class Algorithm extends Parametric {
 	private double lastBoundH;
 
 	public void apply(Frame img) {
-		if (!enable.getValue())
+		if (!enabled.getValue())
 			return;
 
 		bound.update();
@@ -98,6 +95,8 @@ public class Algorithm extends Parametric {
 
 		if (component instanceof CoordFunction)
 			setCoordFunction((CoordFunction) component);
+
+		component.init();
 	}
 
 	public AlgorithmComponent getComponent(int id) {

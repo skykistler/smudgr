@@ -8,12 +8,6 @@ public class SaveProjectControl implements AppControl {
 		return "Save Project";
 	}
 
-	public void init() {
-	}
-
-	public void update() {
-	}
-
 	public void inputValue(int value) {
 	}
 

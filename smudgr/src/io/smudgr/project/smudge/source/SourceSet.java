@@ -28,11 +28,10 @@ public class SourceSet implements Source {
 					files.add(location + "/" + list[i]);
 		}
 
-		SourceFactory sf = new SourceFactory();
 		for (int i = 0; i < files.size(); i++) {
 			String path = files.get(i);
 
-			Source s = sf.makeSource(path);
+			Source s = getSourceLibrary().getSource(path);
 			if (s != null) {
 				sources.add(s);
 			}
@@ -55,7 +54,6 @@ public class SourceSet implements Source {
 	}
 
 	public void dispose() {
-
 		for (Source s : sources)
 			s.dispose();
 	}
@@ -79,11 +77,11 @@ public class SourceSet implements Source {
 		return sources.get(currentSource);
 	}
 
-	public void increment() {
+	public void nextSource() {
 		setCurrentSource(currentSource + 1);
 	}
 
-	public void decrement() {
+	public void previousSource() {
 		setCurrentSource(currentSource - 1);
 	}
 

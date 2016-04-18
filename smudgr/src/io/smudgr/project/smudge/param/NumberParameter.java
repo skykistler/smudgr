@@ -1,7 +1,7 @@
 package io.smudgr.project.smudge.param;
 
 public class NumberParameter extends Parameter {
-	private Object initial;
+
 	private double value;
 	private double min;
 	private double max;
@@ -21,21 +21,11 @@ public class NumberParameter extends Parameter {
 
 	public NumberParameter(String name, Parametric parent, double initial, double minimum, double maximum, double step) {
 		super(name, parent);
-		setInitial(initial);
+
 		min = minimum;
 		max = maximum;
-		setStep(step);
-	}
-
-	public void init() {
 		setValue(initial);
-	}
-
-	public void update() {
-	}
-
-	public void setInitial(Object o) {
-		initial = o;
+		setStep(step);
 	}
 
 	public void setValue(Object o) {

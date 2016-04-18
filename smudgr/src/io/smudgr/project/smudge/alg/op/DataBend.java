@@ -8,9 +8,8 @@ import io.smudgr.project.smudge.source.Frame;
 
 public class DataBend extends Operation {
 
-	NumberParameter target = new NumberParameter("Target", this, 125, 0, 255, 1);
-
-	NumberParameter amount = new NumberParameter("Amount", this, 1, 1, 100, 1);
+	private NumberParameter target = new NumberParameter("Target", this, 125, 0, 255, 1);
+	private NumberParameter amount = new NumberParameter("Amount", this, 1, 1, 100, 1);
 
 	private byte replaceByte = 0x12;
 
@@ -26,13 +25,11 @@ public class DataBend extends Operation {
 		byte orig = (byte) target.getIntValue();
 		int subAmount = amount.getIntValue();
 
-		for (PixelIndexList coords : getAlgorithm().getSelectedPixels()) {
+		for (PixelIndexList coords : getAlgorithm().getSelectedPixels())
 			process(coords, orig, img, replaceByte, subAmount);
-		}
 	}
 
 	private void process(PixelIndexList coords, byte orig, Frame img, byte sub, int subAmount) {
-
 		TByteArrayList image = new TByteArrayList();
 
 		for (int index = 0; index < coords.size(); index++) {

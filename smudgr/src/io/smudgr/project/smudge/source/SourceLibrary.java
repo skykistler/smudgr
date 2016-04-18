@@ -1,4 +1,4 @@
-package io.smudgr.app.controls;
+package io.smudgr.project.smudge.source;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -6,34 +6,13 @@ import java.util.Arrays;
 
 import io.smudgr.app.Controller;
 import io.smudgr.project.PropertyMap;
-import io.smudgr.project.smudge.source.SourceSet;
 
-public class SourceSetControl implements AppControl {
-
-	public String getName() {
-		return "Source Set Switcher";
-	}
+public class SourceLibrary {
 
 	private String location;
 	private int currentSet = -1;
 	private ArrayList<String> files = new ArrayList<String>();;
-	private ArrayList<SourceSet> sourceSets = new ArrayList<SourceSet>();;
-
-	public void init() {
-		System.out.println("Loading " + files.size() + " source files...");
-
-		for (String path : files) {
-			SourceSet set = new SourceSet(path);
-			if (set.size() > 0)
-				sourceSets.add(set);
-		}
-
-		setCurrentSet(0);
-		System.out.println("Successfully loaded " + sourceSets.size() + " source sets");
-	}
-
-	public void update() {
-	}
+	private ArrayList<SourceSet> sourceSets = new ArrayList<SourceSet>();
 
 	public void setLocation(String location) {
 		this.location = location;
@@ -60,14 +39,29 @@ public class SourceSetControl implements AppControl {
 				files.add(path);
 			}
 		}
+
+		load();
 	}
 
-	public void increment() {
+	public void nextSet() {
 		setCurrentSet(currentSet + 1);
 	}
 
-	public void decrement() {
+	public void previousSet() {
 		setCurrentSet(currentSet - 1);
+	}
+
+	private void load() {
+		System.out.println("Loading " + files.size() + " source files...");
+
+		for (String path : files) {
+			SourceSet set = new SourceSet(path);
+			if (set.size() > 0)
+				sourceSets.add(set);
+		}
+
+		setCurrentSet(0);
+		System.out.println("Successfully loaded " + sourceSets.size() + " source sets");
 	}
 
 	private SourceSet getCurrentSet() {
@@ -103,25 +97,38 @@ public class SourceSetControl implements AppControl {
 		Controller.getInstance().getProject().getSmudge().setSource(current);
 	}
 
-	public void inputValue(int value) {
+	public void save(PropertyMap pm) {
+		pm.setAttribute("location", (new File(location)).getAbsolutePath());
 	}
 
-	public void inputOn(int value) {
+	public void load(PropertyMap pm) {
+		if (pm.hasAttribute("location"))
+			setLocation(pm.getAttribute("location"));
 	}
 
-	public void inputOff(int value) {
-	}
+	public Source getSource(String path) {
+		if (path.contains("/."))
+			return null;
 
-	public PropertyMap getPropertyMap() {
-		PropertyMap map = new PropertyMap();
+		String ext = path.substring(path.lastIndexOf(".") + 1);
 
-		map.setProperty("location", (new File(location)).getAbsolutePath());
-
-		return map;
-	}
-
-	public void setPropertyMap(PropertyMap pm) {
-		setLocation(pm.getProperty("location"));
+		try {
+			switch (ext) {
+			case "mov":
+			case "mp4":
+				return new Video(path);
+			case "gif":
+				return new Gif(path);
+			case "png":
+			case "jpg":
+			case "jpeg":
+				return new Image(path);
+			default:
+				return null;
+			}
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 }
