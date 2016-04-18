@@ -14,8 +14,9 @@ import java.util.jar.JarEntry;
 
 public class Reflect {
 
-	private Class<?> type;
+	private static final String[] blacklist = new String[] { "gluegen-rt.jar", "jcodec-0.1.9.jar", "jcodec-javase-0.1.9.jar", "jogl-all.jar", "trove.jar" };
 
+	private Class<?> type;
 	private Set<Class<?>> results = new HashSet<Class<?>>();
 
 	public Reflect(Class<?> type) {
@@ -58,6 +59,17 @@ public class Reflect {
 		Set<String> classPathSet = new HashSet<String>(Arrays.asList(classPaths));
 
 		for (String string : classPathSet) {
+			boolean blacklisted = false;
+			for (String blacklistItem : blacklist) {
+				if (string.endsWith(blacklistItem)) {
+					blacklisted = true;
+					break;
+				}
+			}
+
+			if (blacklisted)
+				continue;
+
 			File file = new File(string);
 
 			if (file.exists() && file.isFile() && file.getName().endsWith(".jar")) {
