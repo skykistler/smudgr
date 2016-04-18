@@ -110,9 +110,7 @@ public class Smudge extends Parametric implements Source {
 	public void load(PropertyMap pm) {
 		super.load(pm);
 
-		ArrayList<PropertyMap> children = pm.getChildren("algorithm");
-
-		for (PropertyMap map : children) {
+		for (PropertyMap map : pm.getChildren("algorithm")) {
 			Algorithm alg = new Algorithm();
 			alg.load(map);
 
