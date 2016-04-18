@@ -18,7 +18,7 @@ public class GifOutput implements FrameOutput {
 	private boolean closed;
 
 	public GifOutput(String name) {
-		path = Controller.getInstance().getProject().getOutputPath() + name + "_" + System.currentTimeMillis() + ".png";
+		path = Controller.getInstance().getProject().getOutputPath() + name + "_" + System.currentTimeMillis() + ".gif";
 	}
 
 	public int getTargetFPS() {
