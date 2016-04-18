@@ -36,7 +36,8 @@ public class PropertyMap {
 	}
 
 	public void add(PropertyMap pm) {
-		getChildren(pm.getTag()).add(pm);
+		if (pm != null && pm != this)
+			getChildren(pm.getTag()).add(pm);
 	}
 
 	public ArrayList<PropertyMap> getChildren(String tag) {

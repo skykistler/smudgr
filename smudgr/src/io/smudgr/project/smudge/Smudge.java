@@ -104,7 +104,7 @@ public class Smudge extends Parametric implements Source {
 
 			alg.save(map);
 
-			pm.add(pm);
+			pm.add(map);
 		}
 	}
 
