@@ -6,7 +6,7 @@ import io.smudgr.project.PropertyMap;
 public class CefExtension implements ControllerExtension {
 
 	public String getName() {
-		return "Chromium UI";
+		return "CEF";
 	}
 
 	public void init() {

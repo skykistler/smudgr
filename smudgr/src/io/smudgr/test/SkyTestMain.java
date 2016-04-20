@@ -20,7 +20,7 @@ public class SkyTestMain {
 		appStart("data/test.smudge", "data", "Arturia BeatStepPro");
 
 		// Comment this out if you're just trying to load a smudge
-		buildSmudge();
+		//		buildSmudge();
 
 		Controller.getInstance().getProject().getSourceLibrary().setLocation("data/venture/oceans");
 

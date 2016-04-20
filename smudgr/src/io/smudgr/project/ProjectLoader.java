@@ -6,6 +6,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -72,14 +73,22 @@ public class ProjectLoader {
 	}
 
 	private void loadProperties(PropertyMap parentMap, Node parentNode) {
+
+		NamedNodeMap attributes = parentNode.getAttributes();
+		for (int i = 0; i < attributes.getLength(); i++) {
+			Node attribute = attributes.item(i);
+
+			parentMap.setAttribute(attribute.getNodeName(), attribute.getNodeValue());
+		}
+
 		NodeList nodes = parentNode.getChildNodes();
 
 		for (int i = 0; i < nodes.getLength(); i++) {
 			Node childNode = nodes.item(i);
-			if (!childNode.getParentNode().isSameNode(parentNode))
+			if (!childNode.getParentNode().isSameNode(parentNode) || childNode.getNodeName().startsWith("#"))
 				continue;
 
-			PropertyMap childMap = new PropertyMap(childNode.getLocalName());
+			PropertyMap childMap = new PropertyMap(childNode.getNodeName());
 			loadProperties(childMap, childNode);
 
 			parentMap.add(childMap);

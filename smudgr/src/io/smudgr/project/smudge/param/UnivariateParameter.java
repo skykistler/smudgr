@@ -30,7 +30,7 @@ public class UnivariateParameter extends Parameter {
 
 		if (o instanceof String) {
 			for (UnivariateFunction uf : univariates) {
-				if (func.getName().equals(o)) {
+				if (uf.getName().equals(o)) {
 					func = uf;
 					break;
 				}

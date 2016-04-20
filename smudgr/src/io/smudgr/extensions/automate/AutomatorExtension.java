@@ -54,6 +54,8 @@ public class AutomatorExtension implements ControllerExtension {
 			map.setAttribute("id", getProject().getId(automator));
 			map.setAttribute("name", automator.getName());
 
+			automator.save(map);
+
 			pm.add(map);
 		}
 	}
