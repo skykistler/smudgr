@@ -246,7 +246,6 @@ public class Controller {
 
 		reflectExtensions();
 
-		System.out.println(pm.getChildrenTags());
 		ArrayList<ControllerExtension> loadedExtensions = new ArrayList<ControllerExtension>();
 		for (PropertyMap mapping : pm.getChildren("extension")) {
 			ControllerExtension ext = getExtension(mapping.getAttribute("name"));
