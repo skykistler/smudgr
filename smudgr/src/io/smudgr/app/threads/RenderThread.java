@@ -27,6 +27,8 @@ public class RenderThread extends AppThread {
 		if (output != null)
 			for (int i = 0; i <= everyXTicks; i++)
 				Controller.getInstance().update();
+		else
+			Thread.yield();
 
 		synchronized (Controller.getInstance()) {
 			Controller.getInstance().getProject().getSmudge().render();
@@ -37,8 +39,8 @@ public class RenderThread extends AppThread {
 
 	}
 
-	protected void printStatus(int ticksPerSecond) {
-		System.out.println(ticksPerSecond + " fps");
+	protected void printStatus() {
+		System.out.println(ticks + " fps");
 	}
 
 }

@@ -14,9 +14,9 @@ public class UpdateThread extends AppThread {
 		}
 	}
 
-	protected void printStatus(int ticksPerSecond) {
-		if (ticksPerSecond != getTarget())
-			System.out.println(ticksPerSecond + " updates (should be " + getTarget() + ")");
+	protected void printStatus() {
+		if (ticks != getTarget())
+			System.out.println(ticks + " updates (should be " + getTarget() + ")");
 	}
 
 }
