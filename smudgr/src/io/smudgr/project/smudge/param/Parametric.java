@@ -62,6 +62,7 @@ public abstract class Parametric implements ProjectElement {
 
 			if (param != null) {
 				getProject().put(param, Integer.parseInt(map.getAttribute("id")));
+
 				param.load(map);
 			}
 		}
