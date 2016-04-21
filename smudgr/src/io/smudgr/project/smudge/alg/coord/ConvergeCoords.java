@@ -7,11 +7,11 @@ import io.smudgr.project.smudge.source.Frame;
 public class ConvergeCoords extends CoordFunction {
 
 	public String getName() {
-		return "Gravity";
+		return "Point";
 	}
 
-	private NumberParameter centerX = new NumberParameter("Gravity Center X", this, .5, 0, 1, 0.005);
-	private NumberParameter centerY = new NumberParameter("Gravity Center Y", this, .5, 0, 1, 0.005);
+	private NumberParameter centerX = new NumberParameter("Point X", this, .5, 0, 1, 0.005);
+	private NumberParameter centerY = new NumberParameter("Point Y", this, .5, 0, 1, 0.005);
 
 	protected void generate(Bound b, Frame img) {
 		int boundX = b.getTranslatedX(img);

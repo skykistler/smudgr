@@ -9,11 +9,11 @@ import io.smudgr.project.smudge.source.Frame;
 
 public class RadialCoordFunction extends CoordFunction {
 
-	private NumberParameter innerRadius = new NumberParameter("Inner Radius", this, 0, 0, 1, 0.005);
-
 	public String getName() {
-		return "Radial";
+		return "Spiral";
 	}
+
+	private NumberParameter innerRadius = new NumberParameter("Donut Hole", this, 0, 0, 1, 0.005);
 
 	protected void generate(Bound b, Frame img) {
 		int boundX = b.getTranslatedX(img);
