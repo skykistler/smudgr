@@ -13,6 +13,10 @@ public class Smear extends Operation {
 	private NumberParameter length = new NumberParameter("Length", this, 1, 0, 1, 0.01);
 	private BooleanParameter reverse = new BooleanParameter("Reverse", this, true);
 
+	public String getName() {
+		return "Smear";
+	}
+
 	public void execute(Frame img) {
 
 		Frame stretched = img.copy();
@@ -58,10 +62,6 @@ public class Smear extends Operation {
 				stretched.pixels[coords.get(index)] = color;
 			}
 		}
-	}
-
-	public String getName() {
-		return "Pixel Stretch";
 	}
 
 }
