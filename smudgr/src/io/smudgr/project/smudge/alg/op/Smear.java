@@ -7,15 +7,15 @@ import io.smudgr.project.smudge.source.Frame;
 
 public class Smear extends Operation {
 
+	public String getName() {
+		return "Smear";
+	}
+
 	private NumberParameter amount = new NumberParameter("Amount", this, 0, 0, 1, 0.005);
 	private NumberParameter intervals = new NumberParameter("Intervals", this, 5, 1, 1000, 1);
 	private NumberParameter start = new NumberParameter("Start", this, 0, 0, 1, 0.01);
 	private NumberParameter length = new NumberParameter("Length", this, 1, 0, 1, 0.01);
 	private BooleanParameter reverse = new BooleanParameter("Reverse", this, true);
-
-	public String getName() {
-		return "Smear";
-	}
 
 	public void execute(Frame img) {
 
