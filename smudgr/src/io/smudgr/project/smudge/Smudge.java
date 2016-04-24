@@ -13,7 +13,7 @@ import io.smudgr.project.smudge.util.Frame;
 public class Smudge extends Parametric implements Source {
 
 	private BooleanParameter enabled = new BooleanParameter("Enable", this, true);
-	private NumberParameter downsample = new NumberParameter("Downsample", this, 1, .02, 1, .02);
+	private NumberParameter downsample = new NumberParameter("Downsample", this, 1, .01, 1, .01);
 
 	private Source source;
 	private ArrayList<Algorithm> algorithms = new ArrayList<Algorithm>();
