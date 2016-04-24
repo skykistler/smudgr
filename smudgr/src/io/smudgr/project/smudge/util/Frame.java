@@ -12,7 +12,7 @@ public class Frame {
 
 	public int[] pixels;
 
-	public boolean disposed = false;
+	public long disposedTime = 0;
 
 	public Frame(int w, int h) {
 		width = w;
@@ -141,12 +141,12 @@ public class Frame {
 	}
 
 	public void checkDisposed() {
-		if (disposed)
+		if (disposedTime > 0)
 			throw new IllegalStateException("Trying to operate on a disposed frame. Unsafe!");
 	}
 
 	public synchronized void dispose() {
-		disposed = true;
+		disposedTime = System.currentTimeMillis();
 		DisposedFrameProvider.getInstance().disposeFrame(this);
 	}
 

@@ -1,5 +1,6 @@
 package io.smudgr.project.smudge.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -15,6 +16,22 @@ public class DisposedFrameProvider {
 	private static volatile DisposedFrameProvider instance;
 
 	private HashMap<String, Stack<Frame>> disposed = new HashMap<String, Stack<Frame>>();
+
+	public synchronized void update() {
+		for (String key : disposed.keySet()) {
+			Stack<Frame> stack = disposed.get(key);
+
+			if (stack == null)
+				continue;
+
+			ArrayList<Frame> toRemove = new ArrayList<Frame>();
+			for (Frame frame : stack)
+				if (System.currentTimeMillis() - frame.disposedTime > 60000)
+					toRemove.add(frame);
+
+			stack.removeAll(toRemove);
+		}
+	}
 
 	public synchronized int[] getDisposedFrame(int width, int height, boolean cleanUp) {
 		String hash = getHash(width, height);

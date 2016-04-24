@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import io.smudgr.app.Controller;
 import io.smudgr.project.smudge.Smudge;
 import io.smudgr.project.smudge.util.ComponentLibrary;
+import io.smudgr.project.smudge.util.DisposedFrameProvider;
 import io.smudgr.project.smudge.util.SourceLibrary;
 
 public class Project {
@@ -33,6 +34,7 @@ public class Project {
 	}
 
 	public void update() {
+		DisposedFrameProvider.getInstance().update();
 		smudge.update();
 	}
 
