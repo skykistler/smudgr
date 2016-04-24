@@ -13,7 +13,7 @@ public class AutomateByStepControl implements AutomatorControl {
 	private NumberParameter parameter;
 	private boolean run = true;
 
-	private double increment = .05, speed = 1;
+	private double increment = .05, speed = increment;
 
 	public void init() {
 

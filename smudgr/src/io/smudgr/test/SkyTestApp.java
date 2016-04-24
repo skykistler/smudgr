@@ -14,7 +14,7 @@ public class SkyTestApp extends AppStart {
 
 	static boolean newSmudge = true;
 
-	static String sourcePath = "data/";
+	static String sourcePath = "data/venture/oceans";
 
 	static String outputPath = "data";
 
