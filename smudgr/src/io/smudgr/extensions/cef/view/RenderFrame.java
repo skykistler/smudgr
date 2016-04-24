@@ -10,10 +10,10 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
-import io.smudgr.app.view.View;
+import io.smudgr.app.view.Window;
 import io.smudgr.project.smudge.util.Frame;
 
-public class RenderFrame extends JFrame implements View {
+public class RenderFrame extends Window {
 
 	private static RenderFrame instance;
 
@@ -73,7 +73,7 @@ public class RenderFrame extends JFrame implements View {
 			return;
 
 		if (nativeImage == null || parent.getWidth() != nativeImage.getWidth() || parent.getHeight() != nativeImage.getHeight())
-			nativeImage = getNewNativeImage(parent.getWidth(), parent.getHeight());
+			makeNewNativeImage(parent.getWidth(), parent.getHeight());
 
 		frame.drawTo(nativeImage);
 

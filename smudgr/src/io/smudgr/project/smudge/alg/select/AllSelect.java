@@ -12,4 +12,8 @@ public class AllSelect extends Selector {
 		return true;
 	}
 
+	// Hacks to prevent new array allocation
+	public void update() {
+		return;
+	}
 }

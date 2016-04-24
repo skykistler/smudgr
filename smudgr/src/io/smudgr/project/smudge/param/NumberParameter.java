@@ -42,55 +42,6 @@ public class NumberParameter extends Parameter {
 			getParent().triggerChange();
 	}
 
-	public void setMin(double m) {
-		if (m >= min)
-			return;
-
-		double ratio = (value - min) / (max - min);
-		min = m;
-
-		setValue(ratio * (max - min) + min);
-	}
-
-	public double getMin() {
-		return min;
-	}
-
-	public void setMax(double m) {
-		if (m <= min)
-			return;
-		double ratio = (value - min) / (max - min);
-		max = m;
-
-		setValue(ratio * (max - min) + min);
-	}
-
-	public double getMax() {
-		return max;
-	}
-
-	public void setStep(double s) {
-		s = s > max - min ? max - min : s;
-		s = s < 0 ? 0 : s;
-		step = s;
-	}
-
-	public double getStep() {
-		return step;
-	}
-
-	public double getValue() {
-		return value;
-	}
-
-	public String getStringValue() {
-		return value + "";
-	}
-
-	public int getIntValue() {
-		return (int) value;
-	}
-
 	public void inputValue(int midi) {
 		double m;
 		if (reverse)
@@ -107,6 +58,31 @@ public class NumberParameter extends Parameter {
 
 	public void inputOff() {
 		setValue(reverse ? max : min);
+	}
+
+	public void setMin(double m) {
+		if (m >= min)
+			return;
+
+		double ratio = (value - min) / (max - min);
+		min = m;
+
+		setValue(ratio * (max - min) + min);
+	}
+
+	public void setMax(double m) {
+		if (m <= min)
+			return;
+		double ratio = (value - min) / (max - min);
+		max = m;
+
+		setValue(ratio * (max - min) + min);
+	}
+
+	public void setStep(double s) {
+		s = s > max - min ? max - min : s;
+		s = s < 0 ? 0 : s;
+		step = s;
 	}
 
 	public void increment() {
@@ -148,6 +124,30 @@ public class NumberParameter extends Parameter {
 				value -= (max - min);
 			else
 				value = max;
+	}
+
+	public double getMax() {
+		return max;
+	}
+
+	public double getMin() {
+		return min;
+	}
+
+	public double getStep() {
+		return step;
+	}
+
+	public double getValue() {
+		return value;
+	}
+
+	public String getStringValue() {
+		return value + "";
+	}
+
+	public int getIntValue() {
+		return (int) value;
 	}
 
 }

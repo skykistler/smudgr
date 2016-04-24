@@ -14,19 +14,12 @@ import io.smudgr.project.smudge.param.Parameter;
 
 public abstract class AppStart {
 
-	private String projectPath, sourceLocation, outputDir, device;
+	private boolean newSmudge;
 	private ArrayList<Controllable> toBind = new ArrayList<Controllable>();
 
-	public AppStart(String projectPath, String sourceLocation, String outputDir, String device) {
-		// project folder, output folder, midi device
-		this.projectPath = projectPath;
-		this.sourceLocation = sourceLocation;
-		this.outputDir = outputDir;
-		this.device = device;
+	public AppStart(String projectPath, String sourceLocation, String outputDir, String device, boolean newSmudge) {
+		this.newSmudge = newSmudge;
 
-	}
-
-	public void start(boolean newSmudge) {
 		if (newSmudge) {
 			File project = new File(projectPath);
 			if (project.exists())
@@ -35,16 +28,16 @@ public abstract class AppStart {
 
 		ProjectLoader loader = new ProjectLoader(projectPath);
 		loader.load();
+
 		Controller.getInstance().getProject().setOutputPath(outputDir);
 		Controller.getInstance().getProject().getSourceLibrary().setLocation(sourceLocation);
 
 		getMidi().bindDevice(device);
+	}
 
+	public void start() {
 		if (newSmudge)
 			buildSmudge();
-
-		// Pause app while binding parameters
-		Controller.getInstance().pause();
 
 		for (Controllable c : toBind)
 			waitForBind(c);

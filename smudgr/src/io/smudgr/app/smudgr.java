@@ -41,11 +41,11 @@ public class smudgr extends AppStart {
 	}
 
 	private smudgr(boolean debug) {
-		super("", "", "", "Arturia BeatStep Pro");
+		super("", "", "", "Arturia BeatStep Pro", true);
 
 		Controller.getInstance().add(new CefView(debug));
 
-		start(true);
+		start();
 	}
 
 	public void buildSmudge() {

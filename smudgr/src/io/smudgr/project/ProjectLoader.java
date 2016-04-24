@@ -42,8 +42,6 @@ public class ProjectLoader {
 			project = new Project();
 			project.load(new PropertyMap("project"));
 		}
-
-		controller.start();
 	}
 
 	private PropertyMap loadXML() {

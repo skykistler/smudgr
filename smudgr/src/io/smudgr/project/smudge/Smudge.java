@@ -13,7 +13,7 @@ import io.smudgr.project.smudge.util.Frame;
 public class Smudge extends Parametric implements Source {
 
 	private BooleanParameter enabled = new BooleanParameter("Enable", this, true);
-	private NumberParameter downsample = new NumberParameter("Downsample", this, 1, 1, 255);
+	private NumberParameter downsample = new NumberParameter("Downsample", this, 1, .02, 1, .02);
 
 	private Source source;
 	private ArrayList<Algorithm> algorithms = new ArrayList<Algorithm>();
@@ -26,6 +26,8 @@ public class Smudge extends Parametric implements Source {
 		if (source != null)
 			source.init();
 
+		downsample.setReverse(true);
+
 		System.out.println("Smudge initialized.");
 	}
 
@@ -34,17 +36,17 @@ public class Smudge extends Parametric implements Source {
 			source.update();
 	}
 
-	public void render() {
+	public synchronized void render() {
 		Frame toRender = null;
 
 		if (source != null)
 			toRender = source.getFrame();
 
 		if (toRender != null) {
-			int ds = downsample.getIntValue();
-			if (ds > 1) {
-				int w = Math.max(toRender.getWidth() / ds, 1);
-				int h = Math.max(toRender.getHeight() / ds, 1);
+			double ds = downsample.getValue();
+			if (ds < 1) {
+				int w = (int) Math.round(Math.max(toRender.getWidth() * ds, 1));
+				int h = (int) Math.round(Math.max(toRender.getHeight() * ds, 1));
 
 				toRender = toRender.resize(w, h);
 			} else {
@@ -64,7 +66,7 @@ public class Smudge extends Parametric implements Source {
 
 	}
 
-	public Frame getFrame() {
+	public synchronized Frame getFrame() {
 		return lastFrame;
 	}
 

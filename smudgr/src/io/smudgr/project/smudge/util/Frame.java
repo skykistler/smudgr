@@ -1,5 +1,6 @@
 package io.smudgr.project.smudge.util;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
@@ -29,7 +30,7 @@ public class Frame {
 		image.getRGB(0, 0, width, height, pixels, 0, width);
 	}
 
-	public Frame copy() {
+	public synchronized Frame copy() {
 		checkDisposed();
 
 		Frame copy = new Frame(width, height);
@@ -39,13 +40,13 @@ public class Frame {
 		return copy;
 	}
 
-	public void copyTo(Frame f) {
+	public synchronized void copyTo(Frame f) {
 		checkDisposed();
 
 		System.arraycopy(pixels, 0, f.pixels, 0, Math.min(f.pixels.length, pixels.length));
 	}
 
-	public void drawTo(BufferedImage image) {
+	public synchronized void drawTo(BufferedImage image) {
 		checkDisposed();
 
 		Frame fittedFrame = fitToSize(image.getWidth(), image.getHeight());
@@ -58,8 +59,9 @@ public class Frame {
 		// TODO: one day this can draw rectangles around the target area
 		for (int j = 0; j < image.getHeight(); j++)
 			for (int i = 0; i < image.getWidth(); i++) {
-				imageRaster[i + j * image.getWidth()] = 0;
+				imageRaster[i + j * image.getWidth()] = Color.BLACK.getRGB();
 			}
+
 		try {
 			image.setRGB(x, y, fittedFrame.getWidth(), fittedFrame.getHeight(), fittedFrame.pixels, 0, fittedFrame.getWidth());
 		} catch (Exception e) {
@@ -75,7 +77,7 @@ public class Frame {
 		}
 	}
 
-	public Frame resize(int toWidth, int toHeight) {
+	public synchronized Frame resize(int toWidth, int toHeight) {
 		checkDisposed();
 
 		Frame ret = null;
@@ -99,7 +101,7 @@ public class Frame {
 		return ret == null ? copy() : ret;
 	}
 
-	public Frame fitToSize(int toSizeW, int toSizeH) {
+	public synchronized Frame fitToSize(int toSizeW, int toSizeH) {
 		checkDisposed();
 
 		double newWidth = width;
@@ -141,7 +143,7 @@ public class Frame {
 			throw new IllegalStateException("Trying to operate on a disposed frame. Unsafe!");
 	}
 
-	public void dispose() {
+	public synchronized void dispose() {
 		disposed = true;
 		DisposedFrameProvider.getInstance().disposeFrame(this);
 	}

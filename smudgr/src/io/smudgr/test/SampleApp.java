@@ -70,13 +70,13 @@ public class SampleApp extends AppStart {
 	}
 
 	public SampleApp() {
-		super(projectPath, sourcePath, outputPath, device);
+		super(projectPath, sourcePath, outputPath, device, newSmudge);
 
 		fullscreenView(fullscreenDisplay);
 		if (monitor)
 			monitorView();
 
-		start(newSmudge);
+		start();
 	}
 
 	public static void main(String[] args) {

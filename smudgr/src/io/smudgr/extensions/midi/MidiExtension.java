@@ -147,7 +147,7 @@ public class MidiExtension implements ControllerExtension {
 		}
 
 		// If we don't have a strategy for this message, skip it
-		if (!messageStrategies.containsKey(status))
+		if (!waitingForKey && !messageStrategies.containsKey(status))
 			return;
 
 		int key;
@@ -168,25 +168,26 @@ public class MidiExtension implements ControllerExtension {
 			lastChannel = channel;
 
 			// If waiting for key to bind, wake thread to continue
-			if (waitingForKey)
+			if (waitingForKey) {
 				synchronized (this) {
 					notify();
 				}
+
+				return;
+			}
 		}
 
-		if (!waitingForKey) {
-			synchronized (Controller.getInstance()) {
-				// If it's a system message, pass it along
-				if (system_message) {
-					messageStrategies.get(status).input(null, value);
-				}
-				// Otherwise get the bind
-				else {
-					ProjectElement bound = getProject().getElement(midiMap.getBind(channel, key));
+		synchronized (Controller.getInstance()) {
+			// If it's a system message, pass it along
+			if (system_message) {
+				messageStrategies.get(status).input(null, value);
+			}
+			// Otherwise get the bind
+			else {
+				ProjectElement bound = getProject().getElement(midiMap.getBind(channel, key));
 
-					if (bound != null && bound instanceof Controllable)
-						messageStrategies.get(status).input((Controllable) bound, value);
-				}
+				if (bound != null && bound instanceof Controllable)
+					messageStrategies.get(status).input((Controllable) bound, value);
 			}
 		}
 	}
