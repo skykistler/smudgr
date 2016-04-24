@@ -19,6 +19,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import io.smudgr.app.Controller;
+import io.smudgr.project.smudge.util.Frame;
 
 public class Gif implements Source {
 	private String filename;
@@ -265,11 +266,14 @@ public class Gif implements Source {
 
 	private class GifFrame {
 		private final Frame frame;
+		private final BufferedImage image;
 		private final String disposal;
 		private final int delay;
 
 		public GifFrame(BufferedImage image, String disposal, int delay) {
 			frame = new Frame(image);
+			this.image = image;
+
 			this.disposal = disposal;
 
 			if (delay == 0)
@@ -278,7 +282,7 @@ public class Gif implements Source {
 		}
 
 		public BufferedImage getImage() {
-			return frame.getBufferedImage();
+			return image;
 		}
 
 		public Frame getFrame() {

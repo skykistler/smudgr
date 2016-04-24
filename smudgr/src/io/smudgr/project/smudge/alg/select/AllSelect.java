@@ -1,6 +1,6 @@
 package io.smudgr.project.smudge.alg.select;
 
-import io.smudgr.project.smudge.source.Frame;
+import io.smudgr.project.smudge.util.Frame;
 
 public class AllSelect extends Selector {
 

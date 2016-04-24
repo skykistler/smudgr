@@ -10,7 +10,7 @@ import io.smudgr.project.smudge.alg.op.Operation;
 import io.smudgr.project.smudge.alg.select.Selector;
 import io.smudgr.project.smudge.param.BooleanParameter;
 import io.smudgr.project.smudge.param.Parametric;
-import io.smudgr.project.smudge.source.Frame;
+import io.smudgr.project.smudge.util.Frame;
 
 public class Algorithm extends Parametric {
 

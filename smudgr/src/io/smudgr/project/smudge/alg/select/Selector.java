@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import io.smudgr.project.smudge.alg.AlgorithmComponent;
 import io.smudgr.project.smudge.alg.PixelIndexList;
-import io.smudgr.project.smudge.source.Frame;
+import io.smudgr.project.smudge.util.Frame;
 
 public abstract class Selector extends AlgorithmComponent {
 

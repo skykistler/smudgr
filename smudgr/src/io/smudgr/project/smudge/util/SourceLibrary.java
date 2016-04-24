@@ -1,4 +1,4 @@
-package io.smudgr.project.smudge.source;
+package io.smudgr.project.smudge.util;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -6,6 +6,11 @@ import java.util.Arrays;
 
 import io.smudgr.app.Controller;
 import io.smudgr.project.PropertyMap;
+import io.smudgr.project.smudge.source.Gif;
+import io.smudgr.project.smudge.source.Image;
+import io.smudgr.project.smudge.source.Source;
+import io.smudgr.project.smudge.source.SourceSet;
+import io.smudgr.project.smudge.source.Video;
 
 public class SourceLibrary {
 

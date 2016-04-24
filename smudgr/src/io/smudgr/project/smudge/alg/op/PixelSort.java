@@ -11,7 +11,7 @@ import io.smudgr.project.smudge.alg.math.LumaFunction;
 import io.smudgr.project.smudge.alg.math.UnivariateFunction;
 import io.smudgr.project.smudge.param.BooleanParameter;
 import io.smudgr.project.smudge.param.UnivariateParameter;
-import io.smudgr.project.smudge.source.Frame;
+import io.smudgr.project.smudge.util.Frame;
 
 public class PixelSort extends Operation {
 

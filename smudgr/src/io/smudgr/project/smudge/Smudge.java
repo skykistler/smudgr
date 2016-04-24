@@ -7,8 +7,8 @@ import io.smudgr.project.smudge.alg.Algorithm;
 import io.smudgr.project.smudge.param.BooleanParameter;
 import io.smudgr.project.smudge.param.NumberParameter;
 import io.smudgr.project.smudge.param.Parametric;
-import io.smudgr.project.smudge.source.Frame;
 import io.smudgr.project.smudge.source.Source;
+import io.smudgr.project.smudge.util.Frame;
 
 public class Smudge extends Parametric implements Source {
 
@@ -35,33 +35,33 @@ public class Smudge extends Parametric implements Source {
 	}
 
 	public void render() {
-		if (source == null) {
-			lastFrame = null;
-			return;
+		Frame toRender = null;
+
+		if (source != null)
+			toRender = source.getFrame();
+
+		if (toRender != null) {
+			int ds = downsample.getIntValue();
+			if (ds > 1) {
+				int w = Math.max(toRender.getWidth() / ds, 1);
+				int h = Math.max(toRender.getHeight() / ds, 1);
+
+				toRender = toRender.resize(w, h);
+			} else {
+				toRender = toRender.copy();
+			}
+
+			if (enabled.getValue()) {
+				for (Algorithm a : getAlgorithms())
+					a.apply(toRender);
+			}
 		}
 
-		Frame toRender = source.getFrame();
-		if (toRender == null) {
-			lastFrame = null;
-			return;
-		}
-
-		int ds = downsample.getIntValue();
-		if (ds > 1) {
-			int w = Math.max(toRender.getWidth() / ds, 1);
-			int h = Math.max(toRender.getHeight() / ds, 1);
-
-			toRender = toRender.resize(w, h);
-		} else {
-			toRender = toRender.copy();
-		}
-
-		if (enabled.getValue()) {
-			for (Algorithm a : getAlgorithms())
-				a.apply(toRender);
-		}
+		if (lastFrame != null)
+			lastFrame.dispose();
 
 		lastFrame = toRender;
+
 	}
 
 	public Frame getFrame() {

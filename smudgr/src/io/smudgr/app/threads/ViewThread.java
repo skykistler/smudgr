@@ -4,7 +4,7 @@ import javax.swing.SwingUtilities;
 
 import io.smudgr.app.Controller;
 import io.smudgr.app.view.View;
-import io.smudgr.project.smudge.source.Frame;
+import io.smudgr.project.smudge.util.Frame;
 
 public class ViewThread extends AppThread {
 
@@ -21,7 +21,11 @@ public class ViewThread extends AppThread {
 		if (frame == null)
 			return;
 
+		frame = frame.copy();
+
 		view.update(frame);
+
+		frame.dispose();
 	}
 
 	protected void printStatus() {

@@ -1,7 +1,8 @@
-package io.smudgr.project.smudge.alg;
+package io.smudgr.project.smudge.util;
 
 import java.util.HashMap;
 
+import io.smudgr.project.smudge.alg.AlgorithmComponent;
 import io.smudgr.reflect.Reflect;
 
 public class ComponentLibrary {

@@ -1,12 +1,13 @@
 package io.smudgr.app.output;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
 import io.smudgr.app.Controller;
-import io.smudgr.project.smudge.source.Frame;
+import io.smudgr.project.smudge.util.Frame;
 
 public class ImageOutput implements FrameOutput {
 	private String path;
@@ -31,10 +32,15 @@ public class ImageOutput implements FrameOutput {
 		Frame toSave = f.resize(width, height);
 
 		try {
-			ImageIO.write(toSave.getBufferedImage(), "png", new File(path));
+			BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+			toSave.drawTo(image);
+
+			ImageIO.write(image, "png", new File(path));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		toSave.dispose();
 	}
 
 	public void close() {

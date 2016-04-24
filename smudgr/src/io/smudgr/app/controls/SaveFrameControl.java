@@ -1,7 +1,7 @@
 package io.smudgr.app.controls;
 
 import io.smudgr.app.output.ImageOutput;
-import io.smudgr.project.smudge.source.Frame;
+import io.smudgr.project.smudge.util.Frame;
 
 public class SaveFrameControl implements AppControl {
 

@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 import io.smudgr.app.Controller;
 import io.smudgr.project.smudge.Smudge;
-import io.smudgr.project.smudge.alg.ComponentLibrary;
-import io.smudgr.project.smudge.source.SourceLibrary;
+import io.smudgr.project.smudge.util.ComponentLibrary;
+import io.smudgr.project.smudge.util.SourceLibrary;
 
 public class Project {
 

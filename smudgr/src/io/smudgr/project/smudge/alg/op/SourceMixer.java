@@ -2,8 +2,8 @@ package io.smudgr.project.smudge.alg.op;
 
 import io.smudgr.project.smudge.alg.PixelIndexList;
 import io.smudgr.project.smudge.alg.math.ColorHelper;
-import io.smudgr.project.smudge.source.Frame;
 import io.smudgr.project.smudge.source.Source;
+import io.smudgr.project.smudge.util.Frame;
 
 public class SourceMixer extends Operation {
 

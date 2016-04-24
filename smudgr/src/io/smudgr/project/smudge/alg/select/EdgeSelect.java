@@ -8,7 +8,7 @@ import io.smudgr.project.smudge.alg.math.SinFunction;
 import io.smudgr.project.smudge.alg.math.UnivariateFunction;
 import io.smudgr.project.smudge.param.NumberParameter;
 import io.smudgr.project.smudge.param.UnivariateParameter;
-import io.smudgr.project.smudge.source.Frame;
+import io.smudgr.project.smudge.util.Frame;
 
 public class EdgeSelect extends Selector {
 

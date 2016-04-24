@@ -5,7 +5,7 @@ import java.util.Random;
 import io.smudgr.project.smudge.alg.math.CubicInterpolator;
 import io.smudgr.project.smudge.alg.math.Interpolator;
 import io.smudgr.project.smudge.param.NumberParameter;
-import io.smudgr.project.smudge.source.Frame;
+import io.smudgr.project.smudge.util.Frame;
 
 public class Marbeler extends Operation {
 

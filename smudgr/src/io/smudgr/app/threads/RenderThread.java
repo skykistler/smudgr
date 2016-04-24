@@ -23,7 +23,6 @@ public class RenderThread extends AppThread {
 	}
 
 	protected void execute() {
-
 		if (output != null)
 			for (int i = 0; i <= everyXTicks; i++)
 				Controller.getInstance().update();
@@ -35,7 +34,7 @@ public class RenderThread extends AppThread {
 		}
 
 		if (output != null)
-			output.addFrame(Controller.getInstance().getProject().getSmudge().getFrame());
+			output.addFrame(Controller.getInstance().getProject().getSmudge().getFrame().copy());
 
 	}
 

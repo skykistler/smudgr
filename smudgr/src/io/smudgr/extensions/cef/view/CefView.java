@@ -27,7 +27,7 @@ import io.smudgr.app.view.View;
 import io.smudgr.extensions.cef.CommandRouter;
 import io.smudgr.extensions.cef.util.CefAppHandler;
 import io.smudgr.extensions.cef.util.DialogHandler;
-import io.smudgr.project.smudge.source.Frame;
+import io.smudgr.project.smudge.util.Frame;
 
 public class CefView extends JFrame implements View {
 

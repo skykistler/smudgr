@@ -3,7 +3,7 @@ package io.smudgr.project.smudge.alg.op;
 import io.smudgr.project.smudge.alg.PixelIndexList;
 import io.smudgr.project.smudge.param.BooleanParameter;
 import io.smudgr.project.smudge.param.NumberParameter;
-import io.smudgr.project.smudge.source.Frame;
+import io.smudgr.project.smudge.util.Frame;
 
 public class PixelShift extends Operation {
 
@@ -17,9 +17,6 @@ public class PixelShift extends Operation {
 
 	//	private UnivariateParameter scale = new UnivariateParameter("Scale", this, new LinearFunction());
 
-	Frame orig;
-	Frame shifted;
-
 	public void init() {
 		amount.setContinuous(true);
 	}
@@ -27,8 +24,7 @@ public class PixelShift extends Operation {
 	public void execute(Frame img) {
 		int size = getAlgorithm().getSelectedPixels().size();
 
-		orig = img;
-		shifted = img.copy();
+		Frame shifted = img.copy();
 
 		double shift = amount.getValue();
 
@@ -57,15 +53,16 @@ public class PixelShift extends Operation {
 				int index = (int) (interval + i);
 				if (index < size) {
 					PixelIndexList coords = getAlgorithm().getSelectedPixels().get(index);
-					shift(coords, n, shift, i, ints);
+					shift(shifted, img, coords, n, shift, i, ints);
 				}
 			}
 		}
 
-		img.setBufferedImage(shifted.getBufferedImage());
+		shifted.copyTo(img);
+		shifted.dispose();
 	}
 
-	public void shift(PixelIndexList coords, int currentInterval, double amount, int indexIntoCurrentInt, double totalInts) {
+	public void shift(Frame shifted, Frame orig, PixelIndexList coords, int currentInterval, double amount, int indexIntoCurrentInt, double totalInts) {
 
 		double shiftScale = 1;
 

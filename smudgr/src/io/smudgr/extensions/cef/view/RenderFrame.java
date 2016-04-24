@@ -6,11 +6,12 @@ import java.awt.Insets;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
 import io.smudgr.app.view.View;
-import io.smudgr.project.smudge.source.Frame;
+import io.smudgr.project.smudge.util.Frame;
 
 public class RenderFrame extends JFrame implements View {
 
@@ -22,6 +23,7 @@ public class RenderFrame extends JFrame implements View {
 
 	private JFrame parent;
 	private Frame currentFrame;
+	private BufferedImage nativeImage;
 	private int offsetX, offsetY;
 	private int viewWidth, viewHeight;
 
@@ -70,13 +72,22 @@ public class RenderFrame extends JFrame implements View {
 		if (st == null)
 			return;
 
-		Graphics g = st.getDrawGraphics();
-		g.setColor(Color.black);
-		g.fillRect(0, 0, getWidth(), getHeight());
+		if (nativeImage == null || parent.getWidth() != nativeImage.getWidth() || parent.getHeight() != nativeImage.getHeight())
+			nativeImage = getNewNativeImage(parent.getWidth(), parent.getHeight());
 
-		g.drawImage(frame.getBufferedImage(), 0, 0, getWidth(), getHeight(), null);
+		frame.drawTo(nativeImage);
+
+		Graphics g = st.getDrawGraphics();
+
+		if (nativeImage != null)
+			g.drawImage(nativeImage, 0, 0, parent.getWidth(), parent.getHeight(), null);
+		else {
+			g.setColor(Color.BLACK);
+			g.fillRect(0, 0, parent.getWidth(), parent.getHeight());
+		}
 
 		g.dispose();
+		st.show();
 
 		try {
 			st.show();
