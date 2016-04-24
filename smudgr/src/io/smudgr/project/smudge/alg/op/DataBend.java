@@ -11,6 +11,7 @@ public class DataBend extends Operation {
 	private NumberParameter target = new NumberParameter("Target", this, 125, 0, 255, 1);
 	private NumberParameter amount = new NumberParameter("Amount", this, 1, 1, 100, 1);
 
+	private TByteArrayList byteList = new TByteArrayList();
 	private byte replaceByte = 0x12;
 
 	public String getName() {
@@ -22,15 +23,17 @@ public class DataBend extends Operation {
 	}
 
 	public void execute(Frame img) {
-		byte orig = (byte) target.getIntValue();
+		byte targetByte = (byte) target.getIntValue();
 		int subAmount = amount.getIntValue();
 
+		byteList.ensureCapacity(img.getWidth() * img.getHeight() * 3);
+
 		for (PixelIndexList coords : getAlgorithm().getSelectedPixels())
-			process(coords, orig, img, replaceByte, subAmount);
+			process(coords, targetByte, img, replaceByte, subAmount);
 	}
 
-	private void process(PixelIndexList coords, byte orig, Frame img, byte sub, int subAmount) {
-		TByteArrayList image = new TByteArrayList();
+	private void process(PixelIndexList coords, byte target, Frame img, byte sub, int subAmount) {
+		byteList.resetQuick();
 
 		for (int index = 0; index < coords.size(); index++) {
 
@@ -38,13 +41,17 @@ public class DataBend extends Operation {
 
 			for (int k = 0; k < 3; k++) {
 				byte temp = (byte) ((color >> (8 * k)) & 0x000000FF);
-				if (temp == orig) {
-					for (int i = 0; i < subAmount; i++) {
-						image.add(sub);
-					}
-				} else {
-					image.add(temp);
+
+				// If we hit our target byte, add our replacement byte
+				if (temp == target) {
+					for (int i = 0; i < subAmount; i++)
+						byteList.add(sub);
+
+					continue;
 				}
+
+				// Otherwise, add the vanilla byte and continue
+				byteList.add(temp);
 			}
 
 		}
@@ -52,16 +59,13 @@ public class DataBend extends Operation {
 		// We are done adding bytes to the image byte array
 		// Now we can move onto reassigning "databent" values
 
-		byte[] imageBytes = image.toArray();
-
 		for (int index = 0; index < coords.size(); index++) {
 			int coord = coords.get(index);
 			int baseIndex = index * 3;
 
-			byte b1 = imageBytes[baseIndex];
-			byte b2 = imageBytes[baseIndex + 1];
-			byte b3 = imageBytes[baseIndex + 2];
-			// byte b4 = imageBytes[baseIndex + 3];
+			byte b1 = byteList.getQuick(baseIndex);
+			byte b2 = byteList.getQuick(baseIndex + 1);
+			byte b3 = byteList.getQuick(baseIndex + 2);
 
 			int val = createPixelValue(b1, b2, b3);
 			img.pixels[coord] = val;

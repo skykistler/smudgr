@@ -87,7 +87,7 @@ public class RadialCoordFunction extends CoordFunction {
 			int p2x = xminusx;
 			int p2y = yplusy;
 			if (b.containsPoint(img, p2x, p2y))
-				c4.add(0, p2x + p2y * width);
+				c4.insert(0, p2x + p2y * width);
 
 			int p3x = xminusx;
 			int p3y = yminusy;
@@ -97,7 +97,7 @@ public class RadialCoordFunction extends CoordFunction {
 			int p4x = xplusx;
 			int p4y = yminusy;
 			if (b.containsPoint(img, p4x, p4y))
-				c8.add(0, p4x + p4y * width);
+				c8.insert(0, p4x + p4y * width);
 
 			y++;
 			stoppingY = stoppingY.add(twoASquare); //stoppingY += twoASquare;
@@ -132,7 +132,7 @@ public class RadialCoordFunction extends CoordFunction {
 			int p1x = xplusx;
 			int p1y = yplusy;
 			if (b.containsPoint(img, p1x, p1y))
-				c2.add(0, p1x + p1y * width);
+				c2.insert(0, p1x + p1y * width);
 
 			int p2x = xminusx;
 			int p2y = yplusy;
@@ -142,7 +142,7 @@ public class RadialCoordFunction extends CoordFunction {
 			int p3x = xminusx;
 			int p3y = yminusy;
 			if (b.containsPoint(img, p3x, p3y))
-				c6.add(0, p3x + p3y * width);
+				c6.insert(0, p3x + p3y * width);
 
 			int p4x = xplusx;
 			int p4y = yminusy;

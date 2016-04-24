@@ -11,8 +11,9 @@ public class ViewThread extends AppThread {
 	private View view;
 
 	public ViewThread(View view) {
-		this.view = view;
+		super(false);
 
+		this.view = view;
 		setTarget(Controller.TARGET_FPS);
 	}
 
@@ -29,7 +30,7 @@ public class ViewThread extends AppThread {
 	}
 
 	protected void printStatus() {
-
+		// unneeded
 	}
 
 	protected void onStop() {

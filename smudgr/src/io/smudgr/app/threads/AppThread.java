@@ -2,9 +2,15 @@ package io.smudgr.app.threads;
 
 public abstract class AppThread implements Runnable {
 
+	private boolean forceUpdates;
+
 	private Thread thread;
 	protected long targetTickNs, lastTickNs, ticks;
 	private volatile boolean running, paused, finished;
+
+	public AppThread(boolean forceUpdates) {
+		this.forceUpdates = forceUpdates;
+	}
 
 	public void start() {
 		running = true;
@@ -57,7 +63,7 @@ public abstract class AppThread implements Runnable {
 				e.printStackTrace();
 			}
 
-			enforce();
+			slowdown();
 
 			ticks++;
 
@@ -79,33 +85,23 @@ public abstract class AppThread implements Runnable {
 
 	protected abstract void printStatus();
 
-	protected void enforce() {
+	protected void slowdown() {
 		long diff = System.nanoTime() - lastTickNs;
 		if (diff < targetTickNs) {
-			try {
-				diff = targetTickNs - diff;
-				long ms = (long) Math.floor(diff / 1000000.0) - 1;
-				int ns = (int) (diff % 1000000);
+			diff = targetTickNs - diff;
+			long ms = (long) Math.floor(diff / 1000000.0) - 1;
+			int ns = (int) (diff % 1000000);
 
-				if (ms > 0)
-					Thread.sleep(ms, ns);
-			} catch (Exception e) {
-			}
+			if (ms > 0)
+				sleep(ms, ns);
 		}
+	}
 
-		//		while (diff < targetTickNs) {
-		//			//			Thread.yield();
-		//
-		//			try {
-		//				Thread.sleep(0, 100);
-		//			} catch (Exception e) {
-		//			}
-		//
-		//			diff = System.nanoTime() - lastTickNs;
-		//
-		//			if (!running)
-		//				break;
-		//		}
+	protected void sleep(long ms, int ns) {
+		try {
+			Thread.sleep(ms, ns);
+		} catch (Exception e) {
+		}
 	}
 
 	protected void onStop() {

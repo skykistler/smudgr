@@ -75,6 +75,8 @@ public class Frame {
 			System.out.println("fitted width: " + fittedFrame.getWidth());
 			System.out.println("fitted height: " + fittedFrame.getHeight());
 		}
+
+		fittedFrame.dispose();
 	}
 
 	public synchronized Frame resize(int toWidth, int toHeight) {

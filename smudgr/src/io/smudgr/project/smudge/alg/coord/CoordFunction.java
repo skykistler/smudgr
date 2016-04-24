@@ -1,6 +1,7 @@
 package io.smudgr.project.smudge.alg.coord;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 import io.smudgr.project.smudge.alg.Algorithm;
 import io.smudgr.project.smudge.alg.AlgorithmComponent;
@@ -24,6 +25,7 @@ public abstract class CoordFunction extends AlgorithmComponent {
 	private boolean wasChanged = true;
 
 	protected ArrayList<PixelIndexList> coordSet = null;
+	protected Stack<PixelIndexList> disposedLists = new Stack<PixelIndexList>();
 	protected PixelIndexList currentSet = null;
 
 	public void init() {
@@ -44,8 +46,13 @@ public abstract class CoordFunction extends AlgorithmComponent {
 	}
 
 	private void reset() {
-		if (coordSet != null)
+		if (coordSet != null) {
+			for (PixelIndexList list : coordSet)
+				disposedLists.push(list);
+
 			coordSet.clear();
+		}
+
 		if (currentSet != null)
 			currentSet.clear();
 
@@ -70,8 +77,13 @@ public abstract class CoordFunction extends AlgorithmComponent {
 				coordSet.add(currentSet);
 
 		// Finally, reset the current set if needed
-		if (currentSet == null || breakSet)
-			currentSet = new PixelIndexList();
+		if (currentSet == null || breakSet) {
+			if (!disposedLists.empty()) {
+				currentSet = disposedLists.pop();
+				currentSet.resetQuick();
+			} else
+				currentSet = new PixelIndexList();
+		}
 
 		wasInBound = false;
 	}

@@ -4,6 +4,10 @@ import io.smudgr.app.Controller;
 
 public class UpdateThread extends AppThread {
 
+	public UpdateThread() {
+		super(true);
+	}
+
 	public int msToTicks(int ms) {
 		return (int) (ms / (1000 / getTarget()));
 	}

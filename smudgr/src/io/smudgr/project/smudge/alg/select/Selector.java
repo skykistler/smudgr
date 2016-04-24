@@ -1,12 +1,16 @@
 package io.smudgr.project.smudge.alg.select;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 import io.smudgr.project.smudge.alg.AlgorithmComponent;
 import io.smudgr.project.smudge.alg.PixelIndexList;
 import io.smudgr.project.smudge.util.Frame;
 
 public abstract class Selector extends AlgorithmComponent {
+
+	protected ArrayList<PixelIndexList> selectedList = new ArrayList<PixelIndexList>();
+	protected Stack<PixelIndexList> disposedLists = new Stack<PixelIndexList>();
 
 	public String getType() {
 		return "Selector";
@@ -23,9 +27,13 @@ public abstract class Selector extends AlgorithmComponent {
 			return;
 
 		ArrayList<PixelIndexList> selected = getAlgorithm().getSelectedPixels();
-		ArrayList<PixelIndexList> newSelected = new ArrayList<PixelIndexList>();
 
-		PixelIndexList currentSet = new PixelIndexList();
+		for (PixelIndexList list : selectedList)
+			disposedLists.push(list);
+
+		selectedList.clear();
+
+		PixelIndexList currentSet = getNewSet();
 
 		for (int i = 0; i < selected.size(); i++) {
 			PixelIndexList coords = selected.get(i);
@@ -38,18 +46,28 @@ public abstract class Selector extends AlgorithmComponent {
 				if (selectsPoint(frame, x, y))
 					currentSet.add(coord);
 				else if (currentSet.size() > 0) {
-					newSelected.add(currentSet);
-					currentSet = new PixelIndexList();
+					selectedList.add(currentSet);
+					currentSet = getNewSet();
 				}
 			}
 
 			if (currentSet.size() > 0) {
-				newSelected.add(currentSet);
-				currentSet = new PixelIndexList();
+				selectedList.add(currentSet);
+				currentSet = getNewSet();
 			}
 		}
 
-		getAlgorithm().setSelectedPixels(newSelected);
+		getAlgorithm().setSelectedPixels(selectedList);
+	}
+
+	public PixelIndexList getNewSet() {
+		if (disposedLists.empty())
+			return new PixelIndexList();
+
+		PixelIndexList list = disposedLists.pop();
+		list.resetQuick();
+
+		return list;
 	}
 
 	public abstract boolean selectsPoint(Frame img, int x, int y);
