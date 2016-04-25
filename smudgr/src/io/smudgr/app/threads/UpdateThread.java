@@ -5,7 +5,7 @@ import io.smudgr.app.Controller;
 public class UpdateThread extends AppThread {
 
 	public UpdateThread() {
-		super(true);
+		super("Update Thread");
 	}
 
 	public int msToTicks(int ms) {
@@ -13,9 +13,11 @@ public class UpdateThread extends AppThread {
 	}
 
 	protected void execute() {
-		synchronized (Controller.getInstance()) {
-			Controller.getInstance().update();
-		}
+		update();
+	}
+
+	private void update() {
+		Controller.getInstance().update();
 	}
 
 	protected void printStatus() {

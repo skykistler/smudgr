@@ -2,14 +2,13 @@ package io.smudgr.app.threads;
 
 public abstract class AppThread implements Runnable {
 
-	private boolean forceUpdates;
-
+	private String threadName;
 	private Thread thread;
 	protected long targetTickNs, lastTickNs, ticks;
 	private volatile boolean running, paused, finished;
 
-	public AppThread(boolean forceUpdates) {
-		this.forceUpdates = forceUpdates;
+	public AppThread(String name) {
+		threadName = name;
 	}
 
 	public void start() {
@@ -18,6 +17,8 @@ public abstract class AppThread implements Runnable {
 
 		thread = new Thread(this);
 		thread.start();
+
+		thread.setName(threadName);
 	}
 
 	public void setPaused(boolean paused) {
@@ -63,17 +64,16 @@ public abstract class AppThread implements Runnable {
 				e.printStackTrace();
 			}
 
-			slowdown();
-
 			ticks++;
 
 			if (System.currentTimeMillis() - timer >= 1000) {
-				timer += 1000;
+				timer = System.currentTimeMillis();
 				printStatus();
 
 				ticks = 0;
 			}
 
+			slowdown();
 		}
 
 		onStop();
@@ -92,8 +92,7 @@ public abstract class AppThread implements Runnable {
 			long ms = (long) Math.floor(diff / 1000000.0) - 1;
 			int ns = (int) (diff % 1000000);
 
-			if (ms > 0)
-				sleep(ms, ns);
+			sleep(ms, ns);
 		}
 	}
 

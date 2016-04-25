@@ -31,6 +31,13 @@ public class RangeSelect extends Selector {
 		function.add(new LogFunction());
 	}
 
+	public void update() {
+		if (range.getIntValue() == 1)
+			return;
+
+		super.update();
+	}
+
 	public boolean selectsPoint(Frame img, int x, int y) {
 		return inRange(img.get(x, y));
 	}

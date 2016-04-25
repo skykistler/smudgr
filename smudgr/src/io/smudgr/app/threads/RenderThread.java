@@ -9,7 +9,7 @@ public class RenderThread extends AppThread {
 	private int everyXTicks;
 
 	public RenderThread() {
-		super(false);
+		super("Render Thread");
 
 		setTarget(Controller.TARGET_FPS);
 	}
@@ -29,9 +29,7 @@ public class RenderThread extends AppThread {
 			for (int i = 0; i <= everyXTicks; i++)
 				Controller.getInstance().update();
 
-		synchronized (Controller.getInstance()) {
-			Controller.getInstance().getProject().getSmudge().render();
-		}
+		Controller.getInstance().getProject().getSmudge().render();
 
 		if (output != null)
 			output.addFrame(Controller.getInstance().getProject().getSmudge().getFrame().copy());

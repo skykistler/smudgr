@@ -11,7 +11,7 @@ public class ViewThread extends AppThread {
 	private View view;
 
 	public ViewThread(View view) {
-		super(false);
+		super("View Thread - " + view);
 
 		this.view = view;
 		setTarget(Controller.TARGET_FPS);
