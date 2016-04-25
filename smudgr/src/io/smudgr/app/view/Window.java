@@ -28,7 +28,6 @@ public class Window extends JFrame implements KeyListener, WindowListener {
 
 	public Window() {
 		super("smudgr");
-		System.setProperty("sun.awt.noerasebackground", "true");
 
 		setBackground(Color.BLACK);
 		setVisible(true);

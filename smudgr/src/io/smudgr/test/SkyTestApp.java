@@ -2,17 +2,17 @@ package io.smudgr.test;
 
 import io.smudgr.app.AppStart;
 import io.smudgr.app.Controller;
-import io.smudgr.extensions.automate.controls.AutomatorControl;
 import io.smudgr.project.smudge.Smudge;
 import io.smudgr.project.smudge.alg.Algorithm;
-import io.smudgr.project.smudge.alg.op.DataBend;
+import io.smudgr.project.smudge.alg.coord.ColumnCoords;
+import io.smudgr.project.smudge.alg.op.PixelSort;
 import io.smudgr.project.smudge.alg.select.RangeSelect;
 
 public class SkyTestApp extends AppStart {
 
 	static String projectPath = "data/test.smudge";
 
-	static boolean newSmudge = false;
+	static boolean newSmudge = true;
 
 	static String sourcePath = "data/venture/oceans";
 
@@ -31,16 +31,21 @@ public class SkyTestApp extends AppStart {
 		RangeSelect range = new RangeSelect();
 		alg.add(range);
 
-		DataBend databend = new DataBend();
-		alg.add(databend);
+		//		DataBend databend = new DataBend();
+		//		alg.add(databend);
+
+		PixelSort sort = new PixelSort();
+		alg.add(sort);
+
+		alg.add(new ColumnCoords());
 
 		smudge.add(alg);
 
-		AutomatorControl automator1 = addAutomator("Animate", databend.getParameter("Target"));
+		//		AutomatorControl automator1 = addAutomator("Animate", databend.getParameter("Target"));
 
 		bind(smudge.getParameter("Downsample"));
-		bind(databend.getParameter("Amount"));
-		bind(automator1);
+		//		bind(databend.getParameter("Amount"));
+		//		bind(automator1);
 		bind(range.getParameter("Range Length"));
 
 		bind(Controller.getInstance().getAppControl("Source Set Switcher"));

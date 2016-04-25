@@ -8,16 +8,17 @@ import io.smudgr.project.smudge.alg.math.ChromaFunction;
 import io.smudgr.project.smudge.alg.math.HueFunction;
 import io.smudgr.project.smudge.alg.math.LogFunction;
 import io.smudgr.project.smudge.alg.math.LumaFunction;
-import io.smudgr.project.smudge.alg.math.UnivariateFunction;
 import io.smudgr.project.smudge.param.BooleanParameter;
 import io.smudgr.project.smudge.param.UnivariateParameter;
 import io.smudgr.project.smudge.util.Frame;
 
 public class PixelSort extends Operation {
 
-	BooleanParameter reverse = new BooleanParameter("Reverse", this, false);
-
+	private BooleanParameter reverse = new BooleanParameter("Reverse", this, false);
 	private UnivariateParameter function = new UnivariateParameter("Function", this, new LumaFunction());
+
+	private Integer[] toSort = null;
+	private Comparator<Integer> comparator = null;
 
 	public String getName() {
 		return "Pixel Sort";
@@ -30,23 +31,10 @@ public class PixelSort extends Operation {
 	}
 
 	public void execute(Frame img) {
-		for (PixelIndexList coords : getAlgorithm().getSelectedPixels())
-			sort(img, coords);
-	}
-
-	public void sort(Frame img, PixelIndexList coords) {
-		Integer[] toSort = new Integer[coords.size()];
-		UnivariateFunction sortFunc = function.getValue();
-
-		for (int i = 0; i < toSort.length; i++) {
-			toSort[i] = img.pixels[coords.get(i)];
-		}
-
-		Arrays.sort(toSort, new Comparator<Integer>() {
-			@Override
+		comparator = new Comparator<Integer>() {
 			public int compare(Integer o1, Integer o2) {
-				double o1l = sortFunc.calculate(o1);
-				double o2l = sortFunc.calculate(o2);
+				double o1l = function.getValue().calculate(o1);
+				double o2l = function.getValue().calculate(o2);
 
 				int ret = 0;
 				if (o1l < o2l)
@@ -59,10 +47,24 @@ public class PixelSort extends Operation {
 
 				return ret;
 			}
-		});
+		};
 
-		for (int i = 0; i < toSort.length; i++) {
-			img.pixels[coords.get(i)] = (int) toSort[i];
-		}
+		for (PixelIndexList coords : getAlgorithm().getSelectedPixels())
+			sort(img, coords);
+	}
+
+	public void sort(Frame img, PixelIndexList coords) {
+		int sortSize = coords.size();
+
+		if (toSort == null || toSort.length < sortSize)
+			toSort = new Integer[sortSize];
+
+		for (int i = 0; i < sortSize; i++)
+			toSort[i] = img.pixels[coords.get(i)];
+
+		Arrays.sort(toSort, 0, sortSize, comparator);
+
+		for (int i = 0; i < sortSize; i++)
+			img.pixels[coords.get(i)] = toSort[i];
 	}
 }
