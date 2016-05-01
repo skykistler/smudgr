@@ -2,6 +2,7 @@ package io.smudgr.test;
 
 import io.smudgr.app.AppStart;
 import io.smudgr.app.Controller;
+import io.smudgr.extensions.automate.controls.AutomatorControl;
 import io.smudgr.project.smudge.Smudge;
 import io.smudgr.project.smudge.alg.Algorithm;
 import io.smudgr.project.smudge.alg.coord.ColumnCoords;
@@ -31,21 +32,22 @@ public class SkyTestApp extends AppStart {
 		RangeSelect range = new RangeSelect();
 		alg.add(range);
 
-		//		DataBend databend = new DataBend();
-		//		alg.add(databend);
-
 		PixelSort sort = new PixelSort();
 		alg.add(sort);
-
 		alg.add(new ColumnCoords());
+
+		//		DataBend databend = new DataBend();
+		//		databend.getParameter("Amount").setValue(2);
+		//		alg.add(databend);
+		//		range.getParameter("Range Length").setValue(1);
 
 		smudge.add(alg);
 
+		AutomatorControl automator1 = addAutomator("Animate", range.getParameter("Range Length"));
 		//		AutomatorControl automator1 = addAutomator("Animate", databend.getParameter("Target"));
 
 		bind(smudge.getParameter("Downsample"));
-		//		bind(databend.getParameter("Amount"));
-		//		bind(automator1);
+		bind(automator1);
 		bind(range.getParameter("Range Length"));
 
 		bind(Controller.getInstance().getAppControl("Source Set Switcher"));

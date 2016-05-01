@@ -38,13 +38,7 @@ public class UpdateThread extends AppThread {
 
 	protected void slowdown() {
 		while (now - lastTickNs < targetTickNs) {
-			Thread.yield();
-
-			try {
-				Thread.sleep(1);
-			} catch (Exception e) {
-			}
-
+			sleep(0, 50000);
 			now = System.nanoTime();
 		}
 	}

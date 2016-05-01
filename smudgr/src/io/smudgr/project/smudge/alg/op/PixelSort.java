@@ -1,13 +1,11 @@
 package io.smudgr.project.smudge.alg.op;
 
-import java.util.Arrays;
-import java.util.Comparator;
-
 import io.smudgr.project.smudge.alg.PixelIndexList;
 import io.smudgr.project.smudge.alg.math.ChromaFunction;
 import io.smudgr.project.smudge.alg.math.HueFunction;
 import io.smudgr.project.smudge.alg.math.LogFunction;
 import io.smudgr.project.smudge.alg.math.LumaFunction;
+import io.smudgr.project.smudge.alg.math.UnivariateFunction;
 import io.smudgr.project.smudge.param.BooleanParameter;
 import io.smudgr.project.smudge.param.UnivariateParameter;
 import io.smudgr.project.smudge.util.Frame;
@@ -17,8 +15,12 @@ public class PixelSort extends Operation {
 	private BooleanParameter reverse = new BooleanParameter("Reverse", this, false);
 	private UnivariateParameter function = new UnivariateParameter("Function", this, new LumaFunction());
 
-	private Integer[] toSort = null;
-	private Comparator<Integer> comparator = null;
+	private int[] toSort = null;
+	private UnivariateFunction comparator = null;
+
+	// Declared for memory reuse
+	private int lt, gt, i, swap, sortSize, ret;
+	private double o1l, o2l;
 
 	public String getName() {
 		return "Pixel Sort";
@@ -31,40 +33,78 @@ public class PixelSort extends Operation {
 	}
 
 	public void execute(Frame img) {
-		comparator = new Comparator<Integer>() {
-			public int compare(Integer o1, Integer o2) {
-				double o1l = function.getValue().calculate(o1);
-				double o2l = function.getValue().calculate(o2);
-
-				int ret = 0;
-				if (o1l < o2l)
-					ret = 1;
-				if (o1l > o2l)
-					ret = -1;
-
-				if (reverse.getValue())
-					ret *= -1;
-
-				return ret;
-			}
-		};
+		comparator = function.getValue();
 
 		for (PixelIndexList coords : getAlgorithm().getSelectedPixels())
-			sort(img, coords);
+			sortList(img, coords);
 	}
 
-	public void sort(Frame img, PixelIndexList coords) {
-		int sortSize = coords.size();
+	private void sortList(Frame img, PixelIndexList coords) {
+		sortSize = coords.size();
 
 		if (toSort == null || toSort.length < sortSize)
-			toSort = new Integer[sortSize];
+			toSort = new int[sortSize];
 
-		for (int i = 0; i < sortSize; i++)
+		for (i = 0; i < sortSize; i++)
 			toSort[i] = img.pixels[coords.get(i)];
 
-		Arrays.sort(toSort, 0, sortSize, comparator);
+		sort(toSort, 0, sortSize - 1);
 
-		for (int i = 0; i < sortSize; i++)
+		for (i = 0; i < sortSize; i++)
 			img.pixels[coords.get(i)] = toSort[i];
+	}
+
+	private void sort(int[] a, int lo, int hi) {
+		if (hi <= lo)
+			return;
+
+		if (less(a[hi], a[lo]))
+			exch(a, lo, hi);
+
+		lt = lo + 1;
+		gt = hi - 1;
+		i = lo + 1;
+		while (i <= gt) {
+			if (less(a[i], a[lo]))
+				exch(a, lt++, i++);
+			else if (less(a[hi], a[i]))
+				exch(a, i, gt--);
+			else
+				i++;
+		}
+		exch(a, lo, --lt);
+		exch(a, hi, ++gt);
+
+		sort(a, lo, lt - 1);
+		if (less(a[lt], a[gt]))
+			sort(a, lt + 1, gt - 1);
+		sort(a, gt + 1, hi);
+
+	}
+
+	private boolean less(int v, int w) {
+		return compare(v, w) < 0;
+	}
+
+	private int compare(int v, int w) {
+		o1l = comparator.calculate(v);
+		o2l = comparator.calculate(w);
+
+		ret = 0;
+		if (o1l < o2l)
+			ret = 1;
+		if (o1l > o2l)
+			ret = -1;
+
+		if (reverse.getValue())
+			ret *= -1;
+
+		return ret;
+	}
+
+	private void exch(int[] a, int i, int j) {
+		swap = a[i];
+		a[i] = a[j];
+		a[j] = swap;
 	}
 }

@@ -36,7 +36,7 @@ public class Smudge extends Parametric implements Source {
 			source.update();
 	}
 
-	public synchronized void render() {
+	public void render() {
 		Frame toRender = null;
 
 		if (source != null)
@@ -66,7 +66,7 @@ public class Smudge extends Parametric implements Source {
 
 	}
 
-	public synchronized Frame getFrame() {
+	public Frame getFrame() {
 		return lastFrame;
 	}
 
