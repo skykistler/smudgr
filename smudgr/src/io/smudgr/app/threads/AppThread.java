@@ -4,7 +4,7 @@ public abstract class AppThread implements Runnable {
 
 	private String threadName;
 	private Thread thread;
-	protected long targetTickNs, lastTickNs, ticks;
+	protected long targetTickNs, preTickNs, ticks;
 	private volatile boolean running, paused, finished;
 
 	public AppThread(String name) {
@@ -43,28 +43,29 @@ public abstract class AppThread implements Runnable {
 	}
 
 	public void run() {
-		lastTickNs = System.nanoTime();
 		long timer = System.currentTimeMillis();
+
+		long prevTicks = 0;
 		ticks = 0;
 
 		while (running) {
 
-			while (paused) {
-				lastTickNs = System.nanoTime();
-
+			while (paused)
 				if (!running)
 					break;
-			}
 
-			lastTickNs = System.nanoTime();
+			preTickNs = System.nanoTime();
 
+			prevTicks = ticks;
 			try {
 				execute();
 			} catch (IllegalStateException e) {
 				e.printStackTrace();
 			}
 
-			ticks++;
+			// Only increment if execute() didn't increment for us
+			if (prevTicks == ticks)
+				ticks++;
 
 			if (System.currentTimeMillis() - timer >= 1000) {
 				timer = System.currentTimeMillis();
@@ -86,7 +87,7 @@ public abstract class AppThread implements Runnable {
 	protected abstract void printStatus();
 
 	protected void slowdown() {
-		long diff = System.nanoTime() - lastTickNs;
+		long diff = System.nanoTime() - preTickNs;
 		if (diff < targetTickNs) {
 			diff = targetTickNs - diff;
 			long ms = (long) Math.floor(diff / 1000000.0) - 1;
