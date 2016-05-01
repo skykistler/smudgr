@@ -7,6 +7,10 @@ import io.smudgr.project.smudge.util.Frame;
 
 public class ChannelCrush extends Operation {
 
+	public String getName() {
+		return "Channel Crush";
+	}
+
 	NumberParameter redMaskShift = new NumberParameter("Red Mask", this, 1, 1, 7, 1);
 	NumberParameter greenMaskShift = new NumberParameter("Green Mask", this, 1, 1, 7, 1);
 	NumberParameter blueMaskShift = new NumberParameter("Blue Mask", this, 1, 1, 7, 1);
@@ -55,10 +59,6 @@ public class ChannelCrush extends Operation {
 		int newC = c & color;
 		newC = newC >> colorShift;
 		return newC & mask;
-	}
-
-	public String getName() {
-		return "Channel Crush";
 	}
 
 }

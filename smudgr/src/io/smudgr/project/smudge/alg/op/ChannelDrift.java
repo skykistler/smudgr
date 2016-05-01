@@ -7,6 +7,10 @@ import io.smudgr.project.smudge.util.Frame;
 
 public class ChannelDrift extends Operation {
 
+	public String getName() {
+		return "Channel Drift";
+	}
+
 	NumberParameter redX = new NumberParameter("Red Offset - X", this, 0, 0, 1, 0.001);
 	NumberParameter redY = new NumberParameter("Red Offset - Y", this, 0, 0, 1, 0.001);
 	NumberParameter greenX = new NumberParameter("Green Offset - X", this, 0, 0, 1, 0.001);
@@ -67,10 +71,6 @@ public class ChannelDrift extends Operation {
 		int y1 = (y + shiftY) % boundHeight;
 
 		return orig.get(x1, y1);
-	}
-
-	public String getName() {
-		return "Channel Drift";
 	}
 
 }

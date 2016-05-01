@@ -8,15 +8,15 @@ import io.smudgr.project.smudge.util.Frame;
 
 public class DataBend extends Operation {
 
+	public String getName() {
+		return "Data Bend";
+	}
+
 	private NumberParameter target = new NumberParameter("Target", this, 125, 0, 255, 1);
 	private NumberParameter amount = new NumberParameter("Amount", this, 1, 1, 100, 1);
 
 	private TByteArrayList byteList = new TByteArrayList();
 	private byte replaceByte = 0x12;
-
-	public String getName() {
-		return "Data Bend";
-	}
 
 	public void init() {
 		target.setContinuous(true);

@@ -12,6 +12,10 @@ import io.smudgr.project.smudge.util.Frame;
 
 public class PixelSort extends Operation {
 
+	public String getName() {
+		return "Pixel Sort";
+	}
+
 	private BooleanParameter reverse = new BooleanParameter("Reverse", this, false);
 	private UnivariateParameter function = new UnivariateParameter("Function", this, new LumaFunction());
 
@@ -21,10 +25,6 @@ public class PixelSort extends Operation {
 	// Declared for memory reuse
 	private int lt, gt, i, swap, sortSize, ret;
 	private double o1l, o2l;
-
-	public String getName() {
-		return "Pixel Sort";
-	}
 
 	public void init() {
 		function.add(new ChromaFunction());

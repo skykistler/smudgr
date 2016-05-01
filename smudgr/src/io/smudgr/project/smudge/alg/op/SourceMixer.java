@@ -7,6 +7,10 @@ import io.smudgr.project.smudge.util.Frame;
 
 public class SourceMixer extends Operation {
 
+	public String getName() {
+		return "Source Mixer";
+	}
+
 	private Frame mixFrame;
 	private Source source;
 
@@ -48,10 +52,6 @@ public class SourceMixer extends Operation {
 		int color = mix.get(x, y);
 		if (ColorHelper.alpha(color) == 255)
 			img.pixels[coord] = color;
-	}
-
-	public String getName() {
-		return "Source Mixer";
 	}
 
 }

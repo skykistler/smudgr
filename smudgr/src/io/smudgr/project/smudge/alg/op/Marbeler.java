@@ -9,6 +9,10 @@ import io.smudgr.project.smudge.util.Frame;
 
 public class Marbeler extends Operation {
 
+	public String getName() {
+		return "Cubic Marbeler";
+	}
+
 	NumberParameter freq = new NumberParameter("Frequency", this, 5, 1, 128);
 	NumberParameter iterations = new NumberParameter("Iterations", this, 4, 0, 32, 1);
 	NumberParameter mod = new NumberParameter("Strength", this, .3, 0, 1);
@@ -21,10 +25,6 @@ public class Marbeler extends Operation {
 
 	boolean horizontal = false;
 	Random rand;
-
-	public String getName() {
-		return "Cubic Marbeler";
-	}
 
 	public void init() {
 		offsetXY.setContinuous(true);

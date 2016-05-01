@@ -7,6 +7,10 @@ import io.smudgr.project.smudge.util.Frame;
 
 public class HSVLModifier extends Operation {
 
+	public String getName() {
+		return "HSV/HSL Modifier";
+	}
+
 	NumberParameter saturation = new NumberParameter("Saturation", this, 0.5, -1.0, 1.0, 0.01);
 	NumberParameter degree = new NumberParameter("Hue Rotation", this, 0, 0, 359, 1);
 	NumberParameter value = new NumberParameter("Value/Lightness", this, 0, -1.0, 1.0, 0.01);
@@ -36,10 +40,6 @@ public class HSVLModifier extends Operation {
 			newRGB = ColorHelper.modifyHSL(color, deg, sat, val);
 		}
 		return newRGB;
-	}
-
-	public String getName() {
-		return "HSV/HSL Modifier";
 	}
 
 }

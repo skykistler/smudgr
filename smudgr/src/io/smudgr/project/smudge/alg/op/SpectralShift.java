@@ -16,6 +16,10 @@ import io.smudgr.project.smudge.util.Frame;
 
 public class SpectralShift extends Operation {
 
+	public String getName() {
+		return "Spectral Shift";
+	}
+
 	NumberParameter shift = new NumberParameter("Shift", this, 0, 0, 255, 1);
 	NumberParameter colors = new NumberParameter("Colors", this, 3, 1, 256, 1);
 	NumberParameter palette = new NumberParameter("Palette", this, 27, 1, 27, 1);
@@ -95,10 +99,6 @@ public class SpectralShift extends Operation {
 
 	public int getBucket(int value) {
 		return (int) (function.getValue().calculate(value) * (buckets - 1));
-	}
-
-	public String getName() {
-		return "Spectral Shift";
 	}
 
 }

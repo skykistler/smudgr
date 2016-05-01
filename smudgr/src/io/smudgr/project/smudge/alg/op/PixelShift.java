@@ -7,6 +7,10 @@ import io.smudgr.project.smudge.util.Frame;
 
 public class PixelShift extends Operation {
 
+	public String getName() {
+		return "Pixel Shift";
+	}
+
 	private NumberParameter amount = new NumberParameter("Amount", this, 0, 0, 1, 0.005);
 	private NumberParameter intervals = new NumberParameter("Intervals", this, 5, 1, 1000, 1); // Change to be a percentage or not I guess
 	private NumberParameter start = new NumberParameter("Start", this, 0, 0, 1, 0.01);
@@ -97,10 +101,6 @@ public class PixelShift extends Operation {
 			shifted.pixels[coords.get(i)] = orig.pixels[coords.get(shift)];
 		}
 
-	}
-
-	public String getName() {
-		return "Pixel Shift";
 	}
 
 }
