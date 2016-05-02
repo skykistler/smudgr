@@ -30,6 +30,8 @@ public class PixelSort extends Operation {
 		function.add(new ChromaFunction());
 		function.add(new HueFunction());
 		function.add(new LogFunction());
+
+		toSort = new int[1024];
 	}
 
 	public void execute(Frame img) {
@@ -42,7 +44,7 @@ public class PixelSort extends Operation {
 	private void sortList(Frame img, PixelIndexList coords) {
 		sortSize = coords.size();
 
-		if (toSort == null || toSort.length < sortSize)
+		if (toSort.length < sortSize)
 			toSort = new int[sortSize];
 
 		for (i = 0; i < sortSize; i++)
