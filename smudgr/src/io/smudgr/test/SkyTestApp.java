@@ -35,6 +35,7 @@ public class SkyTestApp extends AppStart {
 		PixelSort sort = new PixelSort();
 		alg.add(sort);
 		alg.add(new ColumnCoords());
+		range.getParameter("Range Length").setValue(0);
 
 		//		DataBend databend = new DataBend();
 		//		databend.getParameter("Amount").setValue(2);

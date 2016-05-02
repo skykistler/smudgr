@@ -55,7 +55,10 @@ public class Window extends JFrame implements KeyListener, WindowListener {
 	}
 
 	public void update(Frame frame) {
-		if (nativeImage == null || getWidth() != nativeImage.getWidth() || getHeight() != nativeImage.getHeight()) {
+		boolean viewChanged = nativeImage == null || getWidth() != nativeImage.getWidth() || getHeight() != nativeImage.getHeight();
+		boolean needsRefresh = bufferStrategy == null || bufferStrategy.contentsLost();
+
+		if (viewChanged || needsRefresh) {
 			makeNewNativeImage(getWidth(), getHeight());
 
 			if (graphicsContext != null)
