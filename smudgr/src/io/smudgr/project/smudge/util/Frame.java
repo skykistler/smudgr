@@ -1,8 +1,6 @@
 package io.smudgr.project.smudge.util;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
 
 import io.smudgr.project.smudge.alg.math.ColorHelper;
 
@@ -53,14 +51,6 @@ public class Frame {
 
 		int x = image.getWidth() / 2 - fittedFrame.getWidth() / 2;
 		int y = image.getHeight() / 2 - fittedFrame.getHeight() / 2;
-
-		int[] imageRaster = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-
-		// TODO: one day this can draw rectangles around the target area
-		for (int j = 0; j < image.getHeight(); j++)
-			for (int i = 0; i < image.getWidth(); i++) {
-				imageRaster[i + j * image.getWidth()] = Color.BLACK.getRGB();
-			}
 
 		try {
 			image.setRGB(x, y, fittedFrame.getWidth(), fittedFrame.getHeight(), fittedFrame.pixels, 0, fittedFrame.getWidth());

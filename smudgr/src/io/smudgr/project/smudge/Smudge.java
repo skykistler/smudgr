@@ -63,7 +63,6 @@ public class Smudge extends Parametric implements Source {
 			lastFrame.dispose();
 
 		lastFrame = toRender;
-
 	}
 
 	public Frame getFrame() {

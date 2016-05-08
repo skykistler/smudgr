@@ -18,15 +18,14 @@ public class ViewThread extends AppThread {
 	}
 
 	protected void execute() {
-		Frame frame = Controller.getInstance().getProject().getSmudge().getFrame();
-		if (frame == null)
-			return;
+		try {
+			Frame frame = Controller.getInstance().getProject().getSmudge().getFrame().copy();
 
-		frame = frame.copy();
-
-		view.update(frame);
-
-		frame.dispose();
+			view.update(frame);
+			frame.dispose();
+		} catch (NullPointerException e) {
+			// frame was null, do nothing
+		}
 	}
 
 	protected void printStatus() {

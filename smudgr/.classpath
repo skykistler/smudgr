@@ -41,5 +41,6 @@
 			<attribute name="javadoc_location" value="http://trove4j.sourceforge.net/javadocs/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/java_websocket.jar" sourcepath="/Users/skykistler/Documents/java_websocket"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -64,6 +64,8 @@ public class SkyTestApp extends AppStart {
 		if (monitor)
 			monitorView();
 
+		//		Controller.getInstance().add(new WebsocketView());
+
 		start();
 	}
 
