@@ -9,6 +9,7 @@ import io.smudgr.app.Controllable;
 import io.smudgr.app.Controller;
 import io.smudgr.extensions.ControllerExtension;
 import io.smudgr.extensions.automate.controls.AutomatorControl;
+import io.smudgr.extensions.midi.Device.DeviceObserver;
 import io.smudgr.extensions.midi.messages.AftertouchMessage;
 import io.smudgr.extensions.midi.messages.ContinueMessage;
 import io.smudgr.extensions.midi.messages.KnobMessage;
@@ -22,7 +23,7 @@ import io.smudgr.project.ProjectElement;
 import io.smudgr.project.PropertyMap;
 import io.smudgr.project.smudge.param.Parameter;
 
-public class MidiExtension implements ControllerExtension {
+public class MidiExtension implements ControllerExtension, DeviceObserver {
 
 	public String getName() {
 		return "MIDI";
@@ -66,7 +67,7 @@ public class MidiExtension implements ControllerExtension {
 	}
 
 	public void bindDevice(String deviceName) {
-		Device d = new Device(deviceName);
+		Device d = new Device(deviceName, this);
 
 		if (!d.toString().equals("no device")) {
 			devices.add(d);

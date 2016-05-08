@@ -10,13 +10,14 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.Transmitter;
 
-import io.smudgr.app.Controller;
-
 public class Device {
 
+	private DeviceObserver observer;
 	private MidiDevice device;
 
-	public Device(String name) {
+	public Device(String name, DeviceObserver observer) {
+		this.observer = observer;
+
 		Info[] midiDevices = MidiSystem.getMidiDeviceInfo();
 		Info desired = null;
 		for (Info i : midiDevices) {
@@ -61,10 +62,7 @@ public class Device {
 	public class DeviceReceiver implements Receiver {
 
 		public void send(MidiMessage message, long timeStamp) {
-			MidiExtension ext = (MidiExtension) Controller.getInstance().getExtension("MIDI");
-
-			if (ext != null)
-				ext.midiInput(message);
+			observer.midiInput(message);
 		}
 
 		public String toString() {
@@ -103,4 +101,7 @@ public class Device {
 		return devices;
 	}
 
+	public interface DeviceObserver {
+		public void midiInput(MidiMessage message);
+	}
 }
