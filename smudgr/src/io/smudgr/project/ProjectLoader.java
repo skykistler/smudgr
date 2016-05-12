@@ -17,7 +17,7 @@ public class ProjectLoader {
 	private String path;
 
 	public ProjectLoader() {
-		this.path = null;
+		this(null);
 	}
 
 	public ProjectLoader(String path) {
