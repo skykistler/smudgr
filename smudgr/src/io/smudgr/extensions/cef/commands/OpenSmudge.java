@@ -21,14 +21,15 @@ public class OpenSmudge implements CefCommand {
 	}
 
 	public String onSuccess() {
-		return "Opening file dialog for project";
+		return "Showing open dialog for project";
 	}
 
 	public String onFailure() {
-		return "Failed to open file dialog for project";
+		return "Failed to show open dialog for project";
 	}
 
 	private class OpenSmudgeCallback implements FileDialogCallback {
+
 		public void onSelection(File[] selectedFiles) {
 			ProjectLoader project = new ProjectLoader(selectedFiles[0].getAbsolutePath());
 			project.load();
