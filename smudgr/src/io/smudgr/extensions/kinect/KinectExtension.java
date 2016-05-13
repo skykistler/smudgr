@@ -30,14 +30,16 @@ public class KinectExtension implements ControllerExtension {
 			System.exit(0);
 		}
 
-		/*
+		/*-
 		 * Now at this point, we have a device ready to open streams for video
 		 * and depth.
 		 * 
-		 * Now would be a good time to do:
+		 * Now would be a good time to this somewhere:
 		 * 
-		 * DepthBuffer dBuffer = new DepthBuffer(device); VideoBuffer vBuffer =
-		 * new VideoBuffer(device); dBuffer.init(); vBuffer.init();
+		 * DepthBuffer dBuffer = new DepthBuffer(device);
+		 * VideoBuffer vBuffer = new VideoBuffer(device);
+		 * dBuffer.init();  //start or whatever
+		 * vBuffer.init();
 		 * 
 		 * Now after being initialized, they are pulling Frames into queues.
 		 * These buffers can serve up Frames from the Frame queue in something

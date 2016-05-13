@@ -35,7 +35,7 @@ public class DepthBuffer extends KinectBuffer {
 		if (!frame.hasArray()) {
 			return;
 		}
-		// Do stuff with aformentioned bytes to create frame
+		// Do stuff with aforementioned bytes to create frame
 
 	}
 

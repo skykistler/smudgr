@@ -32,10 +32,21 @@ public class VideoBuffer extends KinectBuffer {
 				processByteBuffer(mode, frame, timestamp);
 			}
 		});
-
 	}
 
-	// Need to remember to fix to reuse objects and correct from RGB
+	/*-
+	 * Need to remember to convert from RGB to the smudgr-specific encoding.
+	 * 
+	 * 1) TByteArrayList needs to reuse memory and reset each processByteBuffers
+	 * call.
+	 * 
+	 * 2) Reading ByteBuffer directly instead of copying into intermediate
+	 * array buffer 
+	 * 
+	 * 3) InputStream is used to convert bytes -> BufferedImage. It needs to be <reset> every time
+	 * we are done using it, so we don't waste time making the same sized InputStream.
+	 * 
+	 */
 	@Override
 	public void processByteBuffer(FrameMode mode, ByteBuffer frame, int timestamp) {
 		if (!frame.hasArray()) {
