@@ -13,8 +13,8 @@ public class KinectExtension implements ControllerExtension {
 
 	private Device device = null;
 	private Context ctx = null;
-	DepthBuffer dBuffer;
-	VideoBuffer vBuffer;
+	private DepthBuffer dBuffer;
+	private VideoBuffer vBuffer;
 
 	public String getName() {
 		return "Kinect";
@@ -30,35 +30,40 @@ public class KinectExtension implements ControllerExtension {
 			System.exit(0);
 		}
 
+		// Create the buffers but don't start streaming yet
+		dBuffer = new DepthBuffer(device);
+		vBuffer = new VideoBuffer(device);
+
 		/*-
 		 * Now at this point, we have a device ready to open streams for video
 		 * and depth.
 		 * 
 		 * Now would be a good time to this somewhere:
 		 * 
-		 * DepthBuffer dBuffer = new DepthBuffer(device);
-		 * VideoBuffer vBuffer = new VideoBuffer(device);
-		 * dBuffer.init();  //start or whatever
-		 * vBuffer.init();
+		 * dBuffer.start();  //start or whatever
+		 * vBuffer.start();
 		 * 
 		 * Now after being initialized, they are pulling Frames into queues.
 		 * These buffers can serve up Frames from the Frame queue in something
 		 * like a Source.
-		 * 
 		 */
-
 	}
 
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
+	public DepthBuffer getDepthBuffer() {
+		return dBuffer;
+	}
 
+	public VideoBuffer getVideoBuffer() {
+		return vBuffer;
+	}
+
+	public void update() {
 	}
 
 	@Override
 	public void stop() {
-		// TODO Auto-generated method stub
-
+		device.stopDepth();
+		device.close();
 	}
 
 	@Override
