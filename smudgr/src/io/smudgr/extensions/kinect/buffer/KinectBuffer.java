@@ -1,85 +1,44 @@
 package io.smudgr.extensions.kinect.buffer;
 
-import java.io.IOException;
-import java.util.LinkedList;
+import java.nio.ByteBuffer;
 import java.util.Queue;
 
-import org.jcodec.api.JCodecException;
+import org.openkinect.freenect.Device;
+import org.openkinect.freenect.FrameMode;
 
 import io.smudgr.project.smudge.util.Frame;
 
 public abstract class KinectBuffer {
 
-	private BufferThread bufferer;
-	private volatile Queue<Frame> buffer;
+	protected volatile Queue<Frame> buffer;
 	private final int bufferCap = 100;
+	protected Device device = null;
+
+	public KinectBuffer(Device dev) {
+		device = dev;
+	}
 
 	public void init() {
-		bufferer = new BufferThread();
-		bufferer.start();
+		// Now we can move onto the specific data stream types through abstract
+		// methods
+		startStream();
 	}
 
+	public void stop() {
+		// These need to be called when buffer killed
+		if (device != null) {
+			device.stopDepth();
+			device.close();
+		}
+	}
+
+	// The parent buffer class will handle how Frames are grabbed
 	public Frame getFrame() {
-		if (!bufferer.started)
-			return null;
-
-		while (buffer.size() == 0)
-			;
-
-		return buffer.poll();
+		return buffer.remove(); // Or poll?
 	}
 
-	public abstract void initStream();
+	protected abstract void startStream();
 
-	class BufferThread implements Runnable {
-
-		private volatile boolean started;
-
-		public BufferThread() {
-			buffer = new LinkedList<Frame>();
-		}
-
-		public void start() {
-			Thread t = new Thread(this);
-			t.start();
-		}
-
-		public void run() {
-			started = true;
-
-			initStream();
-
-			try {
-				// Open up device stream
-			} catch (IOException | JCodecException e1) {
-				e1.printStackTrace();
-				started = false;
-			}
-
-			while (started)
-				while (buffer.size() < bufferCap) {
-					try {
-						// Pull ByteBuffer from kinect stream
-
-						if (frame == null) {
-							started = false;
-							break;
-						}
-
-						buffer.add(new Frame(frame));
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-
-			run();
-		}
-
-		public void stop() {
-			started = false;
-			buffer = null;
-		}
-
-	}
+	protected abstract void processByteBuffer(FrameMode mode, ByteBuffer frame, int timestamp);
 
 }

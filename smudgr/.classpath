@@ -42,5 +42,11 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/java_websocket.jar" sourcepath="/Users/skykistler/Documents/java_websocket"/>
+	<classpathentry kind="lib" path="lib/freenect.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="smudgr-java/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/jna-4.2.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
