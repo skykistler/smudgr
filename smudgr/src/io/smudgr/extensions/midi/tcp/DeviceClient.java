@@ -43,7 +43,7 @@ public class DeviceClient {
 		listener.start();
 	}
 
-	public void attemptLocalServerFind() {
+	private void attemptLocalServerFind() {
 		String thisIp = null;
 		try {
 			thisIp = Inet4Address.getLocalHost().getHostAddress();
