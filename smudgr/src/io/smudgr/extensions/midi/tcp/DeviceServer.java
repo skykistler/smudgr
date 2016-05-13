@@ -1,8 +1,9 @@
 package io.smudgr.extensions.midi.tcp;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import io.smudgr.extensions.midi.Device.DeviceObserver;
 public class DeviceServer implements DeviceObserver {
 
 	public static final int SMUDGR_PORT = 45454;
-	public static final String CONNECT_HELLO = "smudgr";
+	public static final String CONNECT_RESPONSE = "connected";
 
 	private ServerSocket server;
 	private ClientListener listener;
@@ -29,6 +30,7 @@ public class DeviceServer implements DeviceObserver {
 			System.out.println("Unable to start Device server!");
 		}
 
+		System.out.println("Starting device server on port " + SMUDGR_PORT);
 		listener = new ClientListener();
 		listener.start();
 	}
@@ -38,8 +40,8 @@ public class DeviceServer implements DeviceObserver {
 
 		for (DataOutputStream client : clients) {
 			try {
-				client.writeInt(byteMessage.length);
 				client.write(byteMessage);
+				client.flush();
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.out.println("Unable to send MIDI message to client");
@@ -80,10 +82,13 @@ public class DeviceServer implements DeviceObserver {
 				try {
 					client = server.accept();
 
-					PrintWriter hello = new PrintWriter(client.getOutputStream());
-					hello.write(CONNECT_HELLO);
+					BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+					String received = in.readLine();
 
-					clients.add(new DataOutputStream(client.getOutputStream()));
+					if (received.equals(DeviceClient.CONNECT_HELLO)) {
+						System.out.println("Connected to client: " + client.getInetAddress().getHostAddress());
+						clients.add(new DataOutputStream(client.getOutputStream()));
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
 					System.out.println("Unable to accept client connection");
@@ -98,9 +103,7 @@ public class DeviceServer implements DeviceObserver {
 	}
 
 	public static void main(String[] args) {
-		DeviceServer server = new DeviceServer();
-
-		new Device("PAD", server);
+		new Device("PAD", new DeviceServer());
 	}
 
 }
