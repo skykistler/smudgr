@@ -27,7 +27,14 @@ public class Window extends JFrame implements KeyListener, WindowListener {
 	private Graphics graphicsContext = null;
 
 	public Window() {
+		this(-1);
+	}
+
+	public Window(int fullscreenDisplay) {
 		super("smudgr");
+
+		if (fullscreenDisplay != -1)
+			makeFullscreen(fullscreenDisplay);
 
 		setBackground(Color.BLACK);
 		setVisible(true);
@@ -38,7 +45,7 @@ public class Window extends JFrame implements KeyListener, WindowListener {
 		createBufferStrategy(2);
 	}
 
-	public void makeFullscreen(int displayNumber) {
+	private void makeFullscreen(int displayNumber) {
 		try {
 			display = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[displayNumber];
 
