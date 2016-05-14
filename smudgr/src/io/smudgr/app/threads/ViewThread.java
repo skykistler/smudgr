@@ -24,12 +24,12 @@ public class ViewThread extends AppThread {
 			view.update(frame);
 			frame.dispose();
 		} catch (NullPointerException e) {
-			// frame was null, do nothing
+			// frame was probably null, do nothing
 		}
 	}
 
 	protected void printStatus() {
-		// unneeded
+		System.out.println(ticks + " view updates");
 	}
 
 	protected void onStop() {
