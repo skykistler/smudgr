@@ -7,7 +7,6 @@ import java.util.Queue;
 import org.openkinect.freenect.Device;
 import org.openkinect.freenect.FrameMode;
 
-import gnu.trove.list.array.TByteArrayList;
 import io.smudgr.project.smudge.util.Frame;
 
 public abstract class KinectBuffer {
@@ -17,7 +16,6 @@ public abstract class KinectBuffer {
 	protected Device device = null;
 
 	BufferedImage bImage;
-	TByteArrayList streamBytes = new TByteArrayList();
 
 	public KinectBuffer(Device dev) {
 		device = dev;
