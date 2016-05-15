@@ -3,15 +3,16 @@ package io.smudgr.extensions.automate.controls;
 import io.smudgr.project.PropertyMap;
 import io.smudgr.project.smudge.param.NumberParameter;
 import io.smudgr.project.smudge.param.Parameter;
+import io.smudgr.project.smudge.param.UnivariateParameter;
 
-public class AutomateByStepControl implements AutomatorControl {
+public class EasingAutomator implements AutomatorControl {
 
 	public String getName() {
-		return "Animate";
+		return "Ease";
 	}
 
 	private NumberParameter parameter;
-	private boolean run = true;
+	private UnivariateParameter easingFunction;
 
 	private double increment = .05, speed = increment;
 
@@ -20,9 +21,6 @@ public class AutomateByStepControl implements AutomatorControl {
 	}
 
 	public void update() {
-		if (!run)
-			return;
-
 		double val = parameter.getValue();
 		double step = parameter.getStep();
 		val = val + step * speed;
@@ -35,16 +33,12 @@ public class AutomateByStepControl implements AutomatorControl {
 	}
 
 	public void inputOn() {
-		run = true;
 	}
 
 	public void inputOff() {
-		run = false;
 	}
 
 	public void increment() {
-		run = true;
-
 		speed += increment;
 	}
 
@@ -64,7 +58,6 @@ public class AutomateByStepControl implements AutomatorControl {
 		pm.setAttribute("parameter", parameterId);
 		pm.setAttribute("increment", increment);
 		pm.setAttribute("speed", speed);
-		pm.setAttribute("run", run);
 	}
 
 	public void load(PropertyMap pm) {
@@ -73,9 +66,6 @@ public class AutomateByStepControl implements AutomatorControl {
 
 		if (pm.hasAttribute("speed"))
 			speed = Double.parseDouble(pm.getAttribute("speed"));
-
-		if (pm.hasAttribute("run"))
-			run = Boolean.parseBoolean(pm.getAttribute("run"));
 
 		if (pm.hasAttribute("parameter")) {
 			int parameterId = Integer.parseInt(pm.getAttribute("parameter"));

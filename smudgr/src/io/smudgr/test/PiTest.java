@@ -19,8 +19,8 @@ public class PiTest extends AppStart {
 
 	static String device = null;
 
-	static int fullscreenDisplay = 0;
-	static boolean monitor = false;
+	static int fullscreenDisplay = -1;
+	static boolean monitor = true;
 
 	public void buildSmudge() {
 		Smudge smudge = Controller.getInstance().getProject().getSmudge();
