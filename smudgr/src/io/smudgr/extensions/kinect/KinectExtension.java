@@ -23,12 +23,10 @@ public class KinectExtension implements ControllerExtension {
 	public void init() {
 		// Open the kinect device through the context
 		ctx = Freenect.createContext();
-		if (ctx.numDevices() > 0) {
-			device = ctx.openDevice(0);
-		} else {
-			System.err.println("No kinects detected.  Exiting.");
-			System.exit(0);
-		}
+		if (ctx.numDevices() == 0)
+			return;
+
+		device = ctx.openDevice(0);
 
 		// Create the buffers but don't start streaming yet
 		dBuffer = new DepthBuffer(device);
@@ -68,14 +66,10 @@ public class KinectExtension implements ControllerExtension {
 
 	@Override
 	public void save(PropertyMap pm) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void load(PropertyMap pm) {
-		// TODO Auto-generated method stub
-
 	}
 
 }
