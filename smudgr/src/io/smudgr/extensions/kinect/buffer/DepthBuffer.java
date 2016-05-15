@@ -1,6 +1,7 @@
 package io.smudgr.extensions.kinect.buffer;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.nio.ByteBuffer;
 
 import org.openkinect.freenect.DepthFormat;
@@ -60,11 +61,14 @@ public class DepthBuffer extends KinectBuffer {
 		 * 
 		 */
 
+		byte[] imgData = ((DataBufferByte) bImage.getRaster().getDataBuffer()).getData();
+		System.arraycopy(frame.array(), 0, imgData, 0, frame.array().length);
+
 		Frame imageFrame = new Frame(bImage);
 
 		// Frame constructor automatically pulls RGB from BufferedImage bImage
 		// Added produced Frame to queue for Sources
-		buffer.add(imageFrame);
+		addFrame(imageFrame);
 
 	}
 

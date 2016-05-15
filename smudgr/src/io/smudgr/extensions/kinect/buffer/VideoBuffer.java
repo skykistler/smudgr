@@ -56,7 +56,7 @@ public class VideoBuffer extends KinectBuffer {
 
 		// Frame constructor automatically pulls RGB from BufferedImage bImage
 		// Added produced Frame to queue for Sources
-		buffer.add(imageFrame);
+		addFrame(imageFrame);
 	}
 
 }

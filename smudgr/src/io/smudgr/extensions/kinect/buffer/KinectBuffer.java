@@ -27,11 +27,18 @@ public abstract class KinectBuffer {
 	}
 
 	// The parent buffer class will handle how Frames are grabbed
-	public Frame getFrame() {
+	public synchronized Frame getFrame() {
 		if (buffer.size() == 0)
 			return null;
 
-		return buffer.remove(); // Or poll?
+		return buffer.poll();
+	}
+
+	protected synchronized void addFrame(Frame frame) {
+		if (buffer.size() == bufferCap) {
+			getFrame().dispose();
+		}
+		buffer.add(frame);
 	}
 
 	protected abstract void startStream();
