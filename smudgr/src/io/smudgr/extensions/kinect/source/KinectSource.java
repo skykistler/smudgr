@@ -15,20 +15,21 @@ public abstract class KinectSource implements Source {
 	@Override
 	public void init() {
 		KinectExtension kinectExtension = (KinectExtension) Controller.getInstance().getExtension("Kinect");
-		buffer = selectKinectBuffer(kinectExtension);
+		buffer = getKinectBuffer(kinectExtension);
 		buffer.start();
 	}
 
-	public abstract KinectBuffer selectKinectBuffer(KinectExtension extension);
+	public abstract KinectBuffer getKinectBuffer(KinectExtension extension);
 
 	@Override
-	public Frame getFrame() {
+	public synchronized Frame getFrame() {
 
 		frame = buffer.getFrame();
 		if (frame == null)
 			return lastFrame;
 
 		// Dispose of lastFrame for new lastFrame
+		lastFrame.dispose();
 		lastFrame = frame;
 
 		return frame;
@@ -36,7 +37,7 @@ public abstract class KinectSource implements Source {
 
 	@Override
 	public void dispose() {
-		frame = null; // Not really sure here
+		lastFrame.dispose();
 	}
 
 	@Override

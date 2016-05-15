@@ -6,7 +6,7 @@ import io.smudgr.extensions.kinect.buffer.KinectBuffer;
 public class VideoSource extends KinectSource {
 
 	@Override
-	public KinectBuffer selectKinectBuffer(KinectExtension extension) {
+	public KinectBuffer getKinectBuffer(KinectExtension extension) {
 		return extension.getVideoBuffer();
 	}
 
