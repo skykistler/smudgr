@@ -8,6 +8,8 @@ import io.smudgr.project.smudge.util.Frame;
 
 public class ViewThread extends AppThread {
 
+	private static final boolean DEBUG = false;
+
 	private View view;
 
 	public ViewThread(View view) {
@@ -22,6 +24,7 @@ public class ViewThread extends AppThread {
 			Frame frame = Controller.getInstance().getProject().getSmudge().getFrame().copy();
 
 			view.update(frame);
+
 			frame.dispose();
 		} catch (NullPointerException e) {
 			// frame was probably null, do nothing
@@ -29,7 +32,8 @@ public class ViewThread extends AppThread {
 	}
 
 	protected void printStatus() {
-		System.out.println(ticks + " view updates");
+		if (DEBUG)
+			System.out.println(ticks + " view updates");
 	}
 
 	protected void onStop() {
