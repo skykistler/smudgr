@@ -1,25 +1,21 @@
 package io.smudgr.extensions.kinect.buffer;
 
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.awt.image.DataBufferByte;
 import java.nio.ByteBuffer;
-
-import javax.imageio.ImageIO;
 
 import org.openkinect.freenect.Device;
 import org.openkinect.freenect.FrameMode;
 import org.openkinect.freenect.VideoFormat;
 import org.openkinect.freenect.VideoHandler;
 
-import gnu.trove.list.array.TByteArrayList;
 import io.smudgr.project.smudge.util.Frame;
 
 public class VideoBuffer extends KinectBuffer {
 
 	public VideoBuffer(Device dev) {
 		super(dev);
+		BufferedImage currentImage = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
 	}
 
 	@Override
@@ -53,24 +49,12 @@ public class VideoBuffer extends KinectBuffer {
 			return;
 		}
 
-		TByteArrayList streamBytes = new TByteArrayList();
+		byte[] imgData = ((DataBufferByte) bImage.getRaster().getDataBuffer()).getData();
+		System.arraycopy(frame.array(), 0, imgData, 0, frame.array().length);
 
-		final int arrayOffset = frame.arrayOffset();
-		for (int i = arrayOffset; i < frame.capacity(); i++) {
-			streamBytes.add(frame.get(i));
-		}
+		Frame imageFrame = new Frame(bImage);
 
-		// Still have not changed to correct format from RGB
-		InputStream in = new ByteArrayInputStream(streamBytes.toArray());
-		BufferedImage bImageFromConvert = null;
-		try {
-			bImageFromConvert = ImageIO.read(in);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		Frame imageFrame = new Frame(bImageFromConvert);
-
+		// Frame constructor automatically pulls RGB from BufferedImage bImage
 		// Added produced Frame to queue for Sources
 		buffer.add(imageFrame);
 	}
