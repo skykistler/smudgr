@@ -8,7 +8,7 @@ import io.smudgr.project.smudge.util.Frame;
 
 public class ViewThread extends AppThread {
 
-	private static final boolean DEBUG = false;
+	private static final boolean DEBUG = true;
 
 	private View view;
 

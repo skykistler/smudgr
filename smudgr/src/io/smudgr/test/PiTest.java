@@ -2,6 +2,7 @@ package io.smudgr.test;
 
 import io.smudgr.app.AppStart;
 import io.smudgr.app.Controller;
+import io.smudgr.app.view.PiFullscreenView;
 import io.smudgr.project.smudge.Smudge;
 import io.smudgr.project.smudge.alg.Algorithm;
 import io.smudgr.project.smudge.alg.op.DataBend;
@@ -19,7 +20,7 @@ public class PiTest extends AppStart {
 
 	static String device = null;
 
-	static int fullscreenDisplay = -1;
+	static int fullscreenDisplay = 0;
 	static boolean monitor = true;
 
 	public void buildSmudge() {
@@ -43,9 +44,11 @@ public class PiTest extends AppStart {
 	public PiTest() {
 		super(projectPath, sourcePath, outputPath, device, newSmudge);
 
-		fullscreenView(fullscreenDisplay);
-		if (monitor)
-			monitorView();
+		//		fullscreenView(fullscreenDisplay);
+		//		if (monitor)
+		//			monitorView();
+
+		Controller.getInstance().add(new PiFullscreenView(fullscreenDisplay));
 
 		start();
 	}
