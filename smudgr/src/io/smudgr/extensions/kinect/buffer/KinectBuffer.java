@@ -2,6 +2,7 @@ package io.smudgr.extensions.kinect.buffer;
 
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
+import java.util.LinkedList;
 import java.util.Queue;
 
 import org.openkinect.freenect.Device;
@@ -11,7 +12,7 @@ import io.smudgr.project.smudge.util.Frame;
 
 public abstract class KinectBuffer {
 
-	protected volatile Queue<Frame> buffer;
+	protected volatile Queue<Frame> buffer = new LinkedList<Frame>();
 	private final int bufferCap = 100;
 	protected Device device = null;
 
@@ -23,6 +24,7 @@ public abstract class KinectBuffer {
 
 	public void start() {
 		// Now we can move onto the specific data stream types
+		System.out.println("About to open kinect stream");
 		startStream();
 	}
 
@@ -31,6 +33,7 @@ public abstract class KinectBuffer {
 		if (buffer.size() == 0)
 			return null;
 
+		System.out.println("buffer size is not 0");
 		return buffer.poll();
 	}
 
@@ -38,6 +41,7 @@ public abstract class KinectBuffer {
 		if (buffer.size() == bufferCap) {
 			getFrame().dispose();
 		}
+		System.out.println("Adding frame to buffer");
 		buffer.add(frame);
 	}
 
