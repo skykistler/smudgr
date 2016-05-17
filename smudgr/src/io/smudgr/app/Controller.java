@@ -60,11 +60,11 @@ public class Controller {
 			return;
 		}
 
-		project.init();
-
 		System.out.println("Starting controller extensions...");
 		for (ControllerExtension ext : getExtensions())
 			ext.init();
+
+		project.init();
 
 		System.out.println("Starting processes...");
 		started = true;
