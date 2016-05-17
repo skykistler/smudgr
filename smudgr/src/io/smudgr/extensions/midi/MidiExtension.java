@@ -12,7 +12,7 @@ import io.smudgr.extensions.automate.controls.AutomatorControl;
 import io.smudgr.extensions.midi.Device.DeviceObserver;
 import io.smudgr.extensions.midi.messages.AftertouchMessage;
 import io.smudgr.extensions.midi.messages.ContinueMessage;
-import io.smudgr.extensions.midi.messages.KnobMessage;
+import io.smudgr.extensions.midi.messages.ControlChangeMessage;
 import io.smudgr.extensions.midi.messages.MidiMessageStrategy;
 import io.smudgr.extensions.midi.messages.NoteOffMessage;
 import io.smudgr.extensions.midi.messages.NoteOnMessage;
@@ -49,7 +49,7 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 		messageStrategies.put(0x90, new NoteOnMessage());
 		messageStrategies.put(0x80, new NoteOffMessage());
 		messageStrategies.put(0xA0, new AftertouchMessage());
-		messageStrategies.put(0xB0, new KnobMessage());
+		messageStrategies.put(0xB0, new ControlChangeMessage());
 		messageStrategies.put(0xFA, new StartMessage());
 		messageStrategies.put(0xFB, new ContinueMessage());
 		messageStrategies.put(0xFC, new StopMessage());

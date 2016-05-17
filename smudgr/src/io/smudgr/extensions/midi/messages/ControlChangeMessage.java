@@ -2,7 +2,7 @@ package io.smudgr.extensions.midi.messages;
 
 import io.smudgr.app.Controllable;
 
-public class KnobMessage implements MidiMessageStrategy {
+public class ControlChangeMessage implements MidiMessageStrategy {
 
 	public void input(Controllable c, int value) {
 		if (value < 64)
@@ -12,6 +12,8 @@ public class KnobMessage implements MidiMessageStrategy {
 		if (value > 64)
 			for (int i = 0; i < value - 64; i++)
 				c.increment();
+
+		//		c.inputValue(value);
 	}
 
 }
