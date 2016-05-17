@@ -86,8 +86,11 @@ public class Frame {
 
 			if (ret == null)
 				ret = scaleDown(scaleDownW, scaleDownH);
-			else
-				ret = ret.scaleDown(scaleDownW, scaleDownH);
+			else {
+				Frame ret2 = ret.scaleDown(scaleDownW, scaleDownH);
+				ret.dispose();
+				ret = ret2;
+			}
 		}
 
 		return ret == null ? copy() : ret;

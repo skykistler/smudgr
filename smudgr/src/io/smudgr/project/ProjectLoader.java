@@ -16,8 +16,12 @@ public class ProjectLoader {
 
 	private String path;
 
+	public ProjectLoader() {
+		this(null);
+	}
+
 	public ProjectLoader(String path) {
-		if (!path.endsWith(Project.PROJECT_EXTENSION))
+		if (path != null && !path.endsWith(Project.PROJECT_EXTENSION))
 			path += Project.PROJECT_EXTENSION;
 
 		this.path = path;
@@ -31,7 +35,9 @@ public class ProjectLoader {
 		controller.pause();
 
 		Project project = new Project();
-		project.setProjectPath(path);
+
+		if (path != null)
+			project.setProjectPath(path);
 
 		try {
 			project.load(projectMap);
@@ -47,31 +53,37 @@ public class ProjectLoader {
 	private PropertyMap loadXML() {
 		PropertyMap project = new PropertyMap("project");
 
+		if (path == null) {
+			System.out.println("Creating new project...");
+			return project;
+		}
+
 		File xml = new File(path);
 		if (!xml.exists()) {
 			System.out.println("Did not find file: " + xml.getAbsolutePath());
 			System.out.println("Creating new project...");
-		} else
-			try {
-				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-				Document doc = dBuilder.parse(xml);
-				doc.getDocumentElement().normalize();
+			return project;
+		}
 
-				Node projectNode = doc.getElementsByTagName("project").item(0);
+		try {
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(xml);
+			doc.getDocumentElement().normalize();
 
-				loadProperties(project, projectNode);
+			Node projectNode = doc.getElementsByTagName("project").item(0);
 
-			} catch (Exception e) {
-				e.printStackTrace();
-				System.out.println("Problem loading project at " + path);
-			}
+			loadProperties(project, projectNode);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Problem loading project at " + path);
+		}
 
 		return project;
 	}
 
 	private void loadProperties(PropertyMap parentMap, Node parentNode) {
-
 		NamedNodeMap attributes = parentNode.getAttributes();
 		for (int i = 0; i < attributes.getLength(); i++) {
 			Node attribute = attributes.item(i);

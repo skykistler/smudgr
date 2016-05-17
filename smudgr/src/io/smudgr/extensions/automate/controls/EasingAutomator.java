@@ -1,50 +1,58 @@
 package io.smudgr.extensions.automate.controls;
 
 import io.smudgr.project.PropertyMap;
+import io.smudgr.project.smudge.alg.math.LinearFunction;
+import io.smudgr.project.smudge.alg.math.UnivariateFunction;
 import io.smudgr.project.smudge.param.NumberParameter;
 import io.smudgr.project.smudge.param.Parameter;
 
-public class AutomateByStepControl implements AutomatorControl {
+public class EasingAutomator implements AutomatorControl {
 
 	public String getName() {
-		return "Animate";
+		return "Ease";
 	}
 
 	private NumberParameter parameter;
-	private boolean run = true;
+
+	private UnivariateFunction easingFunction = new LinearFunction();
 
 	private double increment = .05, speed = increment;
+	private double step, lastVal;
 
 	public void init() {
-
+		lastVal = parameter.getValue();
 	}
 
 	public void update() {
-		if (!run)
-			return;
+		step += speed;
 
 		double val = parameter.getValue();
-		double step = parameter.getStep();
-		val = val + step * speed;
 
+		// If something else changed the value, start easing again
+		if (lastVal != val)
+			step = 0;
+
+		// If the value hasn't changed and our step is maxed out, return
+		else if (step >= 1) {
+			step = 1;
+			return;
+		}
+
+		val = parameter.getMax() * easingFunction.calculate(step);
 		parameter.setValue(val);
+		lastVal = val;
 	}
 
 	public void inputValue(int value) {
-
 	}
 
 	public void inputOn() {
-		run = true;
 	}
 
 	public void inputOff() {
-		run = false;
 	}
 
 	public void increment() {
-		run = true;
-
 		speed += increment;
 	}
 
@@ -64,7 +72,6 @@ public class AutomateByStepControl implements AutomatorControl {
 		pm.setAttribute("parameter", parameterId);
 		pm.setAttribute("increment", increment);
 		pm.setAttribute("speed", speed);
-		pm.setAttribute("run", run);
 	}
 
 	public void load(PropertyMap pm) {
@@ -73,9 +80,6 @@ public class AutomateByStepControl implements AutomatorControl {
 
 		if (pm.hasAttribute("speed"))
 			speed = Double.parseDouble(pm.getAttribute("speed"));
-
-		if (pm.hasAttribute("run"))
-			run = Boolean.parseBoolean(pm.getAttribute("run"));
 
 		if (pm.hasAttribute("parameter")) {
 			int parameterId = Integer.parseInt(pm.getAttribute("parameter"));

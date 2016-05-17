@@ -130,8 +130,11 @@ public class Project {
 			if (!path.endsWith(File.separator))
 				path += File.separator;
 
-			path += "Untitled" + PROJECT_EXTENSION;
+			path += "Untitled";
 		}
+
+		if (!path.endsWith(PROJECT_EXTENSION))
+			path += PROJECT_EXTENSION;
 
 		location = path;
 	}

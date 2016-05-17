@@ -12,8 +12,7 @@ public class FullscreenView implements View {
 	}
 
 	public void start() {
-		window = new Window();
-		window.makeFullscreen(displayNumber);
+		window = new Window(displayNumber);
 	}
 
 	public void update(Frame frame) {
