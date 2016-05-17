@@ -36,39 +36,13 @@ public class DepthBuffer extends KinectBuffer {
 	 */
 	@Override
 	public void processByteBuffer(FrameMode mode, ByteBuffer frame, int timestamp) {
-		if (!frame.hasArray()) {
-			return;
+		byte[] imgData = ((DataBufferByte) bImage.getRaster().getDataBuffer()).getData();
+
+		for (int i = 0; i < frame.remaining() && i < imgData.length; i++) {
+			imgData[i] = frame.get(i);
 		}
 
-		/*- I think we can do it this way:
-		 * 
-		 * (1)
-		 * 
-		 * DataBufferByte dataBuffer = new DataBufferByte(frame.array(),
-		 * frame.capacity()); SampleModel sampleModel = new
-		 * BandedSampleModel(dataBuffer.getDataType(), 640, 480, 1); Raster
-		 * raster = Raster.createRaster(sampleModel, dataBuffer, null);
-		 * bImage.setData(raster);
-		 * 
-		 * Or this way:
-		 * 
-		 * (2)
-		 * 
-		 * byte[] imgData = ((DataBufferByte) bImage.getRaster().getDataBuffer()).getData();
-		 * System.arraycopy(frame.array(), 0, imgData, 0, frame.array().length);
-		 * 
-		 * Option 2 seems the most succinct.
-		 * 
-		 */
-
-		byte[] imgData = ((DataBufferByte) bImage.getRaster().getDataBuffer()).getData();
-		System.arraycopy(frame.array(), 0, imgData, 0, frame.array().length);
-
-		Frame imageFrame = new Frame(bImage);
-
-		// Frame constructor automatically pulls RGB from BufferedImage bImage
-		// Added produced Frame to queue for Sources
-		addFrame(imageFrame);
+		addFrame(new Frame(bImage));
 
 	}
 

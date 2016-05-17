@@ -30,7 +30,9 @@ public abstract class KinectSource implements Source {
 		}
 
 		// Dispose of lastFrame for new lastFrame
-		lastFrame.dispose();
+		if (lastFrame != null)
+			lastFrame.dispose();
+
 		lastFrame = frame;
 
 		return frame;
