@@ -1,9 +1,10 @@
 package io.smudgr.extensions.automate.controls;
 
 import io.smudgr.project.PropertyMap;
+import io.smudgr.project.smudge.alg.math.LinearFunction;
+import io.smudgr.project.smudge.alg.math.UnivariateFunction;
 import io.smudgr.project.smudge.param.NumberParameter;
 import io.smudgr.project.smudge.param.Parameter;
-import io.smudgr.project.smudge.param.UnivariateParameter;
 
 public class EasingAutomator implements AutomatorControl {
 
@@ -12,24 +13,37 @@ public class EasingAutomator implements AutomatorControl {
 	}
 
 	private NumberParameter parameter;
-	private UnivariateParameter easingFunction;
+
+	private UnivariateFunction easingFunction = new LinearFunction();
 
 	private double increment = .05, speed = increment;
+	private double step, lastVal;
 
 	public void init() {
-
+		lastVal = parameter.getValue();
 	}
 
 	public void update() {
-		double val = parameter.getValue();
-		double step = parameter.getStep();
-		val = val + step * speed;
+		step += speed;
 
+		double val = parameter.getValue();
+
+		// If something else changed the value, start easing again
+		if (lastVal != val)
+			step = 0;
+
+		// If the value hasn't changed and our step is maxed out, return
+		else if (step >= 1) {
+			step = 1;
+			return;
+		}
+
+		val = parameter.getMax() * easingFunction.calculate(step);
 		parameter.setValue(val);
+		lastVal = val;
 	}
 
 	public void inputValue(int value) {
-
 	}
 
 	public void inputOn() {
