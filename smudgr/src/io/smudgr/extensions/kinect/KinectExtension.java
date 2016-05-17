@@ -22,15 +22,20 @@ public class KinectExtension implements ControllerExtension {
 
 	public void init() {
 		// Open the kinect device through the context
+		System.out.println("Kinect Extension initialized...");
 		ctx = Freenect.createContext();
 		if (ctx.numDevices() == 0)
 			return;
 
 		device = ctx.openDevice(0);
 
+		System.out.println("Kinect device opened...");
+
 		// Create the buffers but don't start streaming yet
 		dBuffer = new DepthBuffer(device);
 		vBuffer = new VideoBuffer(device);
+
+		System.out.println("Kinect buffers initialized...");
 
 		/*-
 		 * Now at this point, we have a device ready to open streams for video
