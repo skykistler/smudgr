@@ -15,11 +15,12 @@ public class VideoBuffer extends KinectBuffer {
 
 	public VideoBuffer(Device dev) {
 		super(dev);
-		BufferedImage currentImage = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
+		bImage = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
 	}
 
 	@Override
 	public void startStream() {
+
 		device.setVideoFormat(VideoFormat.RGB);
 
 		device.startVideo(new VideoHandler() {
@@ -43,9 +44,9 @@ public class VideoBuffer extends KinectBuffer {
 	 * we are done using it, so we don't waste time making the same sized InputStream.
 	 * 
 	 */
-	@Override
-	public void processByteBuffer(FrameMode mode, ByteBuffer frame, int timestamp) {
-		if (!frame.hasArray()) {
+
+	protected void processByteBuffer(FrameMode mode, ByteBuffer frame, int timestamp) {
+		if (frame.array() == null) {
 			return;
 		}
 

@@ -24,7 +24,6 @@ public abstract class KinectBuffer {
 
 	public void start() {
 		// Now we can move onto the specific data stream types
-		System.out.println("About to open kinect stream");
 		startStream();
 	}
 
@@ -33,7 +32,6 @@ public abstract class KinectBuffer {
 		if (buffer.size() == 0)
 			return null;
 
-		System.out.println("buffer size is not 0");
 		return buffer.poll();
 	}
 
@@ -41,7 +39,6 @@ public abstract class KinectBuffer {
 		if (buffer.size() == bufferCap) {
 			getFrame().dispose();
 		}
-		System.out.println("Adding frame to buffer");
 		buffer.add(frame);
 	}
 

@@ -25,8 +25,9 @@ public abstract class KinectSource implements Source {
 	public synchronized Frame getFrame() {
 
 		frame = buffer.getFrame();
-		if (frame == null)
+		if (frame == null) {
 			return lastFrame;
+		}
 
 		// Dispose of lastFrame for new lastFrame
 		lastFrame.dispose();
