@@ -8,9 +8,8 @@ import io.smudgr.project.smudge.util.Frame;
 
 public class ViewThread extends AppThread {
 
-	private static final boolean DEBUG = true;
-
 	private View view;
+	private boolean showUpdates = true;
 
 	public ViewThread(View view) {
 		super("View Thread - " + view);
@@ -32,8 +31,8 @@ public class ViewThread extends AppThread {
 	}
 
 	protected void printStatus() {
-		if (DEBUG)
-			System.out.println(ticks + " view updates");
+		if (showUpdates)
+			System.out.println(ticks + " updates to view: " + view.getName());
 	}
 
 	protected void onStop() {

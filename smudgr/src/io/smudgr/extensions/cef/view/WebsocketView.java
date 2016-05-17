@@ -8,6 +8,10 @@ import io.smudgr.project.smudge.util.Frame;
 
 public class WebsocketView implements View {
 
+	public String getName() {
+		return "WebSocket server";
+	}
+
 	private FrameServer server;
 
 	public void start() {

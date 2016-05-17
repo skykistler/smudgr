@@ -10,6 +10,10 @@ import io.smudgr.project.smudge.util.Frame;
 
 public class PiFullscreenView implements View {
 
+	public String getName() {
+		return "Linux native framebuffer";
+	}
+
 	private int frameBufferNum;
 
 	private FrameBuffer frameBuffer;
