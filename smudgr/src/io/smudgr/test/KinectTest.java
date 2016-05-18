@@ -2,6 +2,7 @@ package io.smudgr.test;
 
 import io.smudgr.app.AppStart;
 import io.smudgr.app.Controller;
+import io.smudgr.app.view.PiFullscreenView;
 import io.smudgr.extensions.automate.controls.AutomatorControl;
 import io.smudgr.extensions.kinect.source.VideoSource;
 import io.smudgr.project.smudge.Smudge;
@@ -32,7 +33,7 @@ public class KinectTest extends AppStart {
 
 	// set to -1 for no fullscreen, set to 0 for fullscreen on main display
 	// Higher numbers are for multi-monitor setups
-	static int fullscreenDisplay = -1;
+	static int fullscreenDisplay = 0;
 
 	// non-fullscreen window
 	static boolean monitor = true;
@@ -40,9 +41,11 @@ public class KinectTest extends AppStart {
 	public KinectTest() {
 		super(projectPath, sourcePath, outputPath, device, newSmudge);
 
-		fullscreenView(fullscreenDisplay);
-		if (monitor)
-			monitorView();
+		// fullscreenView(fullscreenDisplay);
+		// if (monitor)
+		// monitorView();
+
+		Controller.getInstance().add(new PiFullscreenView(fullscreenDisplay));
 
 		start();
 	}
@@ -65,7 +68,7 @@ public class KinectTest extends AppStart {
 
 		// Example operation
 		DataBend databend = new DataBend();
-		alg.add(databend);
+		// alg.add(databend);
 
 		// Make sure to add any new algorithms to the smudge
 		smudge.add(alg);
