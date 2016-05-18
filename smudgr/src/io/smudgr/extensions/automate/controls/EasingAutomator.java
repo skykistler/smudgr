@@ -33,10 +33,8 @@ public class EasingAutomator implements AutomatorControl {
 			step = 0;
 
 		// If the value hasn't changed and our step is maxed out, return
-		else if (step >= 1) {
+		else if (step >= 1)
 			step = 1;
-			return;
-		}
 
 		val = parameter.getMax() * easingFunction.calculate(step);
 		parameter.setValue(val);

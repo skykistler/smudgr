@@ -1,6 +1,7 @@
 package io.smudgr.project.smudge.source;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
@@ -25,12 +26,12 @@ public class Gif implements Source {
 	private String filename;
 
 	private BufferThread bufferer;
-	private volatile ArrayList<GifFrame> buffer;
+	private ArrayList<GifFrame> buffer;
 
 	private int ticks;
 	private int currentFrame;
 
-	private Frame lastFrame;
+	private volatile Frame lastFrame;
 
 	public Gif(String filename) {
 		this.filename = filename;
@@ -72,6 +73,9 @@ public class Gif implements Source {
 	}
 
 	public void dispose() {
+		for (GifFrame f : buffer)
+			f.getFrame().dispose();
+
 		buffer = null;
 		bufferer.stop();
 	}
@@ -183,12 +187,14 @@ public class Gif implements Source {
 
 					if (master == null) {
 						master = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-						master.createGraphics().setColor(backgroundColor);
-						master.createGraphics().fillRect(0, 0, master.getWidth(), master.getHeight());
+						Graphics g = master.createGraphics();
+						g.setColor(backgroundColor);
+						g.fillRect(0, 0, master.getWidth(), master.getHeight());
 
 						hasBackround = image.getWidth() == width && image.getHeight() == height;
 
-						master.createGraphics().drawImage(image, 0, 0, null);
+						g.drawImage(image, 0, 0, null);
+						g.dispose();
 					} else {
 						int x = 0;
 						int y = 0;
@@ -206,12 +212,12 @@ public class Gif implements Source {
 
 						if (disposal.equals("restoreToPrevious")) {
 							BufferedImage from = null;
-							for (int i = frameIndex - 1; i >= 0; i--) {
+
+							for (int i = frameIndex - 1; i >= 0; i--)
 								if (!buffer.get(i).getDisposal().equals("restoreToPrevious") || frameIndex == 0) {
 									from = buffer.get(i).getImage();
 									break;
 								}
-							}
 
 							ColorModel model = from.getColorModel();
 							boolean alpha = from.isAlphaPremultiplied();
@@ -224,32 +230,30 @@ public class Gif implements Source {
 									return;
 
 								Frame last = buffer.get(frameIndex - 1).getFrame();
-								master.createGraphics().fillRect(lastx, lasty, last.getWidth(), last.getHeight());
+
+								Graphics g = master.createGraphics();
+								g.fillRect(lastx, lasty, last.getWidth(), last.getHeight());
+								g.dispose();
 							}
 						}
-						master.createGraphics().drawImage(image, x, y, null);
+
+						Graphics g = master.createGraphics();
+						g.drawImage(image, x, y, null);
+						g.dispose();
 
 						lastx = x;
 						lasty = y;
 					}
 
-					{
-						BufferedImage copy;
+					ColorModel model = master.getColorModel();
+					boolean alpha = master.isAlphaPremultiplied();
+					WritableRaster raster = master.copyData(null);
+					BufferedImage copy = new BufferedImage(model, raster, alpha, null);
 
-						{
-							ColorModel model = master.getColorModel();
-							boolean alpha = master.isAlphaPremultiplied();
-							WritableRaster raster = master.copyData(null);
-							copy = new BufferedImage(model, raster, alpha, null);
-						}
+					GifFrame gifframe = new GifFrame(copy, disposal, delay);
 
-						GifFrame gifframe = new GifFrame(copy, disposal, delay);
-
-						if (buffer != null)
-							buffer.add(gifframe);
-						else
-							return;
-					}
+					if (buffer != null)
+						buffer.add(gifframe);
 
 					master.flush();
 

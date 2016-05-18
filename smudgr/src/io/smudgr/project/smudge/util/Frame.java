@@ -62,7 +62,7 @@ public class Frame {
 		fittedFrame.dispose();
 	}
 
-	public synchronized Frame fitToSize(int toSizeW, int toSizeH) {
+	public Frame fitToSize(int toSizeW, int toSizeH) {
 		checkDisposed();
 
 		double newWidth = width;
@@ -92,7 +92,7 @@ public class Frame {
 		return resize(0, 0, w, h, w, h);
 	}
 
-	public Frame resize(int xOffset, int yOffset, int w, int h, int wSize, int hSize) {
+	public synchronized Frame resize(int xOffset, int yOffset, int w, int h, int wSize, int hSize) {
 		if (xOffset == 0 && yOffset == 0 && w == width && h == height)
 			return copy();
 
@@ -155,7 +155,7 @@ public class Frame {
 		DisposedFrameProvider.getInstance().disposeFrame(this);
 	}
 
-	private synchronized int[] getDirtyPixels() {
+	private int[] getDirtyPixels() {
 		return DisposedFrameProvider.getInstance().getDisposedFrame(width, height, false);
 	}
 
