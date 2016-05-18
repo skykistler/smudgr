@@ -17,7 +17,8 @@ public abstract class AppStart {
 	private boolean newSmudge;
 	private ArrayList<MidiBinding> toBind = new ArrayList<MidiBinding>();
 
-	public AppStart(String projectPath, String sourceLocation, String outputDir, String device, boolean overwriteSmudge) {
+	public AppStart(String projectPath, String sourceLocation, String outputDir, String device,
+			boolean overwriteSmudge) {
 		File project = new File(projectPath);
 		if (project.exists()) {
 			if (overwriteSmudge) {
@@ -107,6 +108,14 @@ public abstract class AppStart {
 			absolute = a;
 			ignoreKey = i;
 		}
+	}
+
+	public static boolean isWindows() {
+		return System.getProperty("os.name").startsWith("Windows");
+	}
+
+	public static boolean isMac() {
+		return System.getProperty("os.name").startsWith("Mac");
 	}
 
 	public static boolean isLinux() {
