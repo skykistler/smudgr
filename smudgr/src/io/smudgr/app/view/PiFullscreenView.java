@@ -6,6 +6,7 @@ import java.nio.IntBuffer;
 
 import org.tw.pi.framebuffer.FrameBuffer;
 
+import gnu.trove.list.array.TIntArrayList;
 import io.smudgr.project.smudge.util.Frame;
 
 public class PiFullscreenView implements View {
@@ -22,6 +23,9 @@ public class PiFullscreenView implements View {
 
 	private Window dummyWindow;
 
+	private TIntArrayList bg = new TIntArrayList();;
+	private int lastFrameW, lastFrameH;
+
 	public PiFullscreenView() {
 		this(0);
 	}
@@ -36,10 +40,11 @@ public class PiFullscreenView implements View {
 	public void start() {
 		try {
 			frameBuffer = new FrameBuffer("/dev/fb" + frameBufferNum);
+
+			System.out.println("Linux framebuffer is " + frameBuffer.getWidth() + "x" + frameBuffer.getHeight() + " with a color depth of " + frameBuffer.getColorDepth());
+
 			directBuffer = frameBuffer.getDirectByteBuffer();
 			intBuffer = directBuffer.asIntBuffer();
-
-			System.out.println("Frame color depth: " + frameBuffer.getColorDepth());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -47,16 +52,32 @@ public class PiFullscreenView implements View {
 		dummyWindow = new Window(frameBufferNum);
 	}
 
-	public synchronized void update(Frame frame) {
-		Frame fittedFrame = frame.fitToSize(frameBuffer.getWidth(), frameBuffer.getHeight());
-		int x = frameBuffer.getWidth() / 2 - fittedFrame.getWidth() / 2;
-		int y = frameBuffer.getHeight() / 2 - fittedFrame.getHeight() / 2;
+	// declared to avoid repetitive memory consumption
+	private Frame fittedFrame;
+	private int x, y, index, i;
 
-		intBuffer.position(x + y * frameBuffer.getWidth());
+	public synchronized void update(Frame frame) {
+		fittedFrame = frame.fitToSize(frameBuffer.getWidth(), frameBuffer.getHeight());
+
+		x = frameBuffer.getWidth() / 2 - fittedFrame.getWidth() / 2;
+		y = frameBuffer.getHeight() / 2 - fittedFrame.getHeight() / 2;
+		index = x + y * frameBuffer.getWidth();
+
+		// if the dimensions have changed, fill with black
+		if (lastFrameW != fittedFrame.getWidth() || lastFrameH != fittedFrame.getHeight()) {
+			intBuffer.position(0);
+
+			for (i = 0; i < intBuffer.remaining(); i++)
+				intBuffer.put(0);
+		}
+		intBuffer.position(index);
+
 		intBuffer.put(fittedFrame.pixels, 0, Math.min(fittedFrame.pixels.length, intBuffer.remaining()));
 
 		frameBuffer.swap();
 
+		lastFrameW = fittedFrame.getWidth();
+		lastFrameH = fittedFrame.getHeight();
 		fittedFrame.dispose();
 	}
 

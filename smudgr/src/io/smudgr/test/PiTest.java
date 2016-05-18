@@ -10,18 +10,18 @@ import io.smudgr.project.smudge.alg.select.RangeSelect;
 
 public class PiTest extends AppStart {
 
-	static String projectPath = "data/test/test.smudge";
+	static String projectPath = "data/nano_pad.smudge";
 
-	static boolean newSmudge = true;
+	static boolean overwriteSmudge = false;
 
 	static String sourcePath = "data/test";
 
 	static String outputPath = "data";
 
-	static String device = null;
+	static String device = isLinux() ? "nanoPAD2 [hw:1,0,0]" : "PAD";
 
 	static int fullscreenDisplay = 0;
-	static boolean monitor = !System.getProperty("os.name").equals("Linux");
+	static boolean monitor = !isLinux();
 
 	public void buildSmudge() {
 		Smudge smudge = Controller.getInstance().getProject().getSmudge();
@@ -38,13 +38,16 @@ public class PiTest extends AppStart {
 
 		smudge.add(alg);
 
-		addAutomator("Animate", databend.getParameter("Target"));
+		//		AutomatorControl a = addAutomator("Animate", databend.getParameter("Target"));
 
-		//		bind(databend.getParameter("Amount"));
+		bind(databend.getParameter("Amount"), true, 16);
+		bind(databend.getParameter("Target"), true, 16);
+
+		bind(Controller.getInstance().getAppControl("Save Project"), false, 16);
 	}
 
 	public PiTest() {
-		super(projectPath, sourcePath, outputPath, device, newSmudge);
+		super(projectPath, sourcePath, outputPath, device, overwriteSmudge);
 
 		if (monitor)
 			monitorView();
