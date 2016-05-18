@@ -30,14 +30,6 @@ public class DeviceClient {
 		this.observer = observer;
 		this.ip = ip;
 
-		if (ip == null)
-			attemptLocalServerFind();
-
-		if (server == null) {
-			System.out.println("Unable to connect to smudgr server");
-			return;
-		}
-
 		listener = new ServerListener();
 		listener.start();
 	}
@@ -76,8 +68,6 @@ public class DeviceClient {
 			} catch (IOException e) {
 			}
 		}
-
-		System.out.println("Unable to find smudgr server on local network");
 	}
 
 	public void stop() {
@@ -97,14 +87,25 @@ public class DeviceClient {
 
 	private class ServerListener implements Runnable {
 
-		private volatile boolean listening;
+		private volatile boolean listening, waiting;
 
 		public void start() {
-			listening = true;
+			waiting = true;
 			(new Thread(this)).start();
 		}
 
 		public void run() {
+			while (waiting) {
+				if (ip == null)
+					attemptLocalServerFind();
+
+				if (ip == null)
+					System.out.println("Unable to find smudgr server on local network, trying again...");
+				else
+					waiting = false;
+			}
+
+			listening = true;
 			byte[] message = new byte[64];
 			int length = 0;
 
@@ -121,6 +122,7 @@ public class DeviceClient {
 		}
 
 		public void stop() {
+			waiting = false;
 			listening = false;
 		}
 	}

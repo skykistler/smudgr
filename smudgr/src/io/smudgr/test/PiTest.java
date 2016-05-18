@@ -18,7 +18,7 @@ public class PiTest extends AppStart {
 
 	static String outputPath = "data";
 
-	static String device = isLinux() ? "nanoPAD2 [hw:1,0,0]" : "PAD";
+	static String device = isLinux() ? "nanoPAD2" : "PAD";
 
 	static int fullscreenDisplay = 0;
 	static boolean monitor = !isLinux();
