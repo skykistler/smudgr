@@ -93,7 +93,7 @@ public abstract class AppStart {
 		return (AutomatorExtension) Controller.getInstance().getExtension("Automator");
 	}
 
-	private MidiExtension getMidi() {
+	protected MidiExtension getMidi() {
 		return (MidiExtension) Controller.getInstance().getExtension("MIDI");
 	}
 

@@ -12,6 +12,8 @@ import javax.sound.midi.Transmitter;
 
 public class Device {
 
+	private static ArrayList<Info> boundDevices = new ArrayList<Info>();
+
 	private ArrayList<DeviceObserver> observers;
 	private MidiDevice device;
 
@@ -22,10 +24,11 @@ public class Device {
 		Info desired = null;
 		String lowerName = name.toLowerCase();
 		for (Info i : midiDevices) {
-			MidiDevice d = null;
+			if (boundDevices.contains(i))
+				continue;
 
 			try {
-				d = MidiSystem.getMidiDevice(i);
+				MidiDevice d = MidiSystem.getMidiDevice(i);
 				Transmitter t = d.getTransmitter();
 				String deviceName = i.getName().toLowerCase();
 				if (t != null && deviceName.equals(lowerName) || (desired == null && deviceName.startsWith(lowerName)))
@@ -42,6 +45,7 @@ public class Device {
 			}
 		} else
 			try {
+				boundDevices.add(desired);
 				device = MidiSystem.getMidiDevice(desired);
 				device.open();
 

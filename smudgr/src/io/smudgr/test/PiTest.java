@@ -51,6 +51,8 @@ public class PiTest extends AppStart {
 	public PiTest() {
 		super(projectPath, sourcePath, outputPath, device, overwriteSmudge, deviceServer);
 
+		getMidi().bindDevice(device, deviceServer);
+
 		if (monitor)
 			monitorView();
 		else
