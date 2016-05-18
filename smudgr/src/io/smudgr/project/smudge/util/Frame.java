@@ -62,7 +62,7 @@ public class Frame {
 		fittedFrame.dispose();
 	}
 
-	public synchronized Frame fitToSize(int toSizeW, int toSizeH) {
+	public Frame fitToSize(int toSizeW, int toSizeH) {
 		checkDisposed();
 
 		double newWidth = width;
@@ -155,7 +155,7 @@ public class Frame {
 		DisposedFrameProvider.getInstance().disposeFrame(this);
 	}
 
-	private synchronized int[] getDirtyPixels() {
+	private int[] getDirtyPixels() {
 		return DisposedFrameProvider.getInstance().getDisposedFrame(width, height, false);
 	}
 

@@ -14,7 +14,7 @@ public class SkyTestApp extends AppStart {
 
 	static boolean overwriteSmudge = true;
 
-	static String sourcePath = "data/venture/oceans";
+	static String sourcePath = "data/test";
 
 	static String outputPath = "data";
 
