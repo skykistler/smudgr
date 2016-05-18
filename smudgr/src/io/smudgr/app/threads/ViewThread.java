@@ -26,7 +26,12 @@ public class ViewThread extends AppThread {
 
 			frame.dispose();
 		} catch (NullPointerException e) {
-			// frame was probably null, do nothing
+			/* Frame was probably null, do nothing 
+			 */
+		} catch (IllegalStateException e) {
+			/* Frame was probably disposed too fast, skip it.
+			 * If frames are being disposed too fast, skipping a frame probably isn't a big deal.
+			 */
 		}
 	}
 
