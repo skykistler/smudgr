@@ -27,7 +27,10 @@ public class PiFullscreenView implements View {
 	}
 
 	public PiFullscreenView(int displayNumber) {
-		this.frameBufferNum = displayNumber;
+		frameBufferNum = displayNumber;
+
+		if (frameBufferNum < 0)
+			frameBufferNum = 0;
 	}
 
 	public void start() {
