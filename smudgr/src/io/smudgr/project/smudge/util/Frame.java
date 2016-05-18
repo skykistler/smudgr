@@ -205,19 +205,24 @@ public class Frame {
 		if (w <= width && h <= height)
 			return copy();
 
-		double width_factor = (double) width / w;
-		double height_factor = (double) height / h;
-
 		Frame scaled = new Frame(w, h);
 
-		int j, i, mx, my;
-		for (j = 0; j < h; j++)
-			for (i = 0; i < w; i++) {
-				mx = (int) Math.floor(i * width_factor);
-				my = (int) Math.floor(j * height_factor);
+		int x_ratio = ((width << 16) / w) + 1;
+		int y_ratio = ((height << 16) / h) + 1;
 
-				scaled.set(i, j, get(mx, my));
+		int x2, y2, i, j, t_index, p_index, rat;
+		for (i = 0; i < h; i++) {
+			t_index = i * w;
+			y2 = ((i * y_ratio) >> 16);
+			p_index = y2 * width;
+			rat = 0;
+
+			for (j = 0; j < w; j++) {
+				x2 = (rat >> 16);
+				scaled.pixels[t_index++] = pixels[p_index + x2];
+				rat += x_ratio;
 			}
+		}
 
 		return scaled;
 	}

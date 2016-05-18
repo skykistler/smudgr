@@ -18,10 +18,10 @@ public class PiTest extends AppStart {
 
 	static String outputPath = "data";
 
-	static String device = "PAD";
+	static String device = null;
 
 	static int fullscreenDisplay = 0;
-	static boolean monitor = true;
+	static boolean monitor = !System.getProperty("os.name").equals("Linux");
 
 	public void buildSmudge() {
 		Smudge smudge = Controller.getInstance().getProject().getSmudge();
@@ -46,7 +46,7 @@ public class PiTest extends AppStart {
 	public PiTest() {
 		super(projectPath, sourcePath, outputPath, device, newSmudge);
 
-		if (!System.getProperty("os.name").toLowerCase().startsWith("unix"))
+		if (monitor)
 			monitorView();
 		else
 			Controller.getInstance().add(new PiFullscreenView(fullscreenDisplay));
