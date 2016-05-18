@@ -18,10 +18,10 @@ public class PiTest extends AppStart {
 
 	static String outputPath = "data";
 
-	static String device = "PAD";//"nanoPAD2 [hw:1,0,0]";
+	static String device = isLinux() ? "nanoPAD2 [hw:1,0,0]" : "PAD";
 
 	static int fullscreenDisplay = 0;
-	static boolean monitor = !System.getProperty("os.name").equals("Linux");
+	static boolean monitor = !isLinux();
 
 	public void buildSmudge() {
 		Smudge smudge = Controller.getInstance().getProject().getSmudge();

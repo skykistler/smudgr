@@ -108,4 +108,8 @@ public abstract class AppStart {
 			ignoreKey = i;
 		}
 	}
+
+	public static boolean isLinux() {
+		return System.getProperty("os.name").equals("Linux");
+	}
 }
