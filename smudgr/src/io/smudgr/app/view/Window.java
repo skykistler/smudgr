@@ -26,6 +26,8 @@ public class Window extends JFrame implements KeyListener, WindowListener {
 	private BufferStrategy bufferStrategy = null;
 	private Graphics graphicsContext = null;
 
+	private int lastFrameW, lastFrameH;
+
 	public Window() {
 		this(-1);
 	}
@@ -64,6 +66,7 @@ public class Window extends JFrame implements KeyListener, WindowListener {
 	public void update(Frame frame) {
 		boolean viewChanged = nativeImage == null || getWidth() != nativeImage.getWidth() || getHeight() != nativeImage.getHeight();
 		boolean needsRefresh = bufferStrategy == null || bufferStrategy.contentsLost();
+		boolean needsClear = lastFrameW != frame.getWidth() || lastFrameH != frame.getHeight();
 
 		if (viewChanged || needsRefresh) {
 			makeNewNativeImage(getWidth(), getHeight());
@@ -73,6 +76,18 @@ public class Window extends JFrame implements KeyListener, WindowListener {
 
 			bufferStrategy = getBufferStrategy();
 			graphicsContext = bufferStrategy.getDrawGraphics();
+
+			needsClear = true;
+		}
+
+		if (needsClear) {
+			Graphics g = nativeImage.getGraphics();
+			g.setColor(Color.BLACK);
+			g.fillRect(0, 0, nativeImage.getWidth(), nativeImage.getHeight());
+			g.dispose();
+
+			graphicsContext.setColor(Color.BLACK);
+			graphicsContext.fillRect(0, 0, getWidth(), getHeight());
 		}
 
 		frame.drawTo(nativeImage);

@@ -2,7 +2,6 @@ package io.smudgr.test;
 
 import io.smudgr.app.AppStart;
 import io.smudgr.app.Controller;
-import io.smudgr.extensions.automate.controls.AutomatorControl;
 import io.smudgr.project.smudge.Smudge;
 import io.smudgr.project.smudge.alg.Algorithm;
 import io.smudgr.project.smudge.alg.coord.ColumnCoords;
@@ -44,17 +43,17 @@ public class SkyTestApp extends AppStart {
 
 		smudge.add(alg);
 
-		AutomatorControl automator1 = addAutomator("Animate", range.getParameter("Range Length"));
+		//		AutomatorControl automator1 = addAutomator("Animate", range.getParameter("Range Length"));
 		//		AutomatorControl automator1 = addAutomator("Animate", databend.getParameter("Target"));
 
 		bind(smudge.getParameter("Downsample"));
-		bind(automator1);
-		bind(range.getParameter("Range Length"));
-
-		bind(Controller.getInstance().getAppControl("Source Set Switcher"));
+		//		bind(automator1);
+		//		bind(range.getParameter("Range Length"));
+		//
+		//		bind(Controller.getInstance().getAppControl("Source Set Switcher"));
 		bind(Controller.getInstance().getAppControl("Source Switcher"));
-		bind(Controller.getInstance().getAppControl("Record GIF"));
-		bind(Controller.getInstance().getAppControl("Save Project"));
+		//		bind(Controller.getInstance().getAppControl("Record GIF"));
+		//		bind(Controller.getInstance().getAppControl("Save Project"));
 	}
 
 	public SkyTestApp() {
