@@ -1,7 +1,6 @@
 package io.smudgr.extensions.kinect.buffer;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
 import java.nio.ByteBuffer;
 
 import org.openkinect.freenect.Device;
@@ -9,12 +8,16 @@ import org.openkinect.freenect.FrameMode;
 import org.openkinect.freenect.VideoFormat;
 import org.openkinect.freenect.VideoHandler;
 
+import io.smudgr.project.smudge.alg.math.ColorHelper;
 import io.smudgr.project.smudge.util.Frame;
 
 public class VideoBuffer extends KinectBuffer {
 
+	Frame imageFrame;
+
 	public VideoBuffer(Device dev) {
 		super(dev);
+		imageFrame = new Frame(640, 480);
 		bImage = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
 	}
 
@@ -47,18 +50,22 @@ public class VideoBuffer extends KinectBuffer {
 
 	protected void processByteBuffer(FrameMode mode, ByteBuffer frame, int timestamp) {
 
-		byte[] imgData = ((DataBufferByte) bImage.getRaster().getDataBuffer()).getData();
+		// byte[] imgData = ((DataBufferByte)
+		// bImage.getRaster().getDataBuffer()).getData();
 
 		int remaining = frame.remaining();
-		for (int i = 0; i < remaining && i < imgData.length; i += 3) {
-			imgData[i] = frame.get(i + 2); // b
-			imgData[i + 1] = frame.get(i + 1); // g
-			imgData[i + 2] = frame.get(i); // r
+		int index = 0;
+		for (int i = 0; i < remaining; i += 3) {
+			// imgData[i] = frame.get(i + 2); // b
+			// imgData[i + 1] = frame.get(i + 1); // g
+			// imgData[i + 2] = frame.get(i); // r
+			imageFrame.pixels[index++] = ColorHelper.color(255, frame.get(i), frame.get(i + 1), frame.get(i + 2));
+
 		}
 
 		// Frame constructor automatically pulls RGB from BufferedImage bImage
 		// Added produced Frame to queue for Sources
-		addFrame(new Frame(bImage));
+		addFrame(imageFrame);
 	}
 
 }
