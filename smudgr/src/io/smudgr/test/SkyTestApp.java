@@ -19,6 +19,7 @@ public class SkyTestApp extends AppStart {
 	static String outputPath = "data";
 
 	static String device = "Arturia BeatStepPro";
+	static boolean deviceServer = false;
 
 	static int fullscreenDisplay = -1;
 	static boolean monitor = true;
@@ -36,34 +37,36 @@ public class SkyTestApp extends AppStart {
 		alg.add(new ColumnCoords());
 		range.getParameter("Range Length").setValue(0);
 
-		//		DataBend databend = new DataBend();
-		//		databend.getParameter("Amount").setValue(2);
-		//		alg.add(databend);
-		//		range.getParameter("Range Length").setValue(1);
+		// DataBend databend = new DataBend();
+		// databend.getParameter("Amount").setValue(2);
+		// alg.add(databend);
+		// range.getParameter("Range Length").setValue(1);
 
 		smudge.add(alg);
 
-		//		AutomatorControl automator1 = addAutomator("Animate", range.getParameter("Range Length"));
-		//		AutomatorControl automator1 = addAutomator("Animate", databend.getParameter("Target"));
+		// AutomatorControl automator1 = addAutomator("Animate",
+		// range.getParameter("Range Length"));
+		// AutomatorControl automator1 = addAutomator("Animate",
+		// databend.getParameter("Target"));
 
 		bind(smudge.getParameter("Downsample"));
-		//		bind(automator1);
-		//		bind(range.getParameter("Range Length"));
+		// bind(automator1);
+		// bind(range.getParameter("Range Length"));
 		//
-		//		bind(Controller.getInstance().getAppControl("Source Set Switcher"));
+		// bind(Controller.getInstance().getAppControl("Source Set Switcher"));
 		bind(Controller.getInstance().getAppControl("Source Switcher"));
-		//		bind(Controller.getInstance().getAppControl("Record GIF"));
-		//		bind(Controller.getInstance().getAppControl("Save Project"));
+		// bind(Controller.getInstance().getAppControl("Record GIF"));
+		// bind(Controller.getInstance().getAppControl("Save Project"));
 	}
 
 	public SkyTestApp() {
-		super(projectPath, sourcePath, outputPath, device, overwriteSmudge);
+		super(projectPath, sourcePath, outputPath, device, overwriteSmudge, deviceServer);
 
 		fullscreenView(fullscreenDisplay);
 		if (monitor)
 			monitorView();
 
-		//		Controller.getInstance().add(new WebsocketView());
+		// Controller.getInstance().add(new WebsocketView());
 
 		start();
 	}

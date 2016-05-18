@@ -17,8 +17,8 @@ public abstract class AppStart {
 	private boolean newSmudge;
 	private ArrayList<MidiBinding> toBind = new ArrayList<MidiBinding>();
 
-	public AppStart(String projectPath, String sourceLocation, String outputDir, String device,
-			boolean overwriteSmudge) {
+	public AppStart(String projectPath, String sourceLocation, String outputDir, String device, boolean overwriteSmudge,
+			boolean deviceServer) {
 		File project = new File(projectPath);
 		if (project.exists()) {
 			if (overwriteSmudge) {
@@ -34,7 +34,7 @@ public abstract class AppStart {
 		Controller.getInstance().getProject().setOutputPath(outputDir);
 		Controller.getInstance().getProject().getSourceLibrary().setLocation(sourceLocation);
 
-		getMidi().bindDevice(device);
+		getMidi().bindDevice(device, deviceServer);
 	}
 
 	public void start() {

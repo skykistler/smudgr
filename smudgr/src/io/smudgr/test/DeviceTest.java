@@ -21,7 +21,10 @@ public class DeviceTest implements DeviceObserver {
 
 	public static void main(String[] args) {
 		String deviceIndex = selectDevice();
-		Device device = new Device(deviceIndex, new DeviceTest());
+
+		ArrayList<DeviceObserver> observers = new ArrayList<DeviceObserver>();
+		observers.add(new DeviceTest());
+		Device device = new Device(deviceIndex, observers);
 
 		System.out.println("Selected device " + device.toString());
 	}

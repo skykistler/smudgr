@@ -19,7 +19,8 @@ public class smudgr extends AppStart {
 		boolean debug = true;
 		try {
 			if (debug) {
-				String this_path = URLDecoder.decode(smudgr.class.getProtectionDomain().getCodeSource().getLocation().getPath(), "UTF-8");
+				String this_path = URLDecoder
+						.decode(smudgr.class.getProtectionDomain().getCodeSource().getLocation().getPath(), "UTF-8");
 				String parent_path = (new File(this_path)).getParentFile().getAbsolutePath();
 
 				System.setErr(new PrintStream(new FileOutputStream(parent_path + "/smudgr_errors.log")));
@@ -41,7 +42,7 @@ public class smudgr extends AppStart {
 	}
 
 	private smudgr(boolean debug) {
-		super("", "", "", "Arturia BeatStep Pro", true);
+		super("", "", "", "Arturia BeatStep Pro", true, false);
 
 		Controller.getInstance().add(new CefView(debug));
 
@@ -49,7 +50,8 @@ public class smudgr extends AppStart {
 	}
 
 	public void buildSmudge() {
-		// Pro-tip: In eclipse, you can Ctrl+Click on a class name to quickly open that class
+		// Pro-tip: In eclipse, you can Ctrl+Click on a class name to quickly
+		// open that class
 		// There, you can see the names of available parameters
 		Smudge smudge = Controller.getInstance().getProject().getSmudge();
 
@@ -67,7 +69,8 @@ public class smudgr extends AppStart {
 		// Make sure to add any new algorithms to the smudge
 		smudge.add(alg);
 
-		// This is how you make an automated thingy, I've included a method writing this easier
+		// This is how you make an automated thingy, I've included a method
+		// writing this easier
 		AutomatorControl automator1 = addAutomator("Animate", databend.getParameter("Target"));
 
 		bind(smudge.getParameter("Downsample"));

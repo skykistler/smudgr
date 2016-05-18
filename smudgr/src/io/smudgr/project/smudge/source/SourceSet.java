@@ -87,13 +87,13 @@ public class SourceSet implements Source {
 		setCurrentSource(currentSource - 1);
 	}
 
-	private void setCurrentSource(int i) {
+	public void setCurrentSource(int i) {
 		if (sources.size() == 0) {
 			currentSource = 0;
 			return;
 		}
 
-		if (i == currentSource)
+		if (sources.size() < i || i < 0 || i == currentSource)
 			return;
 
 		Source current = getCurrentSource();

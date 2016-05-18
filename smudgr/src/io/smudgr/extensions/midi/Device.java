@@ -12,11 +12,11 @@ import javax.sound.midi.Transmitter;
 
 public class Device {
 
-	private DeviceObserver observer;
+	private ArrayList<DeviceObserver> observers;
 	private MidiDevice device;
 
-	public Device(String name, DeviceObserver observer) {
-		this.observer = observer;
+	public Device(String name, ArrayList<DeviceObserver> observers) {
+		this.observers = observers;
 
 		Info[] midiDevices = MidiSystem.getMidiDeviceInfo();
 		Info desired = null;
@@ -64,7 +64,8 @@ public class Device {
 	public class DeviceReceiver implements Receiver {
 
 		public void send(MidiMessage message, long timeStamp) {
-			observer.midiInput(message);
+			for (DeviceObserver observer : observers)
+				observer.midiInput(message);
 		}
 
 		public String toString() {

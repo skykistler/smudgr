@@ -11,7 +11,8 @@ import io.smudgr.project.smudge.alg.select.RangeSelect;
 public class SampleApp extends AppStart {
 
 	/*
-	 * To make your own test class, just duplicate this file and change the following
+	 * To make your own test class, just duplicate this file and change the
+	 * following
 	 */
 
 	// where to save/load project file
@@ -29,6 +30,9 @@ public class SampleApp extends AppStart {
 	// name of device to bind to
 	static String device = "Arturia BeatStepPro";
 
+	// whether to start a server to broadcast midi signals
+	static boolean deviceServer = false;
+
 	// set to -1 for no fullscreen, set to 0 for fullscreen on main display
 	// Higher numbers are for multi-monitor setups
 	static int fullscreenDisplay = -1;
@@ -37,7 +41,8 @@ public class SampleApp extends AppStart {
 	static boolean monitor = true;
 
 	public void buildSmudge() {
-		// Pro-tip: In eclipse, you can Ctrl+Click on a class name to quickly open that class
+		// Pro-tip: In eclipse, you can Ctrl+Click on a class name to quickly
+		// open that class
 		// There, you can see the names of available parameters
 		Smudge smudge = Controller.getInstance().getProject().getSmudge();
 
@@ -55,7 +60,8 @@ public class SampleApp extends AppStart {
 		// Make sure to add any new algorithms to the smudge
 		smudge.add(alg);
 
-		// This is how you make an automated thingy, I've included a method writing this easier
+		// This is how you make an automated thingy, I've included a method
+		// writing this easier
 		AutomatorControl automator1 = addAutomator("Animate", databend.getParameter("Target"));
 
 		bind(smudge.getParameter("Downsample"));
@@ -70,7 +76,7 @@ public class SampleApp extends AppStart {
 	}
 
 	public SampleApp() {
-		super(projectPath, sourcePath, outputPath, device, overwriteSmudge);
+		super(projectPath, sourcePath, outputPath, device, overwriteSmudge, deviceServer);
 
 		fullscreenView(fullscreenDisplay);
 		if (monitor)

@@ -103,7 +103,9 @@ public class DeviceServer implements DeviceObserver {
 	}
 
 	public static void main(String[] args) {
-		new Device("PAD", new DeviceServer());
+		ArrayList<DeviceObserver> observers = new ArrayList<DeviceObserver>();
+		observers.add(new DeviceServer());
+		new Device("PAD", observers);
 	}
 
 }

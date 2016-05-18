@@ -19,6 +19,7 @@ public class PiTest extends AppStart {
 	static String outputPath = "data";
 
 	static String device = isMac() ? "PAD" : "nanoPAD2";
+	static boolean deviceServer = false;
 
 	static int fullscreenDisplay = 0;
 	static boolean monitor = !isLinux();
@@ -48,7 +49,7 @@ public class PiTest extends AppStart {
 	}
 
 	public PiTest() {
-		super(projectPath, sourcePath, outputPath, device, overwriteSmudge);
+		super(projectPath, sourcePath, outputPath, device, overwriteSmudge, deviceServer);
 
 		if (monitor)
 			monitorView();

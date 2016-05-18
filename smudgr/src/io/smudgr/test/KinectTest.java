@@ -30,7 +30,10 @@ public class KinectTest extends AppStart {
 	static String outputPath = "data";
 
 	// name of device to bind to
-	static String device = "Arturia BeatStep";
+	static String device = isMac() ? "PAD" : "nanoPAD2";
+
+	// whether to start a server to broadcast midi signals
+	static boolean deviceServer = true;
 
 	// set to -1 for no fullscreen, set to 0 for fullscreen on main display
 	// Higher numbers are for multi-monitor setups
@@ -40,7 +43,7 @@ public class KinectTest extends AppStart {
 	static boolean monitor = true;
 
 	public KinectTest() {
-		super(projectPath, sourcePath, outputPath, device, newSmudge);
+		super(projectPath, sourcePath, outputPath, device, newSmudge, deviceServer);
 
 		// fullscreenView(fullscreenDisplay);
 		// if (monitor)
