@@ -75,7 +75,7 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 		}
 	}
 
-	public void waitForBind(int control_id) {
+	public void waitForBind(int control_id, boolean absolute, int ignoreKey) {
 		if (devices.size() == 0)
 			return;
 
@@ -119,12 +119,12 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 		}
 
 		int assigned = midiMap.getBind(lastChannel, lastKeyPressed);
-		if (assigned == -1) {
-			midiMap.setBind(control_id, lastChannel, lastKeyPressed);
+		if (lastKeyPressed != ignoreKey && assigned == -1) {
+			midiMap.setBind(control_id, lastChannel, lastKeyPressed, absolute);
 			waitingForKey = false;
 		} else {
 			// Something already bound at given input, so try again
-			waitForBind(control_id);
+			waitForBind(control_id, absolute, ignoreKey);
 		}
 	}
 
@@ -187,8 +187,17 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 			else {
 				ProjectElement bound = getProject().getElement(midiMap.getBind(channel, key));
 
-				if (bound != null && bound instanceof Controllable)
-					messageStrategies.get(status).input((Controllable) bound, value);
+				if (bound != null && bound instanceof Controllable) {
+					MidiMessageStrategy ms = messageStrategies.get(status);
+
+					// If this is a CC message, we need to check if this is an absolute or relative bind
+					if (ms instanceof ControlChangeMessage) {
+						ControlChangeMessage ccm = (ControlChangeMessage) ms;
+						ccm.input((Controllable) bound, value, midiMap.isAbsoluteBind(channel, key));
+					} else {
+						ms.input((Controllable) bound, value);
+					}
+				}
 			}
 		}
 	}
@@ -205,8 +214,9 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 			int control = Integer.parseInt(mapping.getAttribute("control"));
 			int channel = Integer.parseInt(mapping.getAttribute("channel"));
 			int key = Integer.parseInt(mapping.getAttribute("key"));
+			boolean absolute = mapping.hasAttribute("absolute");
 
-			midiMap.setBind(control, channel, key);
+			midiMap.setBind(control, channel, key, absolute);
 		}
 	}
 

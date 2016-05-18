@@ -10,7 +10,9 @@ public class MidiControlMap {
 	private ArrayList<Integer> bound = new ArrayList<Integer>();
 	private HashMap<Integer, HashMap<Integer, Integer>> midiMap = new HashMap<Integer, HashMap<Integer, Integer>>();
 
-	public void setBind(int control, int channel, int key) {
+	private HashMap<Integer, HashMap<Integer, Boolean>> absoluteBinds = new HashMap<Integer, HashMap<Integer, Boolean>>();
+
+	public void setBind(int control, int channel, int key, boolean absolute) {
 		HashMap<Integer, Integer> channelMap = midiMap.get(channel);
 
 		if (channelMap == null) {
@@ -20,6 +22,9 @@ public class MidiControlMap {
 
 		channelMap.put(key, control);
 		bound.add(control);
+
+		if (absolute)
+			setAbsoluteBind(channel, key);
 	}
 
 	public int getBind(int channel, int key) {
@@ -58,6 +63,9 @@ public class MidiControlMap {
 				mapping.setAttribute("channel", chan);
 				mapping.setAttribute("key", key);
 
+				if (isAbsoluteBind(chan, key))
+					mapping.setAttribute("absolute", true);
+
 				binds.add(mapping);
 			}
 		}
@@ -76,6 +84,26 @@ public class MidiControlMap {
 		}
 
 		return null;
+	}
+
+	private void setAbsoluteBind(int channel, int key) {
+		HashMap<Integer, Boolean> channelMap = absoluteBinds.get(channel);
+
+		if (channelMap == null) {
+			channelMap = new HashMap<Integer, Boolean>();
+			absoluteBinds.put(channel, channelMap);
+		}
+
+		channelMap.put(key, true);
+	}
+
+	public boolean isAbsoluteBind(int channel, int key) {
+		HashMap<Integer, Boolean> channelMap = absoluteBinds.get(channel);
+
+		if (channelMap == null)
+			return false;
+
+		return channelMap.get(key);
 	}
 
 }

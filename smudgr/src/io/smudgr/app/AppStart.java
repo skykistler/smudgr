@@ -15,7 +15,7 @@ import io.smudgr.project.smudge.param.Parameter;
 public abstract class AppStart {
 
 	private boolean newSmudge;
-	private ArrayList<Controllable> toBind = new ArrayList<Controllable>();
+	private ArrayList<MidiBinding> toBind = new ArrayList<MidiBinding>();
 
 	public AppStart(String projectPath, String sourceLocation, String outputDir, String device, boolean newSmudge) {
 		this.newSmudge = newSmudge;
@@ -39,7 +39,7 @@ public abstract class AppStart {
 		if (newSmudge)
 			buildSmudge();
 
-		for (Controllable c : toBind)
+		for (MidiBinding c : toBind)
 			waitForBind(c);
 
 		// Continue app after binding parameters
@@ -49,7 +49,11 @@ public abstract class AppStart {
 	public abstract void buildSmudge();
 
 	public void bind(Controllable c) {
-		toBind.add(c);
+		bind(c, false, -1);
+	}
+
+	public void bind(Controllable c, boolean absolute, int ignoreKey) {
+		toBind.add(new MidiBinding(c, absolute, ignoreKey));
 	}
 
 	public AutomatorControl addAutomator(String type, Parameter param) {
@@ -71,16 +75,16 @@ public abstract class AppStart {
 		Controller.getInstance().add(new MonitorView());
 	}
 
-	private void waitForBind(Controllable c) {
-		if (c == null) {
+	private void waitForBind(MidiBinding binding) {
+		if (binding.control == null) {
 			System.out.println("Error: Can not bind to null");
 			return;
 		}
 
-		int control_id = Controller.getInstance().getProject().getId(c);
+		int control_id = Controller.getInstance().getProject().getId(binding.control);
 
 		if (control_id > -1)
-			getMidi().waitForBind(control_id);
+			getMidi().waitForBind(control_id, binding.absolute, binding.ignoreKey);
 	}
 
 	private AutomatorExtension getAutomator() {
@@ -89,5 +93,18 @@ public abstract class AppStart {
 
 	private MidiExtension getMidi() {
 		return (MidiExtension) Controller.getInstance().getExtension("MIDI");
+	}
+
+	// TODO: write a better way of handling binding metadata
+	private class MidiBinding {
+		private Controllable control;
+		private boolean absolute;
+		private int ignoreKey;
+
+		private MidiBinding(Controllable c, boolean a, int i) {
+			control = c;
+			absolute = a;
+			ignoreKey = i;
+		}
 	}
 }

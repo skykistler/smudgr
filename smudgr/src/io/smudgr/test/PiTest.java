@@ -18,7 +18,7 @@ public class PiTest extends AppStart {
 
 	static String outputPath = "data";
 
-	static String device = null;
+	static String device = "nanoPAD2 [hw:1,0,0]";
 
 	static int fullscreenDisplay = 0;
 	static boolean monitor = !System.getProperty("os.name").equals("Linux");
@@ -38,9 +38,10 @@ public class PiTest extends AppStart {
 
 		smudge.add(alg);
 
-		addAutomator("Animate", databend.getParameter("Target"));
+		//		AutomatorControl a = addAutomator("Animate", databend.getParameter("Target"));
 
-		//		bind(databend.getParameter("Amount"));
+		bind(databend.getParameter("Amount"), true, 16);
+		bind(databend.getParameter("Target"), true, 16);
 	}
 
 	public PiTest() {
