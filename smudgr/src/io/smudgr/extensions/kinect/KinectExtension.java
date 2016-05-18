@@ -69,6 +69,9 @@ public class KinectExtension implements ControllerExtension {
 
 	@Override
 	public void stop() {
+		if (device == null)
+			return;
+
 		device.stopDepth();
 		device.close();
 	}
