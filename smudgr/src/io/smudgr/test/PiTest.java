@@ -43,7 +43,7 @@ public class PiTest extends AppStart {
 		bind(databend.getParameter("Amount"), true, 16);
 		bind(databend.getParameter("Target"), true, 16);
 
-		bind(Controller.getInstance().getAppControl("Save Project"));
+		bind(Controller.getInstance().getAppControl("Save Project"), false, 16);
 	}
 
 	public PiTest() {

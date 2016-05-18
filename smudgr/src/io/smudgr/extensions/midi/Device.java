@@ -20,13 +20,15 @@ public class Device {
 
 		Info[] midiDevices = MidiSystem.getMidiDeviceInfo();
 		Info desired = null;
+		String lowerName = name.toLowerCase();
 		for (Info i : midiDevices) {
 			MidiDevice d = null;
 
 			try {
 				d = MidiSystem.getMidiDevice(i);
 				Transmitter t = d.getTransmitter();
-				if (t != null && i.getName().equals(name))
+				String deviceName = i.getName().toLowerCase();
+				if (t != null && deviceName.equals(lowerName) || (desired == null && deviceName.startsWith(lowerName)))
 					desired = i;
 			} catch (Exception e) {
 			}

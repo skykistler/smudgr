@@ -42,8 +42,10 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 	public MidiExtension() {
 		devices = new ArrayList<Device>();
 		midiMap = new MidiControlMap();
-
 		messageStrategies = new HashMap<Integer, MidiMessageStrategy>();
+	}
+
+	public void init() {
 		messageStrategies.put(0x90, new NoteOnMessage());
 		messageStrategies.put(0x80, new NoteOffMessage());
 		messageStrategies.put(0xA0, new AftertouchMessage());
@@ -52,9 +54,7 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 		messageStrategies.put(0xFB, new ContinueMessage());
 		messageStrategies.put(0xFC, new StopMessage());
 		messageStrategies.put(0xFF, new ResetMessage());
-	}
 
-	public void init() {
 		timingCalculator = new TimingCalculator();
 	}
 

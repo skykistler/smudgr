@@ -100,7 +100,7 @@ public class MidiControlMap {
 	public boolean isAbsoluteBind(int channel, int key) {
 		HashMap<Integer, Boolean> channelMap = absoluteBinds.get(channel);
 
-		if (channelMap == null)
+		if (channelMap == null || !channelMap.containsKey(key))
 			return false;
 
 		return channelMap.get(key);
