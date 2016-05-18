@@ -18,7 +18,7 @@ public class Smudge extends Parametric implements Source {
 	private Source source;
 	private ArrayList<Algorithm> algorithms = new ArrayList<Algorithm>();
 
-	private volatile Frame lastFrame;
+	private Frame lastFrame;
 
 	public void init() {
 		System.out.println("Initializing smudge...");
@@ -36,7 +36,7 @@ public class Smudge extends Parametric implements Source {
 			source.update();
 	}
 
-	public void render() {
+	public synchronized void render() {
 		Frame toRender = null;
 
 		if (source != null)
@@ -65,7 +65,7 @@ public class Smudge extends Parametric implements Source {
 		lastFrame = toRender;
 	}
 
-	public Frame getFrame() {
+	public synchronized Frame getFrame() {
 		return lastFrame;
 	}
 
