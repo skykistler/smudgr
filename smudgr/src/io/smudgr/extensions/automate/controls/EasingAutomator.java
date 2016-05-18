@@ -1,7 +1,7 @@
 package io.smudgr.extensions.automate.controls;
 
 import io.smudgr.project.PropertyMap;
-import io.smudgr.project.smudge.alg.math.LinearFunction;
+import io.smudgr.project.smudge.alg.math.BezierFunction;
 import io.smudgr.project.smudge.alg.math.UnivariateFunction;
 import io.smudgr.project.smudge.param.NumberParameter;
 import io.smudgr.project.smudge.param.Parameter;
@@ -14,7 +14,7 @@ public class EasingAutomator implements AutomatorControl {
 
 	private NumberParameter parameter;
 
-	private UnivariateFunction easingFunction = new LinearFunction();
+	private UnivariateFunction easingFunction = new BezierFunction();
 
 	private double increment = .05, speed = increment;
 	private double step, initialVal, lastVal;
