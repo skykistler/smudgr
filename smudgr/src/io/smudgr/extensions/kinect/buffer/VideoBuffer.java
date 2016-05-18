@@ -49,14 +49,11 @@ public class VideoBuffer extends KinectBuffer {
 
 		byte[] imgData = ((DataBufferByte) bImage.getRaster().getDataBuffer()).getData();
 
-		for (int i = 0; i < (frame.remaining()) && i < imgData.length; i += 3) {
-			byte r = frame.get(i);
-			byte g = frame.get(i + 1);
-			byte b = frame.get(i + 2);
-
-			imgData[i] = b;
-			imgData[i + 1] = g;
-			imgData[i + 2] = r;
+		int remaining = frame.remaining();
+		for (int i = 0; i < remaining && i < imgData.length; i += 3) {
+			imgData[i] = frame.get(i + 2); // b
+			imgData[i + 1] = frame.get(i + 1); // g
+			imgData[i + 2] = frame.get(i); // r
 		}
 
 		// Frame constructor automatically pulls RGB from BufferedImage bImage
