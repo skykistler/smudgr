@@ -68,7 +68,7 @@ public class KinectTest extends AppStart {
 
 		// Example operation
 		DataBend databend = new DataBend();
-		// alg.add(databend);
+		alg.add(databend);
 
 		// Make sure to add any new algorithms to the smudge
 		smudge.add(alg);
