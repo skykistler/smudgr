@@ -17,28 +17,27 @@ public class EasingAutomator implements AutomatorControl {
 	private UnivariateFunction easingFunction = new BezierFunction();
 
 	private double increment = .05, speed = increment;
-	private double step, lastVal;
+	private double step, initialVal, lastVal;
 
 	public void init() {
-		lastVal = parameter.getValue();
+		lastVal = parameter.getValue() - parameter.getMin();
 	}
 
 	public void update() {
 		step += speed;
 
-		double val = parameter.getValue();
+		double currentVal = parameter.getValue() - parameter.getMin();
 
 		// If something else changed the value, start easing again
-		if (lastVal != val)
+		if (lastVal != currentVal) {
 			step = 0;
-
-		// If the value hasn't changed and our step is maxed out, return
-		else if (step >= 1)
+			initialVal = currentVal;
+			// If the value hasn't changed and our step is maxed out, return
+		} else if (step >= 1)
 			step = 1;
 
-		val = parameter.getMax() * easingFunction.calculate(step);
-		parameter.setValue(val);
-		lastVal = val;
+		lastVal = initialVal * easingFunction.calculate(step) + parameter.getMin();
+		parameter.setValue(lastVal);
 	}
 
 	public void inputValue(int value) {
