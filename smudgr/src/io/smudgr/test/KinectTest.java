@@ -8,6 +8,7 @@ import io.smudgr.extensions.kinect.source.VideoSource;
 import io.smudgr.project.smudge.Smudge;
 import io.smudgr.project.smudge.alg.Algorithm;
 import io.smudgr.project.smudge.alg.op.DataBend;
+import io.smudgr.project.smudge.alg.op.SpectralShift;
 
 public class KinectTest extends AppStart {
 
@@ -68,7 +69,14 @@ public class KinectTest extends AppStart {
 
 		// Example operation
 		DataBend databend = new DataBend();
-		alg.add(databend);
+
+		SpectralShift sshift = new SpectralShift();
+		alg.add(sshift);
+		AutomatorControl automator2 = addAutomator("Animate", sshift.getParameter("Shift"));
+		bind(automator2);
+		sshift.getParameter("Colors").setValue(150);
+		sshift.getParameter("Sort").setValue(true);
+		// alg.add(databend);
 
 		// Make sure to add any new algorithms to the smudge
 		smudge.add(alg);

@@ -1,6 +1,5 @@
 package io.smudgr.extensions.kinect.buffer;
 
-import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -15,8 +14,6 @@ public abstract class KinectBuffer {
 	protected volatile Queue<Frame> buffer = new LinkedList<Frame>();
 	private final int bufferCap = 100;
 	protected Device device = null;
-
-	BufferedImage bImage;
 
 	public KinectBuffer(Device dev) {
 		device = dev;

@@ -1,6 +1,5 @@
 package io.smudgr.extensions.kinect.buffer;
 
-import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 
 import org.openkinect.freenect.Device;
@@ -13,12 +12,8 @@ import io.smudgr.project.smudge.util.Frame;
 
 public class VideoBuffer extends KinectBuffer {
 
-	Frame imageFrame;
-
 	public VideoBuffer(Device dev) {
 		super(dev);
-		imageFrame = new Frame(640, 480);
-		bImage = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
 	}
 
 	@Override
@@ -53,13 +48,16 @@ public class VideoBuffer extends KinectBuffer {
 		// byte[] imgData = ((DataBufferByte)
 		// bImage.getRaster().getDataBuffer()).getData();
 
+		Frame imageFrame = new Frame(640, 480);
+
 		int remaining = frame.remaining();
 		int index = 0;
 		for (int i = 0; i < remaining; i += 3) {
 			// imgData[i] = frame.get(i + 2); // b
 			// imgData[i + 1] = frame.get(i + 1); // g
 			// imgData[i + 2] = frame.get(i); // r
-			imageFrame.pixels[index++] = ColorHelper.color(255, frame.get(i), frame.get(i + 1), frame.get(i + 2));
+			imageFrame.pixels[index++] = ColorHelper.color(255, Byte.toUnsignedInt(frame.get(i)),
+					Byte.toUnsignedInt(frame.get(i + 1)), Byte.toUnsignedInt(frame.get(i + 2)));
 
 		}
 

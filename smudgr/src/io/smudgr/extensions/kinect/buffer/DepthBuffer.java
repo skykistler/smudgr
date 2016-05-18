@@ -13,6 +13,8 @@ import io.smudgr.project.smudge.util.Frame;
 
 public class DepthBuffer extends KinectBuffer {
 
+	BufferedImage bImage;
+
 	public DepthBuffer(Device dev) {
 		super(dev);
 		bImage = new BufferedImage(640, 480, BufferedImage.TYPE_USHORT_GRAY);
