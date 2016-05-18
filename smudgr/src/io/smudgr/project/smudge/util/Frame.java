@@ -210,14 +210,14 @@ public class Frame {
 		int x_ratio = ((width << 16) / w) + 1;
 		int y_ratio = ((height << 16) / h) + 1;
 
-		int x2, y2, i, j, t_index, p_index, rat;
-		for (i = 0; i < h; i++) {
-			t_index = i * w;
-			y2 = ((i * y_ratio) >> 16);
+		int x2, y2, j, i, t_index, p_index, rat;
+		for (j = 0; j < h; j++) {
+			t_index = j * w;
+			y2 = ((j * y_ratio) >> 16);
 			p_index = y2 * width;
 			rat = 0;
 
-			for (j = 0; j < w; j++) {
+			for (i = 0; i < w; i++) {
 				x2 = (rat >> 16);
 				scaled.pixels[t_index++] = pixels[p_index + x2];
 				rat += x_ratio;
