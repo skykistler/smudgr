@@ -21,7 +21,7 @@ public class PiTest extends AppStart {
 	static String device = null;
 
 	static int fullscreenDisplay = 0;
-	static boolean monitor = true;
+	static boolean monitor = !System.getProperty("os.name").equals("Linux");
 
 	public void buildSmudge() {
 		Smudge smudge = Controller.getInstance().getProject().getSmudge();
@@ -39,16 +39,17 @@ public class PiTest extends AppStart {
 		smudge.add(alg);
 
 		addAutomator("Animate", databend.getParameter("Target"));
+
+		//		bind(databend.getParameter("Amount"));
 	}
 
 	public PiTest() {
 		super(projectPath, sourcePath, outputPath, device, newSmudge);
 
-		//		fullscreenView(fullscreenDisplay);
-		//		if (monitor)
-		//			monitorView();
-
-		Controller.getInstance().add(new PiFullscreenView(fullscreenDisplay));
+		if (monitor)
+			monitorView();
+		else
+			Controller.getInstance().add(new PiFullscreenView(fullscreenDisplay));
 
 		start();
 	}

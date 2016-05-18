@@ -8,9 +8,8 @@ import io.smudgr.project.smudge.util.Frame;
 
 public class ViewThread extends AppThread {
 
-	private static final boolean DEBUG = true;
-
 	private View view;
+	private boolean showUpdates = true;
 
 	public ViewThread(View view) {
 		super("View Thread - " + view);
@@ -27,13 +26,18 @@ public class ViewThread extends AppThread {
 
 			frame.dispose();
 		} catch (NullPointerException e) {
-			// frame was probably null, do nothing
+			/* Frame was probably null, do nothing 
+			 */
+		} catch (IllegalStateException e) {
+			/* Frame was probably disposed too fast, skip it.
+			 * If frames are being disposed too fast, skipping a frame probably isn't a big deal.
+			 */
 		}
 	}
 
 	protected void printStatus() {
-		if (DEBUG)
-			System.out.println(ticks + " view updates");
+		if (showUpdates)
+			System.out.println(ticks + " updates to view: " + view.getName());
 	}
 
 	protected void onStop() {

@@ -153,6 +153,9 @@ public class Frame {
 		if (h > height)
 			h = height;
 
+		if (w >= width && h >= height)
+			return copy();
+
 		float w_factor = width / (float) w;
 		float h_factor = height / (float) h;
 		int w_factor_i = (int) Math.floor(w_factor);
@@ -162,29 +165,31 @@ public class Frame {
 
 		Frame dest = new Frame(w, h);
 
-		for (int j = 0; j < h; j++)
-			for (int i = 0; i < w; i++) {
+		int j, i, srcx, srcy, yi, xi, a, r, g, b, color;
+		double temp_a, temp_r, temp_g, temp_b;
+		for (j = 0; j < h; j++)
+			for (i = 0; i < w; i++) {
 
-				int srcx = (int) Math.floor(i * w_factor);
-				int srcy = (int) Math.floor(j * h_factor);
+				srcx = (int) Math.floor(i * w_factor);
+				srcy = (int) Math.floor(j * h_factor);
 
-				double temp_a = 0;
-				double temp_r = 0;
-				double temp_g = 0;
-				double temp_b = 0;
-				for (int yi = 0; yi < h_factor_i; yi++)
-					for (int xi = 0; xi < w_factor_i; xi++) {
-						int color = get(srcx + xi, srcy + yi);
+				temp_a = 0;
+				temp_r = 0;
+				temp_g = 0;
+				temp_b = 0;
+				for (yi = 0; yi < h_factor_i; yi++)
+					for (xi = 0; xi < w_factor_i; xi++) {
+						color = get(srcx + xi, srcy + yi);
 						temp_a += ColorHelper.alpha(color);
 						temp_r += ColorHelper.red(color);
 						temp_g += ColorHelper.green(color);
 						temp_b += ColorHelper.blue(color);
 					}
 
-				int a = (int) (temp_a / sample);
-				int r = (int) (temp_r / sample);
-				int g = (int) (temp_g / sample);
-				int b = (int) (temp_b / sample);
+				a = (int) (temp_a / sample);
+				r = (int) (temp_r / sample);
+				g = (int) (temp_g / sample);
+				b = (int) (temp_b / sample);
 				dest.set(i, j, ColorHelper.color(a, r, g, b));
 			}
 
@@ -197,18 +202,27 @@ public class Frame {
 		if (h < height)
 			h = height;
 
-		double width_factor = (double) width / w;
-		double height_factor = (double) height / h;
+		if (w <= width && h <= height)
+			return copy();
 
 		Frame scaled = new Frame(w, h);
 
-		for (int j = 0; j < h; j++)
-			for (int i = 0; i < w; i++) {
-				int mx = (int) Math.floor(i * width_factor);
-				int my = (int) Math.floor(j * height_factor);
+		int x_ratio = ((width << 16) / w) + 1;
+		int y_ratio = ((height << 16) / h) + 1;
 
-				scaled.set(i, j, get(mx, my));
+		int x2, y2, i, j, t_index, p_index, rat;
+		for (i = 0; i < h; i++) {
+			t_index = i * w;
+			y2 = ((i * y_ratio) >> 16);
+			p_index = y2 * width;
+			rat = 0;
+
+			for (j = 0; j < w; j++) {
+				x2 = (rat >> 16);
+				scaled.pixels[t_index++] = pixels[p_index + x2];
+				rat += x_ratio;
 			}
+		}
 
 		return scaled;
 	}

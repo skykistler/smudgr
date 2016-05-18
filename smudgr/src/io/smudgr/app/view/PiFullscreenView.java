@@ -10,6 +10,10 @@ import io.smudgr.project.smudge.util.Frame;
 
 public class PiFullscreenView implements View {
 
+	public String getName() {
+		return "Linux native framebuffer";
+	}
+
 	private int frameBufferNum;
 
 	private FrameBuffer frameBuffer;
@@ -23,7 +27,10 @@ public class PiFullscreenView implements View {
 	}
 
 	public PiFullscreenView(int displayNumber) {
-		this.frameBufferNum = displayNumber;
+		frameBufferNum = displayNumber;
+
+		if (frameBufferNum < 0)
+			frameBufferNum = 0;
 	}
 
 	public void start() {
@@ -40,13 +47,10 @@ public class PiFullscreenView implements View {
 		dummyWindow = new Window(frameBufferNum);
 	}
 
-	int x, y;
-
 	public synchronized void update(Frame frame) {
 		Frame fittedFrame = frame.fitToSize(frameBuffer.getWidth(), frameBuffer.getHeight());
-
-		x = frameBuffer.getWidth() / 2 - fittedFrame.getWidth() / 2;
-		y = frameBuffer.getHeight() / 2 - fittedFrame.getHeight() / 2;
+		int x = frameBuffer.getWidth() / 2 - fittedFrame.getWidth() / 2;
+		int y = frameBuffer.getHeight() / 2 - fittedFrame.getHeight() / 2;
 
 		intBuffer.position(x + y * frameBuffer.getWidth());
 		intBuffer.put(fittedFrame.pixels, 0, Math.min(fittedFrame.pixels.length, intBuffer.remaining()));

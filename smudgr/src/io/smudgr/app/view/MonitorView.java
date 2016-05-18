@@ -6,6 +6,10 @@ import io.smudgr.project.smudge.util.Frame;
 
 public class MonitorView implements View {
 
+	public String getName() {
+		return "monitor window";
+	}
+
 	private Window window;
 
 	public void start() {

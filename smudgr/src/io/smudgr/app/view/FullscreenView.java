@@ -4,6 +4,10 @@ import io.smudgr.project.smudge.util.Frame;
 
 public class FullscreenView implements View {
 
+	public String getName() {
+		return "fullscreen window";
+	}
+
 	private Window window;
 	private int displayNumber;
 
