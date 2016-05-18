@@ -17,14 +17,15 @@ public abstract class AppStart {
 	private boolean newSmudge;
 	private ArrayList<MidiBinding> toBind = new ArrayList<MidiBinding>();
 
-	public AppStart(String projectPath, String sourceLocation, String outputDir, String device, boolean newSmudge) {
-		this.newSmudge = newSmudge;
-
-		if (newSmudge) {
-			File project = new File(projectPath);
-			if (project.exists())
+	public AppStart(String projectPath, String sourceLocation, String outputDir, String device, boolean overwriteSmudge) {
+		File project = new File(projectPath);
+		if (project.exists()) {
+			if (overwriteSmudge) {
 				project.delete();
-		}
+				newSmudge = true;
+			}
+		} else
+			newSmudge = true;
 
 		ProjectLoader loader = new ProjectLoader(projectPath);
 		loader.load();

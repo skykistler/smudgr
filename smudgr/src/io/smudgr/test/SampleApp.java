@@ -17,8 +17,8 @@ public class SampleApp extends AppStart {
 	// where to save/load project file
 	static String projectPath = "data/test.smudge";
 
-	// whether to load the existing file or delete it and make a new one
-	static boolean newSmudge = true;
+	// whether to overwrite the existing project file
+	static boolean overwriteSmudge = true;
 
 	// where to load source files from
 	static String sourcePath = "data/venture/oceans";
@@ -70,7 +70,7 @@ public class SampleApp extends AppStart {
 	}
 
 	public SampleApp() {
-		super(projectPath, sourcePath, outputPath, device, newSmudge);
+		super(projectPath, sourcePath, outputPath, device, overwriteSmudge);
 
 		fullscreenView(fullscreenDisplay);
 		if (monitor)

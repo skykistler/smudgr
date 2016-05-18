@@ -13,7 +13,7 @@ public class SkyTestApp extends AppStart {
 
 	static String projectPath = "data/test.smudge";
 
-	static boolean newSmudge = true;
+	static boolean overwriteSmudge = true;
 
 	static String sourcePath = "data/venture/oceans";
 
@@ -58,7 +58,7 @@ public class SkyTestApp extends AppStart {
 	}
 
 	public SkyTestApp() {
-		super(projectPath, sourcePath, outputPath, device, newSmudge);
+		super(projectPath, sourcePath, outputPath, device, overwriteSmudge);
 
 		fullscreenView(fullscreenDisplay);
 		if (monitor)
