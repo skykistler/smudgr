@@ -236,6 +236,7 @@ public class Gif implements Source {
 								g.dispose();
 							}
 						}
+
 						Graphics g = master.createGraphics();
 						g.drawImage(image, x, y, null);
 						g.dispose();
