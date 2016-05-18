@@ -62,7 +62,7 @@ public class SourceSet implements Source {
 
 	public Frame getFrame() {
 		Source s = getCurrentSource();
-		if (s == null)
+		if (s == null || s == this)
 			return null;
 
 		return s.getFrame();
