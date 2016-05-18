@@ -22,11 +22,15 @@ public class KinectExtension implements ControllerExtension {
 
 	public void init() {
 		// Open the kinect device through the context
-		System.out.println("Kinect Extension initialized...");
-		ctx = Freenect.createContext();
-		if (ctx.numDevices() == 0)
+		try {
+			ctx = Freenect.createContext();
+			if (ctx.numDevices() == 0)
+				return;
+		} catch (UnsatisfiedLinkError e) {
 			return;
+		}
 
+		System.out.println("Kinect Extension initialized...");
 		device = ctx.openDevice(0);
 
 		System.out.println("Kinect device opened...");
@@ -65,6 +69,9 @@ public class KinectExtension implements ControllerExtension {
 
 	@Override
 	public void stop() {
+		if (device == null)
+			return;
+
 		device.stopDepth();
 		device.close();
 	}
