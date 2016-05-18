@@ -62,7 +62,7 @@ public class Frame {
 		fittedFrame.dispose();
 	}
 
-	public synchronized Frame fitToSize(int toSizeW, int toSizeH) {
+	public Frame fitToSize(int toSizeW, int toSizeH) {
 		checkDisposed();
 
 		double newWidth = width;
@@ -88,7 +88,7 @@ public class Frame {
 		return resize(x, y, w, h, toSizeW, toSizeH);
 	}
 
-	public synchronized Frame resize(int w, int h) {
+	public Frame resize(int w, int h) {
 		return resize(0, 0, w, h, w, h);
 	}
 
