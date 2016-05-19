@@ -59,11 +59,10 @@ public abstract class AppStart {
 	}
 
 	public AutomatorControl addAutomator(String type, Parameter param) {
-		if (param == null)
-			return null;
-
 		PropertyMap properties = new PropertyMap("automator");
-		properties.setAttribute("parameter", Controller.getInstance().getProject().getId(param));
+
+		if (param != null)
+			properties.setAttribute("parameter", Controller.getInstance().getProject().getId(param));
 
 		return getAutomator().add(type, properties);
 	}
