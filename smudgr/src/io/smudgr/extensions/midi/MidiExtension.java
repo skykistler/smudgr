@@ -31,6 +31,7 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 	}
 
 	private ArrayList<Device> devices;
+	private DeviceServer deviceServer;
 	private MidiControlMap midiMap;
 	private HashMap<Integer, MidiMessageStrategy> messageStrategies;
 
@@ -71,8 +72,11 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 		ArrayList<DeviceObserver> observers = new ArrayList<DeviceObserver>();
 		observers.add(this);
 
-		if (startServer)
-			observers.add(new DeviceServer());
+		if (startServer) {
+			if (deviceServer == null)
+				deviceServer = new DeviceServer();
+			observers.add(deviceServer);
+		}
 
 		Device d = new Device(deviceName, observers);
 
