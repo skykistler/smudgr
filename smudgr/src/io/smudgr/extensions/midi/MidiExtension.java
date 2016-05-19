@@ -75,6 +75,7 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 		if (startServer) {
 			if (deviceServer == null)
 				deviceServer = new DeviceServer();
+
 			observers.add(deviceServer);
 		}
 
