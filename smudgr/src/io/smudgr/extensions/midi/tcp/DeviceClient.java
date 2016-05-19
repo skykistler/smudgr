@@ -4,15 +4,19 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.InterfaceAddress;
+import java.net.NetworkInterface;
 import java.net.Socket;
-import java.net.UnknownHostException;
+import java.util.Enumeration;
 
 import io.smudgr.extensions.midi.Device.DeviceObserver;
 import io.smudgr.test.DeviceTest;
 
 public class DeviceClient {
 
+	private static final boolean DEBUG = true;
 	public static final String CONNECT_HELLO = "smudgr";
 
 	private DeviceObserver observer;
@@ -34,15 +38,49 @@ public class DeviceClient {
 		listener.start();
 	}
 
-	private void attemptLocalServerFind() {
-		String thisIp = null;
+	private String getLANAddress() {
 		try {
-			thisIp = Inet4Address.getLocalHost().getHostAddress();
-			System.out.println("Local IP: " + thisIp);
-		} catch (UnknownHostException e) {
+			for (final Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces(); interfaces
+					.hasMoreElements();) {
+				final NetworkInterface cur = interfaces.nextElement();
+
+				if (cur.isLoopback()) {
+					continue;
+				}
+
+				if (DEBUG)
+					System.out.println("interface " + cur.getName());
+
+				for (final InterfaceAddress addr : cur.getInterfaceAddresses()) {
+					final InetAddress inet_addr = addr.getAddress();
+
+					if (!(inet_addr instanceof Inet4Address)) {
+						continue;
+					}
+
+					if (DEBUG) {
+						System.out.println(
+								"  address: " + inet_addr.getHostAddress() + "/" + addr.getNetworkPrefixLength());
+						System.out.println("  broadcast address: " + addr.getBroadcast().getHostAddress());
+
+						return inet_addr.getHostAddress();
+					}
+				}
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
-			return;
 		}
+
+		return null;
+	}
+
+	private void attemptLocalServerFind() {
+		String thisIp = getLANAddress();
+
+		if (thisIp == null)
+			return;
+
+		System.out.println("Using local IP: " + thisIp);
 
 		String searchSpace = thisIp.substring(0, thisIp.lastIndexOf('.') + 1);
 
