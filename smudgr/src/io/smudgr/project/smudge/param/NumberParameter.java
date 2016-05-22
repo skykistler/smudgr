@@ -1,5 +1,7 @@
 package io.smudgr.project.smudge.param;
 
+import io.smudgr.project.PropertyMap;
+
 public class NumberParameter extends Parameter {
 
 	private double value;
@@ -19,7 +21,8 @@ public class NumberParameter extends Parameter {
 		this(name, parent, initial, minimum, maximum, (maximum - minimum) / 127);
 	}
 
-	public NumberParameter(String name, Parametric parent, double initial, double minimum, double maximum, double step) {
+	public NumberParameter(String name, Parametric parent, double initial, double minimum, double maximum,
+			double step) {
 		super(name, parent);
 
 		min = minimum;
@@ -148,6 +151,27 @@ public class NumberParameter extends Parameter {
 
 	public int getIntValue() {
 		return (int) value;
+	}
+
+	public void save(PropertyMap pm) {
+		super.save(pm);
+
+		pm.setAttribute("min", getMin());
+		pm.setAttribute("max", getMax());
+		pm.setAttribute("step", getStep());
+	}
+
+	public void load(PropertyMap pm) {
+		super.load(pm);
+
+		if (pm.hasAttribute("min"))
+			setMin(Double.parseDouble(pm.getAttribute("min")));
+
+		if (pm.hasAttribute("max"))
+			setMax(Double.parseDouble(pm.getAttribute("max")));
+
+		if (pm.hasAttribute("step"))
+			setStep(Double.parseDouble(pm.getAttribute("step")));
 	}
 
 }
