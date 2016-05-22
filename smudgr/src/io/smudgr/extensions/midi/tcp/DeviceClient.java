@@ -34,6 +34,9 @@ public class DeviceClient {
 		this.observer = observer;
 		this.ip = ip;
 
+		if (ip != null)
+			attemptConnect(ip);
+
 		listener = new ServerListener();
 		listener.start();
 	}
@@ -88,24 +91,36 @@ public class DeviceClient {
 		for (int i = 1; i < 255; i++) {
 			String testIp = searchSpace + i;
 
+			if (testIp.equals(thisIp))
+				continue;
+
 			System.out.print(".");
-			try {
-				serverSocket = new Socket();
-				serverSocket.connect(new InetSocketAddress(testIp, DeviceServer.SMUDGR_PORT), 50);
+			boolean connected = attemptConnect(testIp);
 
-				PrintWriter out = new PrintWriter(serverSocket.getOutputStream(), true);
-
-				out.println(CONNECT_HELLO);
-				out.flush();
-
-				server = new DataInputStream(serverSocket.getInputStream());
-				ip = testIp;
-
-				System.out.println("\nConnected to: " + ip);
+			if (connected)
 				return;
-			} catch (IOException e) {
-			}
 		}
+	}
+
+	private boolean attemptConnect(String tryIp) {
+		try {
+			serverSocket = new Socket();
+			serverSocket.connect(new InetSocketAddress(tryIp, DeviceServer.SMUDGR_PORT), 50);
+
+			PrintWriter out = new PrintWriter(serverSocket.getOutputStream(), true);
+
+			out.println(CONNECT_HELLO);
+			out.flush();
+
+			server = new DataInputStream(serverSocket.getInputStream());
+			ip = tryIp;
+
+			System.out.println("\nConnected to: " + ip);
+			return true;
+		} catch (IOException e) {
+		}
+
+		return false;
 	}
 
 	public void stop() {
