@@ -22,7 +22,7 @@ import org.w3c.dom.NodeList;
 import io.smudgr.app.Controller;
 import io.smudgr.project.smudge.util.Frame;
 
-public class Gif implements Source {
+public class Gif implements AnimatedSource {
 	private String filename;
 
 	private BufferThread bufferer;
@@ -30,6 +30,7 @@ public class Gif implements Source {
 
 	private int ticks;
 	private int currentFrame;
+	private double speedFactor = 1;
 
 	private volatile Frame lastFrame;
 
@@ -56,7 +57,7 @@ public class Gif implements Source {
 		GifFrame frame = buffer.get(currentFrame);
 
 		if (frame != null)
-			if (frame.getDelay() <= delay) {
+			if (frame.getDelay() / speedFactor <= delay) {
 				currentFrame++;
 				currentFrame %= buffer.size();
 				ticks = 0;
@@ -65,7 +66,8 @@ public class Gif implements Source {
 	}
 
 	public Frame getFrame() {
-		if (bufferer == null || !bufferer.started || buffer == null || buffer.size() == 0 || currentFrame < 0 || currentFrame >= buffer.size()) {
+		if (bufferer == null || !bufferer.started || buffer == null || buffer.size() == 0 || currentFrame < 0
+				|| currentFrame >= buffer.size()) {
 			return lastFrame;
 		}
 
@@ -78,6 +80,17 @@ public class Gif implements Source {
 
 		buffer = null;
 		bufferer.stop();
+	}
+
+	public void setSpeedFactor(double speed) {
+		speed = speed < 0 ? 0 : speed;
+		speed = speed > 4 ? 4 : speed;
+
+		speedFactor = speed;
+	}
+
+	public double getSpeedFactor() {
+		return speedFactor;
 	}
 
 	public String toString() {
@@ -120,7 +133,8 @@ public class Gif implements Source {
 				Color backgroundColor = null;
 
 				if (metadata != null) {
-					IIOMetadataNode globalRoot = (IIOMetadataNode) metadata.getAsTree(metadata.getNativeMetadataFormatName());
+					IIOMetadataNode globalRoot = (IIOMetadataNode) metadata
+							.getAsTree(metadata.getNativeMetadataFormatName());
 
 					NodeList globalColorTable = globalRoot.getElementsByTagName("GlobalColorTable");
 					NodeList globalScreeDescriptor = globalRoot.getElementsByTagName("LogicalScreenDescriptor");
@@ -177,8 +191,10 @@ public class Gif implements Source {
 						height = image.getHeight();
 					}
 
-					IIOMetadataNode root = (IIOMetadataNode) reader.getImageMetadata(frameIndex).getAsTree("javax_imageio_gif_image_1.0");
-					IIOMetadataNode gce = (IIOMetadataNode) root.getElementsByTagName("GraphicControlExtension").item(0);
+					IIOMetadataNode root = (IIOMetadataNode) reader.getImageMetadata(frameIndex)
+							.getAsTree("javax_imageio_gif_image_1.0");
+					IIOMetadataNode gce = (IIOMetadataNode) root.getElementsByTagName("GraphicControlExtension")
+							.item(0);
 					NodeList children = root.getChildNodes();
 
 					int delay = Integer.valueOf(gce.getAttribute("delayTime")) * 10;
