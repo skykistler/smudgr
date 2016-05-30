@@ -14,14 +14,14 @@ public class SkyTestApp extends AppStart {
 
 	static boolean overwriteSmudge = true;
 
-	static String sourcePath = "data/oceans";
+	static String sourcePath = "data/gemini";
 
 	static String outputPath = "data";
 
 	static String device = "Arturia BeatStep Pro";
 	static boolean deviceServer = false;
 
-	static int fullscreenDisplay = -1;
+	static int fullscreenDisplay = 1;
 	static boolean monitor = true;
 
 	public void buildSmudge() {

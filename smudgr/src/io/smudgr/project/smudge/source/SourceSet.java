@@ -93,7 +93,7 @@ public class SourceSet implements Source {
 			return;
 		}
 
-		if (i >= sources.size() || i < 0 || i == currentSource)
+		if (i == currentSource)
 			return;
 
 		Source current = getCurrentSource();

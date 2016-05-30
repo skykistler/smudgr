@@ -16,7 +16,7 @@ public class Smudge extends Parametric implements Source {
 
 	private BooleanParameter enabled = new BooleanParameter("Enable", this, true);
 	private NumberParameter downsample = new NumberParameter("Downsample", this, 1, .01, 1, .01);
-	private NumberParameter sourceSpeed = new NumberParameter("Source Speed", this, 1, .25, 2, .05);
+	private NumberParameter sourceSpeed = new NumberParameter("Source Speed", this, 1, .25, 4, .05);
 
 	private Source source;
 	private ArrayList<Algorithm> algorithms = new ArrayList<Algorithm>();

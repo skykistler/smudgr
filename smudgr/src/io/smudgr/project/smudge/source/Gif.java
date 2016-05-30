@@ -26,7 +26,7 @@ public class Gif implements AnimatedSource {
 	private String filename;
 
 	private BufferThread bufferer;
-	private ArrayList<GifFrame> buffer;
+	private volatile ArrayList<GifFrame> buffer;
 
 	private int ticks;
 	private int currentFrame;
@@ -74,7 +74,10 @@ public class Gif implements AnimatedSource {
 		return lastFrame = buffer.get(currentFrame).getFrame();
 	}
 
-	public void dispose() {
+	public synchronized void dispose() {
+		if (buffer == null)
+			return;
+
 		for (GifFrame f : buffer)
 			f.getFrame().dispose();
 
@@ -100,10 +103,6 @@ public class Gif implements AnimatedSource {
 	class BufferThread implements Runnable {
 
 		private boolean started;
-
-		public BufferThread() {
-			buffer = new ArrayList<GifFrame>();
-		}
 
 		public void start() {
 			Thread t = new Thread(this);
@@ -173,10 +172,9 @@ public class Gif implements AnimatedSource {
 
 				BufferedImage master = null;
 				boolean hasBackround = false;
+				int frameIndex = 0;
 
-				for (int frameIndex = 0;; frameIndex++) {
-					if (!started)
-						break;
+				while (started) {
 
 					BufferedImage image;
 					try {
@@ -242,9 +240,6 @@ public class Gif implements AnimatedSource {
 
 						} else if (disposal.equals("restoreToBackgroundColor") && backgroundColor != null) {
 							if (!hasBackround || frameIndex > 1) {
-								if (buffer == null)
-									return;
-
 								Frame last = buffer.get(frameIndex - 1).getFrame();
 
 								Graphics g = master.createGraphics();
@@ -268,11 +263,14 @@ public class Gif implements AnimatedSource {
 
 					GifFrame gifframe = new GifFrame(copy, disposal, delay);
 
-					if (buffer != null)
-						buffer.add(gifframe);
+					if (buffer == null)
+						buffer = new ArrayList<GifFrame>();
+
+					buffer.add(gifframe);
 
 					master.flush();
 
+					frameIndex++;
 				}
 
 			} catch (IOException e) {
