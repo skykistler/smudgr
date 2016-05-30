@@ -1,6 +1,4 @@
-package io.smudgr.project.smudge.alg.math;
-
-import io.smudgr.project.smudge.alg.math.univariate.UnivariateFunction;
+package io.smudgr.project.smudge.alg.math.univariate;
 
 public class LinearFunction implements UnivariateFunction {
 

@@ -2,8 +2,8 @@ package io.smudgr.project.smudge.alg.op;
 
 import java.util.Random;
 
-import io.smudgr.project.smudge.alg.math.CubicInterpolator;
-import io.smudgr.project.smudge.alg.math.Interpolator;
+import io.smudgr.project.smudge.alg.math.lerp.CubicInterpolator;
+import io.smudgr.project.smudge.alg.math.lerp.Interpolator;
 import io.smudgr.project.smudge.param.NumberParameter;
 import io.smudgr.project.smudge.util.Frame;
 

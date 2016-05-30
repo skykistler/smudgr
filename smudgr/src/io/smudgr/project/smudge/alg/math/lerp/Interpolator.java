@@ -1,4 +1,4 @@
-package io.smudgr.project.smudge.alg.math;
+package io.smudgr.project.smudge.alg.math.lerp;
 
 public interface Interpolator {
 	/**
