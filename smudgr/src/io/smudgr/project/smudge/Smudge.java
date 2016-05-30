@@ -7,13 +7,16 @@ import io.smudgr.project.smudge.alg.Algorithm;
 import io.smudgr.project.smudge.param.BooleanParameter;
 import io.smudgr.project.smudge.param.NumberParameter;
 import io.smudgr.project.smudge.param.Parametric;
+import io.smudgr.project.smudge.source.AnimatedSource;
 import io.smudgr.project.smudge.source.Source;
+import io.smudgr.project.smudge.source.SourceSet;
 import io.smudgr.project.smudge.util.Frame;
 
 public class Smudge extends Parametric implements Source {
 
 	private BooleanParameter enabled = new BooleanParameter("Enable", this, true);
 	private NumberParameter downsample = new NumberParameter("Downsample", this, 1, .01, 1, .01);
+	private NumberParameter sourceSpeed = new NumberParameter("Source Speed", this, 1, .25, 4, .05);
 
 	private Source source;
 	private ArrayList<Algorithm> algorithms = new ArrayList<Algorithm>();
@@ -32,8 +35,14 @@ public class Smudge extends Parametric implements Source {
 	}
 
 	public void update() {
-		if (source != null)
+		if (source != null) {
 			source.update();
+
+			// Update speed factor if current source is animated
+			Source s = source instanceof SourceSet ? ((SourceSet) source).getCurrentSource() : source;
+			if (s instanceof AnimatedSource)
+				((AnimatedSource) s).setSpeedFactor(sourceSpeed.getValue());
+		}
 	}
 
 	public void render() {

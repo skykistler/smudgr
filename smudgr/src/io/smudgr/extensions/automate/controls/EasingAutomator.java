@@ -1,8 +1,8 @@
 package io.smudgr.extensions.automate.controls;
 
 import io.smudgr.project.PropertyMap;
-import io.smudgr.project.smudge.alg.math.BezierFunction;
-import io.smudgr.project.smudge.alg.math.UnivariateFunction;
+import io.smudgr.project.smudge.alg.math.univariate.BezierFunction;
+import io.smudgr.project.smudge.alg.math.univariate.UnivariateFunction;
 import io.smudgr.project.smudge.param.NumberParameter;
 import io.smudgr.project.smudge.param.Parameter;
 

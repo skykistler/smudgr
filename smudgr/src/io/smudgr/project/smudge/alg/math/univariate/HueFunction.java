@@ -1,4 +1,6 @@
-package io.smudgr.project.smudge.alg.math;
+package io.smudgr.project.smudge.alg.math.univariate;
+
+import io.smudgr.project.smudge.alg.math.ColorHelper;
 
 public class HueFunction implements UnivariateFunction {
 

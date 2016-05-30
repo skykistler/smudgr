@@ -2,7 +2,6 @@ package io.smudgr.test;
 
 import io.smudgr.app.AppStart;
 import io.smudgr.app.Controller;
-import io.smudgr.extensions.automate.controls.SetSourceAutomator;
 import io.smudgr.project.smudge.Smudge;
 import io.smudgr.project.smudge.alg.Algorithm;
 import io.smudgr.project.smudge.alg.coord.ColumnCoords;
@@ -15,14 +14,14 @@ public class SkyTestApp extends AppStart {
 
 	static boolean overwriteSmudge = true;
 
-	static String sourcePath = "data/oceans/1";
+	static String sourcePath = "data/gemini";
 
 	static String outputPath = "data";
 
-	static String device = "nanoPAD2";
+	static String device = "Arturia BeatStep Pro";
 	static boolean deviceServer = false;
 
-	static int fullscreenDisplay = -1;
+	static int fullscreenDisplay = 1;
 	static boolean monitor = true;
 
 	public void buildSmudge() {
@@ -50,16 +49,13 @@ public class SkyTestApp extends AppStart {
 		// AutomatorControl automator1 = addAutomator("Animate",
 		// databend.getParameter("Target"));
 
+		bind(smudge.getParameter("Source Speed"));
 		bind(smudge.getParameter("Downsample"));
 		// bind(automator1);
 		// bind(range.getParameter("Range Length"));
 
-		SetSourceAutomator src = (SetSourceAutomator) addAutomator("Set Source", null);
-		src.setSourceIndex(2);
-		bind(src);
-
-		// bind(Controller.getInstance().getAppControl("Source Set Switcher"));
-		// bind(Controller.getInstance().getAppControl("Source Switcher"));
+		bind(Controller.getInstance().getAppControl("Source Switcher"));
+		bind(Controller.getInstance().getAppControl("Source Set Switcher"));
 		// bind(Controller.getInstance().getAppControl("Record GIF"));
 		// bind(Controller.getInstance().getAppControl("Save Project"));
 	}

@@ -29,7 +29,11 @@ public class RenderThread extends AppThread {
 			for (int i = 0; i <= everyXTicks; i++)
 				Controller.getInstance().update();
 
-		Controller.getInstance().getProject().getSmudge().render();
+		try {
+			Controller.getInstance().getProject().getSmudge().render();
+		} catch (IllegalStateException e) {
+			// disposed frame
+		}
 
 		if (output != null)
 			output.addFrame(Controller.getInstance().getProject().getSmudge().getFrame().copy());

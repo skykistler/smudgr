@@ -59,7 +59,7 @@ public abstract class AppThread implements Runnable {
 			prevTicks = ticks;
 			try {
 				execute();
-			} catch (IllegalStateException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
