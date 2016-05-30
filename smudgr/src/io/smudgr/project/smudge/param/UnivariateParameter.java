@@ -2,7 +2,7 @@ package io.smudgr.project.smudge.param;
 
 import java.util.ArrayList;
 
-import io.smudgr.project.smudge.alg.math.UnivariateFunction;
+import io.smudgr.project.smudge.alg.math.univariate.UnivariateFunction;
 
 public class UnivariateParameter extends Parameter {
 
