@@ -1,9 +1,14 @@
 package io.smudgr.project.smudge.alg.op;
 
 import io.smudgr.project.smudge.alg.PixelIndexList;
-import io.smudgr.project.smudge.alg.math.ColorHelper;
+import io.smudgr.project.smudge.alg.math.blend.MaxBlender;
+import io.smudgr.project.smudge.alg.math.blend.MinBlender;
+import io.smudgr.project.smudge.alg.math.blend.MultiplyBlender;
+import io.smudgr.project.smudge.alg.math.blend.NormalBlender;
+import io.smudgr.project.smudge.param.BlendParameter;
 import io.smudgr.project.smudge.param.BooleanParameter;
 import io.smudgr.project.smudge.param.NumberParameter;
+import io.smudgr.project.smudge.source.Image;
 import io.smudgr.project.smudge.source.Source;
 import io.smudgr.project.smudge.util.Frame;
 
@@ -15,13 +20,14 @@ public class SourceMixer extends Operation {
 
 	private Frame mixFrame;
 
-	private Source mixSource;
+	private Source mixSource = new Image("data/work/");
 
-	NumberParameter size = new NumberParameter("Size", this, 0, -1, 1, 0.01);
+	NumberParameter size = new NumberParameter("Size", this, 0, 0, 1.5, 0.01);
 	NumberParameter translateX = new NumberParameter("Translation X", this, 0, -1, 1, 0.01);
 	NumberParameter translateY = new NumberParameter("Translation Y", this, 0, -1, 1, 0.01);
 	BooleanParameter scaleToChange = new BooleanParameter("Scale To Change", this, true);
 	BooleanParameter fitOnLoading = new BooleanParameter("Fit on Loading", this, false);
+	BlendParameter blenders = new BlendParameter("Blender", this, new NormalBlender());
 
 	private double lastTranslateX, lastTranslateY, lastSize;
 	private int lastBaseW, lastBaseH;
@@ -29,13 +35,19 @@ public class SourceMixer extends Operation {
 	private int currentMixW, currentMixH;
 
 	private double currentTransX, currentTransY, currentSize;
-	private double k;
 
 	// displacement from mix frame center to base frame center
 	int dx, dy = 0;
 
+	private void addBlenders() {
+		blenders.add(new MaxBlender());
+		blenders.add(new MinBlender());
+		blenders.add(new MultiplyBlender());
+	}
+
 	public void init() {
 		mixSource.init();
+		addBlenders();
 		lastTranslateX = translateX.getValue();
 		lastTranslateY = translateY.getValue();
 		lastSize = size.getValue();
@@ -50,7 +62,7 @@ public class SourceMixer extends Operation {
 		blend(img);
 	}
 
-	public void blend(Frame img) {
+	private void blend(Frame img) {
 		// Specific to dimension changes
 		int mixW = mixFrame.getWidth();
 		int mixH = mixFrame.getHeight();
@@ -70,16 +82,15 @@ public class SourceMixer extends Operation {
 		}
 	}
 
-	public void update(Frame img) {
-		// need to adjust this update function to work with new mixFrames so
-		// fitting them to screen etc.
+	private void update(Frame img) {
 
-		// pull from the source if there was a change in the source
 		// This is the part that needs to be improved
 		// TODO improve grabbing frames for mixing
-		if (mixSource.getFrame() != null)
-			mixFrame = mixSource.getFrame().copy();
-		else
+		if (mixFrame != null)
+			mixFrame.dispose();
+
+		mixFrame = mixSource.getFrame();
+		if (mixFrame == null)
 			return;
 
 		// Specific to dimension changes
@@ -99,34 +110,8 @@ public class SourceMixer extends Operation {
 
 	}
 
-	public void updateTranslation(int baseW, int baseH, int mixW, int mixH) {
-		// translation from displacement vector <dx, dy>
-		int transX, transY;
-
-		// set current translation parameter values
-		currentTransX = translateX.getValue();
-		currentTransY = translateY.getValue();
-
-		// translation on X
-		if (currentTransX != lastTranslateX) {
-			transX = (int) (translateX.getValue() * baseW); // Maybe it should
-															// be times mixW
-			dx = baseW / 2 - mixW / 2 + transX;
-		}
-		lastTranslateX = currentTransX;
-
-		// translation on Y
-		if (currentTransY != lastTranslateY) {
-			transY = (int) (translateY.getValue() * baseH); // Maybe it should
-															// be times mixH
-			dy = baseH / 2 - mixH / 2 + transY;
-		}
-		lastTranslateY = currentTransY;
-
-	}
-
 	// Update the size of the mix frame, not the base frame we are blending into
-	public void updateSize(Frame img, int baseW, int baseH, int mixW, int mixH) {
+	private void updateSize(Frame img, int baseW, int baseH, int mixW, int mixH) {
 
 		Boolean sizeChanged = false;
 
@@ -166,39 +151,56 @@ public class SourceMixer extends Operation {
 		}
 
 		// If the size has adjusted for the mix frame, then resize.
-		if (sizeChanged) {
+		// Always true for now until there is a reason not to update every time
+		if (sizeChanged || true) {
 			// If the change of size is down, use the same mixFrame but
 			// calculate the adjustment
 			// and set the size param to reflect this change.
 			int newMixW = (int) (mixSource.getFrame().getWidth() * currentSize);
 			int newMixH = (int) (mixSource.getFrame().getHeight() * currentSize);
+
 			mixFrame.dispose();
-			Frame bufferFrame = mixSource.getFrame().resize(newMixW, newMixH);
-			mixFrame = bufferFrame;
+			mixFrame = mixSource.getFrame().resize(newMixW, newMixH);
+
 		}
 		// Update the lastSize variable to reflect current
 		lastSize = currentSize;
 
 	}
 
+	private void updateTranslation(int baseW, int baseH, int mixW, int mixH) {
+		// translation from displacement vector <dx, dy>
+		int transX, transY;
+
+		// set current translation parameter values
+		currentTransX = translateX.getValue();
+		currentTransY = translateY.getValue();
+
+		// translation on X
+		if (currentTransX != lastTranslateX) {
+			transX = (int) (translateX.getValue() * baseW); // Maybe it should
+															// be times mixW
+			dx = baseW / 2 - mixW / 2 + transX;
+		}
+		lastTranslateX = currentTransX;
+
+		// translation on Y
+		if (currentTransY != lastTranslateY) {
+			transY = (int) (translateY.getValue() * baseH); // Maybe it should
+															// be times mixH
+			dy = baseH / 2 - mixH / 2 + transY;
+		}
+		lastTranslateY = currentTransY;
+
+	}
+
 	private void mix(int coord, Frame mix, Frame img, int x, int y) {
-		int mixColor = mix.get(x, y);
-		int origColor = img.pixels[coord];
+		int baseColor = img.pixels[coord];
+		int mixInColor = mix.get(x, y);
 
-		int alpha = ColorHelper.alpha(origColor);
-		if (alpha == 255) {
-			img.pixels[coord] = origColor;
-			return;
-		} else if (alpha == 0)
-			return;
+		int newColor = blenders.getValue().blend(baseColor, mixInColor);
 
-		double a = alpha / 255;
-
-		int newR = (int) (a * ColorHelper.red(origColor) + (1 - a) * ColorHelper.red(origColor));
-		int newG = (int) (a * ColorHelper.green(origColor) + (1 - a) * ColorHelper.green(origColor));
-		int newB = (int) (a * ColorHelper.blue(origColor) + (1 - a) * ColorHelper.blue(origColor));
-
-		img.pixels[coord] = ColorHelper.color(255, newR, newG, newB);
+		img.pixels[coord] = newColor; /*- ColorHelper.color(255, newR, newG, newB); */
 	}
 
 	public void adjustSizeParam(double valueAdded) {
