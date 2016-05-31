@@ -48,7 +48,8 @@ public class Frame {
 		Frame fittedFrame = fitToSize(image.getWidth(), image.getHeight());
 
 		try {
-			image.setRGB(0, 0, fittedFrame.getWidth(), fittedFrame.getHeight(), fittedFrame.pixels, 0, fittedFrame.getWidth());
+			image.setRGB(0, 0, fittedFrame.getWidth(), fittedFrame.getHeight(), fittedFrame.pixels, 0,
+					fittedFrame.getWidth());
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("orig width: " + width);
@@ -86,6 +87,16 @@ public class Frame {
 		int h = (int) newHeight;
 
 		return resize(x, y, w, h, toSizeW, toSizeH);
+	}
+
+	public Frame resize(double factor) {
+		if (factor < 0)
+			return copy();
+
+		int w = (int) Math.round(Math.max(getWidth() * factor, 1));
+		int h = (int) Math.round(Math.max(getHeight() * factor, 1));
+
+		return resize(w, h);
 	}
 
 	public Frame resize(int w, int h) {
@@ -160,80 +171,80 @@ public class Frame {
 	}
 
 	// This is slow and apparently we don't need it? Commenting it out for now
-	//	public synchronized Frame resize(int toWidth, int toHeight) {
-	//		checkDisposed();
+	// public synchronized Frame resize(int toWidth, int toHeight) {
+	// checkDisposed();
 	//
-	//		Frame ret = null;
+	// Frame ret = null;
 	//
-	//		if (toWidth > width || toHeight > height) {
-	//			int scaleUpW = toWidth > width ? toWidth : width;
-	//			int scaleUpH = toHeight > height ? toHeight : height;
-	//			ret = scaleUp(scaleUpW, scaleUpH);
-	//		}
+	// if (toWidth > width || toHeight > height) {
+	// int scaleUpW = toWidth > width ? toWidth : width;
+	// int scaleUpH = toHeight > height ? toHeight : height;
+	// ret = scaleUp(scaleUpW, scaleUpH);
+	// }
 	//
-	//		if (toHeight < height || toWidth < width) {
-	//			int scaleDownW = toWidth < width ? toWidth : width;
-	//			int scaleDownH = toHeight < height ? toHeight : height;
+	// if (toHeight < height || toWidth < width) {
+	// int scaleDownW = toWidth < width ? toWidth : width;
+	// int scaleDownH = toHeight < height ? toHeight : height;
 	//
-	//			if (ret == null)
-	//				ret = scaleDown(scaleDownW, scaleDownH);
-	//			else {
-	//				Frame ret2 = ret.scaleDown(scaleDownW, scaleDownH);
-	//				ret.dispose();
-	//				ret = ret2;
-	//			}
-	//		}
+	// if (ret == null)
+	// ret = scaleDown(scaleDownW, scaleDownH);
+	// else {
+	// Frame ret2 = ret.scaleDown(scaleDownW, scaleDownH);
+	// ret.dispose();
+	// ret = ret2;
+	// }
+	// }
 	//
-	//		return ret == null ? copy() : ret;
-	//	}
+	// return ret == null ? copy() : ret;
+	// }
 	//
-	//	private Frame scaleDown(int w, int h) {
-	//		if (w > width)
-	//			w = width;
-	//		if (h > height)
-	//			h = height;
+	// private Frame scaleDown(int w, int h) {
+	// if (w > width)
+	// w = width;
+	// if (h > height)
+	// h = height;
 	//
-	//		if (w >= width && h >= height)
-	//			return copy();
+	// if (w >= width && h >= height)
+	// return copy();
 	//
-	//		float w_factor = width / (float) w;
-	//		float h_factor = height / (float) h;
-	//		int w_factor_i = (int) Math.floor(w_factor);
-	//		int h_factor_i = (int) Math.floor(h_factor);
+	// float w_factor = width / (float) w;
+	// float h_factor = height / (float) h;
+	// int w_factor_i = (int) Math.floor(w_factor);
+	// int h_factor_i = (int) Math.floor(h_factor);
 	//
-	//		int sample = w_factor_i * h_factor_i;
+	// int sample = w_factor_i * h_factor_i;
 	//
-	//		Frame dest = new Frame(w, h);
+	// Frame dest = new Frame(w, h);
 	//
-	//		int j, i, srcx, srcy, yi, xi, a, r, g, b, color;
-	//		double temp_a, temp_r, temp_g, temp_b;
-	//		for (j = 0; j < h; j++)
-	//			for (i = 0; i < w; i++) {
+	// int j, i, srcx, srcy, yi, xi, a, r, g, b, color;
+	// double temp_a, temp_r, temp_g, temp_b;
+	// for (j = 0; j < h; j++)
+	// for (i = 0; i < w; i++) {
 	//
-	//				srcx = (int) Math.floor(i * w_factor);
-	//				srcy = (int) Math.floor(j * h_factor);
+	// srcx = (int) Math.floor(i * w_factor);
+	// srcy = (int) Math.floor(j * h_factor);
 	//
-	//				temp_a = 0;
-	//				temp_r = 0;
-	//				temp_g = 0;
-	//				temp_b = 0;
-	//				for (yi = 0; yi < h_factor_i; yi++)
-	//					for (xi = 0; xi < w_factor_i; xi++) {
-	//						color = get(srcx + xi, srcy + yi);
-	//						temp_a += ColorHelper.alpha(color);
-	//						temp_r += ColorHelper.red(color);
-	//						temp_g += ColorHelper.green(color);
-	//						temp_b += ColorHelper.blue(color);
-	//					}
+	// temp_a = 0;
+	// temp_r = 0;
+	// temp_g = 0;
+	// temp_b = 0;
+	// for (yi = 0; yi < h_factor_i; yi++)
+	// for (xi = 0; xi < w_factor_i; xi++) {
+	// color = get(srcx + xi, srcy + yi);
+	// temp_a += ColorHelper.alpha(color);
+	// temp_r += ColorHelper.red(color);
+	// temp_g += ColorHelper.green(color);
+	// temp_b += ColorHelper.blue(color);
+	// }
 	//
-	//				a = (int) (temp_a / sample);
-	//				r = (int) (temp_r / sample);
-	//				g = (int) (temp_g / sample);
-	//				b = (int) (temp_b / sample);
-	//				dest.set(i, j, ColorHelper.color(a, r, g, b));
-	//			}
+	// a = (int) (temp_a / sample);
+	// r = (int) (temp_r / sample);
+	// g = (int) (temp_g / sample);
+	// b = (int) (temp_b / sample);
+	// dest.set(i, j, ColorHelper.color(a, r, g, b));
+	// }
 	//
-	//		return dest;
-	//	}
+	// return dest;
+	// }
 
 }

@@ -49,19 +49,9 @@ public class Smudge extends Parametric implements Source {
 		Frame toRender = null;
 
 		if (source != null)
-			toRender = source.getFrame();
+			toRender = source.getFrame(downsample.getValue());
 
 		if (toRender != null) {
-			double ds = downsample.getValue();
-			if (ds < 1) {
-				int w = (int) Math.round(Math.max(toRender.getWidth() * ds, 1));
-				int h = (int) Math.round(Math.max(toRender.getHeight() * ds, 1));
-
-				toRender = toRender.resize(w, h);
-			} else {
-				toRender = toRender.copy();
-			}
-
 			if (enabled.getValue()) {
 				for (Algorithm a : getAlgorithms())
 					a.apply(toRender);
@@ -74,7 +64,7 @@ public class Smudge extends Parametric implements Source {
 		lastFrame = toRender;
 	}
 
-	public Frame getFrame() {
+	public Frame getFrame(double resizeFactor) {
 		return lastFrame;
 	}
 

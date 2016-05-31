@@ -22,7 +22,7 @@ public abstract class KinectSource implements Source {
 	public abstract KinectBuffer getKinectBuffer(KinectExtension extension);
 
 	@Override
-	public synchronized Frame getFrame() {
+	public synchronized Frame getFrame(double resizeFactor) {
 
 		frame = buffer.getFrame();
 		if (frame == null) {
@@ -33,7 +33,8 @@ public abstract class KinectSource implements Source {
 		if (lastFrame != null)
 			lastFrame.dispose();
 
-		lastFrame = frame;
+		lastFrame = frame.resize(resizeFactor);
+		frame.dispose();
 
 		return frame;
 	}
