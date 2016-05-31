@@ -4,4 +4,6 @@ public interface Blender {
 
 	public int blend(int colorA, int colorB);
 
+	public String getName();
+
 }
