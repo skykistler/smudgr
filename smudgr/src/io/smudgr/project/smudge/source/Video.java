@@ -39,14 +39,14 @@ public class Video implements Source {
 		// update every frame delay ms
 	}
 
-	public Frame getFrame() {
+	public Frame getFrame(double downsample) {
 		if (!bufferer.started)
 			return null;
 
 		while (buffer.size() == 0)
 			;
 
-		return buffer.poll();
+		return buffer.poll().downsample(downsample);
 	}
 
 	public void dispose() {

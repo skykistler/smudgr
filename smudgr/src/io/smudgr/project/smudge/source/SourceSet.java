@@ -60,12 +60,12 @@ public class SourceSet implements Source {
 			s.dispose();
 	}
 
-	public Frame getFrame() {
+	public Frame getFrame(double downsample) {
 		Source s = getCurrentSource();
 		if (s == null || s == this)
 			return null;
 
-		return s.getFrame();
+		return s.getFrame(downsample);
 	}
 
 	public int size() {

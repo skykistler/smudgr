@@ -9,7 +9,11 @@ public interface Source {
 
 	public void update();
 
-	public Frame getFrame();
+	public default Frame getFrame() {
+		return getFrame(1);
+	}
+
+	public Frame getFrame(double downsample);
 
 	public void dispose();
 

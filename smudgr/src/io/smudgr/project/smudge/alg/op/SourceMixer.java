@@ -22,8 +22,8 @@ public class SourceMixer extends Operation {
 
 		/*
 		 * Grab the frame that will be mixed into img
-		*/
-		mixFrame = source.getFrame();
+		 */
+		mixFrame = source.getFrame(1);
 
 		if (mixFrame == null)
 			return;

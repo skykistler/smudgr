@@ -9,9 +9,12 @@ import javax.imageio.ImageIO;
 import io.smudgr.project.smudge.util.Frame;
 
 public class Image implements Source {
-	
+
 	private String filename;
 	private Frame frame;
+
+	private double lastDownsample = -1;
+	private Frame downsampledFrame;
 
 	public Image(String filename) {
 		this.filename = filename;
@@ -37,8 +40,13 @@ public class Image implements Source {
 
 	}
 
-	public Frame getFrame() {
-		return frame;
+	public Frame getFrame(double downsample) {
+		if (lastDownsample != downsample) {
+			lastDownsample = downsample;
+			downsampledFrame = frame.downsample(downsample);
+		}
+
+		return downsampledFrame;
 	}
 
 	public void dispose() {
