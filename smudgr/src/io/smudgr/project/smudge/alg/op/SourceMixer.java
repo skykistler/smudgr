@@ -67,7 +67,6 @@ public class SourceMixer extends Operation {
 		int mixW = mixFrame.getWidth();
 		int mixH = mixFrame.getHeight();
 		int baseW = img.getWidth();
-		int baseH = img.getHeight();
 
 		int x, y;
 		for (PixelIndexList coords : getAlgorithm().getSelectedPixels()) {
@@ -84,26 +83,14 @@ public class SourceMixer extends Operation {
 
 	private void update(Frame img) {
 
-		// This is the part that needs to be improved
-		// TODO improve grabbing frames for mixing
-		if (mixFrame != null)
-			mixFrame.dispose();
-
-		mixFrame = mixSource.getFrame();
-		if (mixFrame == null)
-			return;
-
-		// Specific to dimension changes
-		int mixW = mixFrame.getWidth();
-		int mixH = mixFrame.getHeight();
 		int baseW = img.getWidth();
 		int baseH = img.getHeight();
 
-		updateSize(img, baseW, baseH, mixW, mixH);
+		updateSize(img, baseW, baseH);
 
 		// update the mix frame dimensions variables post updateSize
-		mixW = mixFrame.getWidth();
-		mixH = mixFrame.getHeight();
+		int mixW = mixFrame.getWidth();
+		int mixH = mixFrame.getHeight();
 
 		// Update translation of frame we are mixing in...
 		updateTranslation(baseW, baseH, mixW, mixH);
@@ -111,9 +98,7 @@ public class SourceMixer extends Operation {
 	}
 
 	// Update the size of the mix frame, not the base frame we are blending into
-	private void updateSize(Frame img, int baseW, int baseH, int mixW, int mixH) {
-
-		Boolean sizeChanged = false;
+	private void updateSize(Frame img, int baseW, int baseH) {
 
 		// If the base image's dimensions have changed, adjust the size
 		// Given the param scaleToChange is set to true.
@@ -136,7 +121,6 @@ public class SourceMixer extends Operation {
 				// end of this
 				// update function
 				adjustSizeParam(sizeChange);
-				sizeChanged = true;
 			}
 		}
 
@@ -145,24 +129,9 @@ public class SourceMixer extends Operation {
 		lastBaseH = baseH;
 
 		currentSize = size.getValue();
-		// Did the size parameter value change?
-		if (currentSize != lastSize) {
-			sizeChanged = true;
-		}
 
-		// If the size has adjusted for the mix frame, then resize.
-		// Always true for now until there is a reason not to update every time
-		if (sizeChanged || true) {
-			// If the change of size is down, use the same mixFrame but
-			// calculate the adjustment
-			// and set the size param to reflect this change.
-			int newMixW = (int) (mixSource.getFrame().getWidth() * currentSize);
-			int newMixH = (int) (mixSource.getFrame().getHeight() * currentSize);
+		mixFrame = mixSource.getFrame(currentSize);
 
-			mixFrame.dispose();
-			mixFrame = mixSource.getFrame().resize(newMixW, newMixH);
-
-		}
 		// Update the lastSize variable to reflect current
 		lastSize = currentSize;
 
@@ -206,7 +175,7 @@ public class SourceMixer extends Operation {
 	public void adjustSizeParam(double valueAdded) {
 		double sizeValue = size.getValue();
 		sizeValue += valueAdded;
-		size.setValue(Math.min(Math.max(0, sizeValue), 1.5));
+		size.setValue(Math.min(Math.max(0, sizeValue), size.getMax()));
 	}
 
 	private boolean inFrame(int mixW, int mixH, int x, int y) {
