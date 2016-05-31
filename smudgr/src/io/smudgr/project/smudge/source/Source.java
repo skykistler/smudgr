@@ -13,7 +13,7 @@ public interface Source {
 		return getFrame(1);
 	}
 
-	public Frame getFrame(double downsample);
+	public Frame getFrame(double resizeFactor);
 
 	public void dispose();
 

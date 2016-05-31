@@ -65,13 +65,13 @@ public class Gif implements AnimatedSource {
 
 	}
 
-	public Frame getFrame(double downsample) {
+	public Frame getFrame(double resizeFactor) {
 		if (bufferer == null || !bufferer.started || buffer == null || buffer.size() == 0 || currentFrame < 0
 				|| currentFrame >= buffer.size()) {
 			return lastFrame;
 		}
 
-		return lastFrame = buffer.get(currentFrame).getFrame(downsample);
+		return lastFrame = buffer.get(currentFrame).getFrame(resizeFactor);
 	}
 
 	public synchronized void dispose() {
@@ -288,11 +288,14 @@ public class Gif implements AnimatedSource {
 		private final String disposal;
 		private final int delay;
 
-		private volatile double downsample;
-		private volatile Frame downsampledFrame;
+		private volatile double resizeFactor;
+		private volatile Frame resizedFrame;
 
 		public GifFrame(BufferedImage image, String disposal, int delay) {
 			frame = new Frame(image);
+			resizedFrame = frame.copy();
+			resizeFactor = 1;
+
 			this.image = image;
 
 			this.disposal = disposal;
@@ -306,11 +309,15 @@ public class Gif implements AnimatedSource {
 			return image;
 		}
 
-		public synchronized Frame getFrame(double downsample) {
-			if (this.downsample != downsample)
-				setDownsample(downsample);
+		public synchronized Frame getFrame(double resizeFactor) {
+			if (this.resizeFactor != resizeFactor) {
+				this.resizeFactor = resizeFactor;
 
-			return downsampledFrame;
+				resizedFrame.dispose();
+				resizedFrame = frame.resize(resizeFactor);
+			}
+
+			return resizedFrame;
 		}
 
 		public synchronized Frame getOriginalFrame() {
@@ -326,15 +333,8 @@ public class Gif implements AnimatedSource {
 		}
 
 		public synchronized void dispose() {
-			downsampledFrame.dispose();
+			resizedFrame.dispose();
 			frame.dispose();
-		}
-
-		private void setDownsample(double ds) {
-			downsample = ds;
-
-			downsampledFrame.dispose();
-			downsampledFrame = frame.downsample(ds);
 		}
 
 	}

@@ -89,8 +89,8 @@ public class Frame {
 		return resize(x, y, w, h, toSizeW, toSizeH);
 	}
 
-	public Frame downsample(double factor) {
-		if (factor > 1 || factor < 0)
+	public Frame resize(double factor) {
+		if (factor < 0)
 			return copy();
 
 		int w = (int) Math.round(Math.max(getWidth() * factor, 1));

@@ -13,8 +13,8 @@ public class Image implements Source {
 	private String filename;
 	private Frame frame;
 
-	private double lastDownsample = -1;
-	private Frame downsampledFrame;
+	private double resizeFactor;
+	private Frame resizedFrame;
 
 	public Image(String filename) {
 		this.filename = filename;
@@ -30,6 +30,8 @@ public class Image implements Source {
 			}
 
 			frame = new Frame(loaded);
+			resizedFrame = frame.copy();
+			resizeFactor = 1;
 		} catch (IOException e) {
 			System.out.println("Error loading: " + filename);
 			e.printStackTrace();
@@ -40,17 +42,18 @@ public class Image implements Source {
 
 	}
 
-	public Frame getFrame(double downsample) {
-		if (lastDownsample != downsample) {
-			lastDownsample = downsample;
-			downsampledFrame = frame.downsample(downsample);
+	public Frame getFrame(double resizeFactor) {
+		if (this.resizeFactor != resizeFactor) {
+			this.resizeFactor = resizeFactor;
+			resizedFrame = frame.resize(resizeFactor);
 		}
 
-		return downsampledFrame;
+		return resizedFrame;
 	}
 
 	public void dispose() {
-		frame = null;
+		frame.dispose();
+		resizedFrame.dispose();
 	}
 
 	public String toString() {

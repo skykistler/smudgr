@@ -64,7 +64,7 @@ public class Smudge extends Parametric implements Source {
 		lastFrame = toRender;
 	}
 
-	public Frame getFrame(double downsample) {
+	public Frame getFrame(double resizeFactor) {
 		return lastFrame;
 	}
 
