@@ -167,9 +167,9 @@ public class SourceMixer extends Operation {
 		int baseColor = img.pixels[coord];
 		int mixInColor = mix.get(x, y);
 
-		int newColor = blenders.getValue().blend(baseColor, mixInColor);
+		int compositeColor = blenders.getValue().blend(baseColor, mixInColor);
 
-		img.pixels[coord] = newColor; /*- ColorHelper.color(255, newR, newG, newB); */
+		img.pixels[coord] = compositeColor; /*- ColorHelper.color(255, newR, newG, newB); */
 	}
 
 	public void adjustSizeParam(double valueAdded) {
