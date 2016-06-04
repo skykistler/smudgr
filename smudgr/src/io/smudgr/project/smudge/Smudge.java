@@ -49,9 +49,11 @@ public class Smudge extends Parametric implements Source {
 		Frame toRender = null;
 
 		if (source != null)
-			toRender = source.getFrame().resize(downsample.getValue());
+			toRender = source.getFrame();
 
 		if (toRender != null) {
+			toRender = toRender.resize(downsample.getValue());
+
 			if (enabled.getValue()) {
 				for (Algorithm a : getAlgorithms())
 					a.apply(toRender);
