@@ -32,7 +32,7 @@ public class RenderThread extends AppThread {
 		try {
 			Controller.getInstance().getProject().getSmudge().render();
 		} catch (IllegalStateException e) {
-			// disposed frame
+			e.printStackTrace();
 		}
 
 		if (output != null)

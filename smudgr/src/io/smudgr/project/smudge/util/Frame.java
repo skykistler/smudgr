@@ -90,7 +90,7 @@ public class Frame {
 	}
 
 	public Frame resize(double factor) {
-		if (factor < 0)
+		if (factor < 0 || factor == 1)
 			return copy();
 
 		int w = (int) Math.round(Math.max(getWidth() * factor, 1));

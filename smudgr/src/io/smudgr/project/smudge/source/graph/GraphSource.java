@@ -16,7 +16,7 @@ public class GraphSource implements Source {
 		// run graph algorithms or something
 	}
 
-	public Frame getFrame(double resizeFactor) {
+	public Frame getFrame() {
 		return renderer.drawGraph();
 	}
 

@@ -26,7 +26,7 @@ public class SkyShowApp extends AppStart {
 	static String device = "Arturia BeatStep Pro";
 	static boolean deviceServer = false;
 
-	static int fullscreenDisplay = 1;
+	static int fullscreenDisplay = -1;
 	static boolean monitor = true;
 
 	public void buildSmudge() {
