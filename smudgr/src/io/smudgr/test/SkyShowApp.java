@@ -49,6 +49,7 @@ public class SkyShowApp extends AppStart {
 		databend_alg.add(databend_range);
 		DataBend databend = new DataBend();
 		databend.getParameter("Amount").setValue(2);
+		bind(databend.getParameter("Amount"));
 		databend_range.getParameter("Range Length").setValue(1);
 		databend_alg.add(databend);
 		bind(databend_alg.getParameter("Enable"));

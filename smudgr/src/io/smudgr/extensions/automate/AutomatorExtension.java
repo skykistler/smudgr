@@ -39,10 +39,10 @@ public class AutomatorExtension implements ControllerExtension {
 			return null;
 		}
 
-		control.load(properties);
 		automators.add(control);
-
 		getProject().add(control);
+
+		control.load(properties);
 
 		return control;
 	}
@@ -66,6 +66,7 @@ public class AutomatorExtension implements ControllerExtension {
 		for (PropertyMap map : pm.getChildren("automator")) {
 			AutomatorControl control = getNewAutomator(map.getAttribute("name"));
 
+			automators.add(control);
 			getProject().put(control, Integer.parseInt(map.getAttribute("id")));
 
 			control.load(map);
