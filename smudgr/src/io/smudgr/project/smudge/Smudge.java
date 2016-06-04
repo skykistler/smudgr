@@ -10,7 +10,7 @@ import io.smudgr.project.smudge.param.Parametric;
 import io.smudgr.project.smudge.source.AnimatedSource;
 import io.smudgr.project.smudge.source.Source;
 import io.smudgr.project.smudge.source.SourceSet;
-import io.smudgr.project.smudge.util.Frame;
+import io.smudgr.project.util.Frame;
 
 public class Smudge extends Parametric implements Source {
 

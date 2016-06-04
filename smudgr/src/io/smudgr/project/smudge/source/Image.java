@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import io.smudgr.project.smudge.util.Frame;
+import io.smudgr.project.util.Frame;
 
 public class Image implements Source {
 

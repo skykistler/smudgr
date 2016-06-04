@@ -1,7 +1,7 @@
 package io.smudgr.project.smudge.alg.coord;
 
 import io.smudgr.project.smudge.alg.bound.Bound;
-import io.smudgr.project.smudge.util.Frame;
+import io.smudgr.project.util.Frame;
 
 public class ColumnCoords extends CoordFunction {
 

@@ -11,7 +11,7 @@ import org.jcodec.api.awt.FrameGrab;
 import org.jcodec.common.FileChannelWrapper;
 import org.jcodec.common.NIOUtils;
 
-import io.smudgr.project.smudge.util.Frame;
+import io.smudgr.project.util.Frame;
 
 public class Video implements Source {
 	private String filename;

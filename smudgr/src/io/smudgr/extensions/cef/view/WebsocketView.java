@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 
 import io.smudgr.app.view.View;
-import io.smudgr.project.smudge.util.Frame;
+import io.smudgr.project.util.Frame;
 
 public class WebsocketView implements View {
 

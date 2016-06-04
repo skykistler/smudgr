@@ -10,7 +10,7 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
 import io.smudgr.project.smudge.source.Image;
-import io.smudgr.project.smudge.util.Frame;
+import io.smudgr.project.util.Frame;
 
 public class FrameServer extends WebSocketServer {
 

@@ -16,7 +16,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 
 import io.smudgr.app.Controller;
-import io.smudgr.project.smudge.util.Frame;
+import io.smudgr.project.util.Frame;
 
 public class Window extends JFrame implements KeyListener, WindowListener {
 

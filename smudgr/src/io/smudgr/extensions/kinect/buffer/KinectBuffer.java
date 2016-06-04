@@ -7,7 +7,7 @@ import java.util.Queue;
 import org.openkinect.freenect.Device;
 import org.openkinect.freenect.FrameMode;
 
-import io.smudgr.project.smudge.util.Frame;
+import io.smudgr.project.util.Frame;
 
 public abstract class KinectBuffer {
 

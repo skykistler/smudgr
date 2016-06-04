@@ -1,6 +1,6 @@
 package io.smudgr.app.view;
 
-import io.smudgr.project.smudge.util.Frame;
+import io.smudgr.project.util.Frame;
 
 public class FullscreenView implements View {
 

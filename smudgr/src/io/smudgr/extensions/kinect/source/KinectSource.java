@@ -4,7 +4,7 @@ import io.smudgr.app.Controller;
 import io.smudgr.extensions.kinect.KinectExtension;
 import io.smudgr.extensions.kinect.buffer.KinectBuffer;
 import io.smudgr.project.smudge.source.Source;
-import io.smudgr.project.smudge.util.Frame;
+import io.smudgr.project.util.Frame;
 
 public abstract class KinectSource implements Source {
 

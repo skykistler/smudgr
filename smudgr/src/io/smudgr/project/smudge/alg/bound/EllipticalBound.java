@@ -1,6 +1,6 @@
 package io.smudgr.project.smudge.alg.bound;
 
-import io.smudgr.project.smudge.util.Frame;
+import io.smudgr.project.util.Frame;
 
 public class EllipticalBound extends Bound {
 

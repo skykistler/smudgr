@@ -5,9 +5,10 @@ import java.util.ArrayList;
 
 import io.smudgr.app.Controller;
 import io.smudgr.project.smudge.Smudge;
-import io.smudgr.project.smudge.util.ComponentLibrary;
-import io.smudgr.project.smudge.util.DisposedFrameProvider;
-import io.smudgr.project.smudge.util.SourceLibrary;
+import io.smudgr.project.util.ComponentLibrary;
+import io.smudgr.project.util.DisposedFrameProvider;
+import io.smudgr.project.util.IdProvider;
+import io.smudgr.project.util.SourceLibrary;
 
 public class Project {
 

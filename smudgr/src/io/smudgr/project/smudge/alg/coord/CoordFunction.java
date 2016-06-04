@@ -8,7 +8,7 @@ import io.smudgr.project.smudge.alg.AlgorithmComponent;
 import io.smudgr.project.smudge.alg.PixelIndexList;
 import io.smudgr.project.smudge.alg.bound.Bound;
 import io.smudgr.project.smudge.param.BooleanParameter;
-import io.smudgr.project.smudge.util.Frame;
+import io.smudgr.project.util.Frame;
 
 public abstract class CoordFunction extends AlgorithmComponent {
 

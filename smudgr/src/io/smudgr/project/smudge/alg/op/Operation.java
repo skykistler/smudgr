@@ -1,7 +1,7 @@
 package io.smudgr.project.smudge.alg.op;
 
 import io.smudgr.project.smudge.alg.AlgorithmComponent;
-import io.smudgr.project.smudge.util.Frame;
+import io.smudgr.project.util.Frame;
 
 public abstract class Operation extends AlgorithmComponent {
 

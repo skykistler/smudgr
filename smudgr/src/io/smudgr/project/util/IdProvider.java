@@ -1,8 +1,10 @@
-package io.smudgr.project;
+package io.smudgr.project.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+
+import io.smudgr.project.ProjectElement;
 
 public class IdProvider {
 	private static final int MAX_ID = 100000;
