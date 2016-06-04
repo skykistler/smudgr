@@ -1,6 +1,7 @@
 package io.smudgr.project.smudge.alg.op;
 
 import io.smudgr.project.smudge.alg.PixelIndexList;
+import io.smudgr.project.smudge.alg.math.blend.Blender;
 import io.smudgr.project.smudge.alg.math.blend.MaxBlender;
 import io.smudgr.project.smudge.alg.math.blend.MinBlender;
 import io.smudgr.project.smudge.alg.math.blend.MultiplyBlender;
@@ -20,12 +21,12 @@ public class SourceMixer extends Operation {
 
 	private Frame mixFrame;
 
-	private Source mixSource = new Image("data/work/");
+	private Source mixSource = new Image("data/firemix.png");
 
-	NumberParameter size = new NumberParameter("Size", this, 0, 0, 1.5, 0.01);
+	NumberParameter size = new NumberParameter("Size", this, 1, 0, 1.5, 0.01);
 	NumberParameter translateX = new NumberParameter("Translation X", this, 0, -1, 1, 0.01);
 	NumberParameter translateY = new NumberParameter("Translation Y", this, 0, -1, 1, 0.01);
-	BooleanParameter scaleToChange = new BooleanParameter("Scale To Change", this, true);
+	BooleanParameter scaleToChange = new BooleanParameter("Scale To Change", this, false);
 	BooleanParameter fitOnLoading = new BooleanParameter("Fit on Loading", this, false);
 	BlendParameter blenders = new BlendParameter("Blender", this, new NormalBlender());
 
@@ -35,6 +36,8 @@ public class SourceMixer extends Operation {
 	private int currentMixW, currentMixH;
 
 	private double currentTransX, currentTransY, currentSize;
+
+	Blender blender;
 
 	// displacement from mix frame center to base frame center
 	int dx, dy = 0;
@@ -54,6 +57,8 @@ public class SourceMixer extends Operation {
 	}
 
 	public void execute(Frame img) {
+		blender = blenders.getValue();
+
 		update(img);
 
 		if (mixFrame == null)
@@ -104,11 +109,14 @@ public class SourceMixer extends Operation {
 		// Given the param scaleToChange is set to true.
 		if (lastBaseW != baseW || lastBaseH != baseH) {
 
-			double baseChangeY, baseChangeX;
+			double baseChangeY = 0;
+			double baseChangeX = 0;
 			if (scaleToChange.getValue() == true) {
 				// How much has the base image dimenions changed?
-				baseChangeX = lastBaseW - (baseW / lastBaseW);
-				baseChangeY = lastBaseH - (baseH / lastBaseH);
+				if (lastBaseW != 0 && lastBaseH == 0) {
+					baseChangeX = lastBaseW - (baseW / lastBaseW);
+					baseChangeY = lastBaseH - (baseH / lastBaseH);
+				}
 
 				double absBaseChangeX = Math.abs(baseChangeX);
 				double absBaseChangeY = Math.abs(baseChangeY);
@@ -167,7 +175,7 @@ public class SourceMixer extends Operation {
 		int baseColor = img.pixels[coord];
 		int mixInColor = mix.get(x, y);
 
-		int compositeColor = blenders.getValue().blend(baseColor, mixInColor);
+		int compositeColor = blender.blend(baseColor, mixInColor);
 
 		img.pixels[coord] = compositeColor; /*- ColorHelper.color(255, newR, newG, newB); */
 	}

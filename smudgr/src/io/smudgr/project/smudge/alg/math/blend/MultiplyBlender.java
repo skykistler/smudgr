@@ -14,6 +14,17 @@ public class MultiplyBlender implements Blender {
 		int greenB = ColorHelper.green(colorB);
 		int blueB = ColorHelper.blue(colorB);
 		int alphaB = ColorHelper.alpha(colorB);
+
+		int compRed = multiply(redA, redB);
+		int compGreen = multiply(greenA, greenB);
+		int compBlue = multiply(blueA, blueB);
+		int compAlpha = multiply(alphaA, alphaB);
+
+		return ColorHelper.color(compAlpha, compRed, compGreen, compBlue);
+	}
+
+	private int multiply(int compA, int compB) {
+		return Math.min(255, compA * compB);
 	}
 
 	public String getName() {
