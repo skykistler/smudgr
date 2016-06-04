@@ -39,7 +39,7 @@ public class Video implements Source {
 		// update every frame delay ms
 	}
 
-	public Frame getFrame(double resizeFactor) {
+	public Frame getFrame() {
 		if (!bufferer.started)
 			return null;
 
@@ -47,12 +47,6 @@ public class Video implements Source {
 			;
 
 		Frame f = buffer.poll();
-
-		if (resizeFactor != 1) {
-			Frame origF = f;
-			f = f.resize(resizeFactor);
-			origF.dispose();
-		}
 
 		return f;
 	}

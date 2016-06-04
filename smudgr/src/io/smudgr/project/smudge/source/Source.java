@@ -9,11 +9,7 @@ public interface Source {
 
 	public void update();
 
-	public default Frame getFrame() {
-		return getFrame(1);
-	}
-
-	public Frame getFrame(double resizeFactor);
+	public Frame getFrame();
 
 	public void dispose();
 

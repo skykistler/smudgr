@@ -26,13 +26,11 @@ public class Gif implements AnimatedSource {
 	private String filename;
 
 	private BufferThread bufferer;
-	private volatile ArrayList<GifFrame> buffer;
+	private volatile ArrayList<GifFrame> buffer = new ArrayList<GifFrame>();;
 
 	private int ticks;
-	private int currentFrame;
+	private volatile int currentFrame;
 	private double speedFactor = 1;
-
-	private volatile Frame lastFrame;
 
 	public Gif(String filename) {
 		this.filename = filename;
@@ -44,55 +42,52 @@ public class Gif implements AnimatedSource {
 	}
 
 	public void update() {
-		if (buffer == null || buffer.size() == 0)
+		if (buffer.size() == 0)
 			return;
 
 		ticks++;
 
-		if (currentFrame >= buffer.size() || currentFrame < 0) {
+		currentFrame %= buffer.size();
+		GifFrame frame = buffer.get(currentFrame);
+		if (frame == null) {
 			currentFrame = 0;
+			ticks = 0;
+			return;
 		}
 
 		int delay = Controller.getInstance().ticksToMs(ticks);
-		GifFrame frame = buffer.get(currentFrame);
+		if (frame.getDelay() / speedFactor <= delay) {
+			currentFrame++;
 
-		if (frame != null)
-			if (frame.getDelay() / speedFactor <= delay) {
-				currentFrame++;
-				currentFrame %= buffer.size();
-				ticks = 0;
-			}
-
-	}
-
-	public Frame getFrame(double resizeFactor) {
-		if (bufferer == null || !bufferer.started || buffer == null || buffer.size() == 0 || currentFrame < 0
-				|| currentFrame >= buffer.size()) {
-			return lastFrame;
+			ticks = 0;
 		}
-
-		return lastFrame = buffer.get(currentFrame).getFrame(resizeFactor);
 	}
 
-	public synchronized void dispose() {
-		if (buffer == null)
-			return;
+	public Frame getFrame() {
+		if (buffer.size() == 0)
+			return null;
+
+		currentFrame %= buffer.size();
+		return buffer.get(currentFrame).getFrame();
+	}
+
+	public void dispose() {
+		bufferer.stop();
 
 		for (int i = 0; i < buffer.size(); i++)
 			buffer.get(i).dispose();
 
-		buffer = null;
-		bufferer.stop();
+		buffer.clear();
 	}
 
-	public void setSpeedFactor(double speed) {
+	public void setSpeed(double speed) {
 		speed = speed < 0 ? 0 : speed;
 		speed = speed > 4 ? 4 : speed;
 
 		speedFactor = speed;
 	}
 
-	public double getSpeedFactor() {
+	public double getSpeed() {
 		return speedFactor;
 	}
 
@@ -175,7 +170,6 @@ public class Gif implements AnimatedSource {
 				int frameIndex = 0;
 
 				while (started) {
-
 					BufferedImage image;
 					try {
 						image = reader.read(frameIndex);
@@ -240,7 +234,7 @@ public class Gif implements AnimatedSource {
 
 						} else if (disposal.equals("restoreToBackgroundColor") && backgroundColor != null) {
 							if (!hasBackround || frameIndex > 1) {
-								Frame last = buffer.get(frameIndex - 1).getOriginalFrame();
+								Frame last = buffer.get(frameIndex - 1).getFrame();
 
 								Graphics g = master.createGraphics();
 								g.fillRect(lastx, lasty, last.getWidth(), last.getHeight());
@@ -263,9 +257,6 @@ public class Gif implements AnimatedSource {
 
 					GifFrame gifframe = new GifFrame(copy, disposal, delay);
 
-					if (buffer == null)
-						buffer = new ArrayList<GifFrame>();
-
 					buffer.add(gifframe);
 
 					master.flush();
@@ -273,6 +264,7 @@ public class Gif implements AnimatedSource {
 					frameIndex++;
 				}
 
+			} catch (IndexOutOfBoundsException e) {
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
@@ -283,18 +275,13 @@ public class Gif implements AnimatedSource {
 	}
 
 	private class GifFrame {
-		private final Frame frame;
-		private final BufferedImage image;
-		private final String disposal;
-		private final int delay;
-
-		private volatile double resizeFactor;
-		private volatile Frame resizedFrame;
+		private Frame frame;
+		private BufferedImage image;
+		private String disposal;
+		private int delay;
 
 		public GifFrame(BufferedImage image, String disposal, int delay) {
 			frame = new Frame(image);
-			resizedFrame = frame.copy();
-			resizeFactor = 1;
 
 			this.image = image;
 
@@ -309,18 +296,7 @@ public class Gif implements AnimatedSource {
 			return image;
 		}
 
-		public synchronized Frame getFrame(double resizeFactor) {
-			if (this.resizeFactor != resizeFactor) {
-				this.resizeFactor = resizeFactor;
-
-				resizedFrame.dispose();
-				resizedFrame = frame.resize(resizeFactor);
-			}
-
-			return resizedFrame;
-		}
-
-		public synchronized Frame getOriginalFrame() {
+		public Frame getFrame() {
 			return frame;
 		}
 
@@ -332,8 +308,7 @@ public class Gif implements AnimatedSource {
 			return delay;
 		}
 
-		public synchronized void dispose() {
-			resizedFrame.dispose();
+		public void dispose() {
 			frame.dispose();
 		}
 

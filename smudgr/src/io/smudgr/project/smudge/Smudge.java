@@ -41,7 +41,7 @@ public class Smudge extends Parametric implements Source {
 			// Update speed factor if current source is animated
 			Source s = source instanceof SourceSet ? ((SourceSet) source).getCurrentSource() : source;
 			if (s instanceof AnimatedSource)
-				((AnimatedSource) s).setSpeedFactor(sourceSpeed.getValue());
+				((AnimatedSource) s).setSpeed(sourceSpeed.getValue());
 		}
 	}
 
@@ -49,9 +49,11 @@ public class Smudge extends Parametric implements Source {
 		Frame toRender = null;
 
 		if (source != null)
-			toRender = source.getFrame(downsample.getValue());
+			toRender = source.getFrame();
 
 		if (toRender != null) {
+			toRender = toRender.resize(downsample.getValue());
+
 			if (enabled.getValue()) {
 				for (Algorithm a : getAlgorithms())
 					a.apply(toRender);
@@ -64,7 +66,7 @@ public class Smudge extends Parametric implements Source {
 		lastFrame = toRender;
 	}
 
-	public Frame getFrame(double resizeFactor) {
+	public Frame getFrame() {
 		return lastFrame;
 	}
 

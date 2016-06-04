@@ -12,7 +12,6 @@ public abstract class KinectSource implements Source {
 	private Frame lastFrame;
 	private Frame frame;
 
-	@Override
 	public void init() {
 		KinectExtension kinectExtension = (KinectExtension) Controller.getInstance().getExtension("Kinect");
 		buffer = getKinectBuffer(kinectExtension);
@@ -21,30 +20,23 @@ public abstract class KinectSource implements Source {
 
 	public abstract KinectBuffer getKinectBuffer(KinectExtension extension);
 
-	@Override
-	public synchronized Frame getFrame(double resizeFactor) {
-
+	public synchronized Frame getFrame() {
 		frame = buffer.getFrame();
-		if (frame == null) {
+		if (frame == null)
 			return lastFrame;
-		}
 
 		// Dispose of lastFrame for new lastFrame
 		if (lastFrame != null)
 			lastFrame.dispose();
 
-		lastFrame = frame.resize(resizeFactor);
-		frame.dispose();
-
+		lastFrame = frame;
 		return frame;
 	}
 
-	@Override
 	public void dispose() {
 		lastFrame.dispose();
 	}
 
-	@Override
 	public void update() {
 	}
 

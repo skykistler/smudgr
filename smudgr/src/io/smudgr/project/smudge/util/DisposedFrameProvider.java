@@ -26,7 +26,7 @@ public class DisposedFrameProvider {
 
 			ArrayList<Frame> toRemove = new ArrayList<Frame>();
 			for (Frame frame : stack)
-				if (System.currentTimeMillis() - frame.disposedTime > 60000)
+				if (System.currentTimeMillis() - frame.disposedTime > 1000)
 					toRemove.add(frame);
 
 			stack.removeAll(toRemove);
@@ -36,7 +36,8 @@ public class DisposedFrameProvider {
 	public synchronized int[] getDisposedFrame(int width, int height, boolean cleanUp) {
 		String hash = getHash(width, height);
 
-		// If we don't have any unused frames of the same size, not much we can do
+		// If we don't have any unused frames of the same size, not much we can
+		// do
 		if (!disposed.containsKey(hash))
 			return new int[width * height];
 
@@ -49,7 +50,8 @@ public class DisposedFrameProvider {
 		Frame disposedFrame = disposedOfEqualSize.pop();
 		int[] pixels = disposedFrame.pixels;
 
-		// If the caller doesn't like dirty data, we have to use a O(n) operation to clear it
+		// If the caller doesn't like dirty data, we have to use a O(n)
+		// operation to clear it
 		if (cleanUp)
 			for (int j = 0; j < height; j++)
 				for (int i = 0; i < width; i++)
