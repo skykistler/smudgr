@@ -3,7 +3,6 @@ package io.smudgr.project.smudge.alg.op;
 import io.smudgr.project.smudge.alg.PixelIndexList;
 import io.smudgr.project.smudge.alg.math.univariate.ChromaFunction;
 import io.smudgr.project.smudge.alg.math.univariate.HueFunction;
-import io.smudgr.project.smudge.alg.math.univariate.LogFunction;
 import io.smudgr.project.smudge.alg.math.univariate.LumaFunction;
 import io.smudgr.project.smudge.alg.math.univariate.UnivariateFunction;
 import io.smudgr.project.smudge.param.BooleanParameter;
@@ -29,7 +28,6 @@ public class PixelSort extends Operation {
 	public void init() {
 		function.add(new ChromaFunction());
 		function.add(new HueFunction());
-		function.add(new LogFunction());
 
 		toSort = new int[1024];
 	}
