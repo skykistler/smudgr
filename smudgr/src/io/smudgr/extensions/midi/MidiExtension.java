@@ -202,13 +202,16 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 				if (bound != null && bound instanceof Controllable) {
 					MidiMessageStrategy ms = messageStrategies.get(status);
 
-					// If this is a CC message, we need to check if this is an
-					// absolute or relative bind
-					if (ms instanceof ControlChangeMessage) {
-						ControlChangeMessage ccm = (ControlChangeMessage) ms;
-						ccm.input((Controllable) bound, value, midiMap.isAbsoluteBind(channel, key));
-					} else {
-						ms.input((Controllable) bound, value);
+					synchronized (Controller.getInstance().getProject().getSmudge()) {
+						// If this is a CC message, we need to check if this is
+						// an
+						// absolute or relative bind
+						if (ms instanceof ControlChangeMessage) {
+							ControlChangeMessage ccm = (ControlChangeMessage) ms;
+							ccm.input((Controllable) bound, value, midiMap.isAbsoluteBind(channel, key));
+						} else {
+							ms.input((Controllable) bound, value);
+						}
 					}
 				}
 			}
