@@ -80,14 +80,14 @@ public class Gif implements AnimatedSource {
 		buffer.clear();
 	}
 
-	public void setSpeedFactor(double speed) {
+	public void setSpeed(double speed) {
 		speed = speed < 0 ? 0 : speed;
 		speed = speed > 4 ? 4 : speed;
 
 		speedFactor = speed;
 	}
 
-	public double getSpeedFactor() {
+	public double getSpeed() {
 		return speedFactor;
 	}
 
