@@ -47,6 +47,7 @@ public class Gif implements AnimatedSource {
 
 		ticks++;
 
+		currentFrame %= buffer.size();
 		GifFrame frame = buffer.get(currentFrame);
 		if (frame == null) {
 			currentFrame = 0;
@@ -57,7 +58,6 @@ public class Gif implements AnimatedSource {
 		int delay = Controller.getInstance().ticksToMs(ticks);
 		if (frame.getDelay() / speedFactor <= delay) {
 			currentFrame++;
-			currentFrame %= buffer.size();
 
 			ticks = 0;
 		}
