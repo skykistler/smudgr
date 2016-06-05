@@ -1,13 +1,11 @@
 package io.smudgr.extensions.cef.commands;
 
+import io.smudgr.extensions.cef.util.CefMessage;
+
 public interface CefCommand {
 
 	public String getCommand();
 
-	public boolean request(String content);
-
-	public String onSuccess();
-
-	public String onFailure();
+	public CefMessage execute(CefMessage data);
 
 }

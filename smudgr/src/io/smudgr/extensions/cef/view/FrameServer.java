@@ -13,7 +13,6 @@ import io.smudgr.project.smudge.source.Image;
 import io.smudgr.project.util.Frame;
 
 public class FrameServer extends WebSocketServer {
-
 	private volatile Frame frame = null;
 	private volatile boolean dimensionsChanged;
 
@@ -83,5 +82,4 @@ public class FrameServer extends WebSocketServer {
 
 		testServer.start();
 	}
-
 }

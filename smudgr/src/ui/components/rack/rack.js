@@ -1,5 +1,27 @@
-function RackCtrl($scope, $element, $attrs) {
-  $scope.rackElements = new Array(10);
+function RackCtrl($scope, project) {
+  $scope.smudge = function() {
+    return project.getSmudge();
+  }
+
+  $scope.getElementName = function(element) {
+    if (element.name)
+      return element.name;
+
+    if (element.components)
+      for (var i in element.components) {
+        var comp = element.components[i];
+        if (comp.type == "Operation") {
+          return comp.name;
+        }
+      }
+
+    return "Element";
+  };
+
+  $scope.selectElement = function(element) {
+    project.currentElement = element;
+  };
+
 }
 
 angular.module('smudgr').component('smudgrRack', {

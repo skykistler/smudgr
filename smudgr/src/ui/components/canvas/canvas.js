@@ -1,5 +1,5 @@
-function CanvasCtrl($scope, $http, smudgr, $document) {
-  
+function CanvasCtrl($scope, smudgr, $document) {
+
   var canvasSizeChanged = function() {
     var canvas = $document.find("smudgr-canvas");
 
@@ -12,7 +12,7 @@ function CanvasCtrl($scope, $http, smudgr, $document) {
   }
 
   $scope.$watch(canvasSizeChanged, function(newValue, oldValue) {
-    smudgr.exec("canvas.size", [newValue.x, newValue.y, newValue.w, newValue.h] );
+    smudgr.exec("canvas.size", newValue);
   }, true);
 }
 

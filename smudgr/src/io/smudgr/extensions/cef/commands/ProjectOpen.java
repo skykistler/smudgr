@@ -6,26 +6,20 @@ import io.smudgr.app.Controller;
 import io.smudgr.app.view.FileDialog;
 import io.smudgr.app.view.FileDialog.FileDialogCallback;
 import io.smudgr.app.view.FileDialog.FileDialogFilter;
+import io.smudgr.extensions.cef.util.CefMessage;
 import io.smudgr.project.ProjectLoader;
 
-public class OpenSmudge implements CefCommand {
+public class ProjectOpen implements CefCommand {
 
 	public String getCommand() {
 		return "smudge.open";
 	}
 
-	public boolean request(String content) {
+	public CefMessage execute(CefMessage data) {
 		FileDialogFilter filter = new FileDialogFilter("smudge", "Project files");
 		FileDialog.getInstance().show("Open Smudge", false, filter, new OpenSmudgeCallback());
-		return true;
-	}
 
-	public String onSuccess() {
-		return "Showing open dialog for project";
-	}
-
-	public String onFailure() {
-		return "Failed to show open dialog for project";
+		return null;
 	}
 
 	private class OpenSmudgeCallback implements FileDialogCallback {

@@ -1,15 +1,16 @@
 package io.smudgr.extensions.cef.commands;
 
 import io.smudgr.app.Controller;
+import io.smudgr.extensions.cef.util.CefMessage;
 import io.smudgr.project.ProjectLoader;
 
-public class NewSmudge implements CefCommand {
+public class ProjectNew implements CefCommand {
 
 	public String getCommand() {
-		return "smudge.new";
+		return "project.new";
 	}
 
-	public boolean request(String content) {
+	public CefMessage execute(CefMessage data) {
 		(new Thread() {
 			public void run() {
 				ProjectLoader project = new ProjectLoader();
@@ -19,7 +20,7 @@ public class NewSmudge implements CefCommand {
 			}
 		}).start();
 
-		return true;
+		return null;
 	}
 
 	public String onSuccess() {

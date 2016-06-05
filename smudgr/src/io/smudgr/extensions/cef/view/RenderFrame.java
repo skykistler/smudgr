@@ -34,7 +34,7 @@ public class RenderFrame extends Window {
 
 		getRootPane().putClientProperty("Window.shadow", Boolean.FALSE);
 		setAlwaysOnTop(true);
-		setUndecorated(true);
+		//		setUndecorated(true);
 		setBackground(Color.black);
 		setFocusableWindowState(false);
 
@@ -140,20 +140,20 @@ public class RenderFrame extends Window {
 		setLocation(x, y);
 	}
 
-	public void setX(String offsetX) {
-		this.offsetX = Integer.parseInt(offsetX);
+	public void setX(int offsetX) {
+		this.offsetX = offsetX;
 	}
 
-	public void setY(String offsetY) {
-		this.offsetY = Integer.parseInt(offsetY);
+	public void setY(int offsetY) {
+		this.offsetY = offsetY;
 	}
 
-	public void setWidth(String renderViewWidth) {
-		viewWidth = Integer.parseInt(renderViewWidth);
+	public void setWidth(int width) {
+		viewWidth = width;
 	}
 
-	public void setHeight(String renderViewHeight) {
-		viewHeight = Integer.parseInt(renderViewHeight);
+	public void setHeight(int height) {
+		viewHeight = height;
 	}
 
 	private static final long serialVersionUID = -6876566152495162962L;

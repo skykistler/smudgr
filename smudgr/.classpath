@@ -49,5 +49,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/jna-4.2.2.jar"/>
 	<classpathentry kind="lib" path="lib/framebuffer-shaded-0.1.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/json-simple-1.1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

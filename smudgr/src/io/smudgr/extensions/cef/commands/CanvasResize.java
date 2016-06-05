@@ -1,5 +1,6 @@
 package io.smudgr.extensions.cef.commands;
 
+import io.smudgr.extensions.cef.util.CefMessage;
 import io.smudgr.extensions.cef.view.RenderFrame;
 
 public class CanvasResize implements CefCommand {
@@ -8,21 +9,17 @@ public class CanvasResize implements CefCommand {
 		return "canvas.size";
 	}
 
-	public boolean request(String content) {
-		String[] parts = content.split(":");
-		if (parts.length != 4)
-			return false;
-
+	public CefMessage execute(CefMessage data) {
 		RenderFrame canvas = RenderFrame.getInstance();
 
-		canvas.setX(parts[0]);
-		canvas.setY(parts[1]);
-		canvas.setWidth(parts[2]);
-		canvas.setHeight(parts[3]);
+		canvas.setX((int) data.getNumber("x"));
+		canvas.setY((int) data.getNumber("y"));
+		canvas.setWidth((int) data.getNumber("w"));
+		canvas.setHeight((int) data.getNumber("h"));
 
 		canvas.updateDimensions();
 
-		return true;
+		return null;
 	}
 
 	public String onSuccess() {

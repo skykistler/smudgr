@@ -12,16 +12,16 @@ public class SkyTestApp extends AppStart {
 
 	static String projectPath = "data/test.smudge";
 
-	static boolean overwriteSmudge = true;
+	static boolean overwriteSmudge = false;
 
-	static String sourcePath = "data/gemini";
+	static String sourcePath = "data/venture/noise show";
 
 	static String outputPath = "data";
 
 	static String device = "Arturia BeatStep Pro";
 	static boolean deviceServer = false;
 
-	static int fullscreenDisplay = 1;
+	static int fullscreenDisplay = -1;
 	static boolean monitor = true;
 
 	public void buildSmudge() {
@@ -66,8 +66,6 @@ public class SkyTestApp extends AppStart {
 		fullscreenView(fullscreenDisplay);
 		if (monitor)
 			monitorView();
-
-		// Controller.getInstance().add(new WebsocketView());
 
 		start();
 	}

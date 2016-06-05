@@ -55,7 +55,7 @@ public class Reflect {
 				searchDirectory_r(file, "");
 		}
 
-		String[] classPaths = System.getProperty("java.class.path").split(";");
+		String[] classPaths = System.getProperty("java.class.path").split(";|:");
 		Set<String> classPathSet = new HashSet<String>(Arrays.asList(classPaths));
 
 		for (String string : classPathSet) {

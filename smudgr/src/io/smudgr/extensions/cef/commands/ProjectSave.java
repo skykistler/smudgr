@@ -6,21 +6,22 @@ import io.smudgr.app.Controller;
 import io.smudgr.app.view.FileDialog;
 import io.smudgr.app.view.FileDialog.FileDialogCallback;
 import io.smudgr.app.view.FileDialog.FileDialogFilter;
+import io.smudgr.extensions.cef.util.CefMessage;
 import io.smudgr.project.ProjectSaver;
 
-public class SaveSmudge implements CefCommand {
+public class ProjectSave implements CefCommand {
 
 	public String getCommand() {
-		return "smudge.save";
+		return "project.save";
 	}
 
-	public boolean request(String content) {
-		if (content.equals("as") || Controller.getInstance().getProject().getProjectPath() == null) {
+	public CefMessage execute(CefMessage data) {
+		if (data.hasKey("as") || Controller.getInstance().getProject().getProjectPath() == null) {
 			showSaveAs();
 		} else
 			saveProject();
 
-		return true;
+		return null;
 	}
 
 	private void showSaveAs() {
@@ -31,14 +32,6 @@ public class SaveSmudge implements CefCommand {
 	private void saveProject() {
 		ProjectSaver project = new ProjectSaver();
 		project.save();
-	}
-
-	public String onSuccess() {
-		return "Showing save dialog for project";
-	}
-
-	public String onFailure() {
-		return "Failed to show save dialog for project";
 	}
 
 	private class SaveSmudgeCallback implements FileDialogCallback {

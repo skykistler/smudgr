@@ -24,8 +24,9 @@ import org.cef.browser.CefMessageRouter;
 
 import io.smudgr.app.Controller;
 import io.smudgr.app.view.View;
-import io.smudgr.extensions.cef.CommandRouter;
+import io.smudgr.extensions.cef.CefExtension;
 import io.smudgr.extensions.cef.util.CefAppHandler;
+import io.smudgr.extensions.cef.util.CefQueryHandler;
 import io.smudgr.extensions.cef.util.DialogHandler;
 import io.smudgr.project.util.Frame;
 
@@ -34,6 +35,7 @@ public class CefView extends JFrame implements View {
 	private boolean debug;
 
 	private RenderFrame renderFrame;
+
 	private CefApp cefApp;
 	private CefClient cefClient;
 	private CefBrowser cefBrowser;
@@ -139,12 +141,13 @@ public class CefView extends JFrame implements View {
 
 		cefClient = cefApp.createClient();
 
-		CefMessageRouter msgRouter = CefMessageRouter.create(new CommandRouter());
+		CefExtension extension = (CefExtension) Controller.getInstance().getExtension("CEF");
+		CefMessageRouter msgRouter = CefMessageRouter.create(new CefQueryHandler(extension.getInvoker()));
 		cefClient.addMessageRouter(msgRouter);
 
 		cefClient.addDialogHandler(new DialogHandler());
 
-		cefBrowser = cefClient.createBrowser("smudgr://ui/smudgr.html", false, false);
+		cefBrowser = cefClient.createBrowser("smudgr://ui/index.html", false, false);
 
 		cefBrowserUI = cefBrowser.getUIComponent();
 	}

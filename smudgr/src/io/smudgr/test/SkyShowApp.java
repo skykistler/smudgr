@@ -19,7 +19,7 @@ public class SkyShowApp extends AppStart {
 
 	static boolean overwriteSmudge = true;
 
-	static String sourcePath = "data/gemini";
+	static String sourcePath = "data/venture/noise show";
 
 	static String outputPath = "data";
 

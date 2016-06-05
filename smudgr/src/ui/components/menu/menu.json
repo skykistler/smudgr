@@ -1,22 +1,18 @@
 [
   {
-    "title": "Project",
+    "title": "Smudge",
     "items": [
       {
-        "title": "Say hello",
-        "action": "smudge.hello"
+        "title": "New Project",
+        "action": "project.new"
       },
       {
-        "title": "New smudge",
-        "action": "smudge.new"
+        "title": "Open Project",
+        "action": "project.open"
       },
       {
-        "title": "Open smudge",
-        "action": "smudge.open"
-      },
-      {
-        "title": "Save smudge",
-        "action": "smudge.save"
+        "title": "Save Project",
+        "action": "project.save"
       }
     ]
   },

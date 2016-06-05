@@ -2,7 +2,7 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="lib/angular-material.min.css">
-  <link rel="stylesheet" href="smudgr.css">
+  <link rel="stylesheet" href="resources/smudgr.css">
 
   <script src="lib/jquery-1.12.3.min.js"></script>
   <script src="lib/angular.min.js"></script>
@@ -11,12 +11,13 @@
   <script src="lib/angular-messages.min.js"></script>
   <script src="lib/angular-material.min.js"></script>
 
-  <script src="smudgr.js"></script>
+  <script src="app.js"></script>
+  <script src="services/smudgr.js"></script>
+  <script src="services/project.js"></script>
   <script src="components/menu/menu.js"></script>
   <script src="components/navigator/navigator.js"></script>
   <script src="components/canvas/canvas.js"></script>
   <script src="components/rack/rack.js"></script>
-  <script src="components/rack/element.js"></script>
 </head>
 
 <body ng-app="smudgr" ng-controller="smudgrCtrl" layout="column" layout-wrap ng-cloak>
