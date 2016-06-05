@@ -10,6 +10,10 @@ public class Bound extends AlgorithmComponent {
 		return "Bound";
 	}
 
+	public String getName() {
+		return "Rectangle";
+	}
+
 	protected NumberParameter offsetX = new NumberParameter("Bound X", this, 0, 0, 1, 0.005);
 	protected NumberParameter offsetY = new NumberParameter("Bound Y", this, 0, 0, 1, 0.005);
 	protected NumberParameter width = new NumberParameter("Bound Width", this, 1, 0, 1, 0.005);
@@ -96,10 +100,6 @@ public class Bound extends AlgorithmComponent {
 
 	public int getTranslatedHeight(Frame image) {
 		return (int) Math.floor(height.getValue() * image.getHeight());
-	}
-
-	public String getName() {
-		return "Bound";
 	}
 
 }

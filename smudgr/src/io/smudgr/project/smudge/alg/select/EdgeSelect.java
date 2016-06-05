@@ -13,7 +13,7 @@ import io.smudgr.project.util.Frame;
 public class EdgeSelect extends Selector {
 
 	public String getName() {
-		return "Edge Select";
+		return "Edges";
 	}
 
 	NumberParameter direction = new NumberParameter("Direction", this, 1, 1, 3, 1);
@@ -44,22 +44,14 @@ public class EdgeSelect extends Selector {
 
 		double p0, p1, p2, p3, delta;
 
-		/* Uses some basic image derivative kernels of the form:
-		* case 1:
-		* 		[ 0  0  0 ]
-		*	    	[ 1 -2  1 ]
-		*		[ 0  0  0 ]
-		*
-		*case 2:
-		*	   [ 0   1  0 ]
-		*	   [ 0  -2  0 ]
-		*	   [ 0   1  0 ]
-		*
-		*case 3:
-		*	   [ 0   1  0 ]
-		*	   [ 1  -4  1 ]
-		*	   [ 0   1  0 ]
-		*/
+		/*
+		 * Uses some basic image derivative kernels of the form: case 1: [ 0 0 0
+		 * ] [ 1 -2 1 ] [ 0 0 0 ]
+		 *
+		 * case 2: [ 0 1 0 ] [ 0 -2 0 ] [ 0 1 0 ]
+		 *
+		 * case 3: [ 0 1 0 ] [ 1 -4 1 ] [ 0 1 0 ]
+		 */
 		switch (d) {
 		case 1:
 			p0 = f.calculate(img.get(xplus1, y));

@@ -7,7 +7,7 @@ import io.smudgr.project.smudge.alg.bound.Bound;
 import io.smudgr.project.smudge.param.NumberParameter;
 import io.smudgr.project.util.Frame;
 
-public class RadialCoordFunction extends CoordFunction {
+public class RadialCoords extends CoordFunction {
 
 	public String getName() {
 		return "Spiral";

@@ -2,53 +2,19 @@
   smudgr-navigator {
     min-width: 330px;
   }
-  md-content, md-list-item, smudgr-navigator, .md-subheader {
+  md-content {
     background-color: rgb(210, 210, 210);
-  }
-  md-header {
-    padding-left: 15px;
   }
 </style>
 
 <md-content ng-show="currentElement()" layout="column" flex>
 
-  <md-list>
-    <md-header>Bounds</md-header>
-    <md-list-item ng-repeat="component in currentElement().components | filter:{ type: 'Bound' }">
-      <md-subheader>
-        {{ component.name }}
-      </md-subheader>
-      <md-divider></md-divider>
-    </md-list-item>
-  </md-list>
-
-  <md-list>
-    <md-header>Selectors</md-header>
-    <md-list-item ng-repeat="component in currentElement().components | filter:{ type: 'Selector' }">
-      <md-subheader>
-        {{ component.name }}
-      </md-subheader>
-      <md-divider></md-divider>
-    </md-list-item>
-  </md-list>
-
-  <md-list>
-    <md-header>Flow</md-header>
-    <md-list-item ng-repeat="component in currentElement().components | filter:{ type: 'Flow' }">
-      <md-subheader>
-        {{ component.name }}
-      </md-subheader>
-      <md-divider></md-divider>
-    </md-list-item>
-  </md-list>
-
-  <md-list>
-    <md-header>Operations</md-header>
-    <md-list-item ng-repeat="component in currentElement().components | filter:{ type: 'Operation' }">
-      <md-subheader>
-        {{ component.name }}
-      </md-subheader>
-    </md-list-item>
-  </md-list>
+  <component-list type="Bound" title="Bounds"></component-list>
+  <md-divider></md-divider>
+  <component-list type="Selector" title="Selectors"></component-list>
+  <md-divider></md-divider>
+  <component-list type="Flow" title="Flows"></component-list>
+  <md-divider></md-divider>
+  <component-list type="Operation" title="Operations"></component-list>
 
 </md-content>

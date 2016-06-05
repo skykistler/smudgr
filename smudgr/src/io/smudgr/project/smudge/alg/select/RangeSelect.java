@@ -19,7 +19,7 @@ public class RangeSelect extends Selector {
 	UnivariateParameter function = new UnivariateParameter("Function", this, new LumaFunction());
 
 	public String getName() {
-		return "Range Selection";
+		return "Range";
 	}
 
 	public void init() {

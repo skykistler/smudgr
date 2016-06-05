@@ -3,7 +3,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="lib/angular-material.min.css">
   <link rel="stylesheet" href="resources/smudgr.css">
-
+  
+  <!-- Libraries -->
   <script src="lib/jquery-1.12.3.min.js"></script>
   <script src="lib/angular.min.js"></script>
   <script src="lib/angular-animate.min.js"></script>
@@ -11,20 +12,32 @@
   <script src="lib/angular-messages.min.js"></script>
   <script src="lib/angular-material.min.js"></script>
 
+  <!-- App and services-->
   <script src="app.js"></script>
   <script src="services/smudgr.js"></script>
   <script src="services/project.js"></script>
+
+  <!-- Menu components -->
   <script src="components/menu/menu.js"></script>
+
+  <!-- Navigator components -->
   <script src="components/navigator/navigator.js"></script>
+  <script src="components/navigator/componentList.js"></script>
+  <script src="components/navigator/component.js"></script>
+
+  <!-- Canvas components -->
   <script src="components/canvas/canvas.js"></script>
+
+  <!-- Rack components -->
   <script src="components/rack/rack.js"></script>
+  <script src="components/rack/element.js"></script>
 </head>
 
 <body ng-app="smudgr" ng-controller="smudgrCtrl" layout="column" layout-wrap ng-cloak>
 
   <smudgr-menu flex="none"></smudgr-menu>
   <div flex layout="row">
-    <smudgr-navigator flex="30"></smudgr-navigator>
+    <smudgr-navigator flex="33"></smudgr-navigator>
     <smudgr-canvas flex></smudgr-canvas>
   </div>
   <smudgr-rack flex="none"></smudgr-rack>

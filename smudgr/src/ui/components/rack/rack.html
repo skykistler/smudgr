@@ -5,30 +5,12 @@
     overflow-x: scroll;
     overflow-y: hidden;
   }
-  .element-card {
-    width: 300px;
-    height: 250px;
-  }
-  .md-headline {
-    color: #AAAAAA;
-  }
 </style>
 
 <div class="smudge-rack md-whiteframe-20">
   <div layout="row">
     <div ng-repeat="element in smudge().algorithms track by $index">
-      <md-card ng-click="selectElement(element)" class="element-card md-primary md-hue-2" >
-        <md-card-title>
-          <md-card-title-text>
-            <span class="md-headline">{{ getElementName(element) }}</span>
-          </md-card-title-text>
-        </md-card-title>
-        <md-card-actions layout="row">
-          <md-button ng-repeat="parameter in element.parameters track by $index">
-            {{ parameter.name }}
-          </md-button>
-        </md-card-actions>
-      </md-card>
+      <element element="element"></element>
     </div>
   </div>
 </div>

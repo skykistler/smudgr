@@ -1,0 +1,15 @@
+<style>
+  md-header {
+    padding-left: 15px;
+  }
+</style>
+
+<md-list>
+  <md-header>{{ title }}</md-header>
+  <md-list-item ng-repeat="component in currentElement().components | filter:{ type: type }">
+    <md-subheader>
+      {{ component.name }}
+    </md-subheader>
+    <md-divider></md-divider>
+  </md-list-item>
+</md-list>

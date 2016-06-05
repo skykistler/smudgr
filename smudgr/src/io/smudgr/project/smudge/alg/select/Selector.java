@@ -9,12 +9,12 @@ import io.smudgr.project.util.Frame;
 
 public abstract class Selector extends AlgorithmComponent {
 
-	protected ArrayList<PixelIndexList> selectedList = new ArrayList<PixelIndexList>();
-	protected Stack<PixelIndexList> disposedLists = new Stack<PixelIndexList>();
-
 	public String getType() {
 		return "Selector";
 	}
+
+	protected ArrayList<PixelIndexList> selectedList = new ArrayList<PixelIndexList>();
+	protected Stack<PixelIndexList> disposedLists = new Stack<PixelIndexList>();
 
 	private Frame frame;
 

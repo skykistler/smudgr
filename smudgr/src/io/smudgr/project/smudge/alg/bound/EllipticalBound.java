@@ -5,7 +5,7 @@ import io.smudgr.project.util.Frame;
 public class EllipticalBound extends Bound {
 
 	public String getName() {
-		return "Elliptical Bound";
+		return "Elliptical";
 	}
 
 	public boolean containsPoint(Frame img, int x, int y) {

@@ -1,0 +1,22 @@
+<style>
+  .element-card {
+    width: 300px;
+    height: 250px;
+  }
+  .md-headline {
+    color: #AAAAAA;
+  }
+</style>
+
+<md-card ng-click="selectElement()" class="element-card md-primary md-hue-2" >
+  <md-card-title>
+    <md-card-title-text>
+      <span class="md-headline">{{ getElementName() }}</span>
+    </md-card-title-text>
+  </md-card-title>
+  <md-card-actions layout="row">
+    <md-button ng-repeat="parameter in element.parameters track by $index">
+      {{ parameter.name }}
+    </md-button>
+  </md-card-actions>
+</md-card>
