@@ -19,17 +19,16 @@ public class SourceMixer extends Operation {
 		return "Source Mixer";
 	}
 
-	int MAX_HEIGHT = 4000;
-	int MAX_WIDTH = 2200;
-
-	private Frame mixFrame;
-
-	private Source mixSource = new Image("data/mix/water.jpg");
-
 	NumberParameter size = new NumberParameter("Size", this, 1, 0, 1.5, 0.01);
 	NumberParameter translateX = new NumberParameter("Translation X", this, 0, -1, 1, 0.01);
 	NumberParameter translateY = new NumberParameter("Translation Y", this, 0, -1, 1, 0.01);
 	BlendParameter blenders = new BlendParameter("Blender", this, new NormalBlender());
+
+	private Frame mixFrame;
+	private Source mixSource = new Image("data/mix/water.jpg");
+
+	int MAX_HEIGHT = 4000;
+	int MAX_WIDTH = 2200;
 
 	int lastMixW = 0;
 	int lastMixH = 0;
@@ -55,7 +54,6 @@ public class SourceMixer extends Operation {
 		blend(img);
 	}
 
-	// Update the size of the mix frame, not the base frame we are blending into
 	private void blend(Frame img) {
 
 		int baseW = img.getWidth();
@@ -69,7 +67,7 @@ public class SourceMixer extends Operation {
 			int frameWidth = frameFromSource.getWidth();
 			int frameHeight = frameFromSource.getHeight();
 
-			/*- if the source frame we are mixing in is different, then resize to fit in the base frame. */
+			/*- if the source frame we are mixing in is different, then change size to reflect fit to base frame*/
 			if (frameWidth != lastMixW || frameHeight != lastMixH) {
 				double newWidth = frameWidth;
 				double newHeight = frameHeight;
@@ -86,7 +84,6 @@ public class SourceMixer extends Operation {
 					newWidth = (newHeight * frameWidth) / frameHeight;
 				}
 				double w = newWidth;
-				// double h = newHeight;
 
 				double scaleCoefficient = Math.max(0, Math.min(1.5, w / frameWidth));
 				size.setValue(scaleCoefficient);
@@ -100,9 +97,7 @@ public class SourceMixer extends Operation {
 			scale = scale * frameWidth > MAX_WIDTH ? (double) (MAX_WIDTH) / frameWidth : scale;
 			scale = scale * frameHeight > MAX_HEIGHT ? (double) (MAX_HEIGHT) / frameHeight : scale;
 			mixFrame = frameFromSource.resize(scale);
-		}
-
-		if (mixFrame == null)
+		} else
 			return;
 
 		// update the mix frame dimensions variables after resizing
