@@ -9,10 +9,10 @@ import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
-import io.smudgr.project.smudge.source.Image;
 import io.smudgr.project.util.Frame;
 
 public class FrameServer extends WebSocketServer {
+
 	private volatile Frame frame = null;
 	private volatile boolean dimensionsChanged;
 
@@ -40,6 +40,11 @@ public class FrameServer extends WebSocketServer {
 	}
 
 	public void onOpen(WebSocket arg0, ClientHandshake arg1) {
+		if (frame == null)
+			return;
+
+		arg0.send("w:" + frame.getWidth());
+		arg0.send("h:" + frame.getHeight());
 	}
 
 	public void onMessage(WebSocket arg0, String arg1) {
@@ -72,14 +77,4 @@ public class FrameServer extends WebSocketServer {
 	public void onError(WebSocket arg0, Exception arg1) {
 	}
 
-	public static void main(String[] args) throws UnknownHostException {
-		FrameServer testServer = new FrameServer(8887);
-
-		Image testImage = new Image("data/nicole.jpg");
-		testImage.init();
-
-		testServer.setFrame(testImage.getFrame());
-
-		testServer.start();
-	}
 }

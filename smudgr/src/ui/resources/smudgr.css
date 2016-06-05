@@ -4,8 +4,30 @@ html {
   max-width: 100%;
 }
 
-
 body {
   height: 100%;
   overflow: none;
+}
+
+smudgr-navigator {
+  min-width: 330px;
+  z-index: 2;
+  background-color: rgb(210, 210, 210);
+}
+
+.navigator-content {
+  overflow: auto;
+  height: calc(100% - 314px);
+}
+
+.element-card {
+  width: 300px;
+  height: 250px;
+}
+
+.component-card {
+}
+
+.md-subheader {
+  background-color: rgba(0,0,0,0);
 }

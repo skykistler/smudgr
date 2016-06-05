@@ -1,13 +1,4 @@
-<style>
-  smudgr-navigator {
-    min-width: 330px;
-  }
-  md-content {
-    background-color: rgb(210, 210, 210);
-  }
-</style>
-
-<md-content ng-show="currentElement()" layout="column" flex>
+<div class="navigator-content" ng-show="currentElement()" layout="column" flex>
 
   <component-list type="Bound" title="Bounds"></component-list>
   <md-divider></md-divider>
@@ -17,4 +8,4 @@
   <md-divider></md-divider>
   <component-list type="Operation" title="Operations"></component-list>
 
-</md-content>
+</div>

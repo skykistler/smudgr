@@ -27,7 +27,7 @@ public class SkyShowApp extends AppStart {
 	static boolean deviceServer = false;
 
 	static int fullscreenDisplay = -1;
-	static boolean monitor = true;
+	static boolean monitor = false;
 
 	public void buildSmudge() {
 		Smudge smudge = Controller.getInstance().getProject().getSmudge();
@@ -108,7 +108,7 @@ public class SkyShowApp extends AppStart {
 		if (monitor)
 			monitorView();
 
-		// Controller.getInstance().add(new WebsocketView());
+		//		Controller.getInstance().add(new WebsocketView());
 
 		start();
 	}

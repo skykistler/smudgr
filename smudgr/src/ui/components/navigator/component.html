@@ -1,0 +1,10 @@
+<md-card class="component-card" layout="column" flex>
+  <md-card-title>
+    <span class="md-headline">{{ component.name }}</span>
+  </md-card-title>
+  <div class="component-parameters" layout="row" layout-wrap>
+    <md-button ng-repeat="parameter in component.parameters">
+      {{ parameter.name }}
+    </md-button>
+  </div>
+</md-card>
