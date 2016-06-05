@@ -6,8 +6,8 @@ import io.smudgr.project.smudge.alg.math.blend.MaxBlender;
 import io.smudgr.project.smudge.alg.math.blend.MinBlender;
 import io.smudgr.project.smudge.alg.math.blend.MultiplyBlender;
 import io.smudgr.project.smudge.alg.math.blend.NormalBlender;
+import io.smudgr.project.smudge.alg.math.blend.RevolvingBlender;
 import io.smudgr.project.smudge.param.BlendParameter;
-import io.smudgr.project.smudge.param.BooleanParameter;
 import io.smudgr.project.smudge.param.NumberParameter;
 import io.smudgr.project.smudge.source.Image;
 import io.smudgr.project.smudge.source.Source;
@@ -19,59 +19,101 @@ public class SourceMixer extends Operation {
 		return "Source Mixer";
 	}
 
+	int MAX_HEIGHT = 4000;
+	int MAX_WIDTH = 2200;
+
 	private Frame mixFrame;
 
-	private Source mixSource = new Image("data/firemix.png");
+	private Source mixSource = new Image("data/mix/water.jpg");
 
 	NumberParameter size = new NumberParameter("Size", this, 1, 0, 1.5, 0.01);
 	NumberParameter translateX = new NumberParameter("Translation X", this, 0, -1, 1, 0.01);
 	NumberParameter translateY = new NumberParameter("Translation Y", this, 0, -1, 1, 0.01);
-	BooleanParameter scaleToChange = new BooleanParameter("Scale To Change", this, false);
-	BooleanParameter fitOnLoading = new BooleanParameter("Fit on Loading", this, false);
 	BlendParameter blenders = new BlendParameter("Blender", this, new NormalBlender());
 
-	private double lastTranslateX, lastTranslateY, lastSize;
-	private int lastBaseW, lastBaseH;
-	private int lastMixW, lastMixH;
-	private int currentMixW, currentMixH;
-
-	private double currentTransX, currentTransY, currentSize;
+	int lastMixW = 0;
+	int lastMixH = 0;
 
 	Blender blender;
 
-	// displacement from mix frame center to base frame center
-	int dx, dy = 0;
-
-	private void addBlenders() {
+	public void init() {
+		mixSource.init();
 		blenders.add(new MaxBlender());
 		blenders.add(new MinBlender());
 		blenders.add(new MultiplyBlender());
+		blenders.add(new RevolvingBlender());
 	}
 
-	public void init() {
-		mixSource.init();
-		addBlenders();
-		lastTranslateX = translateX.getValue();
-		lastTranslateY = translateY.getValue();
-		lastSize = size.getValue();
+	public void setSource(Source s) {
+		if (mixSource != null)
+			mixSource.dispose();
+		mixSource = s;
 	}
 
 	public void execute(Frame img) {
 		blender = blenders.getValue();
+		blend(img);
+	}
 
-		update(img);
+	// Update the size of the mix frame, not the base frame we are blending into
+	private void blend(Frame img) {
+
+		int baseW = img.getWidth();
+		int baseH = img.getHeight();
+
+		if (mixFrame != null)
+			mixFrame.dispose();
+
+		Frame frameFromSource = mixSource.getFrame();
+		if (frameFromSource != null) {
+			int frameWidth = frameFromSource.getWidth();
+			int frameHeight = frameFromSource.getHeight();
+
+			/*- if the source frame we are mixing in is different, then resize to fit in the base frame. */
+			if (frameWidth != lastMixW || frameHeight != lastMixH) {
+				double newWidth = frameWidth;
+				double newHeight = frameHeight;
+
+				boolean tooSmall = newWidth < baseW && newHeight < baseH;
+
+				if (frameWidth > baseW || tooSmall) {
+					newWidth = baseW;
+					newHeight = (newWidth * frameHeight) / frameWidth;
+				}
+
+				if (newHeight > baseH) {
+					newHeight = baseH;
+					newWidth = (newHeight * frameWidth) / frameHeight;
+				}
+				double w = newWidth;
+				// double h = newHeight;
+
+				double scaleCoefficient = Math.max(0, Math.min(1.5, w / frameWidth));
+				size.setValue(scaleCoefficient);
+
+			}
+			lastMixW = frameWidth;
+			lastMixH = frameHeight;
+
+			// Enforce limit on resize dimensions
+			double scale = size.getValue();
+			scale = scale * frameWidth > MAX_WIDTH ? (double) (MAX_WIDTH) / frameWidth : scale;
+			scale = scale * frameHeight > MAX_HEIGHT ? (double) (MAX_HEIGHT) / frameHeight : scale;
+			mixFrame = frameFromSource.resize(scale);
+		}
 
 		if (mixFrame == null)
 			return;
 
-		blend(img);
-	}
-
-	private void blend(Frame img) {
-		// Specific to dimension changes
+		// update the mix frame dimensions variables after resizing
 		int mixW = mixFrame.getWidth();
 		int mixH = mixFrame.getHeight();
-		int baseW = img.getWidth();
+
+		int transX = (int) (translateX.getValue() * baseW);
+		int dx = baseW / 2 - mixW / 2 + transX;
+
+		int transY = (int) (translateY.getValue() * baseH);
+		int dy = baseH / 2 - mixH / 2 + transY;
 
 		int x, y;
 		for (PixelIndexList coords : getAlgorithm().getSelectedPixels()) {
@@ -80,110 +122,13 @@ public class SourceMixer extends Operation {
 				x = (coord % baseW) - dx;
 				y = ((coord - x) / baseW) - dy;
 
-				if (inFrame(mixW, mixH, x, y))
-					mix(coord, mixFrame, img, x, y);
-			}
-		}
-	}
-
-	private void update(Frame img) {
-
-		int baseW = img.getWidth();
-		int baseH = img.getHeight();
-
-		updateSize(img, baseW, baseH);
-
-		// update the mix frame dimensions variables post updateSize
-		int mixW = mixFrame.getWidth();
-		int mixH = mixFrame.getHeight();
-
-		// Update translation of frame we are mixing in...
-		updateTranslation(baseW, baseH, mixW, mixH);
-
-	}
-
-	// Update the size of the mix frame, not the base frame we are blending into
-	private void updateSize(Frame img, int baseW, int baseH) {
-
-		// If the base image's dimensions have changed, adjust the size
-		// Given the param scaleToChange is set to true.
-		if (lastBaseW != baseW || lastBaseH != baseH) {
-
-			double baseChangeY = 0;
-			double baseChangeX = 0;
-			if (scaleToChange.getValue() == true) {
-				// How much has the base image dimenions changed?
-				if (lastBaseW != 0 && lastBaseH == 0) {
-					baseChangeX = lastBaseW - (baseW / lastBaseW);
-					baseChangeY = lastBaseH - (baseH / lastBaseH);
+				if (inFrame(mixW, mixH, x, y)) {
+					int baseColor = img.pixels[coord];
+					int mixInColor = mixFrame.get(x, y);
+					img.pixels[coord] = blender.blend(mixInColor, baseColor);
 				}
-
-				double absBaseChangeX = Math.abs(baseChangeX);
-				double absBaseChangeY = Math.abs(baseChangeY);
-
-				// proportion of base image change will affect size of mix frame
-				// Pick the greatest change between width and height change
-				double sizeChange = absBaseChangeX > absBaseChangeY ? baseChangeX : baseChangeY;
-
-				// Only change the size param, so we can change the size at the
-				// end of this
-				// update function
-				adjustSizeParam(sizeChange);
 			}
 		}
-
-		// update base dimensions to reflect current base dimensions
-		lastBaseW = baseW;
-		lastBaseH = baseH;
-
-		currentSize = size.getValue();
-
-		mixFrame = mixSource.getFrame(currentSize);
-
-		// Update the lastSize variable to reflect current
-		lastSize = currentSize;
-
-	}
-
-	private void updateTranslation(int baseW, int baseH, int mixW, int mixH) {
-		// translation from displacement vector <dx, dy>
-		int transX, transY;
-
-		// set current translation parameter values
-		currentTransX = translateX.getValue();
-		currentTransY = translateY.getValue();
-
-		// translation on X
-		if (currentTransX != lastTranslateX) {
-			transX = (int) (translateX.getValue() * baseW); // Maybe it should
-															// be times mixW
-			dx = baseW / 2 - mixW / 2 + transX;
-		}
-		lastTranslateX = currentTransX;
-
-		// translation on Y
-		if (currentTransY != lastTranslateY) {
-			transY = (int) (translateY.getValue() * baseH); // Maybe it should
-															// be times mixH
-			dy = baseH / 2 - mixH / 2 + transY;
-		}
-		lastTranslateY = currentTransY;
-
-	}
-
-	private void mix(int coord, Frame mix, Frame img, int x, int y) {
-		int baseColor = img.pixels[coord];
-		int mixInColor = mix.get(x, y);
-
-		int compositeColor = blender.blend(baseColor, mixInColor);
-
-		img.pixels[coord] = compositeColor; /*- ColorHelper.color(255, newR, newG, newB); */
-	}
-
-	public void adjustSizeParam(double valueAdded) {
-		double sizeValue = size.getValue();
-		sizeValue += valueAdded;
-		size.setValue(Math.min(Math.max(0, sizeValue), size.getMax()));
 	}
 
 	private boolean inFrame(int mixW, int mixH, int x, int y) {
