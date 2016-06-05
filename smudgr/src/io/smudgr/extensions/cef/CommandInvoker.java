@@ -40,7 +40,11 @@ public class CommandInvoker {
 		CefCommand strategy = commands.get(command);
 
 		try {
-			response = strategy.execute(message);
+			CefMessage data = null;
+			if (message.hasKey("data"))
+				data = CefMessage.deserialize(message.get("data"));
+
+			response = strategy.execute(data);
 		} catch (Exception e) {
 			e.printStackTrace();
 

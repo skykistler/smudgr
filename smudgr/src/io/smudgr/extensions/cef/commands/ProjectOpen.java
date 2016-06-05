@@ -12,7 +12,7 @@ import io.smudgr.project.ProjectLoader;
 public class ProjectOpen implements CefCommand {
 
 	public String getCommand() {
-		return "smudge.open";
+		return "project.open";
 	}
 
 	public CefMessage execute(CefMessage data) {
