@@ -7,11 +7,14 @@
 
 <div class="smudgr-menu">
   <md-toolbar
-    class="smudgr-menu md-primary md-whiteframe-5dp"
+    class="smudgr-menu md-primary"
     layout="row"
     layout-align="start center">
+    <md-button class="md-icon-button">
+      <ng-md-icon icon="menu"></ng-md-icon>
+    </md-button>
     <div ng-repeat="menu in menuBar">
-      <md-menu>
+      <md-menu md-offset="0 50">
         <md-button ng-click="$mdOpenMenu()">{{ menu.title }}</md-button>
         <md-menu-content width="4">
           <div ng-repeat="item in menu.items">

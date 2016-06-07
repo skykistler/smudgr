@@ -1,17 +1,19 @@
-<style>
-  .md-headline {
-    color: #AAAAAA;
-  }
-</style>
-
-<md-card ng-click="selectElement()" class="element-card md-primary md-hue-2" >
-  <md-card-title>
-    <md-card-title-text>
-      <span class="md-headline">{{ getElementName() }}</span>
+<md-card ng-click="selectElement()" ng-attr-id="{{ 'element-' + element.id}}" class="element-card" >
+  <md-card-title class="element-card-title" layout="row" layout-align="start start">
+    <md-card-title-text flex="80">
+      <span class="md-headline element-name">{{ getElementName() }}</span>
     </md-card-title-text>
+    <md-button class="md-icon-button element-enable-button" ng-click="toggleEnable()" aria-label="Enable" flex>
+      <ng-md-icon
+        class="element-enable-icon"
+        icon="{{ enableIcon }}"
+        size="18"
+        options='{ "duration": 350 }'>
+      </ng-md-icon>
+    </md-button>
   </md-card-title>
   <md-card-actions layout="row">
-    <md-button ng-repeat="parameter in element.parameters track by $index">
+    <md-button ng-repeat="parameter in element.parameters | filter:boundFilter track by $index">
       {{ parameter.name }}
     </md-button>
   </md-card-actions>

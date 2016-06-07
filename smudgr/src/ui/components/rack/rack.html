@@ -1,18 +1,6 @@
-<style>
-  smudgr-rack {
-    z-index: 3;
-  }
-  .rack-content {
-    background-color: #333333;
-    max-height: 300px;
-    overflow-x: scroll;
-    overflow-y: hidden;
-  }
-</style>
-
-<div class="rack-content md-whiteframe-20">
+<div class="rack-content">
   <div layout="row">
-    <div ng-repeat="element in smudge().algorithms track by $index">
+    <div ng-repeat="element in elements track by $index">
       <element element="element"></element>
     </div>
   </div>

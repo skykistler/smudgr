@@ -1,4 +1,4 @@
-var app = angular.module('smudgr', ['ngMaterial']);
+var app = angular.module('smudgr', ['ngMaterial', 'ngMdIcons']);
 
 app.config(function($mdThemingProvider) {
   $mdThemingProvider.theme('default')

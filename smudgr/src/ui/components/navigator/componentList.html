@@ -1,12 +1,6 @@
-<style>
-  md-header {
-    padding-left: 15px;
-  }
-</style>
-
 <md-list>
-  <md-header>{{ title }}</md-header>
+  <span class="md-headline component-list-title">{{ title }}</md-header>
   <md-list-item ng-repeat="component in currentElement().components | filter:filterByType">
-    <component component="component"></component>
+    <component component="component" flex></component>
   </md-list-item>
 </md-list>

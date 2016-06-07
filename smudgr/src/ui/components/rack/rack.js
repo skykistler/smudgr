@@ -1,8 +1,16 @@
-function RackCtrl($scope, project) {
+function RackCtrl($scope, project, $timeout) {
 
-  $scope.smudge = function() {
-    return project.getSmudge();
+  $scope.getSmudge = function() {
+    return project.smudge;
   };
+
+  $scope.$watch($scope.getSmudge, function(newVal) {
+    $timeout(function() {
+      $scope.$apply(function() {
+        $scope.elements = project.smudge.algorithms;
+      });
+    }, 500);
+  }, true);
 
 }
 

@@ -19,14 +19,8 @@ class project {
 
   set(data) {
     this.data = data.project;
+    this.smudge = this.data.smudges[0];
     console.log(data);
-  }
-
-  getSmudge() {
-    if (this.data && this.data.smudges && this.data.smudges.length > 0)
-      return this.data.smudges[0];
-    else
-      return {};
   }
 
   getCurrentElement() {

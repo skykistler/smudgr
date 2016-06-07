@@ -1,10 +1,22 @@
-<md-card class="component-card" layout="column" flex>
-  <md-card-title>
-    <span class="md-headline">{{ component.name }}</span>
-  </md-card-title>
-  <div class="component-parameters" layout="row" layout-wrap>
-    <md-button ng-repeat="parameter in component.parameters">
-      {{ parameter.name }}
-    </md-button>
+<md-card class="component-card" ng-attr-id="{{ 'component-' + component.id }}">
+  <div class="component-container" layout="column" flex>
+    <div layout="row" layout-align="start center" flex>
+      <md-button class="md-icon-button component-collapse-button" ng-click="toggleParameters()">
+        <ng-md-icon
+          class="component-collapse-icon"
+          icon="{{ collapseIcon }}"
+          options='{ "duration": 300, "rotation": "none" }'
+          size="24">
+        </ng-md-icon>
+      </md-button>
+      <div class="component-name" flex>
+        <span class="md-headline component-name">{{ component.name }}</span>
+      </div>
+    </div>
+    <div ng-if="false" class="component-parameters" layout="row" layout-wrap>
+      <md-button ng-repeat="parameter in component.parameters">
+        {{ parameter.name }}
+      </md-button>
+    </div>
   </div>
 </md-card>

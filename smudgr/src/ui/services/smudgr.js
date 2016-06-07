@@ -3,7 +3,7 @@ class smudgr {
   constructor() {
     this.handlers = {};
 
-    this.socket = new WebSocket('ws://localhost:45455');
+    this.socket = new WebSocket('ws://24.92.23.148:45455');
     this.socket.parent = this;
 
     this.socket.onmessage = function (e) {
@@ -16,6 +16,9 @@ class smudgr {
   }
 
   exec(command, data) {
+    if (this.socket.readyState !== 1)
+      return;
+
     console.log("Executing " + command + "...");
 
     var payload = {
