@@ -3,7 +3,7 @@ class smudgr {
   constructor() {
     this.handlers = {};
 
-    this.socket = new WebSocket('ws://24.92.23.148:45455');
+    this.socket = new WebSocket('ws://' + location.hostname + ':45455');
     this.socket.parent = this;
 
     this.socket.onmessage = function (e) {

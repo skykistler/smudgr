@@ -20,7 +20,7 @@ function CanvasCtrl($scope, smudgr, $document) {
   if (canvas) {
     canvas = canvas.get(0);
 
-    var ws = new WebSocket('ws://24.92.23.148:8887')
+    var ws = new WebSocket('ws://' + location.hostname + ':8887')
     ws.binaryType = "arraybuffer";
 
     var context = canvas ? canvas.getContext('2d') : null;
