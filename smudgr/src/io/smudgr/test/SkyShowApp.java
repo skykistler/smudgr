@@ -3,6 +3,7 @@ package io.smudgr.test;
 import io.smudgr.app.AppStart;
 import io.smudgr.app.Controller;
 import io.smudgr.extensions.automate.controls.AutomatorControl;
+import io.smudgr.extensions.cef.view.WebsocketView;
 import io.smudgr.project.smudge.Smudge;
 import io.smudgr.project.smudge.alg.Algorithm;
 import io.smudgr.project.smudge.alg.coord.ColumnCoords;
@@ -17,13 +18,13 @@ public class SkyShowApp extends AppStart {
 
 	static String projectPath = "data/show.smudge";
 
-	static boolean overwriteSmudge = true;
+	static boolean overwriteSmudge = false;
 
-	static String sourcePath = "data/venture/noise show";
+	static String sourcePath = "data/venture/oceans";
 
 	static String outputPath = "data";
 
-	static String device = "Arturia BeatStep Pro";
+	static String device = "Arturia BeatStepPro";
 	static boolean deviceServer = false;
 
 	static int fullscreenDisplay = -1;
@@ -108,7 +109,7 @@ public class SkyShowApp extends AppStart {
 		if (monitor)
 			monitorView();
 
-		//		Controller.getInstance().add(new WebsocketView());
+		Controller.getInstance().add(new WebsocketView());
 
 		start();
 	}
