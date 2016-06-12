@@ -1,5 +1,7 @@
 function CanvasCtrl($scope, smudgr, $document) {
 
+  $scope.testCanvasStream = false;
+
   var canvasSizeChanged = function() {
     var canvas = $document.find("smudgr-canvas");
 
@@ -17,7 +19,7 @@ function CanvasCtrl($scope, smudgr, $document) {
 
   var canvas = $document.find('#canvas');
 
-  if (canvas) {
+  if ($scope.testCanvasStream && canvas) {
     canvas = canvas.get(0);
 
     var ws = new WebSocket('ws://' + location.hostname + ':8887')

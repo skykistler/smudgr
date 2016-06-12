@@ -1,20 +1,18 @@
 <md-card ng-click="selectElement()" ng-attr-id="{{ 'element-' + element.id}}" class="element-card" >
-  <md-card-title class="element-card-title" layout="row" layout-align="start start">
-    <md-card-title-text flex="80">
-      <span class="md-headline element-name">{{ getElementName() }}</span>
-    </md-card-title-text>
-    <md-button class="md-icon-button element-enable-button" ng-click="toggleEnable()" aria-label="Enable" flex>
+  <md-card-title class="element-card-title" layout="row" layout-align="start start" ng-click="toggleEnable()">
+    <md-button class="md-icon-button element-enable-button" aria-label="Enable">
       <ng-md-icon
         class="element-enable-icon"
         icon="{{ enableIcon }}"
-        size="18"
+        size="24"
         options='{ "duration": 350 }'>
       </ng-md-icon>
     </md-button>
+    <md-card-title-text>
+      <span class="md-headline element-name">{{ getElementName() }}</span>
+    </md-card-title-text>
   </md-card-title>
-  <md-card-actions layout="row">
-    <md-button ng-repeat="parameter in element.parameters | filter:boundFilter track by $index">
-      {{ parameter.name }}
-    </md-button>
-  </md-card-actions>
+  <md-card-content layout="row">
+    <parameter ng-repeat="parameter in element.parameters | filter:boundFilter track by $index" parameter="parameter"></parameter>
+  </md-card-content>
 </md-card>

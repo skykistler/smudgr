@@ -1,0 +1,216 @@
+html {
+  height: 100%;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+body {
+  height: 100%;
+  overflow: none;
+}
+
+/****************************/
+/*** Navigator components ***/
+/****************************/
+
+smudgr-navigator {
+  min-width: 330px;
+  z-index: 2;
+  background-color: rgb(210, 210, 210);
+}
+
+.navigator-content {
+  overflow: auto;
+  height: calc(100% - 314px);
+}
+
+.component-list-title {
+  margin-left: 10px;
+  color: #777777;
+}
+
+.component-card {
+  background-color: #EEEEEE;
+  min-height: 48px;
+}
+
+.component-card[collapsed="initial"] {
+  height: 48px;
+}
+
+.component-card[collapsed=false][rows="1"] {
+  animation: cardCollapse1row 150ms ease-in-out;
+}
+
+.component-card[collapsed=false][rows="2"] {
+  animation: cardCollapse2rows 150ms ease-in-out;
+}
+
+.component-card[collapsed=true][rows="1"] {
+  animation: cardExpand1row 150ms ease-in-out;
+}
+
+.component-card[collapsed=true][rows="2"] {
+  animation: cardExpand2rows 150ms ease-in-out;
+}
+
+@keyframes cardExpand1row {
+  0% {
+    height: 48px;
+  }
+  100% {
+    height: 137px;
+  }
+}
+
+@keyframes cardExpand2rows {
+  0% {
+    height: 48px;
+  }
+  100% {
+    height: 234px;
+  }
+}
+
+@keyframes cardCollapse1row {
+  0% {
+    height: 137px;
+  }
+  100% {
+    height: 48px;
+  }
+}
+
+@keyframes cardCollapse2rows {
+  0% {
+    height: 234px;
+  }
+  100% {
+    height: 48px;
+  }
+}
+
+.component-container {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.component-card-title {
+  padding-top: 5px;
+  outline: none;
+}
+
+.component-parameters[collapsed="initial"], .component-parameters[collapsed="false"] {
+  display: none;
+  transform: scaleY(0);
+}
+
+.component-parameters[collapsed=true] {
+  animation: showParameters 300ms ease-in-out;
+}
+
+@keyframes showParameters {
+  0% {
+    display: none;
+    opacity: 0;
+  }
+  1% {
+    display: block;
+    opacity: 0;
+    transform: scaleY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+.component-name {
+  font-size: 20px;
+  line-height: 18px;
+}
+
+.component-collapse-button {
+  margin-top: 5px;
+}
+
+.component-collapse-icon {
+  fill: #777777;
+}
+
+/***************************/
+/***** Rack components *****/
+/***************************/
+
+smudgr-rack {
+  z-index: 3;
+}
+
+.rack-content {
+  background-color: #999999;
+  max-height: 300px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.element-card {
+  width: 300px;
+  height: 250px;
+  background-color: #DDDDDD;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  outline: none;
+}
+
+.element-card:hover {
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.element-card-title {
+  padding-top: 12px;
+  outline: none;
+}
+
+.element-name {
+  color: #606060;
+}
+
+.element-enable-button {
+  padding-top: 0px !important;
+}
+
+.element-enable-icon {
+  fill: #606060;
+}
+
+/**************************/
+/******* Parameters *******/
+/**************************/
+
+.parameter-name {
+  font-size: 14px;
+  display: block;
+  height: 20px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.parameter-content {
+  padding-top: 2px;
+  padding-bottom: 5px;
+}
+
+.parameter-knob {
+  /*max-height: 50px;
+  max-width: 50px;*/
+}
+
+/***************************/
+/****** Miscellaneous ******/
+/***************************/
+
+.md-subheader {
+  background-color: rgba(0,0,0,0);
+}

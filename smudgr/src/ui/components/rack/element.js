@@ -1,7 +1,10 @@
 function ElementCtrl($scope, project) {
 
+  $scope.iconEnabled = 'radio_button_checked';
+  $scope.iconDisabled = 'radio_button_unchecked';
+
   $scope.element = $scope.$ctrl.element;
-  $scope.enableIcon = 'radio_button_unchecked';
+  $scope.enableIcon = $scope.iconEnabled;
 
   $scope.getElementName = function() {
     if ($scope.element.name)
@@ -28,10 +31,10 @@ function ElementCtrl($scope, project) {
   };
 
   $scope.toggleEnable = function() {
-    if ($scope.enableIcon == 'radio_button_unchecked')
-      $scope.enableIcon = 'radio_button_checked';
+    if ($scope.enableIcon == $scope.iconDisabled)
+      $scope.enableIcon = $scope.iconEnabled;
     else
-      $scope.enableIcon = 'radio_button_unchecked';
+      $scope.enableIcon = $scope.iconDisabled;
   };
 
 }

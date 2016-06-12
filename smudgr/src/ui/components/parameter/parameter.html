@@ -1,3 +1,18 @@
-<div class="parameter" layout="column" flex>
-  
-</div>
+<md-card
+    class="parameter-card"
+    ng-attr-id="{{ '#parameter-' + parameter.id }}"
+    mouse-drag="mouseDrag($event)"
+    ng-mousedown="mouseDown($event)"
+    layout="column"
+    flex>
+  <md-card-title class="parameter-name">
+    {{ parameter.name }}
+  </md-card-title>
+  <md-card-content class="parameter-content" layout="column" layout-align="space-around center">
+    <md-progress-circular
+      class="parameter-knob"
+      value="{{ parameterValue }}"
+      md-mode="determinate">
+    </md-progress-circular>
+  </md-card-content>
+</md-card>

@@ -1,7 +1,14 @@
-<md-card class="component-card" ng-attr-id="{{ 'component-' + component.id }}">
-  <div class="component-container" layout="column" flex>
-    <div layout="row" layout-align="start center" flex>
-      <md-button class="md-icon-button component-collapse-button" ng-click="toggleParameters()">
+<md-card
+    class="component-card"
+    ng-attr-id="{{ 'component-' + component.id }}"
+    collapsed="{{ showParameters }}"
+    rows="{{ rowCount() }}"
+    layout-align="start start">
+  <div class="component-container" layout="column" layout-align="start start" flex>
+    <div class="component-card-title" ng-click="toggleParameters()" layout="row" layout-align="start center" flex>
+      <md-button
+          class="md-icon-button component-collapse-button"x
+          aria-label="Show component parameters">
         <ng-md-icon
           class="component-collapse-icon"
           icon="{{ collapseIcon }}"
@@ -13,10 +20,8 @@
         <span class="md-headline component-name">{{ component.name }}</span>
       </div>
     </div>
-    <div ng-if="false" class="component-parameters" layout="row" layout-wrap>
-      <md-button ng-repeat="parameter in component.parameters">
-        {{ parameter.name }}
-      </md-button>
+    <div class="component-parameters" collapsed="{{ showParameters }}" layout="row" layout-align="start start" layout-wrap>
+      <parameter ng-repeat="parameter in component.parameters" parameter="parameter"></parameter>
     </div>
   </div>
 </md-card>
