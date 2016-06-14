@@ -1,12 +1,14 @@
 package io.smudgr.project.smudge.alg.op;
 
 import io.smudgr.project.smudge.alg.PixelIndexList;
+import io.smudgr.project.smudge.alg.math.blend.AverageBlender;
+import io.smudgr.project.smudge.alg.math.blend.BitwiseAndBlender;
+import io.smudgr.project.smudge.alg.math.blend.BitwiseOrBlender;
 import io.smudgr.project.smudge.alg.math.blend.Blender;
+import io.smudgr.project.smudge.alg.math.blend.HueBlender;
 import io.smudgr.project.smudge.alg.math.blend.MaxBlender;
 import io.smudgr.project.smudge.alg.math.blend.MinBlender;
-import io.smudgr.project.smudge.alg.math.blend.MultiplyBlender;
 import io.smudgr.project.smudge.alg.math.blend.NormalBlender;
-import io.smudgr.project.smudge.alg.math.blend.RevolvingBlender;
 import io.smudgr.project.smudge.param.BlendParameter;
 import io.smudgr.project.smudge.param.NumberParameter;
 import io.smudgr.project.smudge.source.Image;
@@ -25,7 +27,7 @@ public class SourceMixer extends Operation {
 	BlendParameter blenders = new BlendParameter("Blender", this, new NormalBlender());
 
 	private Frame mixFrame;
-	private Source mixSource = new Image("data/mix/water.jpg");
+	private Source mixSource = new Image("data/mix/firemix.png");
 
 	int MAX_HEIGHT = 4000;
 	int MAX_WIDTH = 2200;
@@ -39,14 +41,17 @@ public class SourceMixer extends Operation {
 		mixSource.init();
 		blenders.add(new MaxBlender());
 		blenders.add(new MinBlender());
-		blenders.add(new MultiplyBlender());
-		blenders.add(new RevolvingBlender());
+		blenders.add(new BitwiseAndBlender());
+		blenders.add(new BitwiseOrBlender());
+		blenders.add(new AverageBlender());
+		blenders.add(new HueBlender());
 	}
 
 	public void setSource(Source s) {
 		if (mixSource != null)
 			mixSource.dispose();
 		mixSource = s;
+		mixSource.init();
 	}
 
 	public void execute(Frame img) {
