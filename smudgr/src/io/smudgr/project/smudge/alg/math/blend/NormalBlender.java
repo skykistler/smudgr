@@ -34,7 +34,7 @@ public class NormalBlender implements Blender {
 	}
 
 	public String getName() {
-		return "Normal Blender";
+		return "Normal";
 	}
 
 }
