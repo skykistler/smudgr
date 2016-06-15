@@ -8,7 +8,6 @@ public class HueBlender implements Blender {
 	LumaFunction l = new LumaFunction();
 
 	public int blend(int colorA, int colorB) {
-		// uses the hue from the top color and luma and chroma from bottom color
 		double hue = ColorHelper.hue(colorA);
 		double saturation = ColorHelper.saturation(colorB);
 		double luma = l.calculate(colorB);
