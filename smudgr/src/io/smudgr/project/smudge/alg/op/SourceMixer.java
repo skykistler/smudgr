@@ -5,6 +5,7 @@ import io.smudgr.project.smudge.alg.math.blend.AverageBlender;
 import io.smudgr.project.smudge.alg.math.blend.BitwiseAndBlender;
 import io.smudgr.project.smudge.alg.math.blend.BitwiseOrBlender;
 import io.smudgr.project.smudge.alg.math.blend.Blender;
+import io.smudgr.project.smudge.alg.math.blend.ColorBlender;
 import io.smudgr.project.smudge.alg.math.blend.HueBlender;
 import io.smudgr.project.smudge.alg.math.blend.MaxBlender;
 import io.smudgr.project.smudge.alg.math.blend.MinBlender;
@@ -31,7 +32,6 @@ public class SourceMixer extends Operation {
 
 	int MAX_HEIGHT = 4000;
 	int MAX_WIDTH = 2200;
-
 	int lastMixW = 0;
 	int lastMixH = 0;
 
@@ -45,6 +45,7 @@ public class SourceMixer extends Operation {
 		blenders.add(new BitwiseOrBlender());
 		blenders.add(new AverageBlender());
 		blenders.add(new HueBlender());
+		blenders.add(new ColorBlender());
 	}
 
 	public void setSource(Source s) {
