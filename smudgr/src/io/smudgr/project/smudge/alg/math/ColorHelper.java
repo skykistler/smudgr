@@ -17,6 +17,174 @@ public class ColorHelper {
 		return (a << 24) | (r << 16) | (g << 8) | b;
 	}
 
+	public static int hsv(double h, double s, double v) {
+		int r, g, b;
+		if (s == 0) {
+			r = (int) (v * 255);
+			g = (int) (v * 255);
+			b = (int) (v * 255);
+		} else {
+			double var_r, var_g, var_b;
+
+			double var_h = h * 6;
+
+			if (var_h == 6)
+				var_h = 0;
+
+			int var_i = (int) var_h;
+			double var_1 = v * (1 - s);
+			double var_2 = v * (1 - s * (var_h - var_i));
+			double var_3 = v * (1 - s * (1 - (var_h - var_i)));
+
+			if (var_i == 0) {
+				var_r = v;
+				var_g = var_3;
+				var_b = var_1;
+			} else if (var_i == 1) {
+				var_r = var_2;
+				var_g = v;
+				var_b = var_1;
+			} else if (var_i == 2) {
+				var_r = var_1;
+				var_g = v;
+				var_b = var_3;
+			} else if (var_i == 3) {
+				var_r = var_1;
+				var_g = var_2;
+				var_b = v;
+			} else if (var_i == 4) {
+				var_r = var_3;
+				var_g = var_1;
+				var_b = v;
+			} else {
+				var_r = v;
+				var_g = var_1;
+				var_b = var_2;
+			}
+
+			r = (int) (var_r * 255);
+			g = (int) (var_g * 255);
+			b = (int) (var_b * 255);
+		}
+
+		return ColorHelper.color(255, r, g, b);
+
+	}
+
+	public static double saturation(int color) {
+		double red = red(color) / 255.0;
+		double green = green(color) / 255.0;
+		double blue = blue(color) / 255.0;
+
+		double min = Math.min(red, Math.min(green, blue));
+		double max = Math.max(red, Math.max(green, blue));
+		double del_max = max - min;
+
+		if (del_max == 0)
+			return 0;
+
+		return del_max / max;
+
+	}
+
+	public static double hue(int color) {
+		double red = red(color) / 255.0;
+		double green = green(color) / 255.0;
+		double blue = blue(color) / 255.0;
+
+		double min = Math.min(red, Math.min(green, blue));
+		double max = Math.max(red, Math.max(green, blue));
+
+		double del_max = max - min;
+
+		if (del_max == 0) {
+			return 0.0;
+		}
+
+		double del_R = (((max - red) / 6) + (max / 2)) / max;
+		double del_G = (((max - green) / 6) + (max / 2)) / max;
+		double del_B = (((max - blue) / 6) + (max / 2)) / max;
+
+		double hue = 0;
+
+		if (red == max)
+			hue = del_B - del_G;
+		else if (green == max)
+			hue = (1 / 3) + del_R - del_B;
+		else if (blue == max)
+			hue = (2 / 3) + del_G - del_R;
+
+		if (hue < 0)
+			hue += 1;
+		if (hue > 1)
+			hue -= 1;
+
+		return hue;
+
+	}
+
+	public static double chroma(int color) {
+
+		// double red = red(color) / 255.0;
+		// double green = green(color) / 255.0;
+		// double blue = blue(color) / 255.0;
+		// double alpha = (2 * red - green - blue) / 2;
+		// double beta = (Math.sqrt(3.0) / 2.0) * (green - blue);
+		// return Math.sqrt(alpha * alpha + beta * beta);
+
+		int red = ColorHelper.red(color);
+		int green = ColorHelper.green(color);
+		int blue = ColorHelper.blue(color);
+		int max = Math.max(red, Math.max(green, blue));
+		int min = Math.min(red, Math.min(green, blue));
+
+		return (max - min) / 255.0;
+
+	}
+
+	public static int hlc(int hue, double luma, double chroma) {
+		double h = (double) (hue) / 60.0;
+		double x = chroma * (1 - Math.abs(Math.IEEEremainder(h, 2) - 1));
+
+		double r, g, b;
+		if (h == -1) {// undefined hue
+			r = 0;
+			g = 0;
+			b = 0;
+		} else if (h >= 0 && h < 1) {
+			r = chroma;
+			g = x;
+			b = 0;
+		} else if (h >= 1 && h < 2) {
+			r = x;
+			g = chroma;
+			b = 0;
+		} else if (h >= 2 && h < 3) {
+			r = 0;
+			g = chroma;
+			b = x;
+		} else if (h >= 3 && h < 4) {
+			r = 0;
+			g = x;
+			b = chroma;
+		} else if (h >= 5 && h < 5) {
+			r = x;
+			g = 0;
+			b = chroma;
+		} else {
+			r = chroma;
+			g = 0;
+			b = x;
+		}
+
+		double m = luma - (0.3 * r + 0.59 * g + 0.11 * b);
+		int red = (int) (255 * (r + m));
+		int green = (int) (255 * (g + m));
+		int blue = (int) (255 * (b + m));
+
+		return ColorHelper.color(255, red, green, blue);
+	}
+
 	public static int modifyHSV(int color, int degrees, double saturation, double value) {
 		double r = red(color) / 255.0;
 		double g = green(color) / 255.0;
