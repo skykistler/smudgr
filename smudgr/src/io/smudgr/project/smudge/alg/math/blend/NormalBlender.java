@@ -4,6 +4,10 @@ import io.smudgr.project.smudge.alg.math.ColorHelper;
 
 public class NormalBlender implements Blender {
 
+	public String getName() {
+		return "Normal";
+	}
+
 	public int blend(int colorA, int colorB) {
 		int redA = ColorHelper.red(colorA);
 		int greenA = ColorHelper.green(colorA);
@@ -31,10 +35,6 @@ public class NormalBlender implements Blender {
 		int compA = (int) (subcolorA * alphaCoef);
 		int compB = (int) (subcolorB * (1 - alphaCoef));
 		return compA + compB;
-	}
-
-	public String getName() {
-		return "Normal";
 	}
 
 }

@@ -4,6 +4,10 @@ import io.smudgr.project.smudge.alg.math.ColorHelper;
 
 public class OverlayBlender implements Blender {
 
+	public String getName() {
+		return "Overlay";
+	}
+
 	public int blend(int colorA, int colorB) {
 		int redA = ColorHelper.red(colorA);
 		int greenA = ColorHelper.green(colorA);
@@ -33,10 +37,6 @@ public class OverlayBlender implements Blender {
 
 		return (int) ((targetGreater * (1 - (1 - 2 * (b - 0.5)) * (1 - a)) + targetLesser * ((2 * b) * a)) * 255);
 
-	}
-
-	public String getName() {
-		return "Overlay";
 	}
 
 }

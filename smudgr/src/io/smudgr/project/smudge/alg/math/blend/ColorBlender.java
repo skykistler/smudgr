@@ -5,6 +5,10 @@ import io.smudgr.project.smudge.alg.math.univariate.LumaFunction;
 
 public class ColorBlender implements Blender {
 
+	public String getName() {
+		return "Hue";
+	}
+
 	LumaFunction l = new LumaFunction();
 
 	public int blend(int colorA, int colorB) {
@@ -14,10 +18,6 @@ public class ColorBlender implements Blender {
 
 		return ColorHelper.hsv(hue, saturation, luma);
 
-	}
-
-	public String getName() {
-		return "Hue";
 	}
 
 }

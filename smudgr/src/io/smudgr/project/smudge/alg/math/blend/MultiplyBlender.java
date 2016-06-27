@@ -4,6 +4,10 @@ import io.smudgr.project.smudge.alg.math.ColorHelper;
 
 public class MultiplyBlender implements Blender {
 
+	public String getName() {
+		return "Multiply";
+	}
+
 	public int blend(int colorA, int colorB) {
 		int redA = ColorHelper.red(colorA);
 		int greenA = ColorHelper.green(colorA);
@@ -25,10 +29,6 @@ public class MultiplyBlender implements Blender {
 
 	private int multiply(int compA, int compB) {
 		return Math.min(255, compA * compB);
-	}
-
-	public String getName() {
-		return "Multiply";
 	}
 
 }

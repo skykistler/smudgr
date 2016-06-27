@@ -4,7 +4,10 @@ import io.smudgr.project.smudge.alg.math.ColorHelper;
 
 public class MaxBlender implements Blender {
 
-	@Override
+	public String getName() {
+		return "Max Blender";
+	}
+
 	public int blend(int colorA, int colorB) {
 		int redA = ColorHelper.red(colorA);
 		int greenA = ColorHelper.green(colorA);
@@ -22,10 +25,6 @@ public class MaxBlender implements Blender {
 		int newAlpha = alphaB; /*- Because going with the background frame's alpha is a kind of safe bet */
 
 		return ColorHelper.color(newAlpha, maxRed, maxGreen, maxBlue);
-	}
-
-	public String getName() {
-		return "Max Blender";
 	}
 
 }

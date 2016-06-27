@@ -2,6 +2,10 @@ package io.smudgr.project.smudge.alg.math.blend;
 
 public class RevolvingBlender implements Blender {
 
+	public String getName() {
+		return "Revolving Blender";
+	}
+
 	int currentState = 0;
 
 	public int blend(int colorA, int colorB) {
@@ -13,9 +17,4 @@ public class RevolvingBlender implements Blender {
 			return colorB;
 		}
 	}
-
-	public String getName() {
-		return "Revolving Blender";
-	}
-
 }

@@ -4,6 +4,10 @@ import io.smudgr.project.smudge.alg.math.ColorHelper;
 
 public class AverageBlender implements Blender {
 
+	public String getName() {
+		return "Average";
+	}
+
 	public int blend(int colorA, int colorB) {
 		int redA = ColorHelper.red(colorA);
 		int greenA = ColorHelper.green(colorA);
@@ -19,10 +23,6 @@ public class AverageBlender implements Blender {
 		int newBlue = (blueA + blueB) / 2;
 
 		return ColorHelper.color(alphaB, newRed, newGreen, newBlue);
-	}
-
-	public String getName() {
-		return "Average";
 	}
 
 }

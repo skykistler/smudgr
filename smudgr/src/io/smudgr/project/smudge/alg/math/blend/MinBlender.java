@@ -4,6 +4,10 @@ import io.smudgr.project.smudge.alg.math.ColorHelper;
 
 public class MinBlender implements Blender {
 
+	public String getName() {
+		return "Min Blender";
+	}
+
 	public int blend(int colorA, int colorB) {
 		int redA = ColorHelper.red(colorA);
 		int greenA = ColorHelper.green(colorA);
@@ -21,10 +25,6 @@ public class MinBlender implements Blender {
 		int newAlpha = alphaB; /*- Because going with the background frame's alpha is a kind of safe bet */
 
 		return ColorHelper.color(newAlpha, minRed, minGreen, minBlue);
-	}
-
-	public String getName() {
-		return "Min Blender";
 	}
 
 }
