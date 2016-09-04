@@ -24,7 +24,11 @@
         "action": "smudge.load"
       },
       {
-        "title": "open a list of mods",
+        "title": "open a fullscreen",
+        "action": "smudge.save"
+      },
+      {
+        "title": "list of mods",
         "action": "smudge.save"
       }
     ]

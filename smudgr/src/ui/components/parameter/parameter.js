@@ -2,28 +2,24 @@ function ParameterCtrl($scope, project) {
   $scope.parameter = $scope.$ctrl.parameter;
   $scope.parameterValue = 50;
   $scope.knobOptions = {
-    // size: 300
+    size: 100,
+    barCap: 20,
+    barWidth: 15,
+    barColor: '#aaddaa',
+    prevBarColor: 'rgba(0,0,0,.2)',
+    displayPrevious: true,
+    readOnly: true
   };
 
-  $scope.hasMouseFocus = false;
   $scope.initialMouseY = 0;
   $scope.initialVal = $scope.parameterValue;
 
-  $scope.mouseDown = function($event) {
-      $scope.initialMouseY = $event.pageY;
-      $scope.initialVal = $scope.parameterValue;
-      $scope.hasMouseFocus = true;
+  $scope.mouseDown = function() {
+    $scope.initialVal = $scope.parameterValue;
   };
 
-  $scope.mouseDrag = function($event) {
-    if (!$scope.hasMouseFocus)
-      return;
-
-    if ($event.type == 'mousemove')
-      $scope.setValue($scope.initialVal + ($scope.initialMouseY - $event.pageY));
-
-    if($event.type == 'mouseup')
-      $scope.hasMouseFocus = false;
+  $scope.mouseDrag = function(x1, y1, x2, y2) {
+    $scope.setValue($scope.initialVal + (y1 - y2));
   };
 
   $scope.setValue = function(toVal) {

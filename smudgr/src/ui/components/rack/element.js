@@ -22,7 +22,7 @@ function ElementCtrl($scope, project) {
   };
 
   $scope.boundFilter = function(input) {
-    if (input.name != "Enable")
+    // if (input.name != "Enable")
       return true;
   };
 

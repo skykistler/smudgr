@@ -25,15 +25,24 @@
           <md-menu-content width="4">
             <div ng-repeat="item in menu.items">
               <md-menu-item>
-                <md-button ng-click="action(item.action)">{{ item.title }}</md-button>
+                <md-button ng-click="action(item.action)"
+                           style="color: black !important">
+                  {{ item.title }}
+                </md-button>
               </md-menu-item>
             </div>
           </md-menu-content>
         </md-menu>
       </div>
-      <md-button class="md-raised md-accent" style="text-transform:none;" class="md-icon-button">
+      <md-button class="md-raised md-accent"
+                 style="text-transform:none; width: 115px; text-align: left;">
         smudgr
-        <ng-md-icon icon="now_widgets" style="fill: white; padding-top: 15px"></ng-md-icon>
+        <ng-md-icon icon="now_widgets"
+                    style="fill: white;
+                    position: absolute;
+                    top: 6px;
+                    padding-left: 10px;">
+        </ng-md-icon>
       </md-button>
   </md-toolbar>
 </div>
