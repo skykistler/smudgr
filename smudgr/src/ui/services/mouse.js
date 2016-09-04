@@ -17,8 +17,6 @@ app.directive('mouseDrag', function ($document, $parse) {
     });
 
     $document.on('mouseup', function(event) {
-      angular.element('html').removeClass('.hide-cursor');
-
       scope.hasMouseFocus = false;
       initialMouseY = event.pageY;
       initialMouseX = event.pagex;
@@ -30,7 +28,6 @@ app.directive('mouseDrag', function ($document, $parse) {
     $document.on('mousemove', function(event) {
       if (!scope.hasMouseFocus) return;
 
-      angular.element('html').css('cursor: none');
       event.preventDefault();
 
       scope.$apply(function() {
