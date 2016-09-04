@@ -88,7 +88,7 @@ public class CefMessage {
 				}
 			}
 
-			json.put(childTag + "s", children);
+			json.put(childTag + (childTag.equals("app") ? "" : "s"), children);
 		}
 
 		return json;

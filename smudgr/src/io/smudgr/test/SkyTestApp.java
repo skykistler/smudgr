@@ -2,6 +2,8 @@ package io.smudgr.test;
 
 import io.smudgr.app.AppStart;
 import io.smudgr.app.Controller;
+import io.smudgr.app.view.MonitorView;
+import io.smudgr.extensions.cef.view.WebsocketView;
 import io.smudgr.project.smudge.Smudge;
 import io.smudgr.project.smudge.alg.Algorithm;
 import io.smudgr.project.smudge.alg.coord.ColumnCoords;
@@ -63,9 +65,11 @@ public class SkyTestApp extends AppStart {
 	public SkyTestApp() {
 		super(projectPath, sourcePath, outputPath, device, overwriteSmudge, deviceServer);
 
-		fullscreenView(fullscreenDisplay);
-		if (monitor)
-			monitorView();
+//		fullscreenView(fullscreenDisplay);
+//		if (monitor)
+//			monitorView();
+		
+		Controller.getInstance().add(new WebsocketView());
 
 		start();
 	}
