@@ -19,14 +19,13 @@
       layout="row"
       layout-align="space-between center">
       <div layout="row" layout-align="start center">
-        <md-button ng-click="create = !create">{{ create ? 'create' : 'live' }}</md-button>
         <md-menu md-offset="0 50" ng-repeat="menu in menuBar">
           <md-button ng-click="$mdOpenMenu()">{{ menu.title }}</md-button>
           <md-menu-content width="4">
             <div ng-repeat="item in menu.items">
               <md-menu-item>
                 <md-button ng-click="action(item.action)"
-                           style="color: black !important">
+                           style="color: #333 !important">
                   {{ item.title }}
                 </md-button>
               </md-menu-item>
