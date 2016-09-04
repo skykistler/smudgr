@@ -1,6 +1,6 @@
 [
   {
-    "title": "Project",
+    "title": "project",
     "items": [
       {
         "title": "New Project",
@@ -17,27 +17,14 @@
     ]
   },
   {
-    "title": "Edit",
+    "title": "mods",
     "items": [
       {
-        "title": "Do something",
+        "title": "This menu would",
         "action": "smudge.load"
       },
       {
-        "title": "Do something else",
-        "action": "smudge.save"
-      }
-    ]
-  },
-  {
-    "title": "View",
-    "items": [
-      {
-        "title": "Fullscreen",
-        "action": "smudge.load"
-      },
-      {
-        "title": "Blah",
+        "title": "open a list of mods",
         "action": "smudge.save"
       }
     ]

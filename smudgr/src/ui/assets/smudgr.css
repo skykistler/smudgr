@@ -2,6 +2,7 @@ html {
   height: 100%;
   overflow: hidden;
   max-width: 100%;
+  font-family: 'Montserrat' !important;
 }
 
 body {
@@ -148,7 +149,11 @@ smudgr-rack {
 }
 
 .rack-content {
-  background-color: #999999;
+  background-blend-mode: multiply;
+  background-color: #ddd;
+  background-image: url('http://cdn.mos.cms.futurecdn.net/eaefe43209de597d968f97e9cd58dc85.jpg');
+  background-repeat: repeat;
+  /*background-color: #999999;*/
   max-height: 300px;
   overflow-x: scroll;
   overflow-y: hidden;
@@ -175,6 +180,7 @@ smudgr-rack {
 
 .element-name {
   color: #606060;
+  font-size: 24px;
 }
 
 .element-enable-button {
@@ -182,7 +188,7 @@ smudgr-rack {
 }
 
 .element-enable-icon {
-  fill: #606060;
+  fill: #287D6B;
 }
 
 /**************************/

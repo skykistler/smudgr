@@ -5,6 +5,8 @@ function MenuCtrl($scope, $http, smudgr) {
     }
   );
 
+  $scope.create = true;
+
   $scope.action = function (command) {
     smudgr.exec(command);
   };

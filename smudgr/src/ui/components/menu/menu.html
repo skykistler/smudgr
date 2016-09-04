@@ -2,28 +2,38 @@
   .smudgr-menu {
     min-height: 48px;
     max-height: 48px;
+    background-blend-mode: multiply;
+    background-color: #aaa !important;
+    background-image: url('http://cdn.mos.cms.futurecdn.net/eaefe43209de597d968f97e9cd58dc85.jpg');
+    background-repeat: repeat;
+  }
+  .md-button {
+    font-size: 18px !important;
+    color: white !important;
   }
 </style>
 
 <div class="smudgr-menu">
   <md-toolbar
-      class="smudgr-menu md-primary"
+      class="smudgr-menu"
       layout="row"
-      layout-align="start center">
-    <md-button class="md-icon-button" aria-label="Show Navigator">
-      <ng-md-icon icon="menu"></ng-md-icon>
-    </md-button>
-    <div ng-repeat="menu in menuBar">
-      <md-menu md-offset="0 50">
-        <md-button ng-click="$mdOpenMenu()">{{ menu.title }}</md-button>
-        <md-menu-content width="4">
-          <div ng-repeat="item in menu.items">
-            <md-menu-item>
-              <md-button ng-click="action(item.action)">{{ item.title }}</md-button>
-            </md-menu-item>
-          </div>
-        </md-menu-content>
-      </md-menu>
-    </div>
+      layout-align="space-between center">
+      <div layout="row" layout-align="start center">
+        <md-button ng-click="create = !create">{{ create ? 'create' : 'live' }}</md-button>
+        <md-menu md-offset="0 50" ng-repeat="menu in menuBar">
+          <md-button ng-click="$mdOpenMenu()">{{ menu.title }}</md-button>
+          <md-menu-content width="4">
+            <div ng-repeat="item in menu.items">
+              <md-menu-item>
+                <md-button ng-click="action(item.action)">{{ item.title }}</md-button>
+              </md-menu-item>
+            </div>
+          </md-menu-content>
+        </md-menu>
+      </div>
+      <md-button class="md-raised md-accent" style="text-transform:none;" class="md-icon-button">
+        smudgr
+        <ng-md-icon icon="now_widgets" style="fill: white; padding-top: 15px"></ng-md-icon>
+      </md-button>
   </md-toolbar>
 </div>
