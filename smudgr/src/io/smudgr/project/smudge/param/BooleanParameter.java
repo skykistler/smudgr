@@ -1,6 +1,10 @@
 package io.smudgr.project.smudge.param;
 
 public class BooleanParameter extends Parameter {
+	
+	public String getType() {
+		return "boolean";
+	}
 
 	private boolean value;
 

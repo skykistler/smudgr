@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import io.smudgr.project.smudge.alg.math.blend.Blender;
 
 public class BlendParameter extends Parameter {
+	
+	public String getType() {
+		return "Blend";
+	}
 
 	private ArrayList<Blender> blenders = new ArrayList<Blender>();
 

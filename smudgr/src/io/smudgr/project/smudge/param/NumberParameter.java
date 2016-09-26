@@ -3,6 +3,10 @@ package io.smudgr.project.smudge.param;
 import io.smudgr.project.PropertyMap;
 
 public class NumberParameter extends Parameter {
+	
+	public String getType() {
+		return "number";
+	}
 
 	private double value;
 	private double min;

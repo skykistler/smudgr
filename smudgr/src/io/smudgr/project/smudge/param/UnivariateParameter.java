@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import io.smudgr.project.smudge.alg.math.univariate.UnivariateFunction;
 
 public class UnivariateParameter extends Parameter {
+	
+	public String getType() {
+		return "Univariate";
+	}
 
 	private ArrayList<UnivariateFunction> univariates = new ArrayList<UnivariateFunction>();
 
