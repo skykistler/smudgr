@@ -6,6 +6,8 @@ import java.util.HashMap;
 import io.smudgr.project.PropertyMap;
 
 public class MidiControlMap {
+	
+	public static final String PROPERTY_MAP_KEY = "midi";
 
 	private ArrayList<Integer> bound = new ArrayList<Integer>();
 	private HashMap<Integer, HashMap<Integer, Integer>> midiMap = new HashMap<Integer, HashMap<Integer, Integer>>();

@@ -13,6 +13,8 @@ import io.smudgr.project.smudge.source.SourceSet;
 import io.smudgr.project.util.Frame;
 
 public class Smudge extends Parametric implements Source {
+	
+	public static final String PROPERTY_MAP_KEY = "smudge";
 
 	private BooleanParameter enabled = new BooleanParameter("Enable", this, true);
 	private NumberParameter downsample = new NumberParameter("Downsample", this, 1, .01, 1, .01);
@@ -102,7 +104,7 @@ public class Smudge extends Parametric implements Source {
 		super.save(pm);
 
 		for (Algorithm alg : getAlgorithms()) {
-			PropertyMap map = new PropertyMap("algorithm");
+			PropertyMap map = new PropertyMap(Algorithm.PROPERTY_MAP_KEY);
 			alg.save(map);
 
 			pm.add(map);
@@ -112,7 +114,7 @@ public class Smudge extends Parametric implements Source {
 	public void load(PropertyMap pm) {
 		super.load(pm);
 
-		for (PropertyMap map : pm.getChildren("algorithm")) {
+		for (PropertyMap map : pm.getChildren(Algorithm.PROPERTY_MAP_KEY)) {
 			Algorithm alg = new Algorithm();
 			alg.load(map);
 

@@ -5,6 +5,8 @@ import io.smudgr.project.Project;
 import io.smudgr.project.PropertyMap;
 
 public interface ControllerExtension {
+	
+	public static final String PROPERTY_MAP_KEY = "extension";
 
 	public String getName();
 

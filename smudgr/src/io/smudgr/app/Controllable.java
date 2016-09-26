@@ -3,6 +3,8 @@ package io.smudgr.app;
 import io.smudgr.project.ProjectElement;
 
 public interface Controllable extends ProjectElement {
+	
+	public static final String PROPERTY_MAP_KEY = "control";
 
 	public String getName();
 

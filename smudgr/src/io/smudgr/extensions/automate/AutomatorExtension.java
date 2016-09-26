@@ -49,7 +49,7 @@ public class AutomatorExtension implements ControllerExtension {
 
 	public void save(PropertyMap pm) {
 		for (AutomatorControl automator : automators) {
-			PropertyMap map = new PropertyMap("automator");
+			PropertyMap map = new PropertyMap(AutomatorControl.PROPERTY_MAP_KEY);
 
 			map.setAttribute("id", getProject().getId(automator));
 			map.setAttribute("name", automator.getName());
@@ -63,7 +63,7 @@ public class AutomatorExtension implements ControllerExtension {
 	public void load(PropertyMap pm) {
 		reflectAutomators();
 
-		for (PropertyMap map : pm.getChildren("automator")) {
+		for (PropertyMap map : pm.getChildren(AutomatorControl.PROPERTY_MAP_KEY)) {
 			AutomatorControl control = getNewAutomator(map.getAttribute("name"));
 
 			automators.add(control);

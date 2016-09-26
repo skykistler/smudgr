@@ -5,6 +5,8 @@ import io.smudgr.project.ProjectElement;
 import io.smudgr.project.PropertyMap;
 
 public abstract class Parameter implements Controllable, ProjectElement {
+	
+	public static final String PROPERTY_MAP_KEY = "parameter";
 
 	public String getName() {
 		return name;

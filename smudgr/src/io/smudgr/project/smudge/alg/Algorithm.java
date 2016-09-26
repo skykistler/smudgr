@@ -8,11 +8,16 @@ import io.smudgr.project.smudge.alg.coord.CoordFunction;
 import io.smudgr.project.smudge.alg.coord.RowCoords;
 import io.smudgr.project.smudge.alg.op.Operation;
 import io.smudgr.project.smudge.alg.select.Selector;
+import io.smudgr.project.smudge.element.Element;
 import io.smudgr.project.smudge.param.BooleanParameter;
 import io.smudgr.project.smudge.param.Parametric;
 import io.smudgr.project.util.Frame;
 
-public class Algorithm extends Parametric {
+public class Algorithm extends Parametric implements Element {
+
+	public String getType() {
+		return "Algorithm";
+	}
 
 	private BooleanParameter enabled = new BooleanParameter("Enable", this, true);
 
@@ -157,9 +162,11 @@ public class Algorithm extends Parametric {
 
 	public void save(PropertyMap pm) {
 		super.save(pm);
+		
+		pm.setAttribute("type", getType());
 
 		for (AlgorithmComponent component : getComponents()) {
-			PropertyMap map = new PropertyMap("component");
+			PropertyMap map = new PropertyMap(AlgorithmComponent.PROPERTY_MAP_KEY);
 
 			component.save(map);
 
@@ -170,7 +177,7 @@ public class Algorithm extends Parametric {
 	public void load(PropertyMap pm) {
 		super.load(pm);
 
-		ArrayList<PropertyMap> children = pm.getChildren("component");
+		ArrayList<PropertyMap> children = pm.getChildren(AlgorithmComponent.PROPERTY_MAP_KEY);
 
 		for (PropertyMap map : children) {
 			String type = map.getAttribute("type");

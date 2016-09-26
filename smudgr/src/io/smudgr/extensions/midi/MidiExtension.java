@@ -224,7 +224,7 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 	}
 
 	public void load(PropertyMap pm) {
-		ArrayList<PropertyMap> mappings = pm.getChildren("midi");
+		ArrayList<PropertyMap> mappings = pm.getChildren(MidiControlMap.PROPERTY_MAP_KEY);
 
 		for (PropertyMap mapping : mappings) {
 			int control = Integer.parseInt(mapping.getAttribute("control"));

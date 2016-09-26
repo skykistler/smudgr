@@ -5,6 +5,8 @@ import io.smudgr.project.ProjectElement;
 import io.smudgr.project.smudge.param.Parameter;
 
 public interface AutomatorControl extends Controllable, ProjectElement {
+	
+	public static final String PROPERTY_MAP_KEY = "automator";
 
 	public void init();
 

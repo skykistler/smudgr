@@ -39,7 +39,7 @@ public abstract class Parametric implements ProjectElement {
 		pm.setAttribute("id", getProject().getId(this));
 
 		for (Parameter param : getParameters()) {
-			PropertyMap map = new PropertyMap("parameter");
+			PropertyMap map = new PropertyMap(Parameter.PROPERTY_MAP_KEY);
 
 			map.setAttribute("id", getProject().getId(param));
 			map.setAttribute("name", param.getName());
@@ -56,7 +56,7 @@ public abstract class Parametric implements ProjectElement {
 		else
 			getProject().add(this);
 
-		ArrayList<PropertyMap> children = pm.getChildren("parameter");
+		ArrayList<PropertyMap> children = pm.getChildren(Parameter.PROPERTY_MAP_KEY);
 		for (PropertyMap map : children) {
 			Parameter param = getParameter(map.getAttribute("name"));
 

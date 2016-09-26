@@ -4,6 +4,8 @@ import io.smudgr.project.PropertyMap;
 import io.smudgr.project.smudge.param.Parametric;
 
 public abstract class AlgorithmComponent extends Parametric {
+	
+	public static final String PROPERTY_MAP_KEY = "component";
 
 	private Algorithm parent;
 
