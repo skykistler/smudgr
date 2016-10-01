@@ -1,9 +1,0 @@
-/bin/
-/output/
-data/*
-**/.DS_Store
-**/hs_err_pid*
-**/debug.log
-**/smudgr.jar
-.idea/*
-.settings/*
