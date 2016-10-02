@@ -42,9 +42,16 @@ public class CefMessage {
 	}
 
 	public static CefMessage command(String command, CefMessage data) {
+		return command(command, "success", data);
+	}
+
+	public static CefMessage command(String command, String status, CefMessage data) {
 		CefMessage packet = new CefMessage();
 		packet.put("command", command);
-		packet.put("data", data);
+		packet.put("status", status);
+
+		if (data != null)
+			packet.put("data", data);
 
 		return packet;
 	}
@@ -57,6 +64,10 @@ public class CefMessage {
 			result.payload = obj;
 		} catch (Exception e) {
 			System.out.println("Unable to parse JSON from message: " + message);
+		}
+
+		if (result.payload == null) {
+			result.payload = new JSONObject();
 		}
 
 		return result;

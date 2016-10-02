@@ -34,7 +34,7 @@ public class RenderFrame extends Window {
 
 		getRootPane().putClientProperty("Window.shadow", Boolean.FALSE);
 		setAlwaysOnTop(true);
-		//		setUndecorated(true);
+		// setUndecorated(true);
 		setBackground(Color.black);
 		setFocusableWindowState(false);
 
@@ -51,8 +51,8 @@ public class RenderFrame extends Window {
 	}
 
 	public void start() {
-		setVisible(true);
-		createBufferStrategy(2);
+		// setVisible(true);
+		// createBufferStrategy(2);
 	}
 
 	public void update(Frame frame) {

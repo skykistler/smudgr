@@ -8,6 +8,7 @@ import java.net.URLDecoder;
 
 import io.smudgr.extensions.automate.controls.AutomatorControl;
 import io.smudgr.extensions.cef.view.CefView;
+import io.smudgr.extensions.cef.view.WebsocketView;
 import io.smudgr.project.smudge.Smudge;
 import io.smudgr.project.smudge.alg.Algorithm;
 import io.smudgr.project.smudge.alg.op.DataBend;
@@ -45,6 +46,7 @@ public class smudgr extends AppStart {
 		super("", "", "", "Arturia BeatStep Pro", true, false);
 
 		Controller.getInstance().add(new CefView(debug));
+		Controller.getInstance().add(new WebsocketView());
 
 		start();
 	}

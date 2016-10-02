@@ -60,6 +60,8 @@ public class SmudgrScheme extends CefResourceHandlerAdapter {
 			html += "does not exist</body></html>";
 			data = html.getBytes();
 			mime_type = "text/html";
+
+			System.out.println("Could not find: " + path);
 		}
 
 		callback.Continue();

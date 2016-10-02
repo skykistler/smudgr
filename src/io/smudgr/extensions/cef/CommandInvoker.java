@@ -32,9 +32,8 @@ public class CommandInvoker {
 		CefMessage response = new CefMessage();
 
 		if (command == null || !commands.containsKey(command)) {
-			response.put("status", "failure");
 			response.put("message", "No command could be found for: " + request);
-			return CefMessage.command("response", response);
+			return CefMessage.command("response", "failure", response);
 		}
 
 		CefCommand strategy = commands.get(command);
@@ -48,18 +47,11 @@ public class CommandInvoker {
 		} catch (Exception e) {
 			e.printStackTrace();
 
-			response.put("status", "failure");
 			response.put("message", "Failed to execute command: " + command);
-			return CefMessage.command("response", response);
+			return CefMessage.command("response", "failure", response);
 		}
 
-		if (response == null) {
-			response = new CefMessage();
-			response.put("status", "success");
-			return CefMessage.command("response", response);
-		}
-
-		return response;
+		return response != null ? response : CefMessage.command("response", "success", response);
 	}
 
 }

@@ -18,7 +18,6 @@ import javax.swing.SwingUtilities;
 import org.cef.CefApp;
 import org.cef.CefClient;
 import org.cef.CefSettings;
-import org.cef.OS;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefMessageRouter;
 
@@ -53,8 +52,8 @@ public class CefView extends JFrame implements View {
 		startCef();
 
 		DisplayMode display = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode();
-		int width = display.getWidth();
-		int height = display.getHeight();
+		int width = display.getWidth() - 200;
+		int height = display.getHeight() - 200;
 		setSize(width, height);
 
 		setBackground(new Color(0x212121));
@@ -121,8 +120,8 @@ public class CefView extends JFrame implements View {
 		}
 		setSize(width, height);
 
-		if (OS.isWindows())
-			setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
+		// if (OS.isWindows())
+		// setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
 	}
 
 	public void update(Frame frame) {

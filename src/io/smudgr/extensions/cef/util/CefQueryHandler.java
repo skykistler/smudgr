@@ -17,6 +17,8 @@ public class CefQueryHandler extends CefMessageRouterHandlerAdapter {
 	public boolean onQuery(CefBrowser browser, long query_id, String request, boolean persistent, CefQueryCallback callback) {
 		CefMessage response = invoker.invoke(request);
 
+		System.out.println(response);
+
 		if (response.get("status").equals("failure"))
 			callback.failure(0, response.toString());
 
