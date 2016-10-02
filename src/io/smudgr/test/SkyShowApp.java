@@ -24,7 +24,7 @@ public class SkyShowApp extends AppStart {
 
 	static String outputPath = "data";
 
-	static String device = "Arturia BeatStepPro";
+	static String device = "Arturia BeatStep Pro";
 	static boolean deviceServer = false;
 
 	static int fullscreenDisplay = -1;

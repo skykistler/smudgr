@@ -43,8 +43,7 @@ public class FrameServer extends WebSocketServer {
 		if (frame == null)
 			return;
 
-		arg0.send("w:" + frame.getWidth());
-		arg0.send("h:" + frame.getHeight());
+		dimensionsChanged = true;
 	}
 
 	public void onMessage(WebSocket arg0, String arg1) {
