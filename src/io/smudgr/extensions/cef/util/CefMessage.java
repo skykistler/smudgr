@@ -50,8 +50,7 @@ public class CefMessage {
 		packet.put("command", command);
 		packet.put("status", status);
 
-		if (data != null)
-			packet.put("data", data);
+		packet.put("data", data != null ? data : new CefMessage());
 
 		return packet;
 	}
