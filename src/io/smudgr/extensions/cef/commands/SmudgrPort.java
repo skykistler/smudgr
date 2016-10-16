@@ -15,12 +15,4 @@ public class SmudgrPort implements CefCommand {
 		return response;
 	}
 
-	public String onSuccess() {
-		return "Sent command websocket port";
-	}
-
-	public String onFailure() {
-		return "Malformed payload";
-	}
-
 }

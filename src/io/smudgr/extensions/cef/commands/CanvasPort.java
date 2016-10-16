@@ -15,12 +15,4 @@ public class CanvasPort implements CefCommand {
 		return response;
 	}
 
-	public String onSuccess() {
-		return "Sent canvas websocket port";
-	}
-
-	public String onFailure() {
-		return "Malformed payload";
-	}
-
 }

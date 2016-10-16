@@ -25,12 +25,4 @@ public class CanvasResize implements CefCommand {
 		return null;
 	}
 
-	public String onSuccess() {
-		return "Updated render canvas";
-	}
-
-	public String onFailure() {
-		return "Malformed payload";
-	}
-
 }

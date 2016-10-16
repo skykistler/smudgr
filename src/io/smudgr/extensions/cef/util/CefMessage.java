@@ -8,7 +8,16 @@ import io.smudgr.project.PropertyMap;
 
 public class CefMessage {
 
-	private JSONObject payload = new JSONObject();
+	private JSONObject payload;
+
+	public CefMessage() {
+		payload = new JSONObject();
+	}
+
+	public CefMessage(String initialKey, String initialValue) {
+		this();
+		put(initialKey, initialValue);
+	}
 
 	public String get(String key) {
 		if (!hasKey(key))

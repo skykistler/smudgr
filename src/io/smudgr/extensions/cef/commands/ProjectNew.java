@@ -23,12 +23,4 @@ public class ProjectNew implements CefCommand {
 		return null;
 	}
 
-	public String onSuccess() {
-		return "Starting new project";
-	}
-
-	public String onFailure() {
-		return "Failed to start new project";
-	}
-
 }
