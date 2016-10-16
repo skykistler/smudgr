@@ -167,9 +167,9 @@ public class Controller {
 	}
 
 	private void startView(View view) {
-		view.start();
-
 		ViewThread viewer = new ViewThread(view);
+
+		view.start(viewer);
 		viewer.start();
 
 		viewThreads.add(viewer);

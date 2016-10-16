@@ -2,6 +2,7 @@ package io.smudgr.app.view;
 
 import java.awt.Rectangle;
 
+import io.smudgr.app.threads.ViewThread;
 import io.smudgr.project.util.Frame;
 
 public class MonitorView implements View {
@@ -12,7 +13,7 @@ public class MonitorView implements View {
 
 	private Window window;
 
-	public void start() {
+	public void start(ViewThread thread) {
 		window = new Window();
 		window.setBounds(new Rectangle(800, 600));
 	}

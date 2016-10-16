@@ -1,5 +1,6 @@
 package io.smudgr.app.view;
 
+import io.smudgr.app.threads.ViewThread;
 import io.smudgr.project.util.Frame;
 
 public class FullscreenView implements View {
@@ -15,7 +16,7 @@ public class FullscreenView implements View {
 		this.displayNumber = displayNumber;
 	}
 
-	public void start() {
+	public void start(ViewThread thread) {
 		window = new Window(displayNumber);
 	}
 

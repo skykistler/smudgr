@@ -6,6 +6,7 @@ import java.nio.IntBuffer;
 
 import org.tw.pi.framebuffer.FrameBuffer;
 
+import io.smudgr.app.threads.ViewThread;
 import io.smudgr.project.util.Frame;
 
 public class PiFullscreenView implements View {
@@ -33,7 +34,7 @@ public class PiFullscreenView implements View {
 			frameBufferNum = 0;
 	}
 
-	public void start() {
+	public void start(ViewThread thread) {
 		try {
 			frameBuffer = new FrameBuffer("/dev/fb" + frameBufferNum);
 

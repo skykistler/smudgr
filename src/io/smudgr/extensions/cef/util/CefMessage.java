@@ -34,7 +34,7 @@ public class CefMessage {
 	}
 
 	public boolean hasKey(String key) {
-		return payload.containsKey(key);
+		return payload.containsKey(key) && payload.get(key) != null;
 	}
 
 	@SuppressWarnings("unchecked")
