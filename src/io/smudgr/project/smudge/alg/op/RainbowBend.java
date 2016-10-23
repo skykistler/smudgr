@@ -1,7 +1,5 @@
 package io.smudgr.project.smudge.alg.op;
 
-import java.util.ArrayList;
-
 import gnu.trove.list.array.TByteArrayList;
 import io.smudgr.project.smudge.alg.PixelIndexList;
 import io.smudgr.project.smudge.alg.math.ColorHelper;
@@ -20,61 +18,75 @@ public class RainbowBend extends Operation {
 	private TByteArrayList redByteList = new TByteArrayList();
 	private TByteArrayList greenByteList = new TByteArrayList();
 	private TByteArrayList blueByteList = new TByteArrayList();
-	private ArrayList<TByteArrayList> byteLists = new ArrayList<TByteArrayList>();
 	private byte replaceByte = 0x12;
+
+	byte[] sub;
+	int lastSubAmount;
 
 	public void init() {
 		target.setContinuous(true);
-		byteLists.add(redByteList);
-		byteLists.add(greenByteList);
-		byteLists.add(blueByteList);
+		int subAmount = amount.getIntValue();
+		lastSubAmount = subAmount;
+		sub = new byte[subAmount];
 	}
 
 	public void execute(Frame img) {
 		byte targetByte = (byte) target.getIntValue();
 		int subAmount = amount.getIntValue();
 
-		redByteList.ensureCapacity(img.getWidth() * img.getHeight());
-		greenByteList.ensureCapacity(img.getWidth() * img.getHeight());
-		blueByteList.ensureCapacity(img.getWidth() * img.getHeight());
+		if (subAmount != lastSubAmount) {
+			sub = new byte[subAmount];
+			byteFill(sub, replaceByte);
+		}
+
+		lastSubAmount = subAmount;
+
+		int imgSize = img.getWidth() * img.getHeight();
+
+		redByteList.ensureCapacity(imgSize);
+		greenByteList.ensureCapacity(imgSize);
+		blueByteList.ensureCapacity(imgSize);
 
 		for (PixelIndexList coords : getAlgorithm().getSelectedPixels())
-			process(coords, targetByte, img, replaceByte, subAmount);
+			process(coords, targetByte, img);
 	}
 
-	private void process(PixelIndexList coords, byte target, Frame img, byte sub, int subAmount) {
+	private void process(PixelIndexList coords, byte target, Frame img) {
 		redByteList.resetQuick();
 		greenByteList.resetQuick();
 		blueByteList.resetQuick();
-
-		TByteArrayList currentByteList;
 
 		for (int index = 0; index < coords.size(); index++) {
 
 			int color = img.pixels[coords.get(index)];
 
-			for (int k = 0; k < 3; k++) {
+			// If we hit our target byte, add our replacement byte
+			// Otherwise, add the vanilla byte
 
-				currentByteList = byteLists.get(k);
+			// First with red:
+			byte temp = (byte) (color & 0x000000ff);
+			if (temp == target)
+				redByteList.add(sub);
+			else
+				redByteList.add(temp);
 
-				byte temp = (byte) ((color >> (8 * k)) & 0x000000FF);
+			// Second with green:
+			temp = (byte) ((color >> 8) & 0x000000ff);
+			if (temp == target)
+				greenByteList.add(sub);
+			else
+				greenByteList.add(temp);
 
-				// If we hit our target byte, add our replacement byte
-				if (temp == target) {
-					for (int i = 0; i < subAmount; i++)
-						currentByteList.add(sub);
-
-					continue;
-				}
-
-				// Otherwise, add the vanilla byte and continue
-				currentByteList.add(temp);
-			}
-
+			// Third with blue:
+			temp = (byte) ((color >> 16) & 0x000000ff);
+			if (temp == target)
+				blueByteList.add(sub);
+			else
+				blueByteList.add(temp);
 		}
 
 		// We are done adding bytes to the image byte array
-		// Now we can move onto reassigning "databent" values
+		// Now we can move onto reassigning "databent" channel values
 
 		for (int index = 0; index < coords.size(); index++) {
 			int coord = coords.get(index);
@@ -89,13 +101,25 @@ public class RainbowBend extends Operation {
 
 	}
 
+	private void byteFill(byte[] array, byte value) {
+		int len = array.length;
+
+		if (len > 0) {
+			array[0] = value;
+		}
+
+		for (int i = 1; i < len; i += i) {
+			System.arraycopy(array, 0, array, i, ((len - i) < i) ? (len - i) : i);
+		}
+	}
+
 	private int createPixelValue(byte b1, byte b2, byte b3) {
 
-		int r = Byte.toUnsignedInt(b3);
-		int g = Byte.toUnsignedInt(b2);
-		int b = Byte.toUnsignedInt(b1);
+		int r = 0x000000ff & (0xff & b1);
+		int g = 0x000000ff & (0xff & b2);
+		int b = 0x000000ff & (0xff & b3);
 
-		return ColorHelper.color(255, r, g, b);
+		return ColorHelper.color(0xff, r, g, b);
 	}
 
 }
