@@ -13,11 +13,12 @@ public class RainbowBend extends Operation {
 	}
 
 	private NumberParameter target = new NumberParameter("Target", this, 125, 0, 255, 1);
-	private NumberParameter amount = new NumberParameter("Amount", this, 1, 1, 100, 1);
+	private NumberParameter amount = new NumberParameter("Amount", this, 1, 1, 1000, 1);
 
 	private TByteArrayList redByteList = new TByteArrayList();
 	private TByteArrayList greenByteList = new TByteArrayList();
 	private TByteArrayList blueByteList = new TByteArrayList();
+
 	private byte replaceByte = 0x12;
 
 	byte[] sub;
@@ -31,6 +32,7 @@ public class RainbowBend extends Operation {
 	}
 
 	public void execute(Frame img) {
+
 		byte targetByte = (byte) target.getIntValue();
 		int subAmount = amount.getIntValue();
 
@@ -47,8 +49,9 @@ public class RainbowBend extends Operation {
 		greenByteList.ensureCapacity(imgSize);
 		blueByteList.ensureCapacity(imgSize);
 
-		for (PixelIndexList coords : getAlgorithm().getSelectedPixels())
+		for (PixelIndexList coords : getAlgorithm().getSelectedPixels()) {
 			process(coords, targetByte, img);
+		}
 	}
 
 	private void process(PixelIndexList coords, byte target, Frame img) {
@@ -58,27 +61,27 @@ public class RainbowBend extends Operation {
 
 		for (int index = 0; index < coords.size(); index++) {
 
-			int color = img.pixels[coords.get(index)];
+			int color = img.pixels[coords.getQuick(index)];
 
 			// If we hit our target byte, add our replacement byte
 			// Otherwise, add the vanilla byte
 
 			// First with red:
-			byte temp = (byte) (color & 0x000000ff);
+			byte temp = (byte) (color >> 16);
 			if (temp == target)
 				redByteList.add(sub);
 			else
 				redByteList.add(temp);
 
 			// Second with green:
-			temp = (byte) ((color >> 8) & 0x000000ff);
+			temp = (byte) (color >> 8);
 			if (temp == target)
 				greenByteList.add(sub);
 			else
 				greenByteList.add(temp);
 
 			// Third with blue:
-			temp = (byte) ((color >> 16) & 0x000000ff);
+			temp = (byte) (color);
 			if (temp == target)
 				blueByteList.add(sub);
 			else
@@ -89,7 +92,7 @@ public class RainbowBend extends Operation {
 		// Now we can move onto reassigning "databent" channel values
 
 		for (int index = 0; index < coords.size(); index++) {
-			int coord = coords.get(index);
+			int coord = coords.getQuick(index);
 
 			byte b1 = redByteList.getQuick(index);
 			byte b2 = greenByteList.getQuick(index);
@@ -115,10 +118,9 @@ public class RainbowBend extends Operation {
 
 	private int createPixelValue(byte b1, byte b2, byte b3) {
 
-		int r = 0x000000ff & (0xff & b1);
-		int g = 0x000000ff & (0xff & b2);
-		int b = 0x000000ff & (0xff & b3);
-
+		int r = Byte.toUnsignedInt(b1);
+		int g = Byte.toUnsignedInt(b2);
+		int b = Byte.toUnsignedInt(b3);
 		return ColorHelper.color(0xff, r, g, b);
 	}
 

@@ -47,8 +47,10 @@ public class RainbowBendTest extends AppStart {
 		alg.add(bend);
 		smudge.add(alg);
 
-		bend.getParameter("Amount").setValue(21);
+		bend.getParameter("Amount").setValue(3);
 		addAutomator("Animate", bend.getParameter("Target"));
+
+		smudge.getParameter("Downsample").setValue(1);
 
 	}
 
