@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="smudgr" default="launch" basedir=".">
+	
+	<path id="classpath">
+		<fileset dir="." includes="**/*.jar"/>
+	</path>
+	
+	<target name="clean">
+		<delete dir="bin"/>
+	</target>
+	
+	<target depends="clean" name="compile">
+		<mkdir dir="bin"/>
+		<javac srcdir="src" destdir="bin" classpathref="classpath"/>
+	</target>
+	
+	<target depends="compile" name="run">
+		<java classname="io.smudgr.test.SkyShowApp" 
+			  fork="true"
+			  classpath="bin:lib/*:builds/win64/bin/*"/>
+	</target>
 
 	<target depends="makejar, windowsLaunch, macLaunch" name="launch" />
 	
