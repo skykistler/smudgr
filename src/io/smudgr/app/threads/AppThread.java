@@ -4,7 +4,7 @@ public abstract class AppThread implements Runnable {
 
 	private String threadName;
 	private Thread thread;
-	protected long targetTickNs, preTickNs, ticks;
+	protected long targetTickNs, preTickNs, ticks, timerMs;
 	private volatile boolean running, paused, finished;
 
 	public AppThread(String name) {
@@ -43,7 +43,7 @@ public abstract class AppThread implements Runnable {
 	}
 
 	public void run() {
-		long timer = System.currentTimeMillis();
+		timerMs = System.currentTimeMillis();
 
 		long prevTicks = 0;
 		ticks = 0;
@@ -67,8 +67,8 @@ public abstract class AppThread implements Runnable {
 			if (prevTicks == ticks)
 				ticks++;
 
-			if (System.currentTimeMillis() - timer >= 1000) {
-				timer = System.currentTimeMillis();
+			if (System.currentTimeMillis() - timerMs >= 1000) {
+				timerMs = System.currentTimeMillis();
 				printStatus();
 
 				ticks = 0;
@@ -102,6 +102,11 @@ public abstract class AppThread implements Runnable {
 			Thread.sleep(ms, ns);
 		} catch (Exception e) {
 		}
+	}
+
+	protected void resetTimer() {
+		timerMs = System.currentTimeMillis();
+		ticks = 0;
 	}
 
 	protected void onStop() {

@@ -8,6 +8,7 @@ import io.smudgr.project.smudge.Smudge;
 import io.smudgr.project.smudge.alg.Algorithm;
 import io.smudgr.project.smudge.alg.coord.ColumnCoords;
 import io.smudgr.project.smudge.alg.coord.RowCoords;
+import io.smudgr.project.smudge.alg.op.ChannelBleed;
 import io.smudgr.project.smudge.alg.op.DataBend;
 import io.smudgr.project.smudge.alg.op.PixelShift;
 import io.smudgr.project.smudge.alg.op.PixelSort;
@@ -20,7 +21,7 @@ public class SkyShowApp extends AppStart {
 
 	static boolean overwriteSmudge = false;
 
-	static String sourcePath = "data/gemini";
+	static String sourcePath = "data/testing";
 
 	static String outputPath = "data";
 
@@ -112,6 +113,15 @@ public class SkyShowApp extends AppStart {
 		Controller.getInstance().add(new WebsocketView());
 
 		start();
+
+		Smudge smudge = Controller.getInstance().getProject().getSmudge();
+		Algorithm chan_bleed = new Algorithm();
+		ChannelBleed bleed = new ChannelBleed();
+		chan_bleed.add(bleed);
+		bleed.getParameter("Shift Amount").setContinuous(true);
+		chan_bleed.getParameter("Enable").setValue(false);
+		addAutomator("Animate", bleed.getParameter("Shift Amount"));
+		smudge.add(chan_bleed);
 	}
 
 	public static void main(String[] args) {
