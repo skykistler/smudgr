@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
-import io.smudgr.project.ProjectElement;
+import io.smudgr.project.ProjectItem;
 import io.smudgr.project.PropertyMap;
 
-public abstract class Parametric implements ProjectElement {
+public abstract class Parametric implements ProjectItem {
 
 	private HashMap<String, Parameter> parameters = new HashMap<String, Parameter>();
 

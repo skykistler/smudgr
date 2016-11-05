@@ -90,28 +90,28 @@ public class Project {
 		idProvider.finishLoading();
 	}
 
-	public void add(ProjectElement element) {
-		idProvider.add(element);
+	public void add(ProjectItem item) {
+		idProvider.add(item);
 	}
 
-	public void put(ProjectElement element, int id) {
-		idProvider.put(element, id);
+	public void put(ProjectItem item, int id) {
+		idProvider.put(item, id);
 	}
 
-	public void remove(ProjectElement element) {
-		idProvider.remove(element);
+	public void remove(ProjectItem item) {
+		idProvider.remove(item);
 	}
 
-	public boolean contains(ProjectElement element) {
-		return idProvider.getId(element) > -1;
+	public boolean contains(ProjectItem item) {
+		return idProvider.getId(item) > -1;
 	}
 
-	public int getId(ProjectElement element) {
-		return idProvider.getId(element);
+	public int getId(ProjectItem item) {
+		return idProvider.getId(item);
 	}
 
-	public ProjectElement getElement(int id) {
-		return idProvider.getElement(id);
+	public ProjectItem getItem(int id) {
+		return idProvider.getItem(id);
 	}
 
 	public String getOutputPath() {

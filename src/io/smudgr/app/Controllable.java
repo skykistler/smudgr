@@ -1,8 +1,8 @@
 package io.smudgr.app;
 
-import io.smudgr.project.ProjectElement;
+import io.smudgr.project.ProjectItem;
 
-public interface Controllable extends ProjectElement {
+public interface Controllable extends ProjectItem {
 	
 	public static final String PROPERTY_MAP_KEY = "control";
 

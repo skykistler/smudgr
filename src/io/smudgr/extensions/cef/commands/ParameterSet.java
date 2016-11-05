@@ -11,7 +11,7 @@ public class ParameterSet implements CefCommand {
 	}
 
 	public CefMessage execute(CefMessage data) {
-		Parameter param = (Parameter) Controller.getInstance().getProject().getElement((int) data.getNumber("id"));
+		Parameter param = (Parameter) Controller.getInstance().getProject().getItem((int) data.getNumber("id"));
 		param.setValue(data.get("value"));
 
 		CefMessage response = new CefMessage("id", data.get("id"));

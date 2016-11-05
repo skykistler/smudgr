@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import io.smudgr.project.ProjectElement;
+import io.smudgr.project.ProjectItem;
 
 public class IdProvider {
 	private static final int MAX_ID = 100000;
 
-	private HashMap<Integer, ProjectElement> idToElement = new HashMap<Integer, ProjectElement>();
-	private HashMap<ProjectElement, Integer> elementToId = new HashMap<ProjectElement, Integer>();
+	private HashMap<Integer, ProjectItem> idToItem = new HashMap<Integer, ProjectItem>();
+	private HashMap<ProjectItem, Integer> itemToId = new HashMap<ProjectItem, Integer>();
 
 	private ArrayList<Integer> available_ids = new ArrayList<Integer>(MAX_ID);
 	private Random idPicker = new Random();
 
-	private ArrayList<ProjectElement> toAdd = new ArrayList<ProjectElement>();
+	private ArrayList<ProjectItem> toAdd = new ArrayList<ProjectItem>();
 	private boolean loading;
 
 	public IdProvider() {
@@ -28,54 +28,54 @@ public class IdProvider {
 	public void finishLoading() {
 		loading = false;
 
-		for (ProjectElement element : toAdd) {
-			add(element);
+		for (ProjectItem item : toAdd) {
+			add(item);
 		}
 
 		toAdd.clear();
 	}
 
-	public void add(ProjectElement element) {
-		if (getId(element) > -1)
+	public void add(ProjectItem item) {
+		if (getId(item) > -1)
 			return;
 
 		if (loading) {
-			if (!toAdd.contains(element))
-				toAdd.add(element);
+			if (!toAdd.contains(item))
+				toAdd.add(item);
 			return;
 		}
 
-		put(element, getNewId());
+		put(item, getNewId());
 	}
 
-	public void put(ProjectElement element, int id) {
+	public void put(ProjectItem item, int id) {
 		if (id < 0) {
-			System.out.println("Can't set " + element + " to negative ID: " + id);
+			System.out.println("Can't set " + item + " to negative ID: " + id);
 			return;
 		}
 
-		ProjectElement curr = idToElement.get(id);
-		if (curr == element)
+		ProjectItem curr = idToItem.get(id);
+		if (curr == item)
 			return;
 
 		if (curr != null) {
-			System.out.println("Project ID collision: " + element + " trying to replace " + curr + " at ID: " + id);
+			System.out.println("Project ID collision: " + item + " trying to replace " + curr + " at ID: " + id);
 			return;
 		}
 
-		if (elementToId.containsKey(element))
-			remove(element);
+		if (itemToId.containsKey(item))
+			remove(item);
 
-		idToElement.put(id, element);
-		elementToId.put(element, id);
+		idToItem.put(id, item);
+		itemToId.put(item, id);
 
 		consumeId(id);
 	}
 
-	public void remove(ProjectElement element) {
-		int id = getId(element);
-		elementToId.remove(element);
-		idToElement.remove(id);
+	public void remove(ProjectItem item) {
+		int id = getId(item);
+		itemToId.remove(item);
+		idToItem.remove(id);
 
 		if (id < 0 || available_ids.contains(id))
 			return;
@@ -83,15 +83,15 @@ public class IdProvider {
 		available_ids.add(id);
 	}
 
-	public ProjectElement getElement(int id) {
-		return idToElement.get(id);
+	public ProjectItem getItem(int id) {
+		return idToItem.get(id);
 	}
 
-	public int getId(ProjectElement element) {
-		if (!elementToId.containsKey(element))
+	public int getId(ProjectItem item) {
+		if (!itemToId.containsKey(item))
 			return -1;
 
-		return elementToId.get(element);
+		return itemToId.get(item);
 	}
 
 	private int getNewId() {

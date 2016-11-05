@@ -20,7 +20,7 @@ import io.smudgr.extensions.midi.messages.ResetMessage;
 import io.smudgr.extensions.midi.messages.StartMessage;
 import io.smudgr.extensions.midi.messages.StopMessage;
 import io.smudgr.extensions.midi.tcp.DeviceServer;
-import io.smudgr.project.ProjectElement;
+import io.smudgr.project.ProjectItem;
 import io.smudgr.project.PropertyMap;
 import io.smudgr.project.smudge.param.Parameter;
 
@@ -91,12 +91,12 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 		if (devices.size() == 0)
 			return;
 
-		ProjectElement element = getProject().getElement(control_id);
-		if (element == null || !(element instanceof Controllable)) {
-			System.out.println("Unable to bind " + element);
+		ProjectItem item = getProject().getItem(control_id);
+		if (item == null || !(item instanceof Controllable)) {
+			System.out.println("Unable to bind " + item);
 		}
 
-		Controllable control = (Controllable) element;
+		Controllable control = (Controllable) item;
 
 		String name = control.getName();
 		if (control instanceof Parameter) {
@@ -197,15 +197,14 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 			}
 			// Otherwise get the bind
 			else {
-				ProjectElement bound = getProject().getElement(midiMap.getBind(channel, key));
+				ProjectItem bound = getProject().getItem(midiMap.getBind(channel, key));
 
 				if (bound != null && bound instanceof Controllable) {
 					MidiMessageStrategy ms = messageStrategies.get(status);
 
 					synchronized (Controller.getInstance().getProject().getSmudge()) {
 						// If this is a CC message, we need to check if this is
-						// an
-						// absolute or relative bind
+						// an absolute or relative bind
 						if (ms instanceof ControlChangeMessage) {
 							ControlChangeMessage ccm = (ControlChangeMessage) ms;
 							ccm.input((Controllable) bound, value, midiMap.isAbsoluteBind(channel, key));

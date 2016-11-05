@@ -1,10 +1,10 @@
 package io.smudgr.project.smudge.param;
 
 import io.smudgr.app.Controllable;
-import io.smudgr.project.ProjectElement;
+import io.smudgr.project.ProjectItem;
 import io.smudgr.project.PropertyMap;
 
-public abstract class Parameter implements Controllable, ProjectElement {
+public abstract class Parameter implements Controllable, ProjectItem {
 	
 	public static final String PROPERTY_MAP_KEY = "parameter";
 	

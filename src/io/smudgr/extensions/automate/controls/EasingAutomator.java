@@ -91,7 +91,7 @@ public class EasingAutomator implements AutomatorControl {
 		if (pm.hasAttribute("parameter")) {
 			int parameterId = Integer.parseInt(pm.getAttribute("parameter"));
 
-			parameter = (NumberParameter) getProject().getElement(parameterId);
+			parameter = (NumberParameter) getProject().getItem(parameterId);
 		}
 	}
 
