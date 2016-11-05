@@ -15,10 +15,10 @@ public class UpdateThread extends AppThread {
 	}
 
 	public void setPaused(boolean paused) {
-		super.setPaused(paused);
-
 		if (!paused)
 			resetTimer();
+
+		super.setPaused(paused);
 	}
 
 	protected void execute() {
