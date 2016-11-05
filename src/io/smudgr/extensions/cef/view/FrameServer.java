@@ -4,6 +4,7 @@ import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.ArrayList;
 
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
@@ -15,7 +16,7 @@ public class FrameServer extends WebSocketServer {
 
 	private volatile Frame frame = null;
 	private volatile boolean dimensionsChanged;
-	private volatile WebSocket activeSocket;
+	private volatile ArrayList<WebSocket> activeSockets = new ArrayList<WebSocket>();
 
 	public volatile boolean writing;
 
@@ -46,8 +47,8 @@ public class FrameServer extends WebSocketServer {
 		}
 	}
 
-	public void writeFrame() {
-		if (activeSocket.hasBufferedData() || writing || frame == null || activeSocket == null)
+	public synchronized void writeFrame() {
+		if (writing || frame == null || activeSockets.size() == 0)
 			return;
 
 		writing = true;
@@ -66,25 +67,28 @@ public class FrameServer extends WebSocketServer {
 			buffer.putInt(color);
 		}
 
-		buffer.flip();
-		activeSocket.send(buffer);
+		for (WebSocket ws : activeSockets) {
+			if (ws.hasBufferedData())
+				continue;
+
+			buffer.flip();
+			ws.send(buffer);
+		}
 
 		toDraw.dispose();
 
 		writing = false;
 	}
 
-	private void updateSize() {
-		activeSocket.send("w:" + frame.getWidth());
-		activeSocket.send("h:" + frame.getHeight());
+	private synchronized void updateSize() {
+		for (WebSocket ws : activeSockets) {
+			ws.send("w:" + frame.getWidth());
+			ws.send("h:" + frame.getHeight());
+		}
 	}
 
-	public void onOpen(WebSocket arg0, ClientHandshake arg1) {
-		if (activeSocket != null)
-			activeSocket.close(0);
-
-		activeSocket = arg0;
-		writing = false;
+	public synchronized void onOpen(WebSocket arg0, ClientHandshake arg1) {
+		activeSockets.add(arg0);
 
 		updateSize();
 		writeFrame();
@@ -95,7 +99,8 @@ public class FrameServer extends WebSocketServer {
 		writeFrame();
 	}
 
-	public void onClose(WebSocket arg0, int arg1, String arg2, boolean arg3) {
+	public synchronized void onClose(WebSocket arg0, int arg1, String arg2, boolean arg3) {
+		activeSockets.remove(arg0);
 	}
 
 	public void onError(WebSocket arg0, Exception arg1) {
