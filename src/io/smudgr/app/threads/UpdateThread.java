@@ -14,6 +14,13 @@ public class UpdateThread extends AppThread {
 		return (int) (ms / (1000 / getTarget()));
 	}
 
+	public void setPaused(boolean paused) {
+		if (!paused)
+			resetTimer();
+
+		super.setPaused(paused);
+	}
+
 	protected void execute() {
 		now = System.nanoTime();
 
@@ -41,6 +48,12 @@ public class UpdateThread extends AppThread {
 			sleep(0, 50000);
 			now = System.nanoTime();
 		}
+	}
+
+	protected void resetTimer() {
+		super.resetTimer();
+		now = System.nanoTime();
+		lastTickNs = now;
 	}
 
 }
