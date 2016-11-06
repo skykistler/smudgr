@@ -36,6 +36,7 @@ public class Controller {
 	private ArrayList<ViewThread> viewThreads = new ArrayList<ViewThread>();
 
 	private boolean started;
+	private boolean paused;
 
 	private ArrayList<View> views = new ArrayList<View>();
 
@@ -50,6 +51,7 @@ public class Controller {
 
 	public void start() {
 		if (started) {
+			paused = false;
 			updater.setPaused(false);
 			renderer.setPaused(false);
 			return;
@@ -107,8 +109,13 @@ public class Controller {
 		if (!started)
 			return;
 
+		paused = true;
 		updater.setPaused(true);
 		renderer.setPaused(true);
+	}
+
+	public boolean isPaused() {
+		return paused;
 	}
 
 	public void stop() {

@@ -3,6 +3,7 @@ package io.smudgr.extensions.cef.view;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+import io.smudgr.app.Controller;
 import io.smudgr.app.threads.ViewThread;
 import io.smudgr.app.view.View;
 import io.smudgr.project.util.Frame;
@@ -27,6 +28,9 @@ public class WebsocketView implements View {
 	}
 
 	public void update(Frame frame) {
+		if (Controller.getInstance().isPaused())
+			return;
+
 		server.setFrame(frame);
 		server.writeFrame();
 	}
