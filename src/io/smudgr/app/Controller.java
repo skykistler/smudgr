@@ -181,7 +181,7 @@ public class Controller {
 
 	// TODO move this shit somewhere else
 	public void startOutput(FrameOutput output) {
-		if (frameOutput != null)
+		if (isOutputting())
 			return;
 
 		frameOutput = output;
@@ -193,7 +193,7 @@ public class Controller {
 	}
 
 	public void stopOutput() {
-		if (frameOutput == null)
+		if (!isOutputting())
 			return;
 
 		frameOutput.close();
@@ -202,6 +202,10 @@ public class Controller {
 		updater.setPaused(false);
 
 		frameOutput = null;
+	}
+
+	public boolean isOutputting() {
+		return frameOutput != null;
 	}
 
 	public void save(PropertyMap pm) {

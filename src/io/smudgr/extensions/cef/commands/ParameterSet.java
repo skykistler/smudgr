@@ -12,8 +12,6 @@ public class ParameterSet implements CefCommand, ParameterObserver {
 
 	public ParameterSet() {
 		getProject().getParameterObserverNotifier().attach(this);
-
-		System.out.println("HEY");
 	}
 
 	public CefMessage execute(CefMessage data) {
