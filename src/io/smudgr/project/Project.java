@@ -8,6 +8,7 @@ import io.smudgr.project.smudge.Smudge;
 import io.smudgr.project.util.ComponentLibrary;
 import io.smudgr.project.util.DisposedFrameProvider;
 import io.smudgr.project.util.IdProvider;
+import io.smudgr.project.util.ParameterObserverNotifier;
 import io.smudgr.project.util.SourceLibrary;
 
 public class Project {
@@ -17,6 +18,7 @@ public class Project {
 	private IdProvider idProvider;
 	private ComponentLibrary componentLibrary;
 	private SourceLibrary sourceLibrary;
+	private ParameterObserverNotifier paramObserverNotifier;
 
 	private Smudge smudge;
 
@@ -28,6 +30,7 @@ public class Project {
 		idProvider = new IdProvider();
 		componentLibrary = new ComponentLibrary();
 		sourceLibrary = new SourceLibrary();
+		paramObserverNotifier = new ParameterObserverNotifier();
 	}
 
 	public void init() {
@@ -90,38 +93,6 @@ public class Project {
 		idProvider.finishLoading();
 	}
 
-	public void add(ProjectItem item) {
-		idProvider.add(item);
-	}
-
-	public void put(ProjectItem item, int id) {
-		idProvider.put(item, id);
-	}
-
-	public void remove(ProjectItem item) {
-		idProvider.remove(item);
-	}
-
-	public boolean contains(ProjectItem item) {
-		return idProvider.getId(item) > -1;
-	}
-
-	public int getId(ProjectItem item) {
-		return idProvider.getId(item);
-	}
-
-	public ProjectItem getItem(int id) {
-		return idProvider.getItem(id);
-	}
-
-	public String getOutputPath() {
-		return outputPath;
-	}
-
-	public String getProjectPath() {
-		return location;
-	}
-
 	public void setProjectPath(String path) {
 		File output = new File(path);
 
@@ -161,6 +132,38 @@ public class Project {
 		outputPath = path;
 	}
 
+	public void add(ProjectItem item) {
+		idProvider.add(item);
+	}
+
+	public void put(ProjectItem item, int id) {
+		idProvider.put(item, id);
+	}
+
+	public void remove(ProjectItem item) {
+		idProvider.remove(item);
+	}
+
+	public boolean contains(ProjectItem item) {
+		return idProvider.getId(item) > -1;
+	}
+
+	public int getId(ProjectItem item) {
+		return idProvider.getId(item);
+	}
+
+	public ProjectItem getItem(int id) {
+		return idProvider.getItem(id);
+	}
+
+	public String getOutputPath() {
+		return outputPath;
+	}
+
+	public String getProjectPath() {
+		return location;
+	}
+
 	public Smudge getSmudge() {
 		return smudge;
 	}
@@ -175,6 +178,10 @@ public class Project {
 
 	public SourceLibrary getSourceLibrary() {
 		return sourceLibrary;
+	}
+
+	public ParameterObserverNotifier getParameterObserverNotifier() {
+		return paramObserverNotifier;
 	}
 
 	public int getBPM() {

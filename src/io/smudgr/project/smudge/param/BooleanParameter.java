@@ -1,7 +1,7 @@
 package io.smudgr.project.smudge.param;
 
 public class BooleanParameter extends Parameter {
-	
+
 	public String getType() {
 		return "boolean";
 	}
@@ -17,7 +17,7 @@ public class BooleanParameter extends Parameter {
 		setValue(initial);
 	}
 
-	public void setValue(Object o) {
+	protected void setValueFromObject(Object o) {
 		if (o instanceof String)
 			value = o.toString().equals("true") ? true : false;
 		else

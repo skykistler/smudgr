@@ -45,6 +45,10 @@ public class CefExtension implements ControllerExtension {
 		return invoker;
 	}
 
+	public CommandServer getServer() {
+		return server;
+	}
+
 	public void save(PropertyMap pm) {
 
 	}

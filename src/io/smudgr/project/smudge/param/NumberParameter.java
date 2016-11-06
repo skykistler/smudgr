@@ -3,7 +3,7 @@ package io.smudgr.project.smudge.param;
 import io.smudgr.project.PropertyMap;
 
 public class NumberParameter extends Parameter {
-	
+
 	public String getType() {
 		return "number";
 	}
@@ -25,8 +25,7 @@ public class NumberParameter extends Parameter {
 		this(name, parent, initial, minimum, maximum, (maximum - minimum) / 127);
 	}
 
-	public NumberParameter(String name, Parametric parent, double initial, double minimum, double maximum,
-			double step) {
+	public NumberParameter(String name, Parametric parent, double initial, double minimum, double maximum, double step) {
 		super(name, parent);
 
 		min = minimum;
@@ -35,7 +34,7 @@ public class NumberParameter extends Parameter {
 		setStep(step);
 	}
 
-	public void setValue(Object o) {
+	protected void setValueFromObject(Object o) {
 		double prevValue = value;
 
 		if (o instanceof Double)

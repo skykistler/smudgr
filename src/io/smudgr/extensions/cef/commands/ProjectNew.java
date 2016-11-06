@@ -1,6 +1,5 @@
 package io.smudgr.extensions.cef.commands;
 
-import io.smudgr.app.Controller;
 import io.smudgr.extensions.cef.util.CefMessage;
 import io.smudgr.project.ProjectLoader;
 
@@ -16,7 +15,7 @@ public class ProjectNew implements CefCommand {
 				ProjectLoader project = new ProjectLoader();
 				project.load();
 
-				Controller.getInstance().start();
+				getController().start();
 			}
 		}).start();
 

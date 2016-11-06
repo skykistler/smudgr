@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import io.smudgr.project.smudge.alg.math.blend.Blender;
 
 public class BlendParameter extends Parameter {
-	
+
 	public String getType() {
 		return "Blend";
 	}
@@ -26,7 +26,7 @@ public class BlendParameter extends Parameter {
 	public void update() {
 	}
 
-	public void setValue(Object o) {
+	protected void setValueFromObject(Object o) {
 		Blender func = null;
 
 		if (o instanceof Blender)

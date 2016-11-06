@@ -2,7 +2,6 @@ package io.smudgr.extensions.cef.commands;
 
 import java.io.File;
 
-import io.smudgr.app.Controller;
 import io.smudgr.app.view.FileDialog;
 import io.smudgr.app.view.FileDialog.FileDialogCallback;
 import io.smudgr.app.view.FileDialog.FileDialogFilter;
@@ -28,7 +27,7 @@ public class ProjectOpen implements CefCommand {
 			ProjectLoader project = new ProjectLoader(selectedFiles[0].getAbsolutePath());
 			project.load();
 
-			Controller.getInstance().start();
+			getController().start();
 		}
 
 		public void onFailure(String reason) {

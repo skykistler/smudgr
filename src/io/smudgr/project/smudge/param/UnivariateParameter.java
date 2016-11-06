@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import io.smudgr.project.smudge.alg.math.univariate.UnivariateFunction;
 
 public class UnivariateParameter extends Parameter {
-	
+
 	public String getType() {
 		return "Univariate";
 	}
@@ -26,7 +26,7 @@ public class UnivariateParameter extends Parameter {
 	public void update() {
 	}
 
-	public void setValue(Object o) {
+	protected void setValueFromObject(Object o) {
 		UnivariateFunction func = null;
 
 		if (o instanceof UnivariateFunction)

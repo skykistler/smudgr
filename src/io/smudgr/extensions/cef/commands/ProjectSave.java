@@ -2,7 +2,6 @@ package io.smudgr.extensions.cef.commands;
 
 import java.io.File;
 
-import io.smudgr.app.Controller;
 import io.smudgr.app.view.FileDialog;
 import io.smudgr.app.view.FileDialog.FileDialogCallback;
 import io.smudgr.app.view.FileDialog.FileDialogFilter;
@@ -16,7 +15,7 @@ public class ProjectSave implements CefCommand {
 	}
 
 	public CefMessage execute(CefMessage data) {
-		if (data.hasKey("as") || Controller.getInstance().getProject().getProjectPath() == null) {
+		if (data.hasKey("as") || getProject().getProjectPath() == null) {
 			showSaveAs();
 		} else
 			saveProject();
@@ -36,7 +35,7 @@ public class ProjectSave implements CefCommand {
 
 	private class SaveSmudgeCallback implements FileDialogCallback {
 		public void onSelection(File[] selectedFiles) {
-			Controller.getInstance().getProject().setProjectPath(selectedFiles[0].getAbsolutePath());
+			getController().getProject().setProjectPath(selectedFiles[0].getAbsolutePath());
 			saveProject();
 		}
 

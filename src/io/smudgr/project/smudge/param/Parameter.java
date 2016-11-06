@@ -5,9 +5,9 @@ import io.smudgr.project.ProjectItem;
 import io.smudgr.project.PropertyMap;
 
 public abstract class Parameter implements Controllable, ProjectItem {
-	
+
 	public static final String PROPERTY_MAP_KEY = "parameter";
-	
+
 	public abstract String getType();
 
 	public String getName() {
@@ -25,7 +25,14 @@ public abstract class Parameter implements Controllable, ProjectItem {
 		this.parent.addParameter(this);
 	}
 
-	public abstract void setValue(Object o);
+	protected abstract void setValueFromObject(Object o);
+
+	public void setValue(Object o) {
+		setValueFromObject(o);
+
+		if (getProject() != null && getProject().getParameterObserverNotifier() != null)
+			getProject().getParameterObserverNotifier().notify(this);
+	}
 
 	public abstract String getStringValue();
 

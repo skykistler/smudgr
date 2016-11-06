@@ -1,6 +1,5 @@
 package io.smudgr.extensions.cef.commands;
 
-import io.smudgr.app.Controller;
 import io.smudgr.extensions.cef.util.CefMessage;
 
 public class ControlPlay implements CefCommand {
@@ -10,7 +9,8 @@ public class ControlPlay implements CefCommand {
 	}
 
 	public CefMessage execute(CefMessage data) {
-		Controller.getInstance().start();
+		getController().start();
+
 		return null;
 	}
 

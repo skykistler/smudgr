@@ -1,23 +1,33 @@
 package io.smudgr.extensions.cef.commands;
 
-import io.smudgr.app.Controller;
 import io.smudgr.extensions.cef.util.CefMessage;
 import io.smudgr.project.smudge.param.Parameter;
+import io.smudgr.project.smudge.param.ParameterObserver;
 
-public class ParameterSet implements CefCommand {
+public class ParameterSet implements CefCommand, ParameterObserver {
 
 	public String getCommand() {
 		return "parameter.set";
 	}
 
+	public ParameterSet() {
+		getProject().getParameterObserverNotifier().attach(this);
+
+		System.out.println("HEY");
+	}
+
 	public CefMessage execute(CefMessage data) {
-		Parameter param = (Parameter) Controller.getInstance().getProject().getItem((int) data.getNumber("id"));
+		Parameter param = (Parameter) getProject().getItem((int) data.getNumber("id"));
 		param.setValue(data.get("value"));
 
-		CefMessage response = new CefMessage("id", data.get("id"));
+		return null;
+	}
+
+	public void parameterUpdated(Parameter param) {
+		CefMessage response = new CefMessage("id", getProject().getId(param) + "");
 		response.put("value", param.getStringValue());
 
-		return CefMessage.command(getCommand(), response);
+		sendMessage(CefMessage.command(getCommand(), response));
 	}
 
 }
