@@ -35,8 +35,8 @@ public class Controller {
 	private RenderThread renderer;
 	private ArrayList<ViewThread> viewThreads = new ArrayList<ViewThread>();
 
-	private boolean started;
-	private boolean paused;
+	private volatile boolean started;
+	private volatile boolean paused;
 
 	private ArrayList<View> views = new ArrayList<View>();
 

@@ -32,13 +32,15 @@ public class FrameServer extends WebSocketServer {
 	}
 
 	public void setFrame(Frame f) {
-		if (frame == null || f.getWidth() != frame.getWidth() || f.getHeight() != frame.getHeight())
+		Frame resized = f.fitToSize(600, 600, false);
+
+		if (frame == null || resized.getWidth() != frame.getWidth() || resized.getHeight() != frame.getHeight())
 			dimensionsChanged = true;
 
 		if (frame != null)
 			frame.dispose();
 
-		frame = f.copy();
+		frame = resized;
 
 		bufferSize = frame.pixels.length * 4;
 		if (buffer == null || buffer.capacity() != bufferSize) {

@@ -48,8 +48,7 @@ public class Frame {
 		Frame fittedFrame = fitToSize(image.getWidth(), image.getHeight());
 
 		try {
-			image.setRGB(0, 0, fittedFrame.getWidth(), fittedFrame.getHeight(), fittedFrame.pixels, 0,
-					fittedFrame.getWidth());
+			image.setRGB(0, 0, fittedFrame.getWidth(), fittedFrame.getHeight(), fittedFrame.pixels, 0, fittedFrame.getWidth());
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("orig width: " + width);
@@ -64,6 +63,10 @@ public class Frame {
 	}
 
 	public Frame fitToSize(int toSizeW, int toSizeH) {
+		return fitToSize(toSizeW, toSizeH, true);
+	}
+
+	public Frame fitToSize(int toSizeW, int toSizeH, boolean fill) {
 		checkDisposed();
 
 		double newWidth = width;
@@ -73,20 +76,20 @@ public class Frame {
 
 		if (width > toSizeW || tooSmall) {
 			newWidth = toSizeW;
-			newHeight = (newWidth * height) / width;
+			newHeight = height * (newWidth / width);
 		}
 
 		if (newHeight > toSizeH) {
 			newHeight = toSizeH;
-			newWidth = (newHeight * width) / height;
+			newWidth = width * (newHeight / height);
 		}
 
-		int x = (int) (toSizeW / 2.0 - newWidth / 2);
-		int y = (int) (toSizeH / 2.0 - newHeight / 2);
+		int x = fill ? (int) (toSizeW / 2.0 - newWidth / 2) : 0;
+		int y = fill ? (int) (toSizeH / 2.0 - newHeight / 2) : 0;
 		int w = (int) newWidth;
 		int h = (int) newHeight;
 
-		return resize(x, y, w, h, toSizeW, toSizeH);
+		return resize(x, y, w, h, fill ? toSizeW : w, fill ? toSizeH : h);
 	}
 
 	public Frame resize(double factor) {
