@@ -17,7 +17,7 @@ public class WebsocketView implements View {
 	private FrameServer server;
 
 	public void start(ViewThread thread) {
-		thread.setTarget(30);
+		thread.setTarget(60);
 
 		try {
 			server = new FrameServer(8887);
