@@ -10,7 +10,7 @@ import io.smudgr.project.smudge.param.ParameterObserver;
 
 public class ParameterSet implements CefCommand, ParameterObserver {
 
-	private static final long PARAMETER_UPDATE_DEBOUNCE_MS = 50;
+	private static final long PARAMETER_UPDATE_DEBOUNCE_MS = 250;
 
 	public String getCommand() {
 		return "parameter.set";
@@ -24,7 +24,7 @@ public class ParameterSet implements CefCommand, ParameterObserver {
 
 	public CefMessage execute(CefMessage data) {
 		Parameter param = (Parameter) getProject().getItem((int) data.getNumber("id"));
-		param.setValue(data.get("value"));
+		param.setValue(data.get("value"), this);
 
 		return null;
 	}
@@ -57,7 +57,7 @@ public class ParameterSet implements CefCommand, ParameterObserver {
 
 			debouncer.setCallback(callback);
 		} else {
-			// If not debouncing but this parameter has been debounced, send and debounce
+			// If not debouncing but this parameter has been debounced before, send and debounce
 			sendMessage(CefMessage.command(getCommand(), response));
 			debouncer.start();
 		}

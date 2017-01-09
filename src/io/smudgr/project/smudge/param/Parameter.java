@@ -28,10 +28,14 @@ public abstract class Parameter implements Controllable, ProjectItem {
 	protected abstract void setValueFromObject(Object o);
 
 	public void setValue(Object o) {
+		setValue(o, null);
+	}
+
+	public void setValue(Object o, ParameterObserver ignoreObserver) {
 		setValueFromObject(o);
 
 		if (getProject() != null && getProject().getParameterObserverNotifier() != null)
-			getProject().getParameterObserverNotifier().notify(this);
+			getProject().getParameterObserverNotifier().notify(this, ignoreObserver);
 	}
 
 	public abstract String getStringValue();

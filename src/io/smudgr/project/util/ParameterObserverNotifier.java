@@ -14,8 +14,9 @@ public class ParameterObserverNotifier {
 			parameterObservers.add(observer);
 	}
 
-	public synchronized void notify(Parameter param) {
+	public synchronized void notify(Parameter param, ParameterObserver ignoreObserver) {
 		for (ParameterObserver obsv : parameterObservers)
-			obsv.parameterUpdated(param);
+			if (obsv != ignoreObserver)
+				obsv.parameterUpdated(param);
 	}
 }

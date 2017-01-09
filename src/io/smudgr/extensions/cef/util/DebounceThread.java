@@ -21,11 +21,11 @@ public class DebounceThread implements Runnable {
 			Thread.sleep(millis);
 		} catch (InterruptedException e) {
 		} finally {
-			isDebounce = false;
-
 			if (callback != null) {
 				callback.onComplete();
 			}
+
+			isDebounce = false;
 		}
 	}
 
