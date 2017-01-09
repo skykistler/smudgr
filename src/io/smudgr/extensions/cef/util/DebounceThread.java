@@ -4,12 +4,7 @@ public class DebounceThread implements Runnable {
 
 	private long millis;
 	private volatile boolean isDebounce;
-
-	public static DebounceThread startDebounce(long millis) {
-		DebounceThread t = new DebounceThread(millis);
-		t.start();
-		return t;
-	}
+	private volatile DebounceCallback callback;
 
 	public DebounceThread(long millis) {
 		this.millis = millis;
@@ -27,11 +22,19 @@ public class DebounceThread implements Runnable {
 		} catch (InterruptedException e) {
 		} finally {
 			isDebounce = false;
+
+			if (callback != null) {
+				callback.onComplete();
+			}
 		}
 	}
 
 	public boolean isDebouncing() {
 		return isDebounce;
+	}
+
+	public synchronized void setCallback(DebounceCallback callback) {
+		this.callback = callback;
 	}
 
 }

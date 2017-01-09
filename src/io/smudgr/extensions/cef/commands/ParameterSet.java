@@ -3,6 +3,7 @@ package io.smudgr.extensions.cef.commands;
 import java.util.HashMap;
 
 import io.smudgr.extensions.cef.util.CefMessage;
+import io.smudgr.extensions.cef.util.DebounceCallback;
 import io.smudgr.extensions.cef.util.DebounceThread;
 import io.smudgr.project.smudge.param.Parameter;
 import io.smudgr.project.smudge.param.ParameterObserver;
@@ -34,12 +35,31 @@ public class ParameterSet implements CefCommand, ParameterObserver {
 
 		// Check if this parameter has been debounced to prevent packet spam
 		DebounceThread debouncer = debounceMap.get(param);
-		if (debouncer == null || !debouncer.isDebouncing()) {
-			// If not, send the message
+
+		if (debouncer == null) {
+			// If this parameter has never been debounced, send the message and schedule a debouncer
 			sendMessage(CefMessage.command(getCommand(), response));
 
 			// Start a debounce to prevent another update for PARAMETER_UPDATE_DEBOUNCE_MS milliseconds
-			debounceMap.put(param, DebounceThread.startDebounce(PARAMETER_UPDATE_DEBOUNCE_MS));
+			debouncer = new DebounceThread(PARAMETER_UPDATE_DEBOUNCE_MS);
+			debouncer.start();
+			debounceMap.put(param, debouncer);
+
+		} else if (debouncer.isDebouncing()) {
+			// If currently debouncing, set this update as the most recent update
+			// This ensures if this parameter stops getting updated,
+			// the most recent value will be sent to the front-end
+			DebounceCallback callback = new DebounceCallback() {
+				public void onComplete() {
+					sendMessage(CefMessage.command(getCommand(), response));
+				}
+			};
+
+			debouncer.setCallback(callback);
+		} else {
+			// If not debouncing but this parameter has been debounced, send and debounce
+			sendMessage(CefMessage.command(getCommand(), response));
+			debouncer.start();
 		}
 	}
 
