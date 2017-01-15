@@ -1,4 +1,4 @@
-package io.smudgr.extensions.cef.util;
+package io.smudgr.api;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -6,15 +6,15 @@ import org.json.simple.JSONValue;
 
 import io.smudgr.project.PropertyMap;
 
-public class CefMessage {
+public class ApiMessage {
 
 	private JSONObject payload;
 
-	public CefMessage() {
+	public ApiMessage() {
 		payload = new JSONObject();
 	}
 
-	public CefMessage(String initialKey, String initialValue) {
+	public ApiMessage(String initialKey, String initialValue) {
 		this();
 		put(initialKey, initialValue);
 	}
@@ -50,22 +50,22 @@ public class CefMessage {
 		return serialize();
 	}
 
-	public static CefMessage command(String command, CefMessage data) {
+	public static ApiMessage command(String command, ApiMessage data) {
 		return command(command, "success", data);
 	}
 
-	public static CefMessage command(String command, String status, CefMessage data) {
-		CefMessage packet = new CefMessage();
+	public static ApiMessage command(String command, String status, ApiMessage data) {
+		ApiMessage packet = new ApiMessage();
 		packet.put("command", command);
 		packet.put("status", status);
 
-		packet.put("data", data != null ? data : new CefMessage());
+		packet.put("data", data != null ? data : new ApiMessage());
 
 		return packet;
 	}
 
-	public static CefMessage deserialize(String message) {
-		CefMessage result = new CefMessage();
+	public static ApiMessage deserialize(String message) {
+		ApiMessage result = new ApiMessage();
 
 		try {
 			JSONObject obj = (JSONObject) JSONValue.parse(message);
@@ -81,8 +81,8 @@ public class CefMessage {
 		return result;
 	}
 
-	public static CefMessage normalize(PropertyMap map) {
-		CefMessage result = new CefMessage();
+	public static ApiMessage normalize(PropertyMap map) {
+		ApiMessage result = new ApiMessage();
 		result.put(map.getTag(), buildJson(map));
 
 		return result;

@@ -1,20 +1,19 @@
-package io.smudgr.extensions.cef.commands;
+package io.smudgr.api;
 
 import java.io.File;
 
 import io.smudgr.app.view.FileDialog;
 import io.smudgr.app.view.FileDialog.FileDialogCallback;
 import io.smudgr.app.view.FileDialog.FileDialogFilter;
-import io.smudgr.extensions.cef.util.CefMessage;
 import io.smudgr.project.ProjectSaver;
 
-public class ProjectSave implements CefCommand {
+public class ProjectSave implements ApiCommand {
 
 	public String getCommand() {
 		return "project.save";
 	}
 
-	public CefMessage execute(CefMessage data) {
+	public ApiMessage execute(ApiMessage data) {
 		if (data.hasKey("as") || getProject().getProjectPath() == null) {
 			showSaveAs();
 		} else

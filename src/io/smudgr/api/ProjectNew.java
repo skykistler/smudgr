@@ -1,15 +1,14 @@
-package io.smudgr.extensions.cef.commands;
+package io.smudgr.api;
 
-import io.smudgr.extensions.cef.util.CefMessage;
 import io.smudgr.project.ProjectLoader;
 
-public class ProjectNew implements CefCommand {
+public class ProjectNew implements ApiCommand {
 
 	public String getCommand() {
 		return "project.new";
 	}
 
-	public CefMessage execute(CefMessage data) {
+	public ApiMessage execute(ApiMessage data) {
 		(new Thread() {
 			public void run() {
 				ProjectLoader project = new ProjectLoader();

@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import javax.sound.midi.MidiMessage;
 
+import io.smudgr.api.ApiMessage;
 import io.smudgr.app.Controllable;
 import io.smudgr.app.Controller;
 import io.smudgr.extensions.ControllerExtension;
@@ -65,6 +66,10 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 	}
 
 	public void stop() {
+
+	}
+
+	public void sendMessage(ApiMessage message) {
 
 	}
 

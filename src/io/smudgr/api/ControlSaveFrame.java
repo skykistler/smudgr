@@ -1,16 +1,15 @@
-package io.smudgr.extensions.cef.commands;
+package io.smudgr.api;
 
 import io.smudgr.app.output.ImageOutput;
-import io.smudgr.extensions.cef.util.CefMessage;
 import io.smudgr.project.util.Frame;
 
-public class ControlSaveFrame implements CefCommand {
+public class ControlSaveFrame implements ApiCommand {
 
 	public String getCommand() {
 		return "control.saveFrame";
 	}
 
-	public CefMessage execute(CefMessage data) {
+	public ApiMessage execute(ApiMessage data) {
 
 		Frame frame = getProject().getSmudge().getFrame();
 

@@ -3,6 +3,7 @@ package io.smudgr.extensions.automate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import io.smudgr.api.ApiMessage;
 import io.smudgr.extensions.ControllerExtension;
 import io.smudgr.extensions.automate.controls.AutomatorControl;
 import io.smudgr.project.PropertyMap;
@@ -28,6 +29,10 @@ public class AutomatorExtension implements ControllerExtension {
 	}
 
 	public void stop() {
+
+	}
+
+	public void sendMessage(ApiMessage message) {
 
 	}
 

@@ -1,15 +1,14 @@
-package io.smudgr.extensions.cef.commands;
+package io.smudgr.api;
 
-import io.smudgr.extensions.cef.util.CefMessage;
 import io.smudgr.extensions.cef.view.RenderFrame;
 
-public class CanvasResize implements CefCommand {
+public class CanvasResize implements ApiCommand {
 
 	public String getCommand() {
 		return "canvas.size";
 	}
 
-	public CefMessage execute(CefMessage data) {
+	public ApiMessage execute(ApiMessage data) {
 		RenderFrame canvas = RenderFrame.getInstance();
 
 		if (canvas == null)

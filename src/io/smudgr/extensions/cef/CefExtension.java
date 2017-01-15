@@ -3,6 +3,8 @@ package io.smudgr.extensions.cef;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+import io.smudgr.api.ApiInvoker;
+import io.smudgr.api.ApiMessage;
 import io.smudgr.extensions.ControllerExtension;
 import io.smudgr.extensions.cef.util.CommandServer;
 import io.smudgr.project.PropertyMap;
@@ -13,11 +15,11 @@ public class CefExtension implements ControllerExtension {
 		return "CEF";
 	}
 
-	private CommandInvoker invoker;
+	private ApiInvoker invoker;
 	private CommandServer server;
 
 	public CefExtension() {
-		invoker = new CommandInvoker();
+		invoker = new ApiInvoker();
 
 		try {
 			server = new CommandServer(invoker, 45455);
@@ -41,7 +43,11 @@ public class CefExtension implements ControllerExtension {
 		}
 	}
 
-	public CommandInvoker getInvoker() {
+	public void sendMessage(ApiMessage message) {
+		getServer().sendMessage(message);
+	}
+
+	public ApiInvoker getInvoker() {
 		return invoker;
 	}
 

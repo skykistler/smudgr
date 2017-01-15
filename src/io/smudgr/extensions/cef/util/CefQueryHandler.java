@@ -4,18 +4,19 @@ import org.cef.browser.CefBrowser;
 import org.cef.callback.CefQueryCallback;
 import org.cef.handler.CefMessageRouterHandlerAdapter;
 
-import io.smudgr.extensions.cef.CommandInvoker;
+import io.smudgr.api.ApiInvoker;
+import io.smudgr.api.ApiMessage;
 
 public class CefQueryHandler extends CefMessageRouterHandlerAdapter {
 
-	private CommandInvoker invoker;
+	private ApiInvoker invoker;
 
-	public CefQueryHandler(CommandInvoker invoker) {
+	public CefQueryHandler(ApiInvoker invoker) {
 		this.invoker = invoker;
 	}
 
 	public boolean onQuery(CefBrowser browser, long query_id, String request, boolean persistent, CefQueryCallback callback) {
-		CefMessage response = invoker.invoke(request);
+		ApiMessage response = invoker.invoke(request);
 
 		System.out.println(response);
 

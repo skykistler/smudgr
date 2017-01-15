@@ -7,18 +7,19 @@ import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
-import io.smudgr.extensions.cef.CommandInvoker;
+import io.smudgr.api.ApiInvoker;
+import io.smudgr.api.ApiMessage;
 
 public class CommandServer extends WebSocketServer {
 
 	private volatile WebSocket client;
-	private CommandInvoker invoker;
+	private ApiInvoker invoker;
 
-	public CommandServer(CommandInvoker invoker) throws UnknownHostException {
+	public CommandServer(ApiInvoker invoker) throws UnknownHostException {
 		this(invoker, 0);
 	}
 
-	public CommandServer(CommandInvoker invoker, int port) throws UnknownHostException {
+	public CommandServer(ApiInvoker invoker, int port) throws UnknownHostException {
 		super(new InetSocketAddress(port));
 		this.invoker = invoker;
 	}
@@ -31,7 +32,7 @@ public class CommandServer extends WebSocketServer {
 		sendMessage(invoker.invoke(message));
 	}
 
-	public void sendMessage(CefMessage message) {
+	public void sendMessage(ApiMessage message) {
 		if (client == null)
 			return;
 

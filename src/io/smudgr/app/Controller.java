@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import io.smudgr.api.ApiMessage;
 import io.smudgr.app.controls.AppControl;
 import io.smudgr.app.output.FrameOutput;
 import io.smudgr.app.threads.RenderThread;
@@ -144,6 +145,11 @@ public class Controller {
 		} finally {
 			System.exit(0);
 		}
+	}
+
+	public void sendMessage(ApiMessage message) {
+		for (ControllerExtension e : extensions.values())
+			e.sendMessage(message);
 	}
 
 	public void add(Object o) {

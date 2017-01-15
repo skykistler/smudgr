@@ -1,14 +1,13 @@
-package io.smudgr.extensions.cef.commands;
+package io.smudgr.api;
 
 import java.util.HashMap;
 
-import io.smudgr.extensions.cef.util.CefMessage;
 import io.smudgr.extensions.cef.util.DebounceCallback;
 import io.smudgr.extensions.cef.util.DebounceThread;
 import io.smudgr.project.smudge.param.Parameter;
 import io.smudgr.project.smudge.param.ParameterObserver;
 
-public class ParameterSet implements CefCommand, ParameterObserver {
+public class ParameterSet implements ApiCommand, ParameterObserver {
 
 	private static final long PARAMETER_UPDATE_DEBOUNCE_MS = 250;
 
@@ -22,7 +21,7 @@ public class ParameterSet implements CefCommand, ParameterObserver {
 		getProject().getParameterObserverNotifier().attach(this);
 	}
 
-	public CefMessage execute(CefMessage data) {
+	public ApiMessage execute(ApiMessage data) {
 		Parameter param = (Parameter) getProject().getItem((int) data.getNumber("id"));
 		param.setValue(data.get("value"), this);
 
@@ -30,7 +29,7 @@ public class ParameterSet implements CefCommand, ParameterObserver {
 	}
 
 	public void parameterUpdated(Parameter param) {
-		CefMessage response = new CefMessage("id", getProject().getId(param) + "");
+		ApiMessage response = new ApiMessage("id", getProject().getId(param) + "");
 		response.put("value", param.getStringValue());
 
 		// Check if this parameter has been debounced to prevent packet spam
@@ -38,7 +37,7 @@ public class ParameterSet implements CefCommand, ParameterObserver {
 
 		if (debouncer == null) {
 			// If this parameter has never been debounced, send the message and schedule a debouncer
-			sendMessage(CefMessage.command(getCommand(), response));
+			sendMessage(ApiMessage.command(getCommand(), response));
 
 			// Start a debounce to prevent another update for PARAMETER_UPDATE_DEBOUNCE_MS milliseconds
 			debouncer = new DebounceThread(PARAMETER_UPDATE_DEBOUNCE_MS);
@@ -51,14 +50,14 @@ public class ParameterSet implements CefCommand, ParameterObserver {
 			// the most recent value will be sent to the front-end
 			DebounceCallback callback = new DebounceCallback() {
 				public void onComplete() {
-					sendMessage(CefMessage.command(getCommand(), response));
+					sendMessage(ApiMessage.command(getCommand(), response));
 				}
 			};
 
 			debouncer.setCallback(callback);
 		} else {
 			// If not debouncing but this parameter has been debounced before, send and debounce
-			sendMessage(CefMessage.command(getCommand(), response));
+			sendMessage(ApiMessage.command(getCommand(), response));
 			debouncer.start();
 		}
 	}

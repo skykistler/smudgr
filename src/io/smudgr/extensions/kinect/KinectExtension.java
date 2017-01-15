@@ -4,6 +4,7 @@ import org.openkinect.freenect.Context;
 import org.openkinect.freenect.Device;
 import org.openkinect.freenect.Freenect;
 
+import io.smudgr.api.ApiMessage;
 import io.smudgr.extensions.ControllerExtension;
 import io.smudgr.extensions.kinect.buffer.DepthBuffer;
 import io.smudgr.extensions.kinect.buffer.VideoBuffer;
@@ -74,6 +75,9 @@ public class KinectExtension implements ControllerExtension {
 
 		device.stopDepth();
 		device.close();
+	}
+
+	public void sendMessage(ApiMessage message) {
 	}
 
 	@Override
