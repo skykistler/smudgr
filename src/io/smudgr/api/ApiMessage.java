@@ -14,7 +14,7 @@ public class ApiMessage {
 		payload = new JSONObject();
 	}
 
-	public ApiMessage(String initialKey, String initialValue) {
+	public ApiMessage(String initialKey, Object initialValue) {
 		this();
 		put(initialKey, initialValue);
 	}

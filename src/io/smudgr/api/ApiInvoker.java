@@ -54,7 +54,7 @@ public class ApiInvoker {
 			return ApiMessage.command("response", "failure", response);
 		}
 
-		return response != null ? response : ApiMessage.command("response", "success", response);
+		return response != null ? response : ApiMessage.command("response", "success", null);
 	}
 
 }
