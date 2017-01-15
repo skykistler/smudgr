@@ -9,12 +9,17 @@ import io.smudgr.app.view.FileDialog;
 import io.smudgr.app.view.FileDialog.FileDialogCallback;
 import io.smudgr.app.view.FileDialog.FileDialogFilter;
 
+/**
+ * Save current project to user specified location.
+ */
 public class ProjectSave implements ApiCommand {
 
+	@Override
 	public String getCommand() {
 		return "project.save";
 	}
 
+	@Override
 	public ApiMessage execute(ApiMessage data) {
 		if (data.hasKey("as") || getProject().getProjectPath() == null) {
 			showSaveAs();
@@ -35,14 +40,18 @@ public class ProjectSave implements ApiCommand {
 	}
 
 	private class SaveSmudgeCallback implements FileDialogCallback {
+
+		@Override
 		public void onSelection(File[] selectedFiles) {
 			getController().getProject().setProjectPath(selectedFiles[0].getAbsolutePath());
 			saveProject();
 		}
 
+		@Override
 		public void onFailure(String reason) {
 			System.out.println("Save smudge failed: " + reason);
 		}
+
 	}
 
 }

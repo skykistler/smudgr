@@ -6,12 +6,18 @@ import java.util.ArrayList;
 import io.smudgr.api.ApiCommand;
 import io.smudgr.api.ApiMessage;
 
+/**
+ * Gets a list of files and folders in a given path.
+ * Path must be a directory or this command will fail.
+ */
 public class GetFileList implements ApiCommand {
 
+	@Override
 	public String getCommand() {
 		return "file.list";
 	}
 
+	@Override
 	public ApiMessage execute(ApiMessage data) {
 		String path = data.get("path");
 		File folder = new File(path);
@@ -19,7 +25,7 @@ public class GetFileList implements ApiCommand {
 		File[] listFiles = folder.listFiles();
 
 		if (listFiles == null)
-			return ApiMessage.command("response", new ApiMessage("message", "Not a directory or does not exist: " + path));
+			return ApiMessage.failed(getCommand(), new ApiMessage("message", "Not a directory or does not exist: " + path));
 
 		ArrayList<String> files = new ArrayList<String>();
 		ArrayList<String> folders = new ArrayList<String>();
@@ -38,7 +44,7 @@ public class GetFileList implements ApiCommand {
 		response.put("files", files);
 		response.put("folders", folders);
 
-		return ApiMessage.command("file.list", response);
+		return ApiMessage.success("file.list", response);
 	}
 
 }

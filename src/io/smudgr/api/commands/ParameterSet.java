@@ -6,23 +6,35 @@ import io.smudgr.api.ApiCommand;
 import io.smudgr.api.ApiMessage;
 import io.smudgr.engine.param.Parameter;
 import io.smudgr.engine.param.ParameterObserver;
-import io.smudgr.extensions.cef.util.DebounceCallback;
 import io.smudgr.extensions.cef.util.DebounceThread;
 
+/**
+ * Set the current value of a specified parameter.
+ * Takes id and value as arguments.
+ * 
+ * Used for both updating the back-end value from the UI, and updating the UI
+ * value from the back-end.
+ * 
+ * @see ParameterObserver
+ */
 public class ParameterSet implements ApiCommand, ParameterObserver {
 
-	private static final long PARAMETER_UPDATE_DEBOUNCE_MS = 250;
-
+	@Override
 	public String getCommand() {
 		return "parameter.set";
 	}
 
+	private static final long PARAMETER_UPDATE_DEBOUNCE_MS = 250;
 	private HashMap<Parameter, DebounceThread> debounceMap = new HashMap<Parameter, DebounceThread>();
 
+	/**
+	 * Attach this command as an observer of all parameter changes.
+	 */
 	public ParameterSet() {
 		getProject().getParameterObserverNotifier().attach(this);
 	}
 
+	@Override
 	public ApiMessage execute(ApiMessage data) {
 		Parameter param = (Parameter) getProject().getItem((int) data.getNumber("id"));
 		param.setValue(data.get("value"), this);
@@ -30,38 +42,65 @@ public class ParameterSet implements ApiCommand, ParameterObserver {
 		return null;
 	}
 
+	@Override
 	public void parameterUpdated(Parameter param) {
-		ApiMessage response = new ApiMessage("id", getProject().getId(param) + "");
-		response.put("value", param.getStringValue());
-
-		// Check if this parameter has been debounced to prevent packet spam
+		/*
+		 * Check if this parameter has been debounced to prevent packet spam
+		 */
 		DebounceThread debouncer = debounceMap.get(param);
 
 		if (debouncer == null) {
-			// If this parameter has never been debounced, send the message and schedule a debouncer
-			sendMessage(ApiMessage.command(getCommand(), response));
+			/*
+			 * If this parameter has never been debounced, send the message and
+			 * schedule a debouncer
+			 */
+			sendParameterUpdate(param);
 
-			// Start a debounce to prevent another update for PARAMETER_UPDATE_DEBOUNCE_MS milliseconds
+			/*
+			 * Start a debounce thread to prevent another update for
+			 * PARAMETER_UPDATE_DEBOUNCE_MS milliseconds
+			 */
 			debouncer = new DebounceThread(PARAMETER_UPDATE_DEBOUNCE_MS);
 			debouncer.start();
 			debounceMap.put(param, debouncer);
 
 		} else if (debouncer.isDebouncing()) {
-			// If currently debouncing, set this update as the most recent update
-			// This ensures if this parameter stops getting updated,
-			// the most recent value will be sent to the front-end
-			DebounceCallback callback = new DebounceCallback() {
-				public void onComplete() {
-					sendMessage(ApiMessage.command(getCommand(), response));
-				}
-			};
+			/*
+			 * TODO: Code currently disabled until we have better front-end
+			 * knobs to test this with.
+			 */
 
-			debouncer.setCallback(callback);
+			// /*
+			// * If currently debouncing, set a callback to
+			// sendParameterUpdate()
+			// * on completion.
+			// *
+			// * This ensures that if this parameter has stopped being updated,
+			// * the most recent value will still be sent to the front-end
+			// */
+			// DebounceCallback callback = new DebounceCallback() {
+			// @Override
+			// public void onComplete() {
+			// sendParameterUpdate(param);
+			// }
+			// };
+			//
+			// debouncer.setCallback(callback);
 		} else {
-			// If not debouncing but this parameter has been debounced before, send and debounce
-			sendMessage(ApiMessage.command(getCommand(), response));
+			/*
+			 * If not debouncing but this parameter the debouncer exists,
+			 * send and debounce.
+			 */
+			sendParameterUpdate(param);
 			debouncer.start();
 		}
+	}
+
+	private void sendParameterUpdate(Parameter param) {
+		ApiMessage response = new ApiMessage("id", getProject().getId(param) + "");
+		response.put("value", param.getStringValue());
+
+		sendMessage(ApiMessage.ok(getCommand(), response));
 	}
 
 }

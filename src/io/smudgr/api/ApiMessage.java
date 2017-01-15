@@ -6,19 +6,43 @@ import org.json.simple.JSONValue;
 
 import io.smudgr.app.project.util.PropertyMap;
 
+/**
+ * The {@code ApiMessage} class represents a packet of information for
+ * communicating with the API.
+ * <p>
+ * Information is stored and serialized as a {@link JSONObject}, so this class
+ * can be thought of as having key:value pairs and nested information.
+ */
 public class ApiMessage {
 
-	private JSONObject payload;
+	private JSONObject payload = new JSONObject();
 
+	/**
+	 * Instantiate an empty {@code ApiMessage}
+	 */
 	public ApiMessage() {
-		payload = new JSONObject();
 	}
 
+	/**
+	 * Instantiate an {@code ApiMessage} with the given key and value.
+	 * 
+	 * @param initialKey
+	 *            The initial key to set.
+	 * @param initialValue
+	 *            The value to store at the initial key.
+	 */
 	public ApiMessage(String initialKey, Object initialValue) {
-		this();
 		put(initialKey, initialValue);
 	}
 
+	/**
+	 * Get the value of a given key.
+	 * 
+	 * @param key
+	 *            The key to lookup.
+	 * @return The string value of the key, or {@code null} if the key doesn't
+	 *         exist.
+	 */
 	public String get(String key) {
 		if (!hasKey(key))
 			return null;
@@ -26,34 +50,130 @@ public class ApiMessage {
 		return payload.get(key).toString();
 	}
 
+	/**
+	 * Get the numeric value of a given key.
+	 * 
+	 * @param key
+	 *            The key to lookup.
+	 * @return The numeric {@code double} value at the given key, or
+	 *         {@code Double.NaN} if the key doesn't exist
+	 */
 	public double getNumber(String key) {
 		if (!hasKey(key))
-			return -1;
+			return Double.NaN;
 
 		return Double.parseDouble(get(key));
 	}
 
+	/**
+	 * Check whether this ApiMessage has a non-null value at the given key.
+	 * 
+	 * @param key
+	 *            The key to lookup.
+	 * @return {@code true} is this {@code ApiMessage} contains a non-null value
+	 *         at this key, {@code false} if otherwise.
+	 */
 	public boolean hasKey(String key) {
 		return payload.containsKey(key) && payload.get(key) != null;
 	}
 
+	/**
+	 * Put an arbitrary value at the given key.
+	 * 
+	 * @param key
+	 *            The key to set.
+	 * @param value
+	 *            The value to set the key to.
+	 */
 	@SuppressWarnings("unchecked")
 	public void put(String key, Object value) {
 		payload.put(key, value);
 	}
 
+	/**
+	 * Serialize this {@code ApiMessage} into a JSON string.
+	 * 
+	 * @return The serialized JSON string.
+	 */
 	public String serialize() {
 		return payload.toString();
 	}
 
+	/**
+	 * String representation of this {@code ApiMessage}. Same as
+	 * {@link ApiMessage#serialize()}
+	 * 
+	 * @see ApiMessage#serialize()
+	 */
+	@Override
 	public String toString() {
 		return serialize();
 	}
 
-	public static ApiMessage command(String command, ApiMessage data) {
+	/**
+	 * Create a command packet with the 'success' status containing the intended
+	 * response data.
+	 * 
+	 * @param command
+	 *            The command to reference. Used for generic responses or
+	 *            responses from a specific command.
+	 * @param data
+	 *            Optional data to send with packet, {@code null} if N/A
+	 * @return A successful command packet with the given data.
+	 * @see ApiMessage#command(String, String, ApiMessage)
+	 */
+	public static ApiMessage success(String command, ApiMessage data) {
 		return command(command, "success", data);
 	}
 
+	/**
+	 * Create a command packet with the 'failed' status containing the intended
+	 * response data.
+	 * 
+	 * @param command
+	 *            The command to reference. Used for generic responses or
+	 *            responses from a specific command.
+	 * @param data
+	 *            Optional data to send with packet, {@code null} if N/A
+	 * @return A failed command packet with the given data.
+	 * @see ApiMessage#command(String, String, ApiMessage)
+	 */
+	public static ApiMessage failed(String command, ApiMessage data) {
+		return command(command, "failed", data);
+	}
+
+	/**
+	 * Create a command packet with the 'ok' status containing the intended
+	 * response data.
+	 * 
+	 * @param command
+	 *            The command to reference. Used for generic responses or
+	 *            responses from a specific command.
+	 * @param data
+	 *            Optional data to send with packet, {@code null} if N/A
+	 * @return An ok command packet with the given data.
+	 * @see ApiMessage#command(String, String, ApiMessage)
+	 */
+	public static ApiMessage ok(String command, ApiMessage data) {
+		return command(command, "ok", data);
+	}
+
+	/**
+	 * Create a generic command packet with 'command', 'status', and 'data'
+	 * properties.
+	 * 
+	 * @param command
+	 *            The command to reference.
+	 * @param status
+	 *            The status to signify by this packet.
+	 * @param data
+	 *            Optional response data, or {@code null} is N/A
+	 * @return A generic command packet with the given data.
+	 * 
+	 * @see ApiMessage#success(String, ApiMessage)
+	 * @see ApiMessage#failed(String, ApiMessage)
+	 * @see ApiMessage#ok(String, ApiMessage)
+	 */
 	public static ApiMessage command(String command, String status, ApiMessage data) {
 		ApiMessage packet = new ApiMessage();
 		packet.put("command", command);
@@ -64,6 +184,14 @@ public class ApiMessage {
 		return packet;
 	}
 
+	/**
+	 * Deserialize a generic JSON packet string into an {@code ApiMessage}
+	 * 
+	 * @param message
+	 *            {@code String} to deserialize.
+	 * @return {@code ApiMessage} represented by {@code message}, or
+	 *         {@code null} if failed;
+	 */
 	public static ApiMessage deserialize(String message) {
 		ApiMessage result = new ApiMessage();
 
@@ -72,6 +200,7 @@ public class ApiMessage {
 			result.payload = obj;
 		} catch (Exception e) {
 			System.out.println("Unable to parse JSON from message: " + message);
+			return null;
 		}
 
 		if (result.payload == null) {
@@ -81,6 +210,15 @@ public class ApiMessage {
 		return result;
 	}
 
+	/**
+	 * Create an {@code ApiMessage} from a given {@link PropertyMap}
+	 * 
+	 * @param map
+	 *            The {@link PropertyMap} to normalize.
+	 * @return {@code ApiMessage} representing the normalized
+	 *         {@link PropertyMap}
+	 * @see PropertyMap
+	 */
 	public static ApiMessage normalize(PropertyMap map) {
 		ApiMessage result = new ApiMessage();
 		result.put(map.getTag(), buildJson(map));

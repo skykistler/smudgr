@@ -5,12 +5,17 @@ import io.smudgr.api.ApiMessage;
 import io.smudgr.util.Frame;
 import io.smudgr.util.output.ImageOutput;
 
+/**
+ * Capture and save the most recent frame.
+ */
 public class ControlSaveFrame implements ApiCommand {
 
+	@Override
 	public String getCommand() {
 		return "control.saveFrame";
 	}
 
+	@Override
 	public ApiMessage execute(ApiMessage data) {
 
 		Frame frame = getProject().getSmudge().getFrame();

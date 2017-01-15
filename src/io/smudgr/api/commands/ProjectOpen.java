@@ -9,12 +9,17 @@ import io.smudgr.app.view.FileDialog;
 import io.smudgr.app.view.FileDialog.FileDialogCallback;
 import io.smudgr.app.view.FileDialog.FileDialogFilter;
 
+/**
+ * Open a project file and load it to the current application instance.
+ */
 public class ProjectOpen implements ApiCommand {
 
+	@Override
 	public String getCommand() {
 		return "project.open";
 	}
 
+	@Override
 	public ApiMessage execute(ApiMessage data) {
 		FileDialogFilter filter = new FileDialogFilter("smudge", "Project files");
 		FileDialog.getInstance().show("Open Smudge", false, filter, new OpenSmudgeCallback());
@@ -24,6 +29,7 @@ public class ProjectOpen implements ApiCommand {
 
 	private class OpenSmudgeCallback implements FileDialogCallback {
 
+		@Override
 		public void onSelection(File[] selectedFiles) {
 			ProjectLoader project = new ProjectLoader(selectedFiles[0].getAbsolutePath());
 			project.load();
@@ -31,9 +37,11 @@ public class ProjectOpen implements ApiCommand {
 			getController().start();
 		}
 
+		@Override
 		public void onFailure(String reason) {
 			System.out.println("Open smudge failed: " + reason);
 		}
+
 	}
 
 }
