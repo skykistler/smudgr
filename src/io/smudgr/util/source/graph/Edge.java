@@ -1,4 +1,4 @@
-package io.smudgr.smudge.source.graph;
+package io.smudgr.util.source.graph;
 
 public class Edge {
 	private Vertex start, end;

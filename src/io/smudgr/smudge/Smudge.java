@@ -7,10 +7,10 @@ import io.smudgr.smudge.alg.Algorithm;
 import io.smudgr.smudge.param.BooleanParameter;
 import io.smudgr.smudge.param.NumberParameter;
 import io.smudgr.smudge.param.Parametric;
-import io.smudgr.smudge.source.AnimatedSource;
-import io.smudgr.smudge.source.Source;
-import io.smudgr.smudge.source.SourceSet;
 import io.smudgr.util.Frame;
+import io.smudgr.util.source.AnimatedSource;
+import io.smudgr.util.source.Source;
+import io.smudgr.util.source.SourceSet;
 
 public class Smudge extends Parametric implements Source {
 	

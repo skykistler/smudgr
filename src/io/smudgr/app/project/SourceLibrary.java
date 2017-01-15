@@ -6,11 +6,11 @@ import java.util.Arrays;
 
 import io.smudgr.app.controller.Controller;
 import io.smudgr.app.project.util.PropertyMap;
-import io.smudgr.smudge.source.Gif;
-import io.smudgr.smudge.source.Image;
-import io.smudgr.smudge.source.Source;
-import io.smudgr.smudge.source.SourceSet;
-import io.smudgr.smudge.source.Video;
+import io.smudgr.util.source.Gif;
+import io.smudgr.util.source.Image;
+import io.smudgr.util.source.Source;
+import io.smudgr.util.source.SourceSet;
+import io.smudgr.util.source.Video;
 
 public class SourceLibrary {
 

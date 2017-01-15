@@ -1,4 +1,4 @@
-package io.smudgr.smudge.source;
+package io.smudgr.util.source;
 
 import io.smudgr.app.controller.Controller;
 import io.smudgr.app.project.SourceLibrary;

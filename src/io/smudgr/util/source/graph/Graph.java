@@ -1,8 +1,8 @@
-package io.smudgr.smudge.source.graph;
+package io.smudgr.util.source.graph;
 
 import java.util.ArrayList;
 
-import io.smudgr.smudge.source.graph.alg.GraphAlgorithm;
+import io.smudgr.util.source.graph.alg.GraphAlgorithm;
 
 public class Graph {
 

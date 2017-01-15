@@ -1,8 +1,8 @@
 package io.smudgr.app.controller.controls;
 
 import io.smudgr.app.controller.Controller;
-import io.smudgr.smudge.source.Source;
-import io.smudgr.smudge.source.SourceSet;
+import io.smudgr.util.source.Source;
+import io.smudgr.util.source.SourceSet;
 
 public class CurrentSourceControl implements AppControl {
 

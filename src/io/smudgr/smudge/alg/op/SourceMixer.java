@@ -12,9 +12,9 @@ import io.smudgr.smudge.alg.math.blend.MinBlender;
 import io.smudgr.smudge.alg.math.blend.NormalBlender;
 import io.smudgr.smudge.param.BlendParameter;
 import io.smudgr.smudge.param.NumberParameter;
-import io.smudgr.smudge.source.Image;
-import io.smudgr.smudge.source.Source;
 import io.smudgr.util.Frame;
+import io.smudgr.util.source.Image;
+import io.smudgr.util.source.Source;
 
 public class SourceMixer extends Operation {
 

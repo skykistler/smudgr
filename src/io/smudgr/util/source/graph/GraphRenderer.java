@@ -1,4 +1,4 @@
-package io.smudgr.smudge.source.graph;
+package io.smudgr.util.source.graph;
 
 import java.awt.Color;
 import java.awt.Graphics;

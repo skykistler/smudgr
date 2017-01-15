@@ -1,4 +1,4 @@
-package io.smudgr.smudge.source;
+package io.smudgr.util.source;
 
 public interface AnimatedSource extends Source {
 

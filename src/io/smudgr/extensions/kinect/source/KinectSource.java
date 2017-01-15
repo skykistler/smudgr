@@ -3,8 +3,8 @@ package io.smudgr.extensions.kinect.source;
 import io.smudgr.app.controller.Controller;
 import io.smudgr.extensions.kinect.KinectExtension;
 import io.smudgr.extensions.kinect.buffer.KinectBuffer;
-import io.smudgr.smudge.source.Source;
 import io.smudgr.util.Frame;
+import io.smudgr.util.source.Source;
 
 public abstract class KinectSource implements Source {
 
