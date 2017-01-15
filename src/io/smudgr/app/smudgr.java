@@ -7,13 +7,13 @@ import java.io.PrintStream;
 import java.net.URLDecoder;
 
 import io.smudgr.app.controller.Controller;
+import io.smudgr.engine.Smudge;
+import io.smudgr.engine.alg.Algorithm;
+import io.smudgr.engine.alg.op.DataBend;
+import io.smudgr.engine.alg.select.RangeSelect;
 import io.smudgr.extensions.automate.controls.AutomatorControl;
 import io.smudgr.extensions.cef.view.CefView;
 import io.smudgr.extensions.cef.view.WebsocketView;
-import io.smudgr.smudge.Smudge;
-import io.smudgr.smudge.alg.Algorithm;
-import io.smudgr.smudge.alg.op.DataBend;
-import io.smudgr.smudge.alg.select.RangeSelect;
 
 public class smudgr extends AppStart {
 

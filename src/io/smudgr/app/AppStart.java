@@ -9,10 +9,10 @@ import io.smudgr.app.project.util.ProjectLoader;
 import io.smudgr.app.project.util.PropertyMap;
 import io.smudgr.app.view.FullscreenView;
 import io.smudgr.app.view.MonitorView;
+import io.smudgr.engine.param.Parameter;
 import io.smudgr.extensions.automate.AutomatorExtension;
 import io.smudgr.extensions.automate.controls.AutomatorControl;
 import io.smudgr.extensions.midi.MidiExtension;
-import io.smudgr.smudge.param.Parameter;
 
 public abstract class AppStart {
 

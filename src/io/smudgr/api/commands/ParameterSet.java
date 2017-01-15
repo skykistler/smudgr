@@ -4,10 +4,10 @@ import java.util.HashMap;
 
 import io.smudgr.api.ApiCommand;
 import io.smudgr.api.ApiMessage;
+import io.smudgr.engine.param.Parameter;
+import io.smudgr.engine.param.ParameterObserver;
 import io.smudgr.extensions.cef.util.DebounceCallback;
 import io.smudgr.extensions.cef.util.DebounceThread;
-import io.smudgr.smudge.param.Parameter;
-import io.smudgr.smudge.param.ParameterObserver;
 
 public class ParameterSet implements ApiCommand, ParameterObserver {
 

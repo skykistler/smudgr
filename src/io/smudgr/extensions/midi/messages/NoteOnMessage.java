@@ -1,7 +1,7 @@
 package io.smudgr.extensions.midi.messages;
 
 import io.smudgr.app.controller.Controllable;
-import io.smudgr.smudge.param.NumberParameter;
+import io.smudgr.engine.param.NumberParameter;
 
 public class NoteOnMessage implements MidiMessageStrategy {
 

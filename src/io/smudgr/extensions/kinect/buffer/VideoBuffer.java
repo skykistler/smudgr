@@ -7,7 +7,7 @@ import org.openkinect.freenect.FrameMode;
 import org.openkinect.freenect.VideoFormat;
 import org.openkinect.freenect.VideoHandler;
 
-import io.smudgr.smudge.alg.math.ColorHelper;
+import io.smudgr.engine.alg.math.ColorHelper;
 import io.smudgr.util.Frame;
 
 public class VideoBuffer extends KinectBuffer {

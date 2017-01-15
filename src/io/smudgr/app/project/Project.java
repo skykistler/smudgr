@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import io.smudgr.app.controller.Controller;
 import io.smudgr.app.project.util.IdProvider;
 import io.smudgr.app.project.util.PropertyMap;
-import io.smudgr.smudge.Smudge;
-import io.smudgr.smudge.param.ParameterObserverNotifier;
+import io.smudgr.engine.Smudge;
+import io.smudgr.engine.param.ParameterObserverNotifier;
 import io.smudgr.util.DisposedFrameProvider;
 
 public class Project {

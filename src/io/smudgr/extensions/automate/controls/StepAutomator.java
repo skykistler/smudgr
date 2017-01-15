@@ -1,8 +1,8 @@
 package io.smudgr.extensions.automate.controls;
 
 import io.smudgr.app.project.util.PropertyMap;
-import io.smudgr.smudge.param.NumberParameter;
-import io.smudgr.smudge.param.Parameter;
+import io.smudgr.engine.param.NumberParameter;
+import io.smudgr.engine.param.Parameter;
 
 public class StepAutomator implements AutomatorControl {
 

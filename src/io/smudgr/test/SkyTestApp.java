@@ -3,12 +3,12 @@ package io.smudgr.test;
 import io.smudgr.app.AppStart;
 import io.smudgr.app.controller.Controller;
 import io.smudgr.app.view.MonitorView;
+import io.smudgr.engine.Smudge;
+import io.smudgr.engine.alg.Algorithm;
+import io.smudgr.engine.alg.coord.ColumnCoords;
+import io.smudgr.engine.alg.op.PixelSort;
+import io.smudgr.engine.alg.select.RangeSelect;
 import io.smudgr.extensions.cef.view.WebsocketView;
-import io.smudgr.smudge.Smudge;
-import io.smudgr.smudge.alg.Algorithm;
-import io.smudgr.smudge.alg.coord.ColumnCoords;
-import io.smudgr.smudge.alg.op.PixelSort;
-import io.smudgr.smudge.alg.select.RangeSelect;
 
 public class SkyTestApp extends AppStart {
 

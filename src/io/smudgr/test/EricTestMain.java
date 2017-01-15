@@ -2,10 +2,10 @@ package io.smudgr.test;
 
 import io.smudgr.app.AppStart;
 import io.smudgr.app.controller.Controller;
-import io.smudgr.smudge.Smudge;
-import io.smudgr.smudge.alg.Algorithm;
-import io.smudgr.smudge.alg.op.SourceMixer;
-import io.smudgr.smudge.alg.select.RangeSelect;
+import io.smudgr.engine.Smudge;
+import io.smudgr.engine.alg.Algorithm;
+import io.smudgr.engine.alg.op.SourceMixer;
+import io.smudgr.engine.alg.select.RangeSelect;
 
 public class EricTestMain extends AppStart {
 
