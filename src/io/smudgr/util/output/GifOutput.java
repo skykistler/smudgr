@@ -1,4 +1,4 @@
-package io.smudgr.app.output;
+package io.smudgr.util.output;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;

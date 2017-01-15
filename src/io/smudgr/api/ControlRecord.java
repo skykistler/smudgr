@@ -1,6 +1,6 @@
 package io.smudgr.api;
 
-import io.smudgr.app.output.GifOutput;
+import io.smudgr.util.output.GifOutput;
 
 public class ControlRecord implements ApiCommand {
 

@@ -1,7 +1,7 @@
 package io.smudgr.app.controls;
 
 import io.smudgr.app.Controller;
-import io.smudgr.app.output.GifOutput;
+import io.smudgr.util.output.GifOutput;
 
 public class RecordGIFControl implements AppControl {
 

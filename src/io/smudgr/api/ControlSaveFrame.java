@@ -1,7 +1,7 @@
 package io.smudgr.api;
 
-import io.smudgr.app.output.ImageOutput;
 import io.smudgr.util.Frame;
+import io.smudgr.util.output.ImageOutput;
 
 public class ControlSaveFrame implements ApiCommand {
 

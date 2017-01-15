@@ -1,4 +1,4 @@
-package io.smudgr.app.output;
+package io.smudgr.util.output;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

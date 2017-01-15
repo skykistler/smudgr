@@ -1,7 +1,7 @@
 package io.smudgr.app.threads;
 
 import io.smudgr.app.Controller;
-import io.smudgr.app.output.FrameOutput;
+import io.smudgr.util.output.FrameOutput;
 
 public class RenderThread extends AppThread {
 

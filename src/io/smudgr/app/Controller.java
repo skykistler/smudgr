@@ -7,7 +7,6 @@ import java.util.HashMap;
 import io.smudgr.api.ApiInvoker;
 import io.smudgr.api.ApiMessage;
 import io.smudgr.app.controls.AppControl;
-import io.smudgr.app.output.FrameOutput;
 import io.smudgr.app.threads.RenderThread;
 import io.smudgr.app.threads.UpdateThread;
 import io.smudgr.app.threads.ViewThread;
@@ -16,6 +15,7 @@ import io.smudgr.extensions.ControllerExtension;
 import io.smudgr.project.Project;
 import io.smudgr.project.util.PropertyMap;
 import io.smudgr.util.Reflect;
+import io.smudgr.util.output.FrameOutput;
 
 public class Controller {
 
@@ -156,33 +156,6 @@ public class Controller {
 			e.sendMessage(message);
 	}
 
-	public void add(Object o) {
-		if (o instanceof ControllerExtension)
-			addExtension((ControllerExtension) o);
-		else if (o instanceof View)
-			addView((View) o);
-	}
-
-	private void addExtension(ControllerExtension ext) {
-		if (!getExtensions().contains(ext)) {
-
-			if (started)
-				ext.init();
-
-			extensions.put(ext.getName(), ext);
-		}
-	}
-
-	private void addView(View view) {
-		if (!views.contains(view)) {
-
-			if (started)
-				startView(view);
-
-			views.add(view);
-		}
-	}
-
 	private void startView(View view) {
 		ViewThread viewer = new ViewThread(view);
 
@@ -190,39 +163,6 @@ public class Controller {
 		viewer.start();
 
 		viewThreads.add(viewer);
-	}
-
-	public int ticksToMs(int ticks) {
-		return (int) (ticks / (updater.getTarget() / 1000d));
-	}
-
-	// TODO move this shit somewhere else
-	public void startOutput(FrameOutput output) {
-		if (isOutputting())
-			return;
-
-		frameOutput = output;
-		frameOutput.open();
-
-		updater.setPaused(true);
-		renderer.setTarget(output.getTargetFPS());
-		renderer.startOutput(frameOutput, updater.msToTicks(1000 / output.getTargetFPS()));
-	}
-
-	public void stopOutput() {
-		if (!isOutputting())
-			return;
-
-		frameOutput.close();
-		renderer.stopOutput();
-		renderer.setTarget(TARGET_FPS);
-		updater.setPaused(false);
-
-		frameOutput = null;
-	}
-
-	public boolean isOutputting() {
-		return frameOutput != null;
 	}
 
 	public void save(PropertyMap pm) {
@@ -284,6 +224,18 @@ public class Controller {
 		}
 	}
 
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
+
+	public ApiInvoker getApiInvoker() {
+		return apiInvoker;
+	}
+
 	private void reflectAppControls() {
 		appControls = new HashMap<String, AppControl>();
 
@@ -313,16 +265,31 @@ public class Controller {
 		}
 	}
 
-	public void setProject(Project project) {
-		this.project = project;
+	public void add(Object o) {
+		if (o instanceof ControllerExtension)
+			addExtension((ControllerExtension) o);
+		else if (o instanceof View)
+			addView((View) o);
 	}
 
-	public Project getProject() {
-		return project;
+	private void addExtension(ControllerExtension ext) {
+		if (!getExtensions().contains(ext)) {
+
+			if (started)
+				ext.init();
+
+			extensions.put(ext.getName(), ext);
+		}
 	}
 
-	public ApiInvoker getApiInvoker() {
-		return apiInvoker;
+	private void addView(View view) {
+		if (!views.contains(view)) {
+
+			if (started)
+				startView(view);
+
+			views.add(view);
+		}
 	}
 
 	public AppControl getAppControl(String name) {
@@ -341,4 +308,35 @@ public class Controller {
 		return extensions.values();
 	}
 
+	public int ticksToMs(int ticks) {
+		return (int) (ticks / (updater.getTarget() / 1000d));
+	}
+
+	public void startOutput(FrameOutput output) {
+		if (isOutputting())
+			return;
+
+		frameOutput = output;
+		frameOutput.open();
+
+		updater.setPaused(true);
+		renderer.setTarget(output.getTargetFPS());
+		renderer.startOutput(frameOutput, updater.msToTicks(1000 / output.getTargetFPS()));
+	}
+
+	public void stopOutput() {
+		if (!isOutputting())
+			return;
+
+		frameOutput.close();
+		renderer.stopOutput();
+		renderer.setTarget(TARGET_FPS);
+		updater.setPaused(false);
+
+		frameOutput = null;
+	}
+
+	public boolean isOutputting() {
+		return frameOutput != null;
+	}
 }
