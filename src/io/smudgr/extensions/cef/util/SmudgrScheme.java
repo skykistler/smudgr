@@ -11,6 +11,7 @@ import io.smudgr.util.SmudgrJar;
 
 public class SmudgrScheme extends CefResourceHandlerAdapter {
 	public static final String scheme = "smudgr";
+	public static final String basePath = "io/smudgr/ui/";
 
 	private byte[] data;
 	private String mime_type;
@@ -24,7 +25,7 @@ public class SmudgrScheme extends CefResourceHandlerAdapter {
 
 		System.out.println("Frontend requested: " + path);
 
-		SmudgrJar resource = new SmudgrJar(path);
+		SmudgrJar resource = new SmudgrJar(basePath + path);
 		data = resource.getData();
 
 		if (data != null)
