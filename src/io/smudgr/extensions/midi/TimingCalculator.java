@@ -1,6 +1,6 @@
 package io.smudgr.extensions.midi;
 
-import io.smudgr.app.Controller;
+import io.smudgr.app.controller.Controller;
 
 public class TimingCalculator {
 	private final long nsInMinute = 60l * 1000000000l;

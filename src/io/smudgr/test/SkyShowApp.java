@@ -1,19 +1,19 @@
 package io.smudgr.test;
 
 import io.smudgr.app.AppStart;
-import io.smudgr.app.Controller;
+import io.smudgr.app.controller.Controller;
 import io.smudgr.extensions.automate.controls.AutomatorControl;
 import io.smudgr.extensions.cef.view.WebsocketView;
-import io.smudgr.project.smudge.Smudge;
-import io.smudgr.project.smudge.alg.Algorithm;
-import io.smudgr.project.smudge.alg.coord.ColumnCoords;
-import io.smudgr.project.smudge.alg.coord.RowCoords;
-import io.smudgr.project.smudge.alg.op.ChannelBleed;
-import io.smudgr.project.smudge.alg.op.DataBend;
-import io.smudgr.project.smudge.alg.op.PixelShift;
-import io.smudgr.project.smudge.alg.op.PixelSort;
-import io.smudgr.project.smudge.alg.op.SpectralShift;
-import io.smudgr.project.smudge.alg.select.RangeSelect;
+import io.smudgr.smudge.Smudge;
+import io.smudgr.smudge.alg.Algorithm;
+import io.smudgr.smudge.alg.coord.ColumnCoords;
+import io.smudgr.smudge.alg.coord.RowCoords;
+import io.smudgr.smudge.alg.op.ChannelBleed;
+import io.smudgr.smudge.alg.op.DataBend;
+import io.smudgr.smudge.alg.op.PixelShift;
+import io.smudgr.smudge.alg.op.PixelSort;
+import io.smudgr.smudge.alg.op.SpectralShift;
+import io.smudgr.smudge.alg.select.RangeSelect;
 
 public class SkyShowApp extends AppStart {
 

@@ -5,10 +5,10 @@ import java.net.UnknownHostException;
 
 import io.smudgr.api.ApiInvoker;
 import io.smudgr.api.ApiMessage;
-import io.smudgr.app.Controller;
+import io.smudgr.app.controller.Controller;
+import io.smudgr.app.project.util.PropertyMap;
 import io.smudgr.extensions.ControllerExtension;
 import io.smudgr.extensions.cef.util.CommandServer;
-import io.smudgr.project.util.PropertyMap;
 
 public class CefExtension implements ControllerExtension {
 

@@ -1,12 +1,12 @@
 package io.smudgr.test;
 
 import io.smudgr.app.AppStart;
-import io.smudgr.app.Controller;
+import io.smudgr.app.controller.Controller;
 import io.smudgr.app.view.PiFullscreenView;
-import io.smudgr.project.smudge.Smudge;
-import io.smudgr.project.smudge.alg.Algorithm;
-import io.smudgr.project.smudge.alg.op.DataBend;
-import io.smudgr.project.smudge.alg.select.RangeSelect;
+import io.smudgr.smudge.Smudge;
+import io.smudgr.smudge.alg.Algorithm;
+import io.smudgr.smudge.alg.op.DataBend;
+import io.smudgr.smudge.alg.select.RangeSelect;
 
 public class PiTest extends AppStart {
 

@@ -3,7 +3,7 @@ package io.smudgr.util.output;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import io.smudgr.app.Controller;
+import io.smudgr.app.controller.Controller;
 import io.smudgr.util.Frame;
 
 public class GifOutput implements FrameOutput {

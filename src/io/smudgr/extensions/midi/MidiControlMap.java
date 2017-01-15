@@ -3,7 +3,7 @@ package io.smudgr.extensions.midi;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import io.smudgr.project.util.PropertyMap;
+import io.smudgr.app.project.util.PropertyMap;
 
 public class MidiControlMap {
 	

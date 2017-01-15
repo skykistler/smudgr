@@ -1,10 +1,10 @@
 package io.smudgr.extensions.automate.controls;
 
-import io.smudgr.app.Controller;
-import io.smudgr.project.smudge.param.Parameter;
-import io.smudgr.project.smudge.source.Source;
-import io.smudgr.project.smudge.source.SourceSet;
-import io.smudgr.project.util.PropertyMap;
+import io.smudgr.app.controller.Controller;
+import io.smudgr.app.project.util.PropertyMap;
+import io.smudgr.smudge.param.Parameter;
+import io.smudgr.smudge.source.Source;
+import io.smudgr.smudge.source.SourceSet;
 
 public class SetSourceAutomator implements AutomatorControl {
 

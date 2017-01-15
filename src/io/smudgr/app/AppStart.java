@@ -3,14 +3,16 @@ package io.smudgr.app;
 import java.io.File;
 import java.util.ArrayList;
 
+import io.smudgr.app.controller.Controllable;
+import io.smudgr.app.controller.Controller;
+import io.smudgr.app.project.util.ProjectLoader;
+import io.smudgr.app.project.util.PropertyMap;
 import io.smudgr.app.view.FullscreenView;
 import io.smudgr.app.view.MonitorView;
 import io.smudgr.extensions.automate.AutomatorExtension;
 import io.smudgr.extensions.automate.controls.AutomatorControl;
 import io.smudgr.extensions.midi.MidiExtension;
-import io.smudgr.project.smudge.param.Parameter;
-import io.smudgr.project.util.ProjectLoader;
-import io.smudgr.project.util.PropertyMap;
+import io.smudgr.smudge.param.Parameter;
 
 public abstract class AppStart {
 

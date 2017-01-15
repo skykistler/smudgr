@@ -46,13 +46,13 @@ public class Reflect {
 			URL resource = resources.nextElement();
 
 			if (resource.toString().startsWith("jar:file:")) {
-				searchJarFile(resource, "");
+				searchJarFile(resource);
 				continue;
 			}
 
 			File file = new File(URLDecoder.decode(resource.getFile(), "UTF-8"));
 			if (file.exists() && file.isDirectory())
-				searchDirectory_r(file, "");
+				recurseDirectory(file, "");
 		}
 
 		String[] classPaths = System.getProperty("java.class.path").split(";|:");
@@ -76,12 +76,12 @@ public class Reflect {
 				URL jarUrl = file.toURI().toURL();
 
 				if (jarUrl != null)
-					searchJarFile(jarUrl, "");
+					searchJarFile(jarUrl);
 			}
 		}
 	}
 
-	private void searchDirectory_r(File directory, String packageName) {
+	private void recurseDirectory(File directory, String packageName) {
 		String packagePrefix = packageName.isEmpty() ? "" : (packageName + ".");
 
 		if (directory.exists()) {
@@ -91,7 +91,7 @@ public class Reflect {
 				String filename = file.getName();
 
 				if (file.isDirectory()) {
-					searchDirectory_r(file, packagePrefix + filename);
+					recurseDirectory(file, packagePrefix + filename);
 					continue;
 				}
 
@@ -106,9 +106,7 @@ public class Reflect {
 		}
 	}
 
-	private void searchJarFile(URL url, String packageName) throws UnsupportedEncodingException {
-		String packagePathFilter = packageName.replace('.', '/');
-
+	private void searchJarFile(URL url) throws UnsupportedEncodingException {
 		Enumeration<JarEntry> entries = new SmudgrJar(url).entries();
 
 		ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
@@ -117,10 +115,9 @@ public class Reflect {
 			String entryName = jarEntry.getName();
 
 			boolean isDirectory = jarEntry.isDirectory();
-			boolean isInPackage = entryName.startsWith(packagePathFilter) || packageName.isEmpty();
 			boolean isClass = entryName.endsWith(".class");
 
-			if (!isDirectory && isInPackage && isClass) {
+			if (!isDirectory && isClass) {
 				String className = jarEntry.getName().replaceFirst("\\.class$", "").replace("/", ".");
 
 				try {

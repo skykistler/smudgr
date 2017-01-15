@@ -1,9 +1,9 @@
 package io.smudgr.extensions.automate.controls;
 
-import io.smudgr.app.Controller;
-import io.smudgr.project.smudge.param.NumberParameter;
-import io.smudgr.project.smudge.param.Parameter;
-import io.smudgr.project.util.PropertyMap;
+import io.smudgr.app.controller.Controller;
+import io.smudgr.app.project.util.PropertyMap;
+import io.smudgr.smudge.param.NumberParameter;
+import io.smudgr.smudge.param.Parameter;
 
 public class BeatAutomator implements AutomatorControl {
 

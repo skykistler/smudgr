@@ -6,8 +6,10 @@ import java.util.HashMap;
 import javax.sound.midi.MidiMessage;
 
 import io.smudgr.api.ApiMessage;
-import io.smudgr.app.Controllable;
-import io.smudgr.app.Controller;
+import io.smudgr.app.controller.Controllable;
+import io.smudgr.app.controller.Controller;
+import io.smudgr.app.project.ProjectItem;
+import io.smudgr.app.project.util.PropertyMap;
 import io.smudgr.extensions.ControllerExtension;
 import io.smudgr.extensions.automate.controls.AutomatorControl;
 import io.smudgr.extensions.midi.Device.DeviceObserver;
@@ -21,9 +23,7 @@ import io.smudgr.extensions.midi.messages.ResetMessage;
 import io.smudgr.extensions.midi.messages.StartMessage;
 import io.smudgr.extensions.midi.messages.StopMessage;
 import io.smudgr.extensions.midi.tcp.DeviceServer;
-import io.smudgr.project.ProjectItem;
-import io.smudgr.project.smudge.param.Parameter;
-import io.smudgr.project.util.PropertyMap;
+import io.smudgr.smudge.param.Parameter;
 
 public class MidiExtension implements ControllerExtension, DeviceObserver {
 

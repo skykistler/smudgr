@@ -1,7 +1,7 @@
 package io.smudgr.api;
 
-import io.smudgr.app.Controller;
-import io.smudgr.project.Project;
+import io.smudgr.app.controller.Controller;
+import io.smudgr.app.project.Project;
 
 public interface ApiCommand {
 

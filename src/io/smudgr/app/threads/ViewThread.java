@@ -2,7 +2,7 @@ package io.smudgr.app.threads;
 
 import javax.swing.SwingUtilities;
 
-import io.smudgr.app.Controller;
+import io.smudgr.app.controller.Controller;
 import io.smudgr.app.view.View;
 import io.smudgr.util.Frame;
 

@@ -21,7 +21,7 @@ import org.cef.CefSettings;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefMessageRouter;
 
-import io.smudgr.app.Controller;
+import io.smudgr.app.controller.Controller;
 import io.smudgr.app.threads.ViewThread;
 import io.smudgr.app.view.View;
 import io.smudgr.extensions.cef.CefExtension;

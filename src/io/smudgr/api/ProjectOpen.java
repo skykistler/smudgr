@@ -2,10 +2,10 @@ package io.smudgr.api;
 
 import java.io.File;
 
+import io.smudgr.app.project.util.ProjectLoader;
 import io.smudgr.app.view.FileDialog;
 import io.smudgr.app.view.FileDialog.FileDialogCallback;
 import io.smudgr.app.view.FileDialog.FileDialogFilter;
-import io.smudgr.project.util.ProjectLoader;
 
 public class ProjectOpen implements ApiCommand {
 

@@ -1,6 +1,6 @@
 package io.smudgr.extensions.midi.messages;
 
-import io.smudgr.app.Controllable;
+import io.smudgr.app.controller.Controllable;
 
 public class NoteOffMessage implements MidiMessageStrategy {
 

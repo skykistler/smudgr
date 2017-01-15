@@ -4,7 +4,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-import io.smudgr.project.util.PropertyMap;
+import io.smudgr.app.project.util.PropertyMap;
 
 public class ApiMessage {
 

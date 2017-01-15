@@ -1,6 +1,6 @@
 package io.smudgr.app.threads;
 
-import io.smudgr.app.Controller;
+import io.smudgr.app.controller.Controller;
 
 public class UpdateThread extends AppThread {
 
