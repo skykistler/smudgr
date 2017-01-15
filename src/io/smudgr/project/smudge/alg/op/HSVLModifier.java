@@ -3,7 +3,7 @@ package io.smudgr.project.smudge.alg.op;
 import io.smudgr.project.smudge.alg.PixelIndexList;
 import io.smudgr.project.smudge.alg.math.ColorHelper;
 import io.smudgr.project.smudge.param.NumberParameter;
-import io.smudgr.project.util.Frame;
+import io.smudgr.util.Frame;
 
 public class HSVLModifier extends Operation {
 

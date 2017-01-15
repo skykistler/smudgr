@@ -7,7 +7,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import io.smudgr.app.Controller;
-import io.smudgr.project.util.Frame;
+import io.smudgr.util.Frame;
 
 public class ImageOutput implements FrameOutput {
 	private String path;

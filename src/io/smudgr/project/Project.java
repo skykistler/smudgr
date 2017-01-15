@@ -5,11 +5,10 @@ import java.util.ArrayList;
 
 import io.smudgr.app.Controller;
 import io.smudgr.project.smudge.Smudge;
-import io.smudgr.project.util.ComponentLibrary;
-import io.smudgr.project.util.DisposedFrameProvider;
+import io.smudgr.project.smudge.param.ParameterObserverNotifier;
 import io.smudgr.project.util.IdProvider;
-import io.smudgr.project.util.ParameterObserverNotifier;
-import io.smudgr.project.util.SourceLibrary;
+import io.smudgr.project.util.PropertyMap;
+import io.smudgr.util.DisposedFrameProvider;
 
 public class Project {
 

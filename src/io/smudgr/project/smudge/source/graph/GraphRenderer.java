@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 
-import io.smudgr.project.util.Frame;
+import io.smudgr.util.Frame;
 
 public class GraphRenderer {
 	private Graph graph;

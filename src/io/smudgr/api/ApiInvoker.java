@@ -3,16 +3,21 @@ package io.smudgr.api;
 import java.util.HashMap;
 import java.util.Set;
 
-import io.smudgr.reflect.Reflect;
+import io.smudgr.util.Reflect;
 
 public class ApiInvoker {
 
-	private HashMap<String, ApiCommand> commands = new HashMap<String, ApiCommand>();
+	private static HashMap<String, ApiCommand> commands;
 
-	public ApiInvoker() {
+	public void init() {
+		if (commands != null)
+			return;
+
+		commands = new HashMap<String, ApiCommand>();
+
 		Reflect commandReflect = new Reflect(ApiCommand.class);
-
 		Set<Class<?>> commandClasses = commandReflect.get();
+
 		for (Class<?> c : commandClasses) {
 			try {
 				ApiCommand command = (ApiCommand) c.newInstance();

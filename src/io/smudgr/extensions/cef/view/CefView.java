@@ -28,7 +28,7 @@ import io.smudgr.extensions.cef.CefExtension;
 import io.smudgr.extensions.cef.util.CefAppHandler;
 import io.smudgr.extensions.cef.util.CefQueryHandler;
 import io.smudgr.extensions.cef.util.DialogHandler;
-import io.smudgr.project.util.Frame;
+import io.smudgr.util.Frame;
 
 public class CefView extends JFrame implements View {
 

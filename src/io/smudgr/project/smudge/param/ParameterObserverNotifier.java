@@ -1,9 +1,6 @@
-package io.smudgr.project.util;
+package io.smudgr.project.smudge.param;
 
 import java.util.ArrayList;
-
-import io.smudgr.project.smudge.param.Parameter;
-import io.smudgr.project.smudge.param.ParameterObserver;
 
 public class ParameterObserverNotifier {
 
@@ -15,8 +12,9 @@ public class ParameterObserverNotifier {
 	}
 
 	public synchronized void notify(Parameter param, ParameterObserver ignoreObserver) {
-		for (ParameterObserver obsv : parameterObservers)
+		for (ParameterObserver obsv : parameterObservers) {
 			if (obsv != ignoreObserver)
 				obsv.parameterUpdated(param);
+		}
 	}
 }

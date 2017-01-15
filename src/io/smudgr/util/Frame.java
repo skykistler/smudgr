@@ -1,4 +1,4 @@
-package io.smudgr.project.util;
+package io.smudgr.util;
 
 import java.awt.image.BufferedImage;
 

@@ -2,7 +2,7 @@ package io.smudgr.project.smudge.alg.bound;
 
 import io.smudgr.project.smudge.alg.AlgorithmComponent;
 import io.smudgr.project.smudge.param.NumberParameter;
-import io.smudgr.project.util.Frame;
+import io.smudgr.util.Frame;
 
 public class Bound extends AlgorithmComponent {
 

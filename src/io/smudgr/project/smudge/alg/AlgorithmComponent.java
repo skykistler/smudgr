@@ -1,7 +1,7 @@
 package io.smudgr.project.smudge.alg;
 
-import io.smudgr.project.PropertyMap;
 import io.smudgr.project.smudge.param.Parametric;
+import io.smudgr.project.util.PropertyMap;
 
 public abstract class AlgorithmComponent extends Parametric {
 	

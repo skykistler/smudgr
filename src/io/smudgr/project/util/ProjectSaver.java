@@ -1,4 +1,4 @@
-package io.smudgr.project;
+package io.smudgr.project.util;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -19,6 +19,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import io.smudgr.app.Controller;
+import io.smudgr.project.Project;
 
 public class ProjectSaver {
 

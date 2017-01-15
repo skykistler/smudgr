@@ -7,7 +7,7 @@ import org.cef.misc.StringRef;
 import org.cef.network.CefRequest;
 import org.cef.network.CefResponse;
 
-import io.smudgr.reflect.SmudgrJar;
+import io.smudgr.util.SmudgrJar;
 
 public class SmudgrScheme extends CefResourceHandlerAdapter {
 	public static final String scheme = "smudgr";

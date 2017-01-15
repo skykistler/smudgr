@@ -1,6 +1,6 @@
 package io.smudgr.api;
 
-import io.smudgr.project.ProjectLoader;
+import io.smudgr.project.util.ProjectLoader;
 
 public class ProjectNew implements ApiCommand {
 

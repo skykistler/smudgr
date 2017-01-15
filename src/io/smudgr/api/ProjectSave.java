@@ -5,7 +5,7 @@ import java.io.File;
 import io.smudgr.app.view.FileDialog;
 import io.smudgr.app.view.FileDialog.FileDialogCallback;
 import io.smudgr.app.view.FileDialog.FileDialogFilter;
-import io.smudgr.project.ProjectSaver;
+import io.smudgr.project.util.ProjectSaver;
 
 public class ProjectSave implements ApiCommand {
 

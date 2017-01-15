@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import io.smudgr.app.Controller;
-import io.smudgr.project.util.Frame;
+import io.smudgr.util.Frame;
 
 public class GifOutput implements FrameOutput {
 

@@ -7,7 +7,7 @@ import java.nio.IntBuffer;
 import org.tw.pi.framebuffer.FrameBuffer;
 
 import io.smudgr.app.threads.ViewThread;
-import io.smudgr.project.util.Frame;
+import io.smudgr.util.Frame;
 
 public class PiFullscreenView implements View {
 

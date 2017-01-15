@@ -14,7 +14,7 @@ import io.smudgr.project.smudge.param.BlendParameter;
 import io.smudgr.project.smudge.param.NumberParameter;
 import io.smudgr.project.smudge.source.Image;
 import io.smudgr.project.smudge.source.Source;
-import io.smudgr.project.util.Frame;
+import io.smudgr.util.Frame;
 
 public class SourceMixer extends Operation {
 

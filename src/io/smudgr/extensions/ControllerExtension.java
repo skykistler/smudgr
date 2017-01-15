@@ -3,7 +3,7 @@ package io.smudgr.extensions;
 import io.smudgr.api.ApiMessage;
 import io.smudgr.app.Controller;
 import io.smudgr.project.Project;
-import io.smudgr.project.PropertyMap;
+import io.smudgr.project.util.PropertyMap;
 
 public interface ControllerExtension {
 

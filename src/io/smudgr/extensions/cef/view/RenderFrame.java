@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 
 import io.smudgr.app.view.Window;
-import io.smudgr.project.util.Frame;
+import io.smudgr.util.Frame;
 
 public class RenderFrame extends Window {
 

@@ -1,16 +1,16 @@
-package io.smudgr.project.util;
+package io.smudgr.project;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import io.smudgr.app.Controller;
-import io.smudgr.project.PropertyMap;
 import io.smudgr.project.smudge.source.Gif;
 import io.smudgr.project.smudge.source.Image;
 import io.smudgr.project.smudge.source.Source;
 import io.smudgr.project.smudge.source.SourceSet;
 import io.smudgr.project.smudge.source.Video;
+import io.smudgr.project.util.PropertyMap;
 
 public class SourceLibrary {
 

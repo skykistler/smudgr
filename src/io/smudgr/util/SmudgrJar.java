@@ -1,4 +1,4 @@
-package io.smudgr.reflect;
+package io.smudgr.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

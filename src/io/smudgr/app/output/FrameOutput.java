@@ -1,6 +1,6 @@
 package io.smudgr.app.output;
 
-import io.smudgr.project.util.Frame;
+import io.smudgr.util.Frame;
 
 public interface FrameOutput {
 

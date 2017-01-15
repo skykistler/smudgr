@@ -20,7 +20,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import io.smudgr.app.Controller;
-import io.smudgr.project.util.Frame;
+import io.smudgr.util.Frame;
 
 public class Gif implements AnimatedSource {
 	private String filename;

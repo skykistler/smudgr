@@ -8,9 +8,9 @@ import io.smudgr.app.view.MonitorView;
 import io.smudgr.extensions.automate.AutomatorExtension;
 import io.smudgr.extensions.automate.controls.AutomatorControl;
 import io.smudgr.extensions.midi.MidiExtension;
-import io.smudgr.project.ProjectLoader;
-import io.smudgr.project.PropertyMap;
 import io.smudgr.project.smudge.param.Parameter;
+import io.smudgr.project.util.ProjectLoader;
+import io.smudgr.project.util.PropertyMap;
 
 public abstract class AppStart {
 

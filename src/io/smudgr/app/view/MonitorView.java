@@ -3,7 +3,7 @@ package io.smudgr.app.view;
 import java.awt.Rectangle;
 
 import io.smudgr.app.threads.ViewThread;
-import io.smudgr.project.util.Frame;
+import io.smudgr.util.Frame;
 
 public class MonitorView implements View {
 

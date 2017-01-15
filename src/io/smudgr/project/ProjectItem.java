@@ -1,6 +1,7 @@
 package io.smudgr.project;
 
 import io.smudgr.app.Controller;
+import io.smudgr.project.util.PropertyMap;
 
 public interface ProjectItem {
 

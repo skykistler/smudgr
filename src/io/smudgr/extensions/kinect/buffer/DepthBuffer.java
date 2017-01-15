@@ -9,7 +9,7 @@ import org.openkinect.freenect.DepthHandler;
 import org.openkinect.freenect.Device;
 import org.openkinect.freenect.FrameMode;
 
-import io.smudgr.project.util.Frame;
+import io.smudgr.util.Frame;
 
 public class DepthBuffer extends KinectBuffer {
 

@@ -1,7 +1,7 @@
 package io.smudgr.app.view;
 
 import io.smudgr.app.threads.ViewThread;
-import io.smudgr.project.util.Frame;
+import io.smudgr.util.Frame;
 
 public interface View {
 

@@ -2,7 +2,7 @@ package io.smudgr.project.smudge.param;
 
 import io.smudgr.app.Controllable;
 import io.smudgr.project.ProjectItem;
-import io.smudgr.project.PropertyMap;
+import io.smudgr.project.util.PropertyMap;
 
 public abstract class Parameter implements Controllable, ProjectItem {
 

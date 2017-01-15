@@ -1,8 +1,8 @@
 package io.smudgr.project.smudge.source;
 
 import io.smudgr.app.Controller;
-import io.smudgr.project.util.Frame;
-import io.smudgr.project.util.SourceLibrary;
+import io.smudgr.project.SourceLibrary;
+import io.smudgr.util.Frame;
 
 public interface Source {
 	public void init();

@@ -6,8 +6,8 @@ import java.util.HashMap;
 import io.smudgr.api.ApiMessage;
 import io.smudgr.extensions.ControllerExtension;
 import io.smudgr.extensions.automate.controls.AutomatorControl;
-import io.smudgr.project.PropertyMap;
-import io.smudgr.reflect.Reflect;
+import io.smudgr.project.util.PropertyMap;
+import io.smudgr.util.Reflect;
 
 public class AutomatorExtension implements ControllerExtension {
 

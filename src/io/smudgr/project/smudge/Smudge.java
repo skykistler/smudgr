@@ -2,7 +2,6 @@ package io.smudgr.project.smudge;
 
 import java.util.ArrayList;
 
-import io.smudgr.project.PropertyMap;
 import io.smudgr.project.smudge.alg.Algorithm;
 import io.smudgr.project.smudge.param.BooleanParameter;
 import io.smudgr.project.smudge.param.NumberParameter;
@@ -10,7 +9,8 @@ import io.smudgr.project.smudge.param.Parametric;
 import io.smudgr.project.smudge.source.AnimatedSource;
 import io.smudgr.project.smudge.source.Source;
 import io.smudgr.project.smudge.source.SourceSet;
-import io.smudgr.project.util.Frame;
+import io.smudgr.project.util.PropertyMap;
+import io.smudgr.util.Frame;
 
 public class Smudge extends Parametric implements Source {
 	

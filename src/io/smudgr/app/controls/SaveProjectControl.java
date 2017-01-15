@@ -1,6 +1,6 @@
 package io.smudgr.app.controls;
 
-import io.smudgr.project.ProjectSaver;
+import io.smudgr.project.util.ProjectSaver;
 
 public class SaveProjectControl implements AppControl {
 

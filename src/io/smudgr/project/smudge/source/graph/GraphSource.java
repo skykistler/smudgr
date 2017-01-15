@@ -1,7 +1,7 @@
 package io.smudgr.project.smudge.source.graph;
 
 import io.smudgr.project.smudge.source.Source;
-import io.smudgr.project.util.Frame;
+import io.smudgr.util.Frame;
 
 public class GraphSource implements Source {
 	private Graph graph;

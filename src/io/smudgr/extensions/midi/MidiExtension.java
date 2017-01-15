@@ -22,8 +22,8 @@ import io.smudgr.extensions.midi.messages.StartMessage;
 import io.smudgr.extensions.midi.messages.StopMessage;
 import io.smudgr.extensions.midi.tcp.DeviceServer;
 import io.smudgr.project.ProjectItem;
-import io.smudgr.project.PropertyMap;
 import io.smudgr.project.smudge.param.Parameter;
+import io.smudgr.project.util.PropertyMap;
 
 public class MidiExtension implements ControllerExtension, DeviceObserver {
 

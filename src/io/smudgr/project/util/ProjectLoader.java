@@ -1,4 +1,4 @@
-package io.smudgr.project;
+package io.smudgr.project.util;
 
 import java.io.File;
 
@@ -11,6 +11,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import io.smudgr.app.Controller;
+import io.smudgr.project.Project;
 
 public class ProjectLoader {
 

@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import io.smudgr.project.util.Frame;
+import io.smudgr.util.Frame;
 
 public class SourceSet implements Source {
 	private ArrayList<String> files = new ArrayList<String>();

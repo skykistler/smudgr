@@ -1,6 +1,6 @@
 package io.smudgr.project.smudge.param;
 
-import io.smudgr.project.PropertyMap;
+import io.smudgr.project.util.PropertyMap;
 
 public class NumberParameter extends Parameter {
 

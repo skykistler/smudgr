@@ -2,7 +2,7 @@ package io.smudgr.project.smudge.alg.coord;
 
 import io.smudgr.project.smudge.alg.bound.Bound;
 import io.smudgr.project.smudge.param.NumberParameter;
-import io.smudgr.project.util.Frame;
+import io.smudgr.util.Frame;
 
 public class ConvergeCoords extends CoordFunction {
 

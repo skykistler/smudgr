@@ -2,7 +2,6 @@ package io.smudgr.project.smudge.alg;
 
 import java.util.ArrayList;
 
-import io.smudgr.project.PropertyMap;
 import io.smudgr.project.smudge.alg.bound.Bound;
 import io.smudgr.project.smudge.alg.coord.CoordFunction;
 import io.smudgr.project.smudge.alg.coord.RowCoords;
@@ -11,7 +10,8 @@ import io.smudgr.project.smudge.alg.select.Selector;
 import io.smudgr.project.smudge.element.Element;
 import io.smudgr.project.smudge.param.BooleanParameter;
 import io.smudgr.project.smudge.param.Parametric;
-import io.smudgr.project.util.Frame;
+import io.smudgr.project.util.PropertyMap;
+import io.smudgr.util.Frame;
 
 public class Algorithm extends Parametric implements Element {
 

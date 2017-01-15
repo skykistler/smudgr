@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import io.smudgr.api.ApiInvoker;
 import io.smudgr.api.ApiMessage;
 import io.smudgr.app.controls.AppControl;
 import io.smudgr.app.output.FrameOutput;
@@ -13,8 +14,8 @@ import io.smudgr.app.threads.ViewThread;
 import io.smudgr.app.view.View;
 import io.smudgr.extensions.ControllerExtension;
 import io.smudgr.project.Project;
-import io.smudgr.project.PropertyMap;
-import io.smudgr.reflect.Reflect;
+import io.smudgr.project.util.PropertyMap;
+import io.smudgr.util.Reflect;
 
 public class Controller {
 
@@ -31,6 +32,7 @@ public class Controller {
 	}
 
 	private Project project;
+	private ApiInvoker apiInvoker;
 
 	private UpdateThread updater;
 	private RenderThread renderer;
@@ -48,6 +50,7 @@ public class Controller {
 
 	private Controller() {
 		instance = this;
+		apiInvoker = new ApiInvoker();
 	}
 
 	public void start() {
@@ -64,6 +67,7 @@ public class Controller {
 		}
 
 		System.out.println("Starting controller extensions...");
+		apiInvoker.init();
 		for (ControllerExtension ext : getExtensions())
 			ext.init();
 
@@ -315,6 +319,10 @@ public class Controller {
 
 	public Project getProject() {
 		return project;
+	}
+
+	public ApiInvoker getApiInvoker() {
+		return apiInvoker;
 	}
 
 	public AppControl getAppControl(String name) {

@@ -1,4 +1,4 @@
-package io.smudgr.project;
+package io.smudgr.project.util;
 
 import java.util.ArrayList;
 import java.util.Collection;

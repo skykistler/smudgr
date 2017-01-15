@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import io.smudgr.project.ProjectItem;
-import io.smudgr.project.PropertyMap;
+import io.smudgr.project.util.PropertyMap;
 
 public abstract class Parametric implements ProjectItem {
 

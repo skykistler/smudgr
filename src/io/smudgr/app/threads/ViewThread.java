@@ -4,7 +4,7 @@ import javax.swing.SwingUtilities;
 
 import io.smudgr.app.Controller;
 import io.smudgr.app.view.View;
-import io.smudgr.project.util.Frame;
+import io.smudgr.util.Frame;
 
 public class ViewThread extends AppThread {
 

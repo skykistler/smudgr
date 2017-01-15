@@ -8,7 +8,7 @@ import io.smudgr.api.ApiMessage;
 import io.smudgr.extensions.ControllerExtension;
 import io.smudgr.extensions.kinect.buffer.DepthBuffer;
 import io.smudgr.extensions.kinect.buffer.VideoBuffer;
-import io.smudgr.project.PropertyMap;
+import io.smudgr.project.util.PropertyMap;
 
 public class KinectExtension implements ControllerExtension {
 
