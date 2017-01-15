@@ -1,7 +1,9 @@
-package io.smudgr.api;
+package io.smudgr.api.commands;
 
 import java.util.HashMap;
 
+import io.smudgr.api.ApiCommand;
+import io.smudgr.api.ApiMessage;
 import io.smudgr.extensions.cef.util.DebounceCallback;
 import io.smudgr.extensions.cef.util.DebounceThread;
 import io.smudgr.smudge.param.Parameter;

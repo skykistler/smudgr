@@ -1,5 +1,7 @@
-package io.smudgr.api;
+package io.smudgr.api.commands;
 
+import io.smudgr.api.ApiCommand;
+import io.smudgr.api.ApiMessage;
 import io.smudgr.util.Frame;
 import io.smudgr.util.output.ImageOutput;
 

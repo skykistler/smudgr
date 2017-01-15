@@ -1,5 +1,7 @@
-package io.smudgr.api;
+package io.smudgr.api.commands;
 
+import io.smudgr.api.ApiCommand;
+import io.smudgr.api.ApiMessage;
 import io.smudgr.app.project.util.PropertyMap;
 
 public class ProjectGet implements ApiCommand {

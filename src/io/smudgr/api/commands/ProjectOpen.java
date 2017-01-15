@@ -1,7 +1,9 @@
-package io.smudgr.api;
+package io.smudgr.api.commands;
 
 import java.io.File;
 
+import io.smudgr.api.ApiCommand;
+import io.smudgr.api.ApiMessage;
 import io.smudgr.app.project.util.ProjectLoader;
 import io.smudgr.app.view.FileDialog;
 import io.smudgr.app.view.FileDialog.FileDialogCallback;
