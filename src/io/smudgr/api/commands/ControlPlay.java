@@ -5,6 +5,8 @@ import io.smudgr.api.ApiMessage;
 
 /**
  * Continue execution of the current application instance.
+ * 
+ * @see ControlPause
  */
 public class ControlPlay implements ApiCommand {
 

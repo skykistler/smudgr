@@ -7,6 +7,8 @@ import io.smudgr.util.output.ImageOutput;
 
 /**
  * Capture and save the most recent frame.
+ * 
+ * @see ControlRecord
  */
 public class ControlSaveFrame implements ApiCommand {
 

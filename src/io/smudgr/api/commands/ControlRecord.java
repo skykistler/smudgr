@@ -6,6 +6,8 @@ import io.smudgr.util.output.GifOutput;
 
 /**
  * Toggle recording frames to the specified output.
+ * 
+ * @see ControlSaveFrame
  */
 public class ControlRecord implements ApiCommand {
 

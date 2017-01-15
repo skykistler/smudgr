@@ -11,6 +11,10 @@ import io.smudgr.app.view.FileDialog.FileDialogFilter;
 
 /**
  * Open a project file and load it to the current application instance.
+ * 
+ * @see ProjectGet
+ * @see ProjectNew
+ * @see ProjectSave
  */
 public class ProjectOpen implements ApiCommand {
 

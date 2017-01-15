@@ -6,6 +6,10 @@ import io.smudgr.app.project.util.ProjectLoader;
 
 /**
  * Create a new project and load it to the current application instance.
+ * 
+ * @see ProjectGet
+ * @see ProjectOpen
+ * @see ProjectSave
  */
 public class ProjectNew implements ApiCommand {
 

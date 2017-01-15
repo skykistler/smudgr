@@ -11,6 +11,10 @@ import io.smudgr.app.view.FileDialog.FileDialogFilter;
 
 /**
  * Save current project to user specified location.
+ * 
+ * @see ProjectGet
+ * @see ProjectNew
+ * @see ProjectOpen
  */
 public class ProjectSave implements ApiCommand {
 

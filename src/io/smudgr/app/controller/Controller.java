@@ -6,7 +6,6 @@ import java.util.HashMap;
 
 import io.smudgr.api.ApiInvoker;
 import io.smudgr.api.ApiMessage;
-import io.smudgr.app.controller.controls.AppControl;
 import io.smudgr.app.project.Project;
 import io.smudgr.app.project.util.PropertyMap;
 import io.smudgr.app.threads.RenderThread;

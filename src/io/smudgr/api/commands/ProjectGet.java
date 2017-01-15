@@ -6,6 +6,10 @@ import io.smudgr.app.project.util.PropertyMap;
 
 /**
  * Get the project model as a serialized nested JSON object.
+ * 
+ * @see ProjectNew
+ * @see ProjectOpen
+ * @see ProjectSave
  */
 public class ProjectGet implements ApiCommand {
 
