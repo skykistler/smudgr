@@ -4,8 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+import io.smudgr.app.project.Project;
 import io.smudgr.app.project.ProjectItem;
 
+/**
+ * Tracks {@link ProjectItem} items for the project by managing a
+ * {@link ProjectItem} map paired with unique integer IDs.
+ */
 public class IdProvider {
 	private static final int MAX_ID = 100000;
 
@@ -18,6 +23,9 @@ public class IdProvider {
 	private ArrayList<ProjectItem> toAdd = new ArrayList<ProjectItem>();
 	private boolean loading;
 
+	/**
+	 * Instantiate a new {@link IdProvider}
+	 */
 	public IdProvider() {
 		for (int i = 1; i <= MAX_ID; i++)
 			available_ids.add(i);
@@ -25,6 +33,10 @@ public class IdProvider {
 		loading = true;
 	}
 
+	/**
+	 * Called when the project has finished to loading in order to add any
+	 * {@link ProjectItem} items that were added without IDs during load.
+	 */
 	public void finishLoading() {
 		loading = false;
 
@@ -35,6 +47,17 @@ public class IdProvider {
 		toAdd.clear();
 	}
 
+	/**
+	 * Add a {@link ProjectItem} to the ID map with a new unique ID.
+	 * <p>
+	 * If the item has an ID, it has already been added, and this method does
+	 * nothing.
+	 * 
+	 * @param item
+	 *            {@link ProjectItem} to add
+	 * 
+	 * @see Project#add(ProjectItem)
+	 */
 	public void add(ProjectItem item) {
 		if (getId(item) > -1)
 			return;
@@ -48,6 +71,25 @@ public class IdProvider {
 		put(item, getNewId());
 	}
 
+	/**
+	 * Put a {@link ProjectItem} at the given ID in the ID map.
+	 * <p>
+	 * If the item has already been added at the given ID, this method does
+	 * nothing.
+	 * <p>
+	 * If another item exists at the given ID, this method prints an error and
+	 * does nothing.
+	 * <p>
+	 * If the item exists at a different ID and the given ID is available, this
+	 * method removes the old ID reference and then puts them item at the given
+	 * ID.
+	 * 
+	 * @param item
+	 *            {@link ProjectItem}
+	 * @param id
+	 *            {@code int} Positive unique ID.
+	 * @see Project#put(ProjectItem, int)
+	 */
 	public void put(ProjectItem item, int id) {
 		if (id < 0) {
 			System.out.println("Can't set " + item + " to negative ID: " + id);
@@ -72,6 +114,14 @@ public class IdProvider {
 		consumeId(id);
 	}
 
+	/**
+	 * Remove a {@link ProjectItem} item from the ID map. The old item ID is
+	 * made available for use again.
+	 * 
+	 * @param item
+	 *            {@link ProjectItem}
+	 * @see Project#remove(ProjectItem)
+	 */
 	public void remove(ProjectItem item) {
 		int id = getId(item);
 		itemToId.remove(item);
@@ -83,10 +133,27 @@ public class IdProvider {
 		available_ids.add(id);
 	}
 
+	/**
+	 * Get the {@link ProjectItem} at this ID, or null is doesn't exist.
+	 * 
+	 * @param id
+	 *            {@code int}
+	 * @return {@link ProjectItem} or null
+	 * @see Project#getItem(int)
+	 */
 	public ProjectItem getItem(int id) {
 		return idToItem.get(id);
 	}
 
+	/**
+	 * Get the ID associated with a given {@link ProjectItem}, or -1 if the item
+	 * doesn't exist.
+	 * 
+	 * @param item
+	 *            {@link ProjectItem}
+	 * @return The ID of the {@link ProjectItem}, or -1 if not found.
+	 * @see Project#getId(ProjectItem)
+	 */
 	public int getId(ProjectItem item) {
 		if (!itemToId.containsKey(item))
 			return -1;

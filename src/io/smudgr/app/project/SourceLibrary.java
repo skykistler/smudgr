@@ -12,6 +12,14 @@ import io.smudgr.util.source.Source;
 import io.smudgr.util.source.SourceSet;
 import io.smudgr.util.source.Video;
 
+/**
+ * Managed collection of sources for manipulation and mixing. Sources are
+ * aggregated in a {@link SourceSet} for organization and efficiency. This
+ * system will hopefully change soon as the UI is developed.
+ * 
+ * @see SourceSet
+ * @see Source
+ */
 public class SourceLibrary {
 
 	private String location;
@@ -19,6 +27,13 @@ public class SourceLibrary {
 	private ArrayList<String> files = new ArrayList<String>();;
 	private ArrayList<SourceSet> sourceSets = new ArrayList<SourceSet>();
 
+	/**
+	 * Set the folder location of the sources to load, and load them.
+	 * 
+	 * @param location
+	 *            Path to sources.
+	 * @see SourceSet
+	 */
 	public void setLocation(String location) {
 		this.location = location;
 
@@ -48,10 +63,20 @@ public class SourceLibrary {
 		load();
 	}
 
+	/**
+	 * Switch to the next set in the library.
+	 * 
+	 * @see SourceLibrary#previousSet()
+	 */
 	public void nextSet() {
 		setCurrentSet(currentSet + 1);
 	}
 
+	/**
+	 * Switch to the previous set in the library.
+	 * 
+	 * @see SourceLibrary#nextSet()
+	 */
 	public void previousSet() {
 		setCurrentSet(currentSet - 1);
 	}
@@ -102,15 +127,39 @@ public class SourceLibrary {
 		Controller.getInstance().getProject().getSmudge().setSource(current);
 	}
 
+	/**
+	 * Save this {@link SourceLibrary} location to the given
+	 * {@link PropertyMap}
+	 * 
+	 * @param pm
+	 *            The {@link PropertyMap} to save to.
+	 */
 	public void save(PropertyMap pm) {
 		pm.setAttribute("location", (new File(location)).getAbsolutePath());
 	}
 
+	/**
+	 * Load {@link SourceLibrary} location from the given {@link PropertyMap}.
+	 * 
+	 * @param pm
+	 *            The {@link PropertyMap} to load from.
+	 */
 	public void load(PropertyMap pm) {
 		if (pm.hasAttribute("location"))
 			setLocation(pm.getAttribute("location"));
 	}
 
+	/**
+	 * Get a {@link Source} object from a given path.
+	 * 
+	 * @param path
+	 *            Relative or absolute path of source to load.
+	 * @return {@link Source} object of type based on file extension.
+	 * 
+	 * @see Image
+	 * @see Gif
+	 * @see Video
+	 */
 	public Source getSource(String path) {
 		if (path.contains("/."))
 			return null;

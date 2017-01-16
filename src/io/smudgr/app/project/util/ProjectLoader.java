@@ -13,14 +13,35 @@ import org.w3c.dom.NodeList;
 import io.smudgr.app.controller.Controller;
 import io.smudgr.app.project.Project;
 
+/**
+ * The {@link ProjectLoader} class can load an XML file containing
+ * {@link Project} data.
+ * 
+ * @see ProjectSaver
+ */
 public class ProjectLoader {
 
 	private String path;
 
+	/**
+	 * Create a new {@link ProjectLoader} without a specified path. This can be
+	 * used to bootstrap a new {@link Project} without immediately specifying a
+	 * save location.
+	 * 
+	 * @see ProjectLoader#ProjectLoader(String)
+	 */
 	public ProjectLoader() {
 		this(null);
 	}
 
+	/**
+	 * Create a new {@link ProjectLoader} to load a project from an existing
+	 * file.
+	 * 
+	 * @param path
+	 *            Absolute or relative project file location.
+	 * @see ProjectLoader#ProjectLoader()
+	 */
 	public ProjectLoader(String path) {
 		if (path != null && !path.endsWith(Project.PROJECT_EXTENSION))
 			path += Project.PROJECT_EXTENSION;
@@ -28,6 +49,12 @@ public class ProjectLoader {
 		this.path = path;
 	}
 
+	/**
+	 * Loads the project.
+	 * <p>
+	 * The currently running application instance (if any) must be paused and is
+	 * not resumed automatically.
+	 */
 	public void load() {
 		PropertyMap projectMap = loadXML();
 

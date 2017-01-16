@@ -21,12 +21,26 @@ import org.w3c.dom.Element;
 import io.smudgr.app.controller.Controller;
 import io.smudgr.app.project.Project;
 
+/**
+ * The {@link ProjectSaver} class saves the currently loaded {@link Project} to
+ * its specified {@link Project#getProjectPath()} as an XML file.
+ * 
+ * @see ProjectLoader
+ */
 public class ProjectSaver {
 
 	private String path;
 
 	private Document doc;
 
+	/**
+	 * Save the {@link Project} of the current application instance to its
+	 * configured save path {@link Project#getProjectPath()}
+	 * <p>
+	 * If no path is set, this method does nothing.
+	 * 
+	 * @see Project#setProjectPath(String)
+	 */
 	public void save() {
 		try {
 			Project project = Controller.getInstance().getProject();
