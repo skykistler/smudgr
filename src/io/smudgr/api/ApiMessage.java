@@ -7,7 +7,7 @@ import org.json.simple.JSONValue;
 import io.smudgr.app.project.util.PropertyMap;
 
 /**
- * The {@code ApiMessage} class represents a packet of information for
+ * The {@link ApiMessage} class represents a packet of information for
  * communicating with the API.
  * <p>
  * Information is stored and serialized as a {@link JSONObject}, so this class
@@ -18,13 +18,13 @@ public class ApiMessage {
 	private JSONObject payload = new JSONObject();
 
 	/**
-	 * Instantiate an empty {@code ApiMessage}
+	 * Instantiate an empty {@link ApiMessage}
 	 */
 	public ApiMessage() {
 	}
 
 	/**
-	 * Instantiate an {@code ApiMessage} with the given key and value.
+	 * Instantiate an {@link ApiMessage} with the given key and value.
 	 * 
 	 * @param initialKey
 	 *            The initial key to set.
@@ -70,7 +70,7 @@ public class ApiMessage {
 	 * 
 	 * @param key
 	 *            The key to lookup.
-	 * @return {@code true} is this {@code ApiMessage} contains a non-null value
+	 * @return {@code true} is this {@link ApiMessage} contains a non-null value
 	 *         at this key, {@code false} if otherwise.
 	 */
 	public boolean hasKey(String key) {
@@ -91,7 +91,7 @@ public class ApiMessage {
 	}
 
 	/**
-	 * Serialize this {@code ApiMessage} into a JSON string.
+	 * Serialize this {@link ApiMessage} into a JSON string.
 	 * 
 	 * @return The serialized JSON string.
 	 */
@@ -100,7 +100,7 @@ public class ApiMessage {
 	}
 
 	/**
-	 * String representation of this {@code ApiMessage}. Same as
+	 * String representation of this {@link ApiMessage}. Same as
 	 * {@link ApiMessage#serialize()}
 	 * 
 	 * @see ApiMessage#serialize()
@@ -185,11 +185,11 @@ public class ApiMessage {
 	}
 
 	/**
-	 * Deserialize a generic JSON packet string into an {@code ApiMessage}
+	 * Deserialize a generic JSON packet string into an {@link ApiMessage}
 	 * 
 	 * @param message
-	 *            {@code String} to deserialize.
-	 * @return {@code ApiMessage} represented by {@code message}, or
+	 *            {@link String} to deserialize.
+	 * @return {@link ApiMessage} represented by {@code message}, or
 	 *         {@code null} if failed;
 	 */
 	public static ApiMessage deserialize(String message) {
@@ -211,11 +211,11 @@ public class ApiMessage {
 	}
 
 	/**
-	 * Create an {@code ApiMessage} from a given {@link PropertyMap}
+	 * Create an {@link ApiMessage} from a given {@link PropertyMap}
 	 * 
 	 * @param map
 	 *            The {@link PropertyMap} to normalize.
-	 * @return {@code ApiMessage} representing the normalized
+	 * @return {@link ApiMessage} representing the normalized
 	 *         {@link PropertyMap}
 	 * @see PropertyMap
 	 */

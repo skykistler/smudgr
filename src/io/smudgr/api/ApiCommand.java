@@ -6,11 +6,11 @@ import io.smudgr.app.project.Project;
 /**
  * Interface for defining the behavior of a unique command.
  * <p>
- * {@code execute()} is called when the API is invoked with a packet referencing
- * the string returned by {@code getCommand()}
+ * {@link ApiCommand#execute(ApiMessage)} is called when the API is invoked with
+ * a packet referencing he string returned by {@link ApiCommand#getCommand()}
  * <p>
- * Every class that implements ApiCommand is instantiated once at runtime using
- * the default constructor.
+ * Every class that implements {@link ApiCommand} is instantiated only once at
+ * runtime using the default constructor.
  * 
  * @see ApiInvoker
  * @see ApiMessage

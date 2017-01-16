@@ -11,6 +11,7 @@ public interface Controllable extends ProjectItem {
 
 	/**
 	 * Key to reference controls by in the property map.
+	 * Currently set to {@value}.
 	 * 
 	 * @see PropertyMap
 	 */
