@@ -7,6 +7,7 @@ import io.smudgr.util.Frame;
 
 public class ChannelDrift extends Operation {
 
+	@Override
 	public String getName() {
 		return "Channel Drift";
 	}
@@ -21,6 +22,7 @@ public class ChannelDrift extends Operation {
 	private int boundWidth;
 	private int boundHeight;
 
+	@Override
 	public void init() {
 		redX.setContinuous(true);
 		redY.setContinuous(true);
@@ -34,9 +36,10 @@ public class ChannelDrift extends Operation {
 		blueX.setReverse(true);
 	}
 
+	@Override
 	public void execute(Frame img) {
-		boundWidth = getAlgorithm().getBound().getTranslatedWidth(img);
-		boundHeight = getAlgorithm().getBound().getTranslatedHeight(img);
+		boundWidth = getAlgorithm().getBound().getTranslatedWidth(img.getWidth());
+		boundHeight = getAlgorithm().getBound().getTranslatedHeight(img.getHeight());
 
 		Frame copy = img.copy();
 
@@ -54,9 +57,9 @@ public class ChannelDrift extends Operation {
 				int x = coord % copy.getWidth();
 				int y = (coord - x) / copy.getWidth();
 
-				int r = (int) ColorHelper.red(getShifted(img, x, y, redShiftX, redShiftY));
-				int g = (int) ColorHelper.green(getShifted(img, x, y, greenShiftX, greenShiftY));
-				int b = (int) ColorHelper.blue(getShifted(img, x, y, blueShiftX, blueShiftY));
+				int r = ColorHelper.red(getShifted(img, x, y, redShiftX, redShiftY));
+				int g = ColorHelper.green(getShifted(img, x, y, greenShiftX, greenShiftY));
+				int b = ColorHelper.blue(getShifted(img, x, y, blueShiftX, blueShiftY));
 
 				copy.pixels[coord] = ColorHelper.color(255, r, g, b);
 			}

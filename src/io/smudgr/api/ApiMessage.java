@@ -10,8 +10,8 @@ import io.smudgr.app.project.util.PropertyMap;
  * The {@link ApiMessage} class represents a packet of information for
  * communicating with the API.
  * <p>
- * Information is stored and serialized as a {@link JSONObject}, so this class
- * can be thought of as having key:value pairs and nested information.
+ * Instances are backed by a {@link JSONObject}, so this class can be thought of
+ * as having key:value pairs and nested information.
  */
 public class ApiMessage {
 

@@ -7,6 +7,7 @@ import io.smudgr.util.Frame;
 
 public class SkewedCoords extends CoordFunction {
 
+	@Override
 	public String getName() {
 		return "Diagonals";
 	}
@@ -14,24 +15,27 @@ public class SkewedCoords extends CoordFunction {
 	// Which end coordinate do we want
 	NumberParameter endCoordOffset = new NumberParameter("Skew Degree", this, 0.6, 0, 2.0, 0.01);
 
-	// The following selected coord components will be important later on in the generate method
+	// The following selected coord components will be important later on in the
+	// generate method
 	private int selectedEndX;
 	private int selectedEndY;
 
+	@Override
 	protected void generate(Bound b, Frame img) {
 
-		int boundWidth = b.getTranslatedWidth(img);
-		int boundHeight = b.getTranslatedHeight(img);
+		int boundWidth = b.getTranslatedWidth(img.getWidth());
+		int boundHeight = b.getTranslatedHeight(img.getHeight());
 
-		int boundX = b.getTranslatedX(img);
-		int boundY = b.getTranslatedY(img);
+		int boundX = b.getTranslatedX(img.getWidth());
+		int boundY = b.getTranslatedY(img.getHeight());
 
 		double offset = endCoordOffset.getValue();
 
-		/* Set the possible end coordinates from the TWO start coords:
-		 * 		(0, 0)
-		 * 		(0, width-1)
-		*/
+		/*
+		 * Set the possible end coordinates from the TWO start coords:
+		 * (0, 0)
+		 * (0, width-1)
+		 */
 		int possibleRangeSize = boundHeight + boundWidth + boundHeight - 2;
 		int xs[] = new int[possibleRangeSize];
 		int ys[] = new int[possibleRangeSize];
@@ -39,7 +43,8 @@ public class SkewedCoords extends CoordFunction {
 		fillPossibleEndCoords(boundX, boundY, boundWidth, boundHeight, xs, ys);
 		selectEndPoint(boundWidth, boundHeight, offset, xs, ys);
 
-		// Now that we have all possible end coords, we can move on to creating coord sets through the coordinate basis
+		// Now that we have all possible end coords, we can move on to creating
+		// coord sets through the coordinate basis
 
 		createCoords(selectedEndX, selectedEndY, offset, boundWidth, boundHeight, boundX, boundY);
 
@@ -47,7 +52,8 @@ public class SkewedCoords extends CoordFunction {
 
 	private void fillPossibleEndCoords(int offsetX, int offsetY, int width, int height, int xs[], int ys[]) {
 
-		// count shouldn't exceed the length of xs and ys but why assert things if I'm always right
+		// count shouldn't exceed the length of xs and ys but why assert things
+		// if I'm always right
 		int index = 0;
 
 		// We want to follow a very specific order for this to work
@@ -67,14 +73,17 @@ public class SkewedCoords extends CoordFunction {
 			index++;
 		}
 
-		// at this point, we have all possible end coordinates separated by x and y
-		// I'm also not sure why I separated x and y into separate arrays, but it looks better
+		// at this point, we have all possible end coordinates separated by x
+		// and y
+		// I'm also not sure why I separated x and y into separate arrays, but
+		// it looks better
 	}
 
 	// returns true if we should use start point 1, and false if start point 2
 	private void selectEndPoint(int w, int h, double offset, int xs[], int ys[]) {
 
-		// compute our end x and y for the coord basis this should probably be its own thing
+		// compute our end x and y for the coord basis this should probably be
+		// its own thing
 		boolean startPoint2 = false;
 		if (offset > 1)
 			startPoint2 = true;
@@ -96,7 +105,8 @@ public class SkewedCoords extends CoordFunction {
 
 		TIntArrayList coordBasis = new TIntArrayList();
 
-		// Now we just need to compute bresenham, based on what endX and endY are...
+		// Now we just need to compute bresenham, based on what endX and endY
+		// are...
 		int startX = 0;
 		int startY = 0;
 
@@ -108,12 +118,14 @@ public class SkewedCoords extends CoordFunction {
 		// results of the bresenham line approximation go into coordBasis
 		bresenham(startX, startY, endX, endY, coordBasis);
 
-		int basis[] = coordBasis.toArray(); //put the trove array list into an int array for easier calculation
+		int basis[] = coordBasis.toArray(); // put the trove array list into an
+											// int array for easier calculation
 
 		int sweepXAmount = 0;
 		int sweepYAmount = 0;
 
-		// right here is where we reset the coords and start the sweeping calculation for the coordsets
+		// right here is where we reset the coords and start the sweeping
+		// calculation for the coordsets
 		if (endX == 0 || endX == width - 1) {
 			incrementYs(-endY, basis);
 			sweepYAmount = height + endY;

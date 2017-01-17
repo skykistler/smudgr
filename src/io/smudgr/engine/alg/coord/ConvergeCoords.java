@@ -6,6 +6,7 @@ import io.smudgr.util.Frame;
 
 public class ConvergeCoords extends CoordFunction {
 
+	@Override
 	public String getName() {
 		return "Point";
 	}
@@ -13,11 +14,12 @@ public class ConvergeCoords extends CoordFunction {
 	private NumberParameter centerX = new NumberParameter("Point X", this, .5, 0, 1, 0.005);
 	private NumberParameter centerY = new NumberParameter("Point Y", this, .5, 0, 1, 0.005);
 
+	@Override
 	protected void generate(Bound b, Frame img) {
-		int boundX = b.getTranslatedX(img);
-		int boundY = b.getTranslatedY(img);
-		int boundWidth = b.getTranslatedWidth(img);
-		int boundHeight = b.getTranslatedHeight(img);
+		int boundX = b.getTranslatedX(img.getWidth());
+		int boundY = b.getTranslatedY(img.getHeight());
+		int boundWidth = b.getTranslatedWidth(img.getWidth());
+		int boundHeight = b.getTranslatedHeight(img.getHeight());
 
 		int middleX = (int) (centerX.getValue() * boundWidth);
 		int middleY = (int) (centerY.getValue() * boundHeight);

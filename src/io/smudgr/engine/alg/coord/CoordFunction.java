@@ -12,6 +12,7 @@ import io.smudgr.util.Frame;
 
 public abstract class CoordFunction extends AlgorithmComponent {
 
+	@Override
 	public String getType() {
 		return "Flow";
 	}
@@ -28,10 +29,12 @@ public abstract class CoordFunction extends AlgorithmComponent {
 	protected Stack<PixelIndexList> disposedLists = new Stack<PixelIndexList>();
 	protected PixelIndexList currentSet = null;
 
+	@Override
 	public void init() {
 
 	}
 
+	@Override
 	public void update() {
 		if (frame == null)
 			return;
@@ -74,7 +77,7 @@ public abstract class CoordFunction extends AlgorithmComponent {
 		if (breakSet || coordSet.size() == 0)
 			// And our current set isn't empty, then add it
 			if (currentSet != null && currentSet.size() > 0)
-				coordSet.add(currentSet);
+			coordSet.add(currentSet);
 
 		// Finally, reset the current set if needed
 		if (currentSet == null || breakSet) {
@@ -96,7 +99,7 @@ public abstract class CoordFunction extends AlgorithmComponent {
 			nextSet();
 
 		// If point is in bound, add it's index
-		if (bound.containsPoint(frame, x, y)) {
+		if (bound.containsPoint(x, y, frame.getWidth(), frame.getHeight())) {
 			int index = x + y * frame.getWidth();
 			currentSet.add(index);
 			wasInBound = true;
@@ -108,6 +111,7 @@ public abstract class CoordFunction extends AlgorithmComponent {
 		}
 	}
 
+	@Override
 	public void triggerChange() {
 		wasChanged = true;
 	}
@@ -124,6 +128,7 @@ public abstract class CoordFunction extends AlgorithmComponent {
 		this.frame = image;
 	}
 
+	@Override
 	public Algorithm getAlgorithm() {
 		return parent;
 	}

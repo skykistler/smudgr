@@ -1,17 +1,20 @@
 package io.smudgr.engine.alg.bound;
 
-import io.smudgr.util.Frame;
+import io.smudgr.engine.alg.Algorithm;
 
+/**
+ * The {@link EllipticalBound} implementation of {@link Bound} represents a
+ * parameterized ellipse to bind an {@link Algorithm} to
+ */
 public class EllipticalBound extends Bound {
 
+	@Override
 	public String getName() {
 		return "Elliptical";
 	}
 
-	public boolean containsPoint(Frame img, int x, int y) {
-		int w = img.getWidth();
-		int h = img.getHeight();
-
+	@Override
+	public boolean containsPoint(int x, int y, int w, int h) {
 		boolean inImage = x >= 0 && y >= 0 && x < w && y < h;
 		if (!inImage)
 			return false;

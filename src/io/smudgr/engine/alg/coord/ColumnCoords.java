@@ -5,15 +5,17 @@ import io.smudgr.util.Frame;
 
 public class ColumnCoords extends CoordFunction {
 
+	@Override
 	public String getName() {
 		return "Columns";
 	}
 
+	@Override
 	protected void generate(Bound b, Frame img) {
-		int boundWidth = b.getTranslatedWidth(img);
-		int boundHeight = b.getTranslatedHeight(img);
-		int boundX = b.getTranslatedX(img);
-		int boundY = b.getTranslatedY(img);
+		int boundWidth = b.getTranslatedWidth(img.getWidth());
+		int boundHeight = b.getTranslatedHeight(img.getHeight());
+		int boundX = b.getTranslatedX(img.getWidth());
+		int boundY = b.getTranslatedY(img.getHeight());
 
 		for (int i = 0; i < boundWidth; i++) {
 			nextSet();

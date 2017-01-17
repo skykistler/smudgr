@@ -9,22 +9,24 @@ import io.smudgr.util.Frame;
 
 public class RadialCoords extends CoordFunction {
 
+	@Override
 	public String getName() {
 		return "Spiral";
 	}
 
 	private NumberParameter innerRadius = new NumberParameter("Donut Hole", this, 0, 0, 1, 0.005);
 
+	@Override
 	protected void generate(Bound b, Frame img) {
-		int boundX = b.getTranslatedX(img);
-		int boundWidth = b.getTranslatedWidth(img);
-		int boundY = b.getTranslatedY(img);
-		int boundHeight = b.getTranslatedHeight(img);
+		int boundX = b.getTranslatedX(img.getWidth());
+		int boundWidth = b.getTranslatedWidth(img.getWidth());
+		int boundY = b.getTranslatedY(img.getHeight());
+		int boundHeight = b.getTranslatedHeight(img.getHeight());
 
 		int radiusX = boundWidth / 2;
 		int radiusY = boundHeight / 2;
 
-		int innerR = (int) (radiusY >= radiusX ? radiusX - (int) radiusX * innerRadius.getValue() : radiusY - (int) radiusY * innerRadius.getValue());
+		int innerR = (int) (radiusY >= radiusX ? radiusX - radiusX * innerRadius.getValue() : radiusY - radiusY * innerRadius.getValue());
 
 		int _radiusY = radiusY;
 		int _radiusX = radiusX;
@@ -47,7 +49,8 @@ public class RadialCoords extends CoordFunction {
 
 		int x, y;
 
-		// creating BigInteger variables to avoid a bunch of casting and converting later on:
+		// creating BigInteger variables to avoid a bunch of casting and
+		// converting later on:
 		BigInteger rX = BigInteger.valueOf(radiusX);
 		BigInteger rY = BigInteger.valueOf(radiusY);
 		BigInteger two = BigInteger.valueOf(2);
@@ -100,24 +103,26 @@ public class RadialCoords extends CoordFunction {
 				c8.insert(0, p4x + p4y * width);
 
 			y++;
-			stoppingY = stoppingY.add(twoASquare); //stoppingY += twoASquare;
-			error = error.add(dy); //error += dy;
-			dy = dy.add(twoASquare); //dy += twoASquare;
+			stoppingY = stoppingY.add(twoASquare); // stoppingY += twoASquare;
+			error = error.add(dy); // error += dy;
+			dy = dy.add(twoASquare); // dy += twoASquare;
 			if ((error.multiply(BigInteger.valueOf(2)).add(dx)).compareTo(BigInteger.ZERO) > 0) {
 				x--;
-				stoppingX = stoppingX.subtract(twoBSquare); //stoppingX -= twoBSquare;
-				error = error.add(dx); //error += dx;
-				dx = dx.add(twoBSquare); //dx += twoBSquare;
+				stoppingX = stoppingX.subtract(twoBSquare); // stoppingX -=
+															// twoBSquare;
+				error = error.add(dx); // error += dx;
+				dx = dx.add(twoBSquare); // dx += twoBSquare;
 			}
 		}
 
 		// second set of points
 
-		dx = rYsquare; //radiusY * radiusY;
-		dy = rXsquare.multiply(oneMinus2rY); //radiusX1 * radiusX1 * (1 - 2 * radiusY);
+		dx = rYsquare; // radiusY * radiusY;
+		dy = rXsquare.multiply(oneMinus2rY); // radiusX1 * radiusX1 * (1 - 2 *
+												// radiusY);
 		error = BigInteger.ZERO;
 		stoppingX = BigInteger.ZERO;
-		stoppingY = twoASquare.multiply(rY); //twoASquare * radiusY;
+		stoppingY = twoASquare.multiply(rY); // twoASquare * radiusY;
 
 		x = 0;
 		y = radiusY;
@@ -150,19 +155,23 @@ public class RadialCoords extends CoordFunction {
 				c7.add(p4x + p4y * width);
 
 			x++;
-			stoppingX = stoppingX.add(twoBSquare); //stoppingX += twoBSquare;
-			error = error.add(dx); //error += dx;
-			dx = dx.add(twoBSquare); //dx += twoBSquare;
+			stoppingX = stoppingX.add(twoBSquare); // stoppingX += twoBSquare;
+			error = error.add(dx); // error += dx;
+			dx = dx.add(twoBSquare); // dx += twoBSquare;
 			if ((error.multiply(BigInteger.valueOf(2)).add(dy)).compareTo(BigInteger.ZERO) > 0) {
 				y--;
-				stoppingY = stoppingY.subtract(twoASquare); //stoppingY -= twoASquare;
-				error = error.add(dy); //error += dy;
-				dy = dy.add(twoASquare); //dy += twoASquare;
+				stoppingY = stoppingY.subtract(twoASquare); // stoppingY -=
+															// twoASquare;
+				error = error.add(dy); // error += dy;
+				dy = dy.add(twoASquare); // dy += twoASquare;
 			}
 		}
 
-		/* The algorithm uses the symmetry of an ellipse to calculate points in each quadrant simultaneously
-		 * through each loop. The following corrects the order of the calculated points to 
+		/*
+		 * The algorithm uses the symmetry of an ellipse to calculate points in
+		 * each quadrant simultaneously
+		 * through each loop. The following corrects the order of the calculated
+		 * points to
 		 * represent a single continuous ellipse curve.
 		 */
 		currentSet.addAll(c1);
