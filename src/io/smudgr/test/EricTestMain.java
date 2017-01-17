@@ -7,6 +7,9 @@ import io.smudgr.engine.alg.Algorithm;
 import io.smudgr.engine.alg.op.SourceMixer;
 import io.smudgr.engine.alg.select.RangeSelect;
 
+/**
+ * Eric's class for testing functionality.
+ */
 public class EricTestMain extends AppStart {
 
 	/*
@@ -39,6 +42,7 @@ public class EricTestMain extends AppStart {
 	// non-fullscreen window
 	static boolean monitor = true;
 
+	@Override
 	public void buildSmudge() {
 		// Pro-tip: In eclipse, you can Ctrl+Click on a class name to quickly
 		// open that class
@@ -74,6 +78,9 @@ public class EricTestMain extends AppStart {
 		bind(Controller.getInstance().getAppControl("Save Frame"));
 	}
 
+	/**
+	 * 
+	 */
 	public EricTestMain() {
 		super(projectPath, sourcePath, outputPath, device, overwriteSmudge, deviceServer);
 
@@ -84,6 +91,12 @@ public class EricTestMain extends AppStart {
 		start();
 	}
 
+	/**
+	 * Entry point
+	 * 
+	 * @param args
+	 *            {@code String[]}
+	 */
 	public static void main(String[] args) {
 		new EricTestMain();
 	}

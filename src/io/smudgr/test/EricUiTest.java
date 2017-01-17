@@ -8,6 +8,9 @@ import io.smudgr.engine.alg.op.DataBend;
 import io.smudgr.engine.alg.select.RangeSelect;
 import io.smudgr.extensions.cef.view.WebsocketView;
 
+/**
+ * Eric's class for testing UI
+ */
 public class EricUiTest extends AppStart {
 
 	static String projectPath = "data/test.smudge";
@@ -24,6 +27,7 @@ public class EricUiTest extends AppStart {
 	static int fullscreenDisplay = -1;
 	static boolean monitor = true;
 
+	@Override
 	public void buildSmudge() {
 		Smudge smudge = Controller.getInstance().getProject().getSmudge();
 
@@ -59,6 +63,9 @@ public class EricUiTest extends AppStart {
 		// bind(Controller.getInstance().getAppControl("Save Project"));
 	}
 
+	/**
+	 * 
+	 */
 	public EricUiTest() {
 		super(projectPath, sourcePath, outputPath, device, overwriteSmudge, deviceServer);
 
@@ -71,6 +78,12 @@ public class EricUiTest extends AppStart {
 		start();
 	}
 
+	/**
+	 * Entry point
+	 * 
+	 * @param args
+	 *            {@code String[]}
+	 */
 	public static void main(String[] args) {
 		new EricUiTest();
 	}
