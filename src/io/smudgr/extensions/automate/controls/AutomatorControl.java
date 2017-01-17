@@ -6,7 +6,7 @@ import io.smudgr.engine.param.Parameter;
 
 public interface AutomatorControl extends Controllable, ProjectItem {
 	
-	public static final String PROPERTY_MAP_KEY = "automator";
+	public static final String PROJECT_MAP_TAG = "automator";
 
 	public void init();
 

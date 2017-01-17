@@ -4,8 +4,20 @@ import java.util.ArrayList;
 
 import io.smudgr.engine.alg.math.univariate.UnivariateFunction;
 
+/**
+ * The {@link UnivariateParameter} class is a {@link Parameter} implementation
+ * for switching between {@link UnivariateFunction} functions that take a single
+ * numeric variable, and
+ * return a single numeric value.
+ * <p>
+ * {@link UnivariateParameter} instances can be used to switch between
+ * manipulation functions.
+ * 
+ * @see UnivariateFunction
+ */
 public class UnivariateParameter extends Parameter {
 
+	@Override
 	public String getType() {
 		return "Univariate";
 	}
@@ -14,18 +26,38 @@ public class UnivariateParameter extends Parameter {
 
 	private int current;
 
+	/**
+	 * Instantiate a new {@link UnivariateParameter} and set an initial value.
+	 * 
+	 * @param name
+	 *            Identifying name
+	 * @param parent
+	 *            {@link Parametric} parent
+	 * @param initial
+	 *            {@link UnivariateFunction} initial function
+	 * @see UnivariateParameter#UnivariateParameter(String, Parametric) new
+	 *      UnivariateFunction(name, parent)
+	 */
 	public UnivariateParameter(String name, Parametric parent, UnivariateFunction initial) {
 		this(name, parent);
 		setValue(initial);
 	}
 
+	/**
+	 * Instantiate a new {@link UnivariateParameter}
+	 * 
+	 * @param name
+	 *            Identifying name
+	 * @param parent
+	 *            {@link Parametric} parent
+	 * @see UnivariateParameter#UnivariateParameter(String, Parametric) new
+	 *      UnivariateFunction(name, parent)
+	 */
 	public UnivariateParameter(String name, Parametric parent) {
 		super(name, parent);
 	}
 
-	public void update() {
-	}
-
+	@Override
 	protected void setValueFromObject(Object o) {
 		UnivariateFunction func = null;
 
@@ -57,6 +89,7 @@ public class UnivariateParameter extends Parameter {
 			getParent().triggerChange();
 	}
 
+	@Override
 	public String getStringValue() {
 		if (univariates.size() == 0)
 			return "";
@@ -64,6 +97,15 @@ public class UnivariateParameter extends Parameter {
 		return univariates.get(current).getName();
 	}
 
+	/**
+	 * Gets the current {@link UnivariateFunction} this parameter is set to, or
+	 * {@code null} if no {@link UnivariateFunction} instances have been added
+	 * to this parameter.
+	 * 
+	 * @return current {@link UnivariateFunction} this parameter is set to, or
+	 *         {@code null}
+	 * @see UnivariateParameter#add(UnivariateFunction)
+	 */
 	public UnivariateFunction getValue() {
 		if (univariates.size() == 0)
 			return null;
@@ -71,24 +113,36 @@ public class UnivariateParameter extends Parameter {
 		return univariates.get(current);
 	}
 
+	/**
+	 * Add a possible {@link UnivariateFunction} value to this parameter.
+	 * 
+	 * @param func
+	 *            {@link UnivariateFunction} to add.
+	 * 
+	 * @see UnivariateParameter#getValue()
+	 */
 	public void add(UnivariateFunction func) {
 		if (!univariates.contains(func))
 			univariates.add(func);
 	}
 
+	@Override
 	public void inputValue(int value) {
 		value %= univariates.size();
 
 		setCurrent(value);
 	}
 
+	@Override
 	public void inputOn() {
 
 	}
 
+	@Override
 	public void inputOff() {
 	}
 
+	@Override
 	public void increment() {
 		if (univariates.size() == 0)
 			return;
@@ -97,6 +151,7 @@ public class UnivariateParameter extends Parameter {
 		current %= univariates.size();
 	}
 
+	@Override
 	public void decrement() {
 		if (univariates.size() == 0)
 			return;

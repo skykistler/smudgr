@@ -12,9 +12,13 @@ import io.smudgr.engine.alg.op.PixelShift;
 import io.smudgr.engine.alg.op.PixelSort;
 import io.smudgr.engine.alg.op.SpectralShift;
 import io.smudgr.engine.alg.select.RangeSelect;
+import io.smudgr.engine.param.NumberParameter;
 import io.smudgr.extensions.automate.controls.AutomatorControl;
 import io.smudgr.extensions.cef.view.WebsocketView;
 
+/**
+ * Test file for large smudge used in multiple live shows before.
+ */
 public class SkyShowApp extends AppStart {
 
 	static String projectPath = "data/show.smudge";
@@ -31,6 +35,7 @@ public class SkyShowApp extends AppStart {
 	static int fullscreenDisplay = -1;
 	static boolean monitor = false;
 
+	@Override
 	public void buildSmudge() {
 		Smudge smudge = Controller.getInstance().getProject().getSmudge();
 
@@ -95,6 +100,14 @@ public class SkyShowApp extends AppStart {
 		shift_columns.getParameter("Enable").setValue(false);
 		smudge.add(shift_columns);
 
+		Algorithm chan_bleed = new Algorithm();
+		ChannelBleed bleed = new ChannelBleed();
+		chan_bleed.add(bleed);
+		((NumberParameter) bleed.getParameter("Shift Amount")).setContinuous(true);
+		chan_bleed.getParameter("Enable").setValue(false);
+		addAutomator("Animate", bleed.getParameter("Shift Amount"));
+		smudge.add(chan_bleed);
+
 		bind(smudge.getParameter("Source Speed"));
 		bind(smudge.getParameter("Downsample"));
 
@@ -103,6 +116,9 @@ public class SkyShowApp extends AppStart {
 		bind(Controller.getInstance().getAppControl("Save Project"));
 	}
 
+	/**
+	 * 
+	 */
 	public SkyShowApp() {
 		super(projectPath, sourcePath, outputPath, device, overwriteSmudge, deviceServer);
 
@@ -113,17 +129,14 @@ public class SkyShowApp extends AppStart {
 		Controller.getInstance().add(new WebsocketView());
 
 		start();
-
-		Smudge smudge = Controller.getInstance().getProject().getSmudge();
-		Algorithm chan_bleed = new Algorithm();
-		ChannelBleed bleed = new ChannelBleed();
-		chan_bleed.add(bleed);
-		bleed.getParameter("Shift Amount").setContinuous(true);
-		chan_bleed.getParameter("Enable").setValue(false);
-		addAutomator("Animate", bleed.getParameter("Shift Amount"));
-		smudge.add(chan_bleed);
 	}
 
+	/**
+	 * Start application
+	 * 
+	 * @param args
+	 *            {@code String[]}
+	 */
 	public static void main(String[] args) {
 		new SkyShowApp();
 	}

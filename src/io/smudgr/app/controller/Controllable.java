@@ -10,12 +10,14 @@ import io.smudgr.app.project.util.PropertyMap;
 public interface Controllable extends ProjectItem {
 
 	/**
-	 * Key to reference controls by in the property map.
+	 * Tag to reference controls by in the project property map. This is used to
+	 * identify a {@link Controllable} in project files.
+	 * <p>
 	 * Currently set to {@value}.
 	 * 
 	 * @see PropertyMap
 	 */
-	public static final String PROPERTY_MAP_KEY = "control";
+	public static final String PROJECT_MAP_TAG = "control";
 
 	/**
 	 * Unique name to identify this control by.

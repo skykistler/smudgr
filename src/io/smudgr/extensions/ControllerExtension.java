@@ -7,7 +7,7 @@ import io.smudgr.app.project.util.PropertyMap;
 
 public interface ControllerExtension {
 
-	public static final String PROPERTY_MAP_KEY = "extension";
+	public static final String PROJECT_MAP_TAG = "extension";
 
 	public String getName();
 

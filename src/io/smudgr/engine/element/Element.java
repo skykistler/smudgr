@@ -2,7 +2,7 @@ package io.smudgr.engine.element;
 
 public interface Element {
 	
-	public static final String PROPERTY_MAP_KEY = "element";
+	public static final String PROJECT_MAP_TAG = "element";
 	
 	public String getType();
 	

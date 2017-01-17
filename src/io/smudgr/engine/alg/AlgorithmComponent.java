@@ -5,7 +5,7 @@ import io.smudgr.engine.param.Parametric;
 
 public abstract class AlgorithmComponent extends Parametric {
 	
-	public static final String PROPERTY_MAP_KEY = "component";
+	public static final String PROJECT_MAP_TAG = "component";
 
 	private Algorithm parent;
 

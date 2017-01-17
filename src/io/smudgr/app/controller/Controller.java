@@ -245,7 +245,7 @@ public class Controller {
 	 */
 	public void save(PropertyMap pm) {
 		for (AppControl control : getAppControls()) {
-			PropertyMap map = new PropertyMap(Controllable.PROPERTY_MAP_KEY);
+			PropertyMap map = new PropertyMap(Controllable.PROJECT_MAP_TAG);
 
 			control.save(map);
 			map.setAttribute("id", getProject().getId(control));
@@ -255,7 +255,7 @@ public class Controller {
 		}
 
 		for (ControllerExtension extension : getExtensions()) {
-			PropertyMap map = new PropertyMap(ControllerExtension.PROPERTY_MAP_KEY);
+			PropertyMap map = new PropertyMap(ControllerExtension.PROJECT_MAP_TAG);
 
 			extension.save(map);
 			map.setAttribute("name", extension.getName());
@@ -277,7 +277,7 @@ public class Controller {
 		reflectAppControls();
 
 		// Set project ID for saved controls
-		for (PropertyMap mapping : pm.getChildren(Controllable.PROPERTY_MAP_KEY)) {
+		for (PropertyMap mapping : pm.getChildren(Controllable.PROJECT_MAP_TAG)) {
 			AppControl control = getAppControl(mapping.getAttribute("name"));
 
 			if (control != null) {
@@ -299,7 +299,7 @@ public class Controller {
 		reflectExtensions();
 
 		ArrayList<ControllerExtension> loadedExtensions = new ArrayList<ControllerExtension>();
-		for (PropertyMap mapping : pm.getChildren(ControllerExtension.PROPERTY_MAP_KEY)) {
+		for (PropertyMap mapping : pm.getChildren(ControllerExtension.PROJECT_MAP_TAG)) {
 			ControllerExtension ext = getExtension(mapping.getAttribute("name"));
 
 			if (ext != null) {
@@ -315,7 +315,7 @@ public class Controller {
 		 */
 		for (ControllerExtension ext : getExtensions()) {
 			if (!loadedExtensions.contains(ext))
-				ext.load(new PropertyMap(ControllerExtension.PROPERTY_MAP_KEY));
+				ext.load(new PropertyMap(ControllerExtension.PROJECT_MAP_TAG));
 		}
 	}
 

@@ -8,14 +8,20 @@ import io.smudgr.app.threads.ViewThread;
 import io.smudgr.app.view.View;
 import io.smudgr.util.Frame;
 
+/**
+ * The {@link WebsocketView} implementation of {@link View} streams frames
+ * through a WebSocket to an arbitrary number of connected clients.
+ */
 public class WebsocketView implements View {
 
+	@Override
 	public String getName() {
 		return "WebSocket server";
 	}
 
 	private FrameServer server;
 
+	@Override
 	public void start(ViewThread thread) {
 		thread.setTarget(60);
 
@@ -27,6 +33,7 @@ public class WebsocketView implements View {
 		}
 	}
 
+	@Override
 	public void update(Frame frame) {
 		if (Controller.getInstance().isPaused())
 			return;
@@ -35,6 +42,7 @@ public class WebsocketView implements View {
 		server.writeFrame();
 	}
 
+	@Override
 	public void stop() {
 		try {
 			server.stop();

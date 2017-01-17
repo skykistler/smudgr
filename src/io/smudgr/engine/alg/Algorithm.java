@@ -166,7 +166,7 @@ public class Algorithm extends Parametric implements Element {
 		pm.setAttribute("type", getType());
 
 		for (AlgorithmComponent component : getComponents()) {
-			PropertyMap map = new PropertyMap(AlgorithmComponent.PROPERTY_MAP_KEY);
+			PropertyMap map = new PropertyMap(AlgorithmComponent.PROJECT_MAP_TAG);
 
 			component.save(map);
 
@@ -177,7 +177,7 @@ public class Algorithm extends Parametric implements Element {
 	public void load(PropertyMap pm) {
 		super.load(pm);
 
-		ArrayList<PropertyMap> children = pm.getChildren(AlgorithmComponent.PROPERTY_MAP_KEY);
+		ArrayList<PropertyMap> children = pm.getChildren(AlgorithmComponent.PROJECT_MAP_TAG);
 
 		for (PropertyMap map : children) {
 			String type = map.getAttribute("type");
