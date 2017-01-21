@@ -18,6 +18,10 @@ import javax.swing.JFrame;
 import io.smudgr.app.controller.Controller;
 import io.smudgr.util.Frame;
 
+/**
+ * Instances of the {@link Window} class create an empty {@link JFrame} to flush
+ * pixels to efficiently.
+ */
 public class Window extends JFrame implements KeyListener, WindowListener {
 
 	private GraphicsDevice display = null;
@@ -28,10 +32,20 @@ public class Window extends JFrame implements KeyListener, WindowListener {
 
 	private int lastFrameW, lastFrameH;
 
+	/**
+	 * Create a new non-fullscreen window
+	 */
 	public Window() {
 		this(-1);
 	}
 
+	/**
+	 * Create a new window in native fullscreen mode on the given display.
+	 *
+	 * @param fullscreenDisplay
+	 *            ID of the monitor to use for fullscreen. -1 if fullscreen is
+	 *            not desired on any monitor.
+	 */
 	public Window(int fullscreenDisplay) {
 		super("smudgr");
 
@@ -63,6 +77,12 @@ public class Window extends JFrame implements KeyListener, WindowListener {
 		}
 	}
 
+	/**
+	 * Update this window with the given frame.
+	 *
+	 * @param frame
+	 *            New frame.
+	 */
 	public void update(Frame frame) {
 		boolean viewChanged = nativeImage == null || getWidth() != nativeImage.getWidth() || getHeight() != nativeImage.getHeight();
 		boolean needsRefresh = bufferStrategy == null || bufferStrategy.contentsLost();
@@ -96,6 +116,9 @@ public class Window extends JFrame implements KeyListener, WindowListener {
 		bufferStrategy.show();
 	}
 
+	/**
+	 * Dispose of this window's resources
+	 */
 	public void stop() {
 		if (display != null)
 			display.setFullScreenWindow(null);
@@ -115,37 +138,47 @@ public class Window extends JFrame implements KeyListener, WindowListener {
 		nativeImage = config.createCompatibleImage(width, height, Transparency.OPAQUE);
 	}
 
+	@Override
 	public void windowClosing(WindowEvent e) {
 		Controller.getInstance().stop();
 	}
 
+	@Override
 	public void keyPressed(KeyEvent arg0) {
 		if (arg0.getKeyCode() == KeyEvent.VK_ESCAPE)
 			Controller.getInstance().stop();
 	}
 
+	@Override
 	public void keyReleased(KeyEvent arg0) {
 	}
 
+	@Override
 	public void keyTyped(KeyEvent arg0) {
 	}
 
+	@Override
 	public void windowOpened(WindowEvent e) {
 	}
 
+	@Override
 	public void windowClosed(WindowEvent e) {
 
 	}
 
+	@Override
 	public void windowIconified(WindowEvent e) {
 	}
 
+	@Override
 	public void windowDeiconified(WindowEvent e) {
 	}
 
+	@Override
 	public void windowActivated(WindowEvent e) {
 	}
 
+	@Override
 	public void windowDeactivated(WindowEvent e) {
 	}
 

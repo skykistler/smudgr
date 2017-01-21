@@ -6,11 +6,19 @@ import java.nio.IntBuffer;
 
 import org.tw.pi.framebuffer.FrameBuffer;
 
-import io.smudgr.app.threads.ViewThread;
 import io.smudgr.util.Frame;
 
+/**
+ * The {@link PiFullscreenView} implementation uses native Linux magic to
+ * efficiently flush pixels to the OS framebuffer. This skips any X11 or GL
+ * window nonsense and improves performance dramatically.
+ * <p>
+ * This behavior is pretty temperamental and is more suited for gallery setups
+ * instead of typical desktop usage.
+ */
 public class PiFullscreenView implements View {
 
+	@Override
 	public String getName() {
 		return "Linux native framebuffer";
 	}
@@ -23,10 +31,19 @@ public class PiFullscreenView implements View {
 
 	private Window dummyWindow;
 
+	/**
+	 * Start a fullscreen view on the default display.
+	 */
 	public PiFullscreenView() {
 		this(0);
 	}
 
+	/**
+	 * Start a fullscreen view on the given display.
+	 *
+	 * @param displayNumber
+	 *            Monitor to use
+	 */
 	public PiFullscreenView(int displayNumber) {
 		frameBufferNum = displayNumber;
 
@@ -34,7 +51,8 @@ public class PiFullscreenView implements View {
 			frameBufferNum = 0;
 	}
 
-	public void start(ViewThread thread) {
+	@Override
+	public void start() {
 		try {
 			frameBuffer = new FrameBuffer("/dev/fb" + frameBufferNum);
 
@@ -52,6 +70,7 @@ public class PiFullscreenView implements View {
 	// declared to avoid repetitive memory consumption
 	private Frame fittedFrame;
 
+	@Override
 	public synchronized void update(Frame frame) {
 		fittedFrame = frame.fitToSize(frameBuffer.getWidth(), frameBuffer.getHeight());
 
@@ -76,6 +95,7 @@ public class PiFullscreenView implements View {
 		fittedFrame.dispose();
 	}
 
+	@Override
 	public synchronized void stop() {
 		if (frameBuffer != null)
 			frameBuffer.close();

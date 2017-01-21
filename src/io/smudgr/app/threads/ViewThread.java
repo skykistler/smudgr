@@ -11,7 +11,7 @@ import io.smudgr.util.Frame;
  * The {@link ViewThread} is responsible for taking the latest rendered
  * {@link Project#getSmudge()} frame and passing it to the given {@link View}
  * instance, with a default rate of {@link Controller#TARGET_FPS}.
- * 
+ *
  * @see Controller#add(Object)
  */
 public class ViewThread extends AppThread {
@@ -21,7 +21,7 @@ public class ViewThread extends AppThread {
 
 	/**
 	 * Instantiate a new {@link ViewThread} for the given {@link View}
-	 * 
+	 *
 	 * @param view
 	 *            {@link View}
 	 */
@@ -30,6 +30,12 @@ public class ViewThread extends AppThread {
 
 		this.view = view;
 		setTarget(Controller.TARGET_FPS);
+	}
+
+	@Override
+	public void start() {
+		view.start();
+		super.start();
 	}
 
 	@Override

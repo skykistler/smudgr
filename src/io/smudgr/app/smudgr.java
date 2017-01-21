@@ -15,8 +15,17 @@ import io.smudgr.extensions.automate.controls.AutomatorControl;
 import io.smudgr.extensions.cef.view.CefView;
 import io.smudgr.extensions.cef.view.WebsocketView;
 
+/**
+ * Garbage test class that bootstraps a bundled CEF smudgr build
+ */
 public class smudgr extends AppStart {
 
+	/**
+	 * Start the application
+	 *
+	 * @param args
+	 *            {@code String[]}
+	 */
 	public static void main(String[] args) {
 		boolean debug = true;
 		try {
@@ -29,6 +38,7 @@ public class smudgr extends AppStart {
 				System.setOut(new PrintStream(new FileOutputStream(parent_path + "/smudgr.log")));
 			} else {
 				PrintStream nullStream = new PrintStream(new OutputStream() {
+					@Override
 					public void write(int b) {
 					}
 				});
@@ -52,6 +62,7 @@ public class smudgr extends AppStart {
 		start();
 	}
 
+	@Override
 	public void buildSmudge() {
 		// Pro-tip: In eclipse, you can Ctrl+Click on a class name to quickly
 		// open that class

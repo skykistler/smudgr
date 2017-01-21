@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 
 import io.smudgr.app.controller.Controller;
-import io.smudgr.app.threads.ViewThread;
 import io.smudgr.app.view.View;
 import io.smudgr.util.Frame;
 
@@ -22,9 +21,7 @@ public class WebsocketView implements View {
 	private FrameServer server;
 
 	@Override
-	public void start(ViewThread thread) {
-		thread.setTarget(60);
-
+	public void start() {
 		try {
 			server = new FrameServer(8887);
 			server.start();

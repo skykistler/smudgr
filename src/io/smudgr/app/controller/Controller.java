@@ -21,7 +21,7 @@ import io.smudgr.util.output.FrameOutput;
 
 /**
  * Root singleton for controlling the application instance.
- * 
+ *
  * @see Project
  */
 public class Controller {
@@ -37,7 +37,7 @@ public class Controller {
 	 * Ideal count of update loops each beat.
 	 * <p>
 	 * Currently set to {@value}
-	 * 
+	 *
 	 * @see Project#getBPM()
 	 */
 	public static final int TICKS_PER_BEAT = 50;
@@ -46,7 +46,7 @@ public class Controller {
 
 	/**
 	 * Get the current app controller instance.
-	 * 
+	 *
 	 * @return The current {@link Controller} or {@code new} instance if one
 	 *         doesn't exist.
 	 */
@@ -81,7 +81,7 @@ public class Controller {
 
 	/**
 	 * Start or resume execution of the current application instance.
-	 * 
+	 *
 	 * @see Controller#pause()
 	 * @see Controller#stop()
 	 */
@@ -126,7 +126,7 @@ public class Controller {
 
 	/**
 	 * Run one update loop for the application.
-	 * 
+	 *
 	 * @see ControllerExtension#update()
 	 * @see Project#update()
 	 */
@@ -150,7 +150,7 @@ public class Controller {
 
 	/**
 	 * Pause execution of the current application instance.
-	 * 
+	 *
 	 * @see Controller#start()
 	 */
 	public void pause() {
@@ -164,10 +164,10 @@ public class Controller {
 
 	/**
 	 * Gets whether the current application instance is paused.
-	 * 
+	 *
 	 * @return {@code true} if the application is paused, {@code false} if
 	 *         otherwise.
-	 * 
+	 *
 	 * @see Controller#pause()
 	 * @see Controller#start()
 	 */
@@ -178,7 +178,7 @@ public class Controller {
 	/**
 	 * Permanently stop execution of the current application instance. Stops
 	 * threads and disposes of resources.
-	 * 
+	 *
 	 * @see Controller#pause()
 	 */
 	public void stop() {
@@ -215,10 +215,10 @@ public class Controller {
 	 * This is used to synchronize outgoing API messages between <i>all</i>
 	 * extensions. Do not use this method if an {@link ApiMessage} should only
 	 * be received by a single {@link ControllerExtension}.
-	 * 
+	 *
 	 * @param message
 	 *            {@link ApiMessage} to send.
-	 * 
+	 *
 	 * @see Controller#getApiInvoker()
 	 */
 	public void sendMessage(ApiMessage message) {
@@ -228,8 +228,6 @@ public class Controller {
 
 	private void startView(View view) {
 		ViewThread viewer = new ViewThread(view);
-
-		view.start(viewer);
 		viewer.start();
 
 		viewThreads.add(viewer);
@@ -238,7 +236,7 @@ public class Controller {
 	/**
 	 * Save any loaded {@link ControllerExtension} states and {@link AppControl}
 	 * states.
-	 * 
+	 *
 	 * @param pm
 	 *            The property map to save to.
 	 * @see ProjectSaver
@@ -267,7 +265,7 @@ public class Controller {
 	/**
 	 * Load {@link ControllerExtension} states and {@link AppControl} states
 	 * from a {@link PropertyMap}
-	 * 
+	 *
 	 * @param pm
 	 *            The property map to load from.
 	 * @see ProjectLoader
@@ -321,7 +319,7 @@ public class Controller {
 
 	/**
 	 * Get the currently loaded {@link Project} for this application instance.
-	 * 
+	 *
 	 * @return The current project.
 	 */
 	public Project getProject() {
@@ -330,7 +328,7 @@ public class Controller {
 
 	/**
 	 * Set the currently loaded {@link Project} for this application instance.
-	 * 
+	 *
 	 * @param project
 	 *            The project to use.
 	 * @see Project#load(PropertyMap)
@@ -342,7 +340,7 @@ public class Controller {
 	/**
 	 * Get the {@link ApiInvoker} currently in use by this application instance.
 	 * The invoker is used to execute an {@link ApiCommand}.
-	 * 
+	 *
 	 * @return The current {@link ApiInvoker}
 	 * @see Controller#sendMessage(ApiMessage)
 	 */
@@ -353,7 +351,7 @@ public class Controller {
 	/**
 	 * Enumerate all classes currently loaded by the JVM that implement
 	 * {@link AppControl}
-	 * 
+	 *
 	 * @see Reflect
 	 */
 	private void reflectAppControls() {
@@ -374,7 +372,7 @@ public class Controller {
 	/**
 	 * Enumerate all classes currently loaded by the JVM that implement
 	 * {@link ControllerExtension}
-	 * 
+	 *
 	 * @see Reflect
 	 */
 	private void reflectExtensions() {
@@ -394,7 +392,7 @@ public class Controller {
 	/**
 	 * Adds a {@link ControllerExtension} or {@link View} to the current
 	 * application instance.
-	 * 
+	 *
 	 * @param o
 	 *            Object to add to the current application instance.
 	 */
@@ -427,11 +425,11 @@ public class Controller {
 
 	/**
 	 * Get an {@link AppControl} by it's registered name.
-	 * 
+	 *
 	 * @param name
 	 *            The registered name of the {@link AppControl}
 	 * @return Registered {@link AppControl}
-	 * 
+	 *
 	 * @see AppControl#getName()
 	 */
 	public AppControl getAppControl(String name) {
@@ -444,11 +442,11 @@ public class Controller {
 
 	/**
 	 * Get a {@link ControllerExtension} instance by it's registered name.
-	 * 
+	 *
 	 * @param name
 	 *            The registered name of the {@link ControllerExtension}
 	 * @return Registered {@link ControllerExtension}
-	 * 
+	 *
 	 * @see ControllerExtension#getName()
 	 */
 	public ControllerExtension getExtension(String name) {
@@ -470,7 +468,7 @@ public class Controller {
 	 * However, even if the application is lagging, this estimate will continue
 	 * to reflect the ideal milliseconds between updates. This is especially
 	 * useful for getting the time between frames while recording.
-	 * 
+	 *
 	 * @param ticks
 	 *            The count of updates.
 	 * @return The ideal milliseconds that would pass during {@code ticks}
@@ -488,7 +486,7 @@ public class Controller {
 	 * Pauses the {@link UpdateThread} and delegates application updates to the
 	 * {@link RenderThread} to ensure accurate in-time recording. Sets the
 	 * target rendering FPS to the specified {@link FrameOutput#getTargetFPS()}.
-	 * 
+	 *
 	 * @param output
 	 *            {@link FrameOutput} to use.
 	 * @see Controller#stopOutput()
@@ -510,7 +508,7 @@ public class Controller {
 	 * <p>
 	 * Resumes application updates using the {@link UpdateThread} and resets the
 	 * target rendering FPS to {@link Controller#TARGET_FPS}
-	 * 
+	 *
 	 * @see Controller#startOutput(FrameOutput)
 	 */
 	public void stopOutput() {
@@ -528,7 +526,7 @@ public class Controller {
 	/**
 	 * Gets whether the current application is recording to a
 	 * {@link FrameOutput}
-	 * 
+	 *
 	 * @return {@code true} if currently recording, {@code false} if otherwise
 	 * @see Controller#startOutput(FrameOutput)
 	 * @see Controller#stopOutput()

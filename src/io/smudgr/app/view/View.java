@@ -27,8 +27,8 @@ public interface View {
 	 * Gets the ideal frames per second that this {@link View} should update at.
 	 * Implementations of this method may return a constant or changing value.
 	 * <p>
-	 * The {@link ViewThread} for this {@link View} attempts to pass frames from
-	 * the current application instance {@link Smudge} at this rate.
+	 * A {@link ViewThread} will attempt to pass frames to this {@link View}
+	 * from the current {@link Smudge} at this rate.
 	 * <p>
 	 * If the performance of the {@link Smudge} falls below this FPS, the
 	 * {@link ViewThread} will still attempt to meet this rate, and may pass the
@@ -42,10 +42,25 @@ public interface View {
 		return Controller.TARGET_FPS;
 	}
 
+	/**
+	 * Implementations of the {@link View#start()} method should prepare the
+	 * view's resources
+	 */
 	public void start();
 
+	/**
+	 * Implementations of the {@link View#update(Frame)} method should update
+	 * the view with the new frame.
+	 *
+	 * @param frame
+	 *            Passed frame
+	 */
 	public void update(Frame frame);
 
+	/**
+	 * Implementations of the {@link View#stop()} method should properly dispose
+	 * of any open resources.
+	 */
 	public void stop();
 
 }

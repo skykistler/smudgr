@@ -22,7 +22,6 @@ import org.cef.browser.CefBrowser;
 import org.cef.browser.CefMessageRouter;
 
 import io.smudgr.app.controller.Controller;
-import io.smudgr.app.threads.ViewThread;
 import io.smudgr.app.view.View;
 import io.smudgr.extensions.cef.CefExtension;
 import io.smudgr.extensions.cef.util.CefAppHandler;
@@ -49,7 +48,8 @@ public class CefView extends JFrame implements View {
 		Controller.getInstance().add(renderFrame);
 	}
 
-	public void start(ViewThread thread) {
+	@Override
+	public void start() {
 		startCef();
 
 		DisplayMode display = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode();
@@ -65,44 +65,53 @@ public class CefView extends JFrame implements View {
 		setLocation(x, y);
 
 		addWindowListener(new WindowAdapter() {
+			@Override
 			public void windowActivated(WindowEvent e) {
 				if (e.getOppositeWindow() != renderFrame)
 					renderFrame.updateIsVisible();
 			}
 
+			@Override
 			public void windowDeactivated(WindowEvent e) {
 				if (e.getOppositeWindow() != renderFrame)
 					renderFrame.updateIsVisible();
 			}
 
+			@Override
 			public void windowIconified(WindowEvent e) {
 				renderFrame.updateIsVisible();
 			}
 
+			@Override
 			public void windowDeiconified(WindowEvent e) {
 				renderFrame.updateIsVisible();
 			}
 
+			@Override
 			public void windowClosing(WindowEvent e) {
 				Controller.getInstance().stop();
 			}
 		});
 
 		addComponentListener(new ComponentListener() {
+			@Override
 			public void componentResized(ComponentEvent e) {
 				Insets inset = getInsets();
 				cefBrowserUI.setSize(getWidth() - inset.left - inset.right, getHeight() - inset.top - inset.bottom);
 				renderFrame.updateDimensions();
 			}
 
+			@Override
 			public void componentMoved(ComponentEvent e) {
 				renderFrame.updateDimensions();
 			}
 
+			@Override
 			public void componentShown(ComponentEvent e) {
 				renderFrame.updateIsVisible();
 			}
 
+			@Override
 			public void componentHidden(ComponentEvent e) {
 				renderFrame.updateIsVisible();
 			}
@@ -125,6 +134,7 @@ public class CefView extends JFrame implements View {
 		// setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
 	}
 
+	@Override
 	public void update(Frame frame) {
 	}
 
@@ -156,6 +166,7 @@ public class CefView extends JFrame implements View {
 		return renderFrame;
 	}
 
+	@Override
 	public void stop() {
 		renderFrame.setVisible(false);
 		setVisible(false);
@@ -163,6 +174,7 @@ public class CefView extends JFrame implements View {
 		super.dispose();
 
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				CefApp.getInstance().dispose();
 			}
