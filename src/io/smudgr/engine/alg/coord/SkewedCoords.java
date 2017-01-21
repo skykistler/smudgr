@@ -1,10 +1,12 @@
 package io.smudgr.engine.alg.coord;
 
 import gnu.trove.list.array.TIntArrayList;
-import io.smudgr.engine.alg.bound.Bound;
 import io.smudgr.engine.param.NumberParameter;
-import io.smudgr.util.Frame;
 
+/**
+ * The {@link SkewedCoords} coordinate function generates coordinates that are
+ * parallel to each to each other at a constant parameterized angle.
+ */
 public class SkewedCoords extends CoordFunction {
 
 	@Override
@@ -21,14 +23,7 @@ public class SkewedCoords extends CoordFunction {
 	private int selectedEndY;
 
 	@Override
-	protected void generate(Bound b, Frame img) {
-
-		int boundWidth = b.getTranslatedWidth(img.getWidth());
-		int boundHeight = b.getTranslatedHeight(img.getHeight());
-
-		int boundX = b.getTranslatedX(img.getWidth());
-		int boundY = b.getTranslatedY(img.getHeight());
-
+	protected void generate(int imageWidth, int imageHeight, int boundX, int boundY, int boundWidth, int boundHeight) {
 		double offset = endCoordOffset.getValue();
 
 		/*
@@ -194,7 +189,7 @@ public class SkewedCoords extends CoordFunction {
 		}
 	}
 
-	public void bresenham(int x1, int y1, int x2, int y2, TIntArrayList coordBasis) {
+	protected void bresenham(int x1, int y1, int x2, int y2, TIntArrayList coordBasis) {
 		int w = x2 - x1;
 		int h = y2 - y1;
 		int dx1 = 0;

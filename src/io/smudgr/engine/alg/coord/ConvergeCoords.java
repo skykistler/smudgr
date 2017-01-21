@@ -1,9 +1,11 @@
 package io.smudgr.engine.alg.coord;
 
-import io.smudgr.engine.alg.bound.Bound;
 import io.smudgr.engine.param.NumberParameter;
-import io.smudgr.util.Frame;
 
+/**
+ * The {@link ConvergeCoords} coordinate function generates coordinate sets that
+ * angle inward to a configurable center.
+ */
 public class ConvergeCoords extends CoordFunction {
 
 	@Override
@@ -15,12 +17,7 @@ public class ConvergeCoords extends CoordFunction {
 	private NumberParameter centerY = new NumberParameter("Point Y", this, .5, 0, 1, 0.005);
 
 	@Override
-	protected void generate(Bound b, Frame img) {
-		int boundX = b.getTranslatedX(img.getWidth());
-		int boundY = b.getTranslatedY(img.getHeight());
-		int boundWidth = b.getTranslatedWidth(img.getWidth());
-		int boundHeight = b.getTranslatedHeight(img.getHeight());
-
+	protected void generate(int imageWidth, int imageHeight, int boundX, int boundY, int boundWidth, int boundHeight) {
 		int middleX = (int) (centerX.getValue() * boundWidth);
 		int middleY = (int) (centerY.getValue() * boundHeight);
 
@@ -42,7 +39,7 @@ public class ConvergeCoords extends CoordFunction {
 			bresenham(boundX + x, y, middleX, middleY);
 	}
 
-	public void bresenham(int x, int y, int centerX, int centerY) {
+	protected void bresenham(int x, int y, int centerX, int centerY) {
 		int w = centerX - x;
 		int h = centerY - y;
 		int dx1 = 0;

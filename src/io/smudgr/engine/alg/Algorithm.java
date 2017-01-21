@@ -15,6 +15,7 @@ import io.smudgr.util.Frame;
 
 public class Algorithm extends Parametric implements Element {
 
+	@Override
 	public String getType() {
 		return "Algorithm";
 	}
@@ -30,6 +31,9 @@ public class Algorithm extends Parametric implements Element {
 
 	protected Frame lastFrame;
 
+	/**
+	 * Initialize the {@link Algorithm} with default components
+	 */
 	public void init() {
 		if (bound == null)
 			add(new Bound());
@@ -47,6 +51,12 @@ public class Algorithm extends Parametric implements Element {
 	private double lastBoundW;
 	private double lastBoundH;
 
+	/**
+	 * Apply this {@link Algorithm} to the given {@link Frame}
+	 *
+	 * @param img
+	 *            {@link Frame}
+	 */
 	public void apply(Frame img) {
 		if (!enabled.getValue())
 			return;
@@ -56,7 +66,7 @@ public class Algorithm extends Parametric implements Element {
 		boolean boundChanged = lastBoundX != bound.getOffsetX() || lastBoundY != bound.getOffsetY() || lastBoundW != bound.getWidth() || lastBoundH != bound.getHeight();
 		boolean dimensionsChanged = lastFrame == null || (img.getWidth() != this.lastFrame.getWidth() || img.getHeight() != this.lastFrame.getHeight());
 
-		coordFunction.setDimensions(img);
+		coordFunction.setFrameDimensions(img.getWidth(), img.getHeight());
 		coordFunction.setBound(bound);
 
 		if (dimensionsChanged || boundChanged)
@@ -86,6 +96,12 @@ public class Algorithm extends Parametric implements Element {
 		lastBoundH = bound.getHeight();
 	}
 
+	/**
+	 * Add a given {@link AlgorithmComponent} to this {@link Algorithm}
+	 *
+	 * @param component
+	 *            {@link AlgorithmComponent}
+	 */
 	public void add(AlgorithmComponent component) {
 		if (components.contains(component))
 			return;
@@ -160,9 +176,10 @@ public class Algorithm extends Parametric implements Element {
 		return selectedPixels;
 	}
 
+	@Override
 	public void save(PropertyMap pm) {
 		super.save(pm);
-		
+
 		pm.setAttribute("type", getType());
 
 		for (AlgorithmComponent component : getComponents()) {
@@ -174,6 +191,7 @@ public class Algorithm extends Parametric implements Element {
 		}
 	}
 
+	@Override
 	public void load(PropertyMap pm) {
 		super.load(pm);
 
@@ -192,6 +210,7 @@ public class Algorithm extends Parametric implements Element {
 		}
 	}
 
+	@Override
 	public String getName() {
 		StringBuffer name = new StringBuffer();
 

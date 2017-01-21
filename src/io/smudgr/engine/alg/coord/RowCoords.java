@@ -1,8 +1,9 @@
 package io.smudgr.engine.alg.coord;
 
-import io.smudgr.engine.alg.bound.Bound;
-import io.smudgr.util.Frame;
-
+/**
+ * The {@link RowCoords} coordinate function simply creates a coordinate set
+ * in a column direction.
+ */
 public class RowCoords extends CoordFunction {
 
 	@Override
@@ -11,12 +12,7 @@ public class RowCoords extends CoordFunction {
 	}
 
 	@Override
-	public void generate(Bound b, Frame img) {
-		int boundWidth = b.getTranslatedWidth(img.getWidth());
-		int boundHeight = b.getTranslatedHeight(img.getHeight());
-		int boundX = b.getTranslatedX(img.getWidth());
-		int boundY = b.getTranslatedY(img.getHeight());
-
+	public void generate(int imageWidth, int imageHeight, int boundX, int boundY, int boundWidth, int boundHeight) {
 		for (int j = 0; j < boundHeight; j++) {
 			nextSet();
 

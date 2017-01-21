@@ -3,10 +3,12 @@ package io.smudgr.engine.alg.coord;
 import java.math.BigInteger;
 
 import io.smudgr.engine.alg.PixelIndexList;
-import io.smudgr.engine.alg.bound.Bound;
 import io.smudgr.engine.param.NumberParameter;
-import io.smudgr.util.Frame;
 
+/**
+ * The {@link RadialCoords} coordinate function generates coordinates that
+ * resemble a spiral.
+ */
 public class RadialCoords extends CoordFunction {
 
 	@Override
@@ -17,12 +19,7 @@ public class RadialCoords extends CoordFunction {
 	private NumberParameter innerRadius = new NumberParameter("Donut Hole", this, 0, 0, 1, 0.005);
 
 	@Override
-	protected void generate(Bound b, Frame img) {
-		int boundX = b.getTranslatedX(img.getWidth());
-		int boundWidth = b.getTranslatedWidth(img.getWidth());
-		int boundY = b.getTranslatedY(img.getHeight());
-		int boundHeight = b.getTranslatedHeight(img.getHeight());
-
+	protected void generate(int imageWidth, int imageHeight, int boundX, int boundY, int boundWidth, int boundHeight) {
 		int radiusX = boundWidth / 2;
 		int radiusY = boundHeight / 2;
 
@@ -31,13 +28,13 @@ public class RadialCoords extends CoordFunction {
 		int _radiusY = radiusY;
 		int _radiusX = radiusX;
 		for (int i = 0; i < innerR; i++) {
-			bresenham(_radiusX, _radiusY, boundX + boundWidth / 2, boundY + boundHeight / 2, img.getWidth(), img.getHeight(), b, img);
+			bresenham(_radiusX, _radiusY, boundX + boundWidth / 2, boundY + boundHeight / 2);
 			_radiusX--;
 			_radiusY--;
 		}
 	}
 
-	public void bresenham(int radiusX, int radiusY, int centerX, int centerY, int width, int height, Bound b, Frame img) {
+	protected void bresenham(int radiusX, int radiusY, int centerX, int centerY) {
 		PixelIndexList c1 = new PixelIndexList();
 		PixelIndexList c2 = new PixelIndexList();
 		PixelIndexList c3 = new PixelIndexList();
@@ -84,23 +81,23 @@ public class RadialCoords extends CoordFunction {
 
 			int p1x = xplusx;
 			int p1y = yplusy;
-			if (b.containsPoint(img, p1x, p1y))
-				c1.add(p1x + p1y * width);
+			if (boundContainsPoint(p1x, p1y))
+				c1.add(p1x + p1y * imageWidth);
 
 			int p2x = xminusx;
 			int p2y = yplusy;
-			if (b.containsPoint(img, p2x, p2y))
-				c4.insert(0, p2x + p2y * width);
+			if (boundContainsPoint(p2x, p2y))
+				c4.insert(0, p2x + p2y * imageWidth);
 
 			int p3x = xminusx;
 			int p3y = yminusy;
-			if (b.containsPoint(img, p3x, p3y))
-				c5.add(p3x + p3y * width);
+			if (boundContainsPoint(p3x, p3y))
+				c5.add(p3x + p3y * imageWidth);
 
 			int p4x = xplusx;
 			int p4y = yminusy;
-			if (b.containsPoint(img, p4x, p4y))
-				c8.insert(0, p4x + p4y * width);
+			if (boundContainsPoint(p4x, p4y))
+				c8.insert(0, p4x + p4y * imageWidth);
 
 			y++;
 			stoppingY = stoppingY.add(twoASquare); // stoppingY += twoASquare;
@@ -136,23 +133,23 @@ public class RadialCoords extends CoordFunction {
 
 			int p1x = xplusx;
 			int p1y = yplusy;
-			if (b.containsPoint(img, p1x, p1y))
-				c2.insert(0, p1x + p1y * width);
+			if (boundContainsPoint(p1x, p1y))
+				c2.insert(0, p1x + p1y * imageWidth);
 
 			int p2x = xminusx;
 			int p2y = yplusy;
-			if (b.containsPoint(img, p2x, p2y))
-				c3.add(p2x + p2y * width);
+			if (boundContainsPoint(p2x, p2y))
+				c3.add(p2x + p2y * imageWidth);
 
 			int p3x = xminusx;
 			int p3y = yminusy;
-			if (b.containsPoint(img, p3x, p3y))
-				c6.insert(0, p3x + p3y * width);
+			if (boundContainsPoint(p3x, p3y))
+				c6.insert(0, p3x + p3y * imageWidth);
 
 			int p4x = xplusx;
 			int p4y = yminusy;
-			if (b.containsPoint(img, p4x, p4y))
-				c7.add(p4x + p4y * width);
+			if (boundContainsPoint(p4x, p4y))
+				c7.add(p4x + p4y * imageWidth);
 
 			x++;
 			stoppingX = stoppingX.add(twoBSquare); // stoppingX += twoBSquare;
