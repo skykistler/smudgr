@@ -38,7 +38,7 @@ public class Gif implements AnimatedSource {
 
 	/**
 	 * Create a new {@link Gif} loaded from the given filename.
-	 * 
+	 *
 	 * @param filename
 	 *            path
 	 */
@@ -275,7 +275,7 @@ public class Gif implements AnimatedSource {
 
 					GifFrame gifframe = new GifFrame(copy, disposal, delay);
 
-					buffer.add(gifframe);
+					buffer.add(frameIndex, gifframe);
 
 					master.flush();
 
