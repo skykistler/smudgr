@@ -4,8 +4,12 @@ import io.smudgr.engine.alg.PixelIndexList;
 import io.smudgr.engine.param.NumberParameter;
 import io.smudgr.util.Frame;
 
+/**
+ * I honestly haven't played with this so who knows
+ */
 public class Smear extends Operation {
 
+	@Override
 	public String getName() {
 		return "Smear";
 	}
@@ -14,6 +18,7 @@ public class Smear extends Operation {
 	private NumberParameter start = new NumberParameter("Start", this, 0, 0, 1, 0.01);
 	private NumberParameter length = new NumberParameter("Length", this, 1, 0, 1, 0.01);
 
+	@Override
 	public void execute(Frame img) {
 		Frame stretched = img.copy();
 
@@ -24,7 +29,7 @@ public class Smear extends Operation {
 		stretched.copyTo(img);
 	}
 
-	public void stretch(PixelIndexList coords, Frame stretched, Frame orig) {
+	private void stretch(PixelIndexList coords, Frame stretched, Frame orig) {
 
 		int size = coords.size();
 		int ints = intervals.getIntValue();

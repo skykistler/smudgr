@@ -4,8 +4,13 @@ import io.smudgr.engine.alg.PixelIndexList;
 import io.smudgr.engine.param.NumberParameter;
 import io.smudgr.util.Frame;
 
+/**
+ * Channel Bleed rotates colors using a bitwise function for a weird digi-acid
+ * effect.
+ */
 public class ChannelBleed extends Operation {
 
+	@Override
 	public String getName() {
 		return "Channel Bleed";
 	}
@@ -17,6 +22,7 @@ public class ChannelBleed extends Operation {
 	// private UnivariateFunction univariate = null;
 	private int rotateAmount;
 
+	@Override
 	public void execute(Frame img) {
 		rotateAmount = shift.getIntValue();
 		// univariate = function.getValue();

@@ -6,8 +6,12 @@ import io.smudgr.engine.alg.math.ColorHelper;
 import io.smudgr.engine.param.NumberParameter;
 import io.smudgr.util.Frame;
 
+/**
+ * I actually have no idea what this does. :)
+ */
 public class RainbowBend extends Operation {
 
+	@Override
 	public String getName() {
 		return "Rainbow Bend";
 	}
@@ -24,6 +28,7 @@ public class RainbowBend extends Operation {
 	byte[] sub;
 	int lastSubAmount;
 
+	@Override
 	public void init() {
 		target.setContinuous(true);
 		int subAmount = amount.getIntValue();
@@ -31,6 +36,7 @@ public class RainbowBend extends Operation {
 		sub = new byte[subAmount];
 	}
 
+	@Override
 	public void execute(Frame img) {
 
 		byte targetByte = (byte) target.getIntValue();

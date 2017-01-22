@@ -9,8 +9,13 @@ import io.smudgr.engine.param.BooleanParameter;
 import io.smudgr.engine.param.UnivariateParameter;
 import io.smudgr.util.Frame;
 
+/**
+ * Pixel Sort, as implied by its name, sorts pixels in forward or reverse order
+ * using the value of each pixel as calculated by a configurable function.
+ */
 public class PixelSort extends Operation {
 
+	@Override
 	public String getName() {
 		return "Pixel Sort";
 	}
@@ -25,6 +30,7 @@ public class PixelSort extends Operation {
 	private int lt, gt, i, swap, sortSize, ret;
 	private double o1l, o2l;
 
+	@Override
 	public void init() {
 		function.add(new ChromaFunction());
 		function.add(new HueFunction());
@@ -32,6 +38,7 @@ public class PixelSort extends Operation {
 		toSort = new int[1024];
 	}
 
+	@Override
 	public void execute(Frame img) {
 		comparator = function.getValue();
 

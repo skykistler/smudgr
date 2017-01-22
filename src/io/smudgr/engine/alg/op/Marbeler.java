@@ -7,8 +7,13 @@ import io.smudgr.engine.alg.math.lerp.Interpolator;
 import io.smudgr.engine.param.NumberParameter;
 import io.smudgr.util.Frame;
 
+/**
+ * Marbeler iteratively shifts pixel columns in alternating directions for a
+ * marble-esque distortion.
+ */
 public class Marbeler extends Operation {
 
+	@Override
 	public String getName() {
 		return "Cubic Marbeler";
 	}
@@ -26,12 +31,14 @@ public class Marbeler extends Operation {
 	boolean horizontal = false;
 	Random rand;
 
+	@Override
 	public void init() {
 		offsetXY.setContinuous(true);
 		offsetX.setContinuous(true);
 		offsetY.setContinuous(true);
 	}
 
+	@Override
 	public void execute(Frame img) {
 		rand = new Random(seed.getIntValue());
 		horizontal = false;
@@ -69,7 +76,7 @@ public class Marbeler extends Operation {
 		}
 	}
 
-	public void pushPixels(Frame img, int j, double amount) {
+	private void pushPixels(Frame img, int j, double amount) {
 		int k = horizontal ? img.getHeight() : img.getWidth() - 1;
 		double o = horizontal ? offsetY.getValue() : offsetX.getValue();
 

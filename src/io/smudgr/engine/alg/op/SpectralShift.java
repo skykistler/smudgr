@@ -14,8 +14,15 @@ import io.smudgr.engine.param.NumberParameter;
 import io.smudgr.engine.param.UnivariateParameter;
 import io.smudgr.util.Frame;
 
+/**
+ * Spectral Shift buckets pixels using their value as calculated by a function,
+ * and replaces each pixel in that bucket with a distinct color. The amount of
+ * buckets/colors, the palette to replace with, and the function to calculate
+ * pixel values with are all configurable.
+ */
 public class SpectralShift extends Operation {
 
+	@Override
 	public String getName() {
 		return "Spectral Shift";
 	}
@@ -34,6 +41,7 @@ public class SpectralShift extends Operation {
 
 	boolean wasSorted = false;
 
+	@Override
 	public void init() {
 		shift.setContinuous(true);
 		palette.setContinuous(true);
@@ -44,6 +52,7 @@ public class SpectralShift extends Operation {
 		function.add(new LogFunction());
 	}
 
+	@Override
 	public void execute(Frame img) {
 		boolean negate = reverse.getValue();
 
@@ -97,7 +106,7 @@ public class SpectralShift extends Operation {
 
 	}
 
-	public int getBucket(int value) {
+	private int getBucket(int value) {
 		return (int) (function.getValue().calculate(value) * (buckets - 1));
 	}
 

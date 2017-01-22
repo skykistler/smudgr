@@ -1,12 +1,18 @@
 package io.smudgr.engine.alg.op;
 
+import io.smudgr.engine.alg.Algorithm;
 import io.smudgr.engine.alg.PixelIndexList;
 import io.smudgr.engine.param.BooleanParameter;
 import io.smudgr.engine.param.NumberParameter;
 import io.smudgr.util.Frame;
 
+/**
+ * Pixel Shift simply shifts pixels by a given amount, within interval offsets,
+ * along the current {@link Algorithm} selected pixel sets.
+ */
 public class PixelShift extends Operation {
 
+	@Override
 	public String getName() {
 		return "Pixel Shift";
 	}
@@ -28,10 +34,12 @@ public class PixelShift extends Operation {
 	private int intervalStart;
 	private int intervalEnd;
 
+	@Override
 	public void init() {
 		amount.setContinuous(true);
 	}
 
+	@Override
 	public void execute(Frame img) {
 		int size = getAlgorithm().getSelectedPixels().size();
 
@@ -79,7 +87,7 @@ public class PixelShift extends Operation {
 		shifted.dispose();
 	}
 
-	public void shift(Frame shifted, Frame orig, PixelIndexList coords, int currentInterval, double amount,
+	private void shift(Frame shifted, Frame orig, PixelIndexList coords, int currentInterval, double amount,
 			int indexIntoCurrentInt, double totalInts) {
 
 		double shiftScale = 1;
@@ -88,21 +96,21 @@ public class PixelShift extends Operation {
 
 		switch (selectedShiftType) {
 
-		case 1:
-			shiftScale = currentInterval;
-			break;
-		case 2:
-			shiftScale = (currentInterval % 2 == 0 ? -currentInterval : currentInterval);
-			break;
-		case 3:
-			int w = intervalEnd - intervalStart;
-			shiftScale = Math.abs((intervalStart + (w / 2)) - currentInterval + 1);
-			break;
-		case 4:
-			w = intervalEnd - intervalStart;
-			shiftScale = Math.abs((intervalStart + (w / 2)) - currentInterval + 1);
-			shiftScale = (currentInterval % 2 == 0 ? -shiftScale : shiftScale);
-			break;
+			case 1:
+				shiftScale = currentInterval;
+				break;
+			case 2:
+				shiftScale = (currentInterval % 2 == 0 ? -currentInterval : currentInterval);
+				break;
+			case 3:
+				int w = intervalEnd - intervalStart;
+				shiftScale = Math.abs((intervalStart + (w / 2)) - currentInterval + 1);
+				break;
+			case 4:
+				w = intervalEnd - intervalStart;
+				shiftScale = Math.abs((intervalStart + (w / 2)) - currentInterval + 1);
+				shiftScale = (currentInterval % 2 == 0 ? -shiftScale : shiftScale);
+				break;
 		}
 
 		// reverse direction of shifting

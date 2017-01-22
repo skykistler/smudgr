@@ -5,8 +5,14 @@ import io.smudgr.engine.alg.math.ColorHelper;
 import io.smudgr.engine.param.NumberParameter;
 import io.smudgr.util.Frame;
 
+/**
+ * Channel Crush uses a configurable bitwise function to squash RGB layer
+ * information, resulting in a image with a singular color palette and bolder
+ * forms, at the price of texture detail.
+ */
 public class ChannelCrush extends Operation {
 
+	@Override
 	public String getName() {
 		return "Channel Crush";
 	}
@@ -19,7 +25,8 @@ public class ChannelCrush extends Operation {
 	NumberParameter greenShift = new NumberParameter("Green Shift", this, 0, 0, 7, 1);
 	NumberParameter blueShift = new NumberParameter("Blue Shift", this, 0, 0, 7, 1);
 
-	public ChannelCrush() {
+	@Override
+	public void init() {
 		redShift.setReverse(true);
 		blueShift.setReverse(true);
 		greenShift.setReverse(true);
@@ -32,7 +39,7 @@ public class ChannelCrush extends Operation {
 				smear(coords.get(index), img);
 	}
 
-	public void smear(int coord, Frame img) {
+	private void smear(int coord, Frame img) {
 		int color = img.pixels[coord];
 
 		int red_op = operate(0xFF0000, redMaskShift.getIntValue(), redShift.getIntValue(), color);
@@ -47,8 +54,8 @@ public class ChannelCrush extends Operation {
 		img.pixels[coord] = ColorHelper.color(255, red, green, blue);
 	}
 
-	//returns individual color that we need for ColorHelper
-	public int operate(int mask, int maskShift, int colorShift, int color) {
+	// returns individual color that we need for ColorHelper
+	private int operate(int mask, int maskShift, int colorShift, int color) {
 		int c = color & mask;
 		c |= c >> 1;
 		c |= c >> 2;

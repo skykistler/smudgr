@@ -6,8 +6,13 @@ import io.smudgr.engine.alg.math.ColorHelper;
 import io.smudgr.engine.param.NumberParameter;
 import io.smudgr.util.Frame;
 
+/**
+ * Data Bend mimics the popular Wordpad effect, with a configurable 'Target'
+ * byte to replace a set 'Amount' of times.
+ */
 public class DataBend extends Operation {
 
+	@Override
 	public String getName() {
 		return "Data Bend";
 	}
@@ -18,10 +23,12 @@ public class DataBend extends Operation {
 	private TByteArrayList byteList = new TByteArrayList();
 	private byte replaceByte = 0x12;
 
+	@Override
 	public void init() {
 		target.setContinuous(true);
 	}
 
+	@Override
 	public void execute(Frame img) {
 		byte targetByte = (byte) target.getIntValue();
 		int subAmount = amount.getIntValue();

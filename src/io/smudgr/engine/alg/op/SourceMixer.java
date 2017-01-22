@@ -16,8 +16,13 @@ import io.smudgr.util.Frame;
 import io.smudgr.util.source.Image;
 import io.smudgr.util.source.Source;
 
+/**
+ * Source Mixer allows the traditional blending of two images, one being the
+ * passed in {@link Frame} and another being a configurable {@link Source}
+ */
 public class SourceMixer extends Operation {
 
+	@Override
 	public String getName() {
 		return "Source Mixer";
 	}
@@ -37,6 +42,7 @@ public class SourceMixer extends Operation {
 
 	Blender blender;
 
+	@Override
 	public void init() {
 		mixSource.init();
 		blenders.add(new MaxBlender());
@@ -48,6 +54,12 @@ public class SourceMixer extends Operation {
 		blenders.add(new ColorBlender());
 	}
 
+	/**
+	 * Hacky function to set the source to mix with
+	 *
+	 * @param s
+	 *            {@link Source}
+	 */
 	public void setSource(Source s) {
 		if (mixSource != null)
 			mixSource.dispose();
@@ -55,6 +67,7 @@ public class SourceMixer extends Operation {
 		mixSource.init();
 	}
 
+	@Override
 	public void execute(Frame img) {
 		blender = blenders.getValue();
 		blend(img);
