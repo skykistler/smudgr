@@ -8,15 +8,26 @@ import javax.imageio.ImageIO;
 
 import io.smudgr.util.Frame;
 
+/**
+ * The {@link Image} source represents a static frame from a loaded image file
+ * (i.e. png, jpg).
+ */
 public class Image implements Source {
 
 	private String filename;
 	private Frame frame;
 
+	/**
+	 * Create a new {@link Image} loaded from the given filename.
+	 * 
+	 * @param filename
+	 *            path
+	 */
 	public Image(String filename) {
 		this.filename = filename;
 	}
 
+	@Override
 	public void init() {
 		try {
 			BufferedImage loaded = ImageIO.read(new File(filename));
@@ -33,18 +44,22 @@ public class Image implements Source {
 		}
 	}
 
+	@Override
 	public void update() {
 
 	}
 
+	@Override
 	public Frame getFrame() {
 		return frame;
 	}
 
+	@Override
 	public void dispose() {
 		frame.dispose();
 	}
 
+	@Override
 	public String toString() {
 		return filename;
 	}

@@ -22,6 +22,10 @@ import org.w3c.dom.NodeList;
 import io.smudgr.app.controller.Controller;
 import io.smudgr.util.Frame;
 
+/**
+ * The {@link Gif} source loads an animate GIF and returns the current frame in
+ * time with the application.
+ */
 public class Gif implements AnimatedSource {
 	private String filename;
 
@@ -32,15 +36,23 @@ public class Gif implements AnimatedSource {
 	private volatile int currentFrame;
 	private double speedFactor = 1;
 
+	/**
+	 * Create a new {@link Gif} loaded from the given filename.
+	 * 
+	 * @param filename
+	 *            path
+	 */
 	public Gif(String filename) {
 		this.filename = filename;
 	}
 
+	@Override
 	public void init() {
 		bufferer = new BufferThread();
 		bufferer.start();
 	}
 
+	@Override
 	public void update() {
 		if (buffer.size() == 0)
 			return;
@@ -63,6 +75,7 @@ public class Gif implements AnimatedSource {
 		}
 	}
 
+	@Override
 	public Frame getFrame() {
 		if (buffer.size() == 0)
 			return null;
@@ -71,6 +84,7 @@ public class Gif implements AnimatedSource {
 		return buffer.get(currentFrame).getFrame();
 	}
 
+	@Override
 	public void dispose() {
 		bufferer.stop();
 
@@ -80,6 +94,7 @@ public class Gif implements AnimatedSource {
 		buffer.clear();
 	}
 
+	@Override
 	public void setSpeed(double speed) {
 		speed = speed < 0 ? 0 : speed;
 		speed = speed > 4 ? 4 : speed;
@@ -87,10 +102,12 @@ public class Gif implements AnimatedSource {
 		speedFactor = speed;
 	}
 
+	@Override
 	public double getSpeed() {
 		return speedFactor;
 	}
 
+	@Override
 	public String toString() {
 		return filename;
 	}
@@ -109,10 +126,11 @@ public class Gif implements AnimatedSource {
 		}
 
 		// This is just absolutely terrifying
+		@Override
 		public void run() {
 			started = true;
 
-			ImageReader reader = (ImageReader) ImageIO.getImageReadersByFormatName("gif").next();
+			ImageReader reader = ImageIO.getImageReadersByFormatName("gif").next();
 			try {
 				reader.setInput(ImageIO.createImageInputStream(new FileInputStream(new File(filename))));
 

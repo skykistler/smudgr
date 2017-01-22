@@ -6,11 +6,22 @@ import java.util.Arrays;
 
 import io.smudgr.util.Frame;
 
+/**
+ * The {@link SourceSet} source is a container of {@link Source} instances,
+ * which uses the current source's {@link Source#getFrame()} for the value of
+ * {@link SourceSet#getFrame()}
+ */
 public class SourceSet implements Source {
 	private ArrayList<String> files = new ArrayList<String>();
 	private ArrayList<Source> sources = new ArrayList<Source>();
 	private int currentSource;
 
+	/**
+	 * Create a new {@link SourceSet} using files at a given location.
+	 *
+	 * @param location
+	 *            directory
+	 */
 	public SourceSet(String location) {
 		File directory = new File(location);
 
@@ -40,6 +51,7 @@ public class SourceSet implements Source {
 		}
 	}
 
+	@Override
 	public void init() {
 		System.out.println("Loading " + files.size() + " source files...");
 
@@ -47,6 +59,7 @@ public class SourceSet implements Source {
 			s.init();
 	}
 
+	@Override
 	public void update() {
 		Source s = getCurrentSource();
 		if (s == null)
@@ -55,11 +68,13 @@ public class SourceSet implements Source {
 		s.update();
 	}
 
+	@Override
 	public void dispose() {
 		for (Source s : sources)
 			s.dispose();
 	}
 
+	@Override
 	public Frame getFrame() {
 		Source s = getCurrentSource();
 		if (s == null || s == this)
@@ -68,10 +83,20 @@ public class SourceSet implements Source {
 		return s.getFrame();
 	}
 
+	/**
+	 * Gets how many sources are contained in this {@link SourceSet}
+	 *
+	 * @return amount
+	 */
 	public int size() {
 		return sources.size();
 	}
 
+	/**
+	 * Gets the current source selected by this {@link SourceSet}
+	 *
+	 * @return {@link Source}
+	 */
 	public Source getCurrentSource() {
 		if (sources.size() == 0)
 			return null;
@@ -79,14 +104,33 @@ public class SourceSet implements Source {
 		return sources.get(currentSource);
 	}
 
+	/**
+	 * Select the next source in the set as the current {@link Source}
+	 *
+	 * @see SourceSet#getCurrentSource()
+	 */
 	public void nextSource() {
 		setCurrentSource(currentSource + 1);
 	}
 
+	/**
+	 * Select the previous source in the set as the current {@link Source}
+	 *
+	 * @see SourceSet#getCurrentSource()
+	 */
 	public void previousSource() {
 		setCurrentSource(currentSource - 1);
 	}
 
+	/**
+	 * Selects the given source index as the current {@link Source}.
+	 * <p>
+	 * If {@code i} is negative or larger than {@link SourceSet#size()}, the
+	 * value is wrapped.
+	 *
+	 * @param i
+	 *            index
+	 */
 	public void setCurrentSource(int i) {
 		if (sources.size() == 0) {
 			currentSource = 0;

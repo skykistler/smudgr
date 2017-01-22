@@ -4,8 +4,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
+/**
+ * The {@link DisposedFrameProvider} singleton contains {@link Frame} instances
+ * that have been marked as disposed and allows the immediate reuse of their
+ * memory.
+ * <p>
+ * This prevents the JVM garbage collector from working too hard to free and
+ * reallocate {@link Frame} instances of the same size that are being used
+ * multiple times a second.
+ * <p>
+ * The disposed frame cache removes {@link Frame} instances that are over a
+ * second old.
+ */
 public class DisposedFrameProvider {
 
+	/**
+	 * Gets the current {@link DisposedFrameProvider} instance
+	 *
+	 * @return {@link DisposedFrameProvider}
+	 */
 	public static DisposedFrameProvider getInstance() {
 		if (instance == null)
 			instance = new DisposedFrameProvider();
@@ -17,6 +34,10 @@ public class DisposedFrameProvider {
 
 	private HashMap<String, Stack<Frame>> disposed = new HashMap<String, Stack<Frame>>();
 
+	/**
+	 * Updates the {@link DisposedFrameProvider}, which removes stale
+	 * {@link Frame} instances from the cache.
+	 */
 	public synchronized void update() {
 		for (String key : disposed.keySet()) {
 			Stack<Frame> stack = disposed.get(key);
@@ -26,13 +47,26 @@ public class DisposedFrameProvider {
 
 			ArrayList<Frame> toRemove = new ArrayList<Frame>();
 			for (Frame frame : stack)
-				if (System.currentTimeMillis() - frame.disposedTime > 1000)
+				if (System.currentTimeMillis() - frame.getDiposedTime() > 1000)
 					toRemove.add(frame);
 
 			stack.removeAll(toRemove);
 		}
 	}
 
+	/**
+	 * Get a piece of memory with the given dimensions, optionally clearing it
+	 * first. If no disposed {@link Frame} exists to satisfy the dimensions, a
+	 * new piece of memory is allocated.
+	 *
+	 * @param width
+	 *            desired width
+	 * @param height
+	 *            desired height
+	 * @param cleanUp
+	 *            clear the result
+	 * @return {@code int[]}
+	 */
 	public synchronized int[] getDisposedFrame(int width, int height, boolean cleanUp) {
 		String hash = getHash(width, height);
 
@@ -60,6 +94,12 @@ public class DisposedFrameProvider {
 		return pixels;
 	}
 
+	/**
+	 * Mark a given {@link Frame} as disposed, and ready for reuse.
+	 *
+	 * @param frame
+	 *            to dispose
+	 */
 	public synchronized void disposeFrame(Frame frame) {
 		String hash = getHash(frame.getWidth(), frame.getHeight());
 
@@ -73,7 +113,7 @@ public class DisposedFrameProvider {
 		disposedFrames.push(frame);
 	}
 
-	public String getHash(int width, int height) {
+	private String getHash(int width, int height) {
 		return width + ":" + height;
 	}
 }

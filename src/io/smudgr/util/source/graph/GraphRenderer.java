@@ -7,13 +7,30 @@ import java.awt.image.BufferedImage;
 
 import io.smudgr.util.Frame;
 
+/**
+ * The {@link GraphRenderer} class uses Java libraries to draw the
+ * {@link Vertex}, {@link Edge}, and {@link Shape} components of a {@link Graph}
+ * onto a {@link Frame}
+ */
 public class GraphRenderer {
 	private Graph graph;
 
+	/**
+	 * Create a new {@link GraphRenderer} for the given {@link Graph}
+	 *
+	 * @param model
+	 *            {@link Graph}
+	 */
 	public GraphRenderer(Graph model) {
 		graph = model;
 	}
 
+	/**
+	 * Draw the graph and return the {@link Frame}
+	 *
+	 * @return {@link Frame}
+	 * @see GraphRenderer#GraphRenderer(Graph)
+	 */
 	public Frame drawGraph() {
 		BufferedImage graphImage = new BufferedImage(graph.getWidth(), graph.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Graphics g = graphImage.getGraphics();

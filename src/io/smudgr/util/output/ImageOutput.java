@@ -9,23 +9,38 @@ import javax.imageio.ImageIO;
 import io.smudgr.app.controller.Controller;
 import io.smudgr.util.Frame;
 
+/**
+ * The {@link ImageOutput} stream records a single PNG file for every frame
+ * added.
+ */
 public class ImageOutput implements FrameOutput {
 	private String path;
 	private int width, height;
 
+	/**
+	 * Create a new {@link ImageOutput} with the given dimensions.
+	 * <p>
+	 * Frames added of a different dimension are fit to size and output at this
+	 * dimension.
+	 *
+	 * @param name
+	 *            {@link String}
+	 * @param width
+	 *            of output
+	 * @param height
+	 *            of output
+	 */
 	public ImageOutput(String name, int width, int height) {
 		path = Controller.getInstance().getProject().getOutputPath() + name + "_" + System.currentTimeMillis() + ".png";
 		this.width = width;
 		this.height = height;
 	}
 
-	public int getTargetFPS() {
-		return 1;
-	}
-
+	@Override
 	public void open() {
 	}
 
+	@Override
 	public void addFrame(Frame f) {
 		System.out.println("Saving image to " + path);
 
@@ -43,6 +58,7 @@ public class ImageOutput implements FrameOutput {
 		toSave.dispose();
 	}
 
+	@Override
 	public void close() {
 
 	}

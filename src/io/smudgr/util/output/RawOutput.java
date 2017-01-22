@@ -2,6 +2,9 @@ package io.smudgr.util.output;
 
 import io.smudgr.util.Frame;
 
+/**
+ * TODO: Implement this
+ */
 public class RawOutput implements FrameOutput {
 
 	@Override

@@ -13,6 +13,10 @@ import org.jcodec.common.NIOUtils;
 
 import io.smudgr.util.Frame;
 
+/**
+ * The {@link Video} source loads a video file and returns the current frame of
+ * the video, in time with the application.
+ */
 public class Video implements Source {
 	private String filename;
 	private int start;
@@ -21,24 +25,42 @@ public class Video implements Source {
 	private final int bufferCap = 1000;
 	private volatile Queue<Frame> buffer;
 
+	/**
+	 * Create a new {@link Video} loaded from the given file
+	 *
+	 * @param filename
+	 *            path
+	 */
 	public Video(String filename) {
 		this(filename, 0);
 	}
 
+	/**
+	 * Create a new {@link Video} loaded from the given file, and start it at
+	 * the given second.
+	 *
+	 * @param filename
+	 *            path
+	 * @param start
+	 *            seconds
+	 */
 	public Video(String filename, int start) {
 		this.filename = filename;
 		this.start = start;
 	}
 
+	@Override
 	public void init() {
 		bufferer = new BufferThread();
 		bufferer.start();
 	}
 
+	@Override
 	public void update() {
 		// update every frame delay ms
 	}
 
+	@Override
 	public Frame getFrame() {
 		if (!bufferer.started)
 			return null;
@@ -51,6 +73,7 @@ public class Video implements Source {
 		return f;
 	}
 
+	@Override
 	public void dispose() {
 
 		if (bufferer != null)
@@ -71,6 +94,7 @@ public class Video implements Source {
 			t.start();
 		}
 
+		@Override
 		public void run() {
 			started = true;
 
@@ -109,6 +133,7 @@ public class Video implements Source {
 
 	}
 
+	@Override
 	public String toString() {
 		return filename;
 	}

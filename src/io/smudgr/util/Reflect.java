@@ -12,6 +12,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.jar.JarEntry;
 
+/**
+ * The {@link Reflect} class allows the enumeration of loaded classes that
+ * implement a certain type.
+ * <p>
+ * This allows classes that are loaded on the classpath to be used, even if they
+ * were previously unknown by the original source code at compile time.
+ */
 public class Reflect {
 
 	private static final String[] blacklist = new String[] { "gluegen-rt.jar", "jcodec-0.1.9.jar", "jcodec-javase-0.1.9.jar", "jogl-all.jar", "trove.jar" };
@@ -19,10 +26,21 @@ public class Reflect {
 	private Class<?> type;
 	private Set<Class<?>> results = new HashSet<Class<?>>();
 
+	/**
+	 * Create a new reflection search for a given type.
+	 *
+	 * @param type
+	 *            Class type
+	 */
 	public Reflect(Class<?> type) {
 		this.type = type;
 	}
 
+	/**
+	 * Get the implementing classes
+	 *
+	 * @return Set of loaded classes that implement the given type
+	 */
 	public Set<Class<?>> get() {
 		long start = System.currentTimeMillis();
 

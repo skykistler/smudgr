@@ -2,14 +2,37 @@ package io.smudgr.util;
 
 import java.awt.image.BufferedImage;
 
+/**
+ * Instances of the {@link Frame} class are used to store the pixel data of an
+ * image.
+ * <p>
+ * The
+ * {@link DisposedFrameProvider} allows {@link Frame} instances to reuse memory
+ * efficiently and avoid unnecessary string on the JVM garbage collector.
+ */
 public class Frame {
 	private int width;
 	private int height;
+	private long disposedTime = 0;
 
+	/**
+	 * Direct access array of the ARGB color integers backing this
+	 * {@link Frame}
+	 */
 	public int[] pixels;
 
-	public long disposedTime = 0;
-
+	/**
+	 * Create a new {@link Frame} with the given dimensions, without clearing
+	 * the backing memory.
+	 * <p.
+	 * The new {@link Frame} may contain disposed pixel data. If this is a
+	 * problem, use {@link Frame#Frame(BufferedImage)} instead.
+	 *
+	 * @param w
+	 *            width
+	 * @param h
+	 *            height
+	 */
 	public Frame(int w, int h) {
 		width = w;
 		height = h;
@@ -17,6 +40,12 @@ public class Frame {
 		pixels = getDirtyPixels();
 	}
 
+	/**
+	 * Create a new {@link Frame} from the given {@link BufferedImage}
+	 *
+	 * @param image
+	 *            {@link BufferedImage}
+	 */
 	public Frame(BufferedImage image) {
 		width = image.getWidth();
 		height = image.getHeight();
@@ -26,6 +55,12 @@ public class Frame {
 		image.getRGB(0, 0, width, height, pixels, 0, width);
 	}
 
+	/**
+	 * Creates a duplicate of this {@link Frame}, using new memory space (or
+	 * disposed memory if disposed frames of this size exist)
+	 *
+	 * @return duplicate {@link Frame}
+	 */
 	public synchronized Frame copy() {
 		checkDisposed();
 
@@ -36,12 +71,29 @@ public class Frame {
 		return copy;
 	}
 
+	/**
+	 * Copy this {@link Frame} to the given {@link Frame}, copying only until
+	 * this {@link Frame} length is reached, or the given {@link Frame} length
+	 * is reached.
+	 *
+	 * @param f
+	 *            {@link Frame} of equal dimensions (ideally)
+	 */
 	public synchronized void copyTo(Frame f) {
 		checkDisposed();
 
 		System.arraycopy(pixels, 0, f.pixels, 0, Math.min(f.pixels.length, pixels.length));
 	}
 
+	/**
+	 * Draw this frame to the given {@link BufferedImage}
+	 * <p>
+	 * This is especially useful for flushing pixels to screen if the given
+	 * {@link BufferedImage} is backed by native screen space.
+	 *
+	 * @param image
+	 *            {@link BufferedImage}
+	 */
 	public synchronized void drawTo(BufferedImage image) {
 		checkDisposed();
 
@@ -62,10 +114,32 @@ public class Frame {
 		fittedFrame.dispose();
 	}
 
+	/**
+	 * Without changing dimension ratios, fit this {@link Frame} to the given
+	 * size and fill blank space with black.
+	 *
+	 * @param toSizeW
+	 *            new width
+	 * @param toSizeH
+	 *            new height
+	 * @return fitted {@link Frame}
+	 */
 	public Frame fitToSize(int toSizeW, int toSizeH) {
 		return fitToSize(toSizeW, toSizeH, true);
 	}
 
+	/**
+	 * Without changing dimension ratios, fit this {@link Frame} to the given
+	 * size and fill blank space with black.
+	 *
+	 * @param toSizeW
+	 *            new width
+	 * @param toSizeH
+	 *            new height
+	 * @param fill
+	 *            with black
+	 * @return fitted {@link Frame}
+	 */
 	public Frame fitToSize(int toSizeW, int toSizeH, boolean fill) {
 		checkDisposed();
 
@@ -92,6 +166,13 @@ public class Frame {
 		return resize(x, y, w, h, fill ? toSizeW : w, fill ? toSizeH : h);
 	}
 
+	/**
+	 * Resize this frame by a given factor
+	 *
+	 * @param factor
+	 *            multiplier
+	 * @return new {@link Frame}
+	 */
 	public Frame resize(double factor) {
 		if (factor < 0 || factor == 1)
 			return copy();
@@ -102,10 +183,37 @@ public class Frame {
 		return resize(w, h);
 	}
 
+	/**
+	 * Resize this frame to a given width and height
+	 *
+	 * @param w
+	 *            width
+	 * @param h
+	 *            height
+	 * @return new {@link Frame} of given dimensions
+	 */
 	public Frame resize(int w, int h) {
 		return resize(0, 0, w, h, w, h);
 	}
 
+	/**
+	 * Resize this frame to the given width and height, using given offsets and
+	 * new frame dimensions
+	 *
+	 * @param xOffset
+	 *            x shift
+	 * @param yOffset
+	 *            y shift
+	 * @param w
+	 *            new width
+	 * @param h
+	 *            new height
+	 * @param wSize
+	 *            new {@link Frame} width
+	 * @param hSize
+	 *            new {@link Frame} height
+	 * @return new {@link Frame}
+	 */
 	public synchronized Frame resize(int xOffset, int yOffset, int w, int h, int wSize, int hSize) {
 		if (xOffset == 0 && yOffset == 0 && w == width && h == height)
 			return copy();
@@ -143,30 +251,71 @@ public class Frame {
 		return scaled;
 	}
 
+	/**
+	 * Gets the width of this {@link Frame}
+	 *
+	 * @return width
+	 */
 	public int getWidth() {
 		return width;
 	}
 
+	/**
+	 * Gets the height of this {@link Frame}
+	 *
+	 * @return height
+	 */
 	public int getHeight() {
 		return height;
 	}
 
+	/**
+	 * Gets the pixel value at the given coordinates
+	 *
+	 * @param x
+	 *            coordinate
+	 * @param y
+	 *            coordinate
+	 * @return ARGB color integer
+	 */
 	public int get(int x, int y) {
 		return pixels[x + y * width];
 	}
 
+	/**
+	 * Gets the pixel value at the given coordinates
+	 *
+	 * @param x
+	 *            coordinate
+	 * @param y
+	 *            coordinate
+	 * @param color
+	 *            ARGB integer
+	 */
 	public void set(int x, int y, int color) {
 		pixels[x + y * width] = color;
 	}
 
+	/**
+	 * Throws an exception if this {@link Frame} has been flagged as disposed
+	 * memory.
+	 */
 	public void checkDisposed() {
 		if (disposedTime > 0)
 			throw new IllegalStateException("Trying to operate on a disposed frame. Unsafe!");
 	}
 
+	/**
+	 * Mark this {@link Frame} as disposed to allow the immediate reuse of its
+	 * backing memory.
+	 */
 	public synchronized void dispose() {
 		disposedTime = System.currentTimeMillis();
 		DisposedFrameProvider.getInstance().disposeFrame(this);
+	}
+
+	protected long getDiposedTime() {
+		return disposedTime;
 	}
 
 	private int[] getDirtyPixels() {
