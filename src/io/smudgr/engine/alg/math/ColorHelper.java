@@ -1,10 +1,16 @@
 package io.smudgr.engine.alg.math;
 
+/**
+ * The {@link ColorHelper} utility provides small helper functions for common
+ * color operations.
+ */
 public class ColorHelper {
 
 	/**
 	 * Converts a set of RGB values into a single color integer
-	 * 
+	 *
+	 * @param a
+	 *            alpha component 0-255
 	 * @param r
 	 *            red component 0-255
 	 * @param g
@@ -17,6 +23,17 @@ public class ColorHelper {
 		return (a << 24) | (r << 16) | (g << 8) | b;
 	}
 
+	/**
+	 * Converts given hue, saturation, and value into RGB color integer.
+	 *
+	 * @param h
+	 *            hue 0-1
+	 * @param s
+	 *            saturation 0-1
+	 * @param v
+	 *            value 0-1
+	 * @return RGB color integer
+	 */
 	public static int hsv(double h, double s, double v) {
 		int r, g, b;
 		if (s == 0) {
@@ -71,6 +88,13 @@ public class ColorHelper {
 
 	}
 
+	/**
+	 * Gets the saturation of a given color
+	 *
+	 * @param color
+	 *            RGB integer
+	 * @return saturation 0-1
+	 */
 	public static double saturation(int color) {
 		double red = red(color) / 255.0;
 		double green = green(color) / 255.0;
@@ -87,6 +111,13 @@ public class ColorHelper {
 
 	}
 
+	/**
+	 * Gets the hue of a given color
+	 *
+	 * @param color
+	 *            RGB integer
+	 * @return hue 0-1
+	 */
 	public static double hue(int color) {
 		double red = red(color) / 255.0;
 		double green = green(color) / 255.0;
@@ -123,6 +154,13 @@ public class ColorHelper {
 
 	}
 
+	/**
+	 * Gets the chroma value of a given color
+	 *
+	 * @param color
+	 *            RGB integer
+	 * @return chroma value 0-1
+	 */
 	public static double chroma(int color) {
 
 		// double red = red(color) / 255.0;
@@ -142,8 +180,19 @@ public class ColorHelper {
 
 	}
 
+	/**
+	 * Gets RGB color integer given hue, luma, and chroma
+	 *
+	 * @param hue
+	 *            0-255
+	 * @param luma
+	 *            0-1
+	 * @param chroma
+	 *            0-1
+	 * @return RGB color integer
+	 */
 	public static int hlc(int hue, double luma, double chroma) {
-		double h = (double) (hue) / 60.0;
+		double h = (hue) / 60.0;
 		double x = chroma * (1 - Math.abs(Math.IEEEremainder(h, 2) - 1));
 
 		double r, g, b;
@@ -185,6 +234,19 @@ public class ColorHelper {
 		return ColorHelper.color(255, red, green, blue);
 	}
 
+	/**
+	 * Shift a given color by the given hue degrees, saturation, and value
+	 *
+	 * @param color
+	 *            RGB integer
+	 * @param degrees
+	 *            of hue shift
+	 * @param saturation
+	 *            amount 0-1
+	 * @param value
+	 *            amount 0-1
+	 * @return new RGB color integer
+	 */
 	public static int modifyHSV(int color, int degrees, double saturation, double value) {
 		double r = red(color) / 255.0;
 		double g = green(color) / 255.0;
@@ -264,35 +326,35 @@ public class ColorHelper {
 			var3 = (v * (1 - s * (1 - (varH - varI))));
 
 			switch (varI) {
-			case 0:
-				newR = v;
-				newG = var3;
-				newB = var1;
-				break;
-			case 1:
-				newR = var2;
-				newG = v;
-				newB = var1;
-				break;
-			case 2:
-				newR = var1;
-				newG = v;
-				newB = var3;
-				break;
-			case 3:
-				newR = var1;
-				newG = var2;
-				newB = v;
-				break;
-			case 4:
-				newR = var3;
-				newG = var1;
-				newB = v;
-				break;
-			default:
-				newR = v;
-				newG = var1;
-				newB = var2;
+				case 0:
+					newR = v;
+					newG = var3;
+					newB = var1;
+					break;
+				case 1:
+					newR = var2;
+					newG = v;
+					newB = var1;
+					break;
+				case 2:
+					newR = var1;
+					newG = v;
+					newB = var3;
+					break;
+				case 3:
+					newR = var1;
+					newG = var2;
+					newB = v;
+					break;
+				case 4:
+					newR = var3;
+					newG = var1;
+					newB = v;
+					break;
+				default:
+					newR = v;
+					newG = var1;
+					newB = var2;
 			}
 		}
 
@@ -305,7 +367,7 @@ public class ColorHelper {
 
 	/**
 	 * Converts a set of RGB values into a single color integer
-	 * 
+	 *
 	 * @param color
 	 *            RGB color integer
 	 * @param degrees
@@ -314,7 +376,7 @@ public class ColorHelper {
 	 *            saturation from -1.0 to 1.0, where 0 is no effect
 	 * @param lightness
 	 *            lightness from -1.0 to 1.0, where 0 is no effect
-	 * 
+	 *
 	 * @return RGB color that has been manipulated through the HSL space
 	 */
 	public static int modifyHSL(int color, int degrees, double saturation, double lightness) {
@@ -419,7 +481,7 @@ public class ColorHelper {
 
 	/**
 	 * Get the alpha of an integer color
-	 * 
+	 *
 	 * @param color
 	 *            as single integer
 	 * @return alpha int value 0-255
@@ -430,7 +492,7 @@ public class ColorHelper {
 
 	/**
 	 * Get the red of an integer color
-	 * 
+	 *
 	 * @param color
 	 *            as single integer
 	 * @return red int value 0-255
@@ -441,7 +503,7 @@ public class ColorHelper {
 
 	/**
 	 * Get the green of an integer color
-	 * 
+	 *
 	 * @param color
 	 *            as single integer
 	 * @return green int value 0-255
@@ -452,7 +514,7 @@ public class ColorHelper {
 
 	/**
 	 * Get the blue of an integer color
-	 * 
+	 *
 	 * @param color
 	 *            as single integer
 	 * @return blue int value 0-255

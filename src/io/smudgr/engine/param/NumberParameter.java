@@ -22,15 +22,17 @@ public class NumberParameter extends Parameter {
 	private double min;
 	private double max;
 	private double step;
+	private boolean reverse;
+	private boolean continuous;
 
 	/**
 	 * Declare a new {@link NumberParameter} with an initial value of {@code 0}
-	 * 
+	 *
 	 * @param name
 	 *            Name to identify this parameter by.
 	 * @param parent
 	 *            {@link Parametric} parent of this parameter.
-	 * 
+	 *
 	 * @see NumberParameter#NumberParameter(String, Parametric, double, double,
 	 *      double) new NumberParemeter(name, parent, initial, minimum, maximum)
 	 */
@@ -40,14 +42,14 @@ public class NumberParameter extends Parameter {
 
 	/**
 	 * Declare a new {@link NumberParameter} and set the initial value
-	 * 
+	 *
 	 * @param name
 	 *            Name to identify this parameter by.
 	 * @param parent
 	 *            {@link Parametric} parent of this parameter.
 	 * @param initial
 	 *            Initial value of the parameter.
-	 * 
+	 *
 	 * @see NumberParameter#NumberParameter(String, Parametric, double, double,
 	 *      double) new NumberParemeter(name, parent, initial, minimum, maximum)
 	 */
@@ -57,7 +59,7 @@ public class NumberParameter extends Parameter {
 
 	/**
 	 * Declare a new {@link NumberParameter} and set the initial value
-	 * 
+	 *
 	 * @param name
 	 *            Name to identify this parameter by.
 	 * @param parent
@@ -68,7 +70,7 @@ public class NumberParameter extends Parameter {
 	 *            Lowest possible value of the parameter (inclusive)
 	 * @param maximum
 	 *            Highest possible value of the parameter (inclusive)
-	 * 
+	 *
 	 * @see NumberParameter#NumberParameter(String, Parametric, double, double,
 	 *      double, double) new NumberParemeter(name, parent, initial, minimum,
 	 *      maximum, step)
@@ -79,7 +81,7 @@ public class NumberParameter extends Parameter {
 
 	/**
 	 * Declare a new {@link NumberParameter} and set the initial value
-	 * 
+	 *
 	 * @param name
 	 *            Name to identify this parameter by.
 	 * @param parent
@@ -92,7 +94,7 @@ public class NumberParameter extends Parameter {
 	 *            Highest possible value of the parameter (inclusive)
 	 * @param step
 	 *            Amount of change to occur on an increment or decrement event.
-	 * 
+	 *
 	 * @see NumberParameter#NumberParameter(String, Parametric, double, double,
 	 *      double) new NumberParemeter(name, parent, initial, minimum,
 	 *      maximum)
@@ -144,7 +146,7 @@ public class NumberParameter extends Parameter {
 
 	/**
 	 * Set the lowest possible value of this parameter (inclusive)
-	 * 
+	 *
 	 * @param minimum
 	 *            New minimum
 	 * @see NumberParameter#setMax(double)
@@ -161,7 +163,7 @@ public class NumberParameter extends Parameter {
 
 	/**
 	 * Set the highest possible value of this parameter (inclusive)
-	 * 
+	 *
 	 * @param maximum
 	 *            New maximum
 	 * @see NumberParameter#setMin(double)
@@ -183,7 +185,7 @@ public class NumberParameter extends Parameter {
 	 * <p>
 	 * Provided value is clamped to that range, so negative values are set to 0
 	 * and values higher than maximum - minimum are set to maximum - minimum.
-	 * 
+	 *
 	 * @param s
 	 *            Amount of change
 	 * @see NumberParameter#increment()
@@ -247,7 +249,7 @@ public class NumberParameter extends Parameter {
 	 * <p>
 	 * This is useful when it makes more sense for an increase event to decrease
 	 * the actual value, and vice versa.
-	 * 
+	 *
 	 * @param reverse
 	 *            {@code boolean}
 	 * @see NumberParameter#setContinuous(boolean)
@@ -269,7 +271,7 @@ public class NumberParameter extends Parameter {
 	 * {@link NumberParameter#increment()} and
 	 * {@link NumberParameter#decrement()} events to continue changing the value
 	 * instead of hitting a ceiling or floor.
-	 * 
+	 *
 	 * @param continuous
 	 *            {@code boolean}
 	 * @see NumberParameter#setReverse(boolean)
@@ -281,7 +283,7 @@ public class NumberParameter extends Parameter {
 	/**
 	 * Gets the highest possible value of this {@link NumberParameter}
 	 * (inclusive)
-	 * 
+	 *
 	 * @return Maximum value
 	 * @see NumberParameter#getMin()
 	 */
@@ -292,7 +294,7 @@ public class NumberParameter extends Parameter {
 	/**
 	 * Gets the lowest possible value of this {@link NumberParameter}
 	 * (inclusive)
-	 * 
+	 *
 	 * @return Minimum value
 	 * @see NumberParameter#getMax()
 	 */
@@ -304,7 +306,7 @@ public class NumberParameter extends Parameter {
 	 * Gets the amount of change that occurs on
 	 * {@link NumberParameter#increment()} and
 	 * {@link NumberParameter#decrement()} events
-	 * 
+	 *
 	 * @return Amount of change
 	 * @see NumberParameter#getMax()
 	 * @see NumberParameter#getMin()
@@ -318,7 +320,7 @@ public class NumberParameter extends Parameter {
 	 * <p>
 	 * Value may be any decimal between {@link NumberParameter#getMin()} and
 	 * {@link NumberParameter#getMax()}.
-	 * 
+	 *
 	 * @return Numeric value
 	 * @see NumberParameter#getStringValue()
 	 */
@@ -331,7 +333,7 @@ public class NumberParameter extends Parameter {
 	 * <p>
 	 * Value may be any decimal between {@link NumberParameter#getMin()} and
 	 * {@link NumberParameter#getMax()}, represented as a string.
-	 * 
+	 *
 	 * @return {@link String} of the numeric value
 	 * @see NumberParameter#getValue()
 	 */
@@ -346,7 +348,7 @@ public class NumberParameter extends Parameter {
 	 * <p>
 	 * Value may be any integer between {@link NumberParameter#getMin()} and
 	 * {@link NumberParameter#getMax()} (inclusive).
-	 * 
+	 *
 	 * @return Integer value
 	 * @see NumberParameter#getValue()
 	 */

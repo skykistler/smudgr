@@ -5,10 +5,19 @@ import java.util.Stack;
 
 import io.smudgr.engine.alg.AlgorithmComponent;
 import io.smudgr.engine.alg.PixelIndexList;
+import io.smudgr.engine.alg.coord.CoordFunction;
+import io.smudgr.engine.alg.op.Operation;
 import io.smudgr.util.Frame;
 
+/**
+ * The abstract {@link Selector} class defines an {@link AlgorithmComponent}
+ * that uses actual pixel values of an image to focus an {@link Operation}. A
+ * {@link CoordFunction} generates a pixel order but {@link Selector}
+ * implementations narrow that set down based on pixel value.
+ */
 public abstract class Selector extends AlgorithmComponent {
 
+	@Override
 	public String getType() {
 		return "Selector";
 	}
@@ -18,10 +27,12 @@ public abstract class Selector extends AlgorithmComponent {
 
 	private Frame frame;
 
+	@Override
 	public void init() {
 
 	}
 
+	@Override
 	public void update() {
 		if (frame == null)
 			return;
@@ -60,7 +71,7 @@ public abstract class Selector extends AlgorithmComponent {
 		getAlgorithm().setSelectedPixels(selectedList);
 	}
 
-	public PixelIndexList getNewSet() {
+	protected PixelIndexList getNewSet() {
 		if (disposedLists.empty())
 			return new PixelIndexList();
 
@@ -70,8 +81,27 @@ public abstract class Selector extends AlgorithmComponent {
 		return list;
 	}
 
+	/**
+	 * Gets whether the given point is selected for operation given an image
+	 * {@link Frame}
+	 *
+	 * @param img
+	 *            {@link Frame}
+	 * @param x
+	 *            coordinate of pixel
+	 * @param y
+	 *            coordinate of pixel
+	 * @return {@code true} if the pixel should be acted upon, {@code false} if
+	 *         otherwise
+	 */
 	public abstract boolean selectsPoint(Frame img, int x, int y);
 
+	/**
+	 * Sets the frame to use when selecting pixels.
+	 *
+	 * @param f
+	 *            {@link Frame}
+	 */
 	public void setFrame(Frame f) {
 		this.frame = f;
 	}

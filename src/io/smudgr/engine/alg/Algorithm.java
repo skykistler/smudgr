@@ -13,6 +13,11 @@ import io.smudgr.engine.param.BooleanParameter;
 import io.smudgr.engine.param.Parametric;
 import io.smudgr.util.Frame;
 
+/**
+ * The {@link Algorithm} class is a container for {@link AlgorithmComponent}
+ * instances. Each {@link AlgorithmComponent} serves a role in determining the
+ * entire {@link Algorithm} behavior.
+ */
 public class Algorithm extends Parametric implements Element {
 
 	@Override
@@ -120,10 +125,11 @@ public class Algorithm extends Parametric implements Element {
 		component.init();
 	}
 
-	public AlgorithmComponent getComponent(int id) {
-		return components.get(id);
-	}
-
+	/**
+	 * Gets every {@link AlgorithmComponent} contained in this {@link Algorithm}
+	 *
+	 * @return List of {@link AlgorithmComponent}
+	 */
 	public ArrayList<AlgorithmComponent> getComponents() {
 		return components;
 	}
@@ -146,6 +152,11 @@ public class Algorithm extends Parametric implements Element {
 			coordFunction.setBound(bound);
 	}
 
+	/**
+	 * Gets the bound of this {@link Algorithm}
+	 *
+	 * @return {@link Bound}
+	 */
 	public Bound getBound() {
 		return bound;
 	}
@@ -168,10 +179,25 @@ public class Algorithm extends Parametric implements Element {
 			coordFunction.setBound(bound);
 	}
 
+	/**
+	 * Sets the list of {@link PixelIndexList} lists that break an image down
+	 * into iterable fragments.
+	 *
+	 * @param selected
+	 *            {@code ArrayList<PixelIndexList>}
+	 * @see Selector
+	 */
 	public void setSelectedPixels(ArrayList<PixelIndexList> selected) {
 		selectedPixels = selected;
 	}
 
+	/**
+	 * Gets the list of {@link PixelIndexList} lists that break an image down
+	 * into iterable fragments.
+	 *
+	 * @return {@code ArrayList<PixelIndexList>}
+	 * @see Selector
+	 */
 	public ArrayList<PixelIndexList> getSelectedPixels() {
 		return selectedPixels;
 	}

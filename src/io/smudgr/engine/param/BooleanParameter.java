@@ -12,16 +12,17 @@ public class BooleanParameter extends Parameter {
 	}
 
 	private boolean value;
+	private boolean reverse;
 
 	/**
 	 * Declare a new {@link BooleanParameter} with an initial value of
 	 * {@code false}
-	 * 
+	 *
 	 * @param name
 	 *            Name to identify this parameter by.
 	 * @param parent
 	 *            {@link Parametric} parent of this parameter.
-	 * 
+	 *
 	 * @see BooleanParameter#BooleanParameter(String, Parametric, boolean) new
 	 *      Boolean(name, parent, initial)
 	 */
@@ -31,14 +32,14 @@ public class BooleanParameter extends Parameter {
 
 	/**
 	 * Declare a new {@link BooleanParameter} and set the initial value.
-	 * 
+	 *
 	 * @param name
 	 *            Name to identify this parameter by.
 	 * @param parent
 	 *            {@link Parametric} parent of this parameter.
 	 * @param initial
 	 *            Initial value of this parameter.
-	 * 
+	 *
 	 * @see BooleanParameter#BooleanParameter(String, Parametric) new
 	 *      Boolean(name, parent)
 	 */
@@ -65,7 +66,7 @@ public class BooleanParameter extends Parameter {
 	/**
 	 * Return the {@code true} or {@code false} value of this
 	 * {@link BooleanParameter}
-	 * 
+	 *
 	 * @return {@code true} or {@code false}
 	 */
 	public boolean getValue() {
@@ -101,6 +102,23 @@ public class BooleanParameter extends Parameter {
 	@Override
 	public void decrement() {
 		increment();
+	}
+
+	/**
+	 * Set the reverse state of this {@link BooleanParameter}.
+	 * <p>
+	 * When this is set to {@code true}, {@link NumberParameter#inputOn()}
+	 * events will set the value to false, and
+	 * {@link NumberParameter#inputOff()} events will set the value to true.
+	 * <p>
+	 * This is useful when it makes more sense for an input-on event to falsify
+	 * the actual value, and vice versa.
+	 *
+	 * @param reverse
+	 *            {@code boolean}
+	 */
+	public void setReverse(boolean reverse) {
+		this.reverse = reverse;
 	}
 
 }

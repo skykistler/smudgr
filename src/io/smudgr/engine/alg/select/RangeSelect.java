@@ -10,6 +10,11 @@ import io.smudgr.engine.param.NumberParameter;
 import io.smudgr.engine.param.UnivariateParameter;
 import io.smudgr.util.Frame;
 
+/**
+ * {@link RangeSelect} selects pixels based on their value within a range of
+ * values, as calculated by a configurable function. This is sort of like a
+ * movable threshold.
+ */
 public class RangeSelect extends Selector {
 
 	NumberParameter min = new NumberParameter("Minimum Value", this, 0, 0, 1, .01);
@@ -18,10 +23,12 @@ public class RangeSelect extends Selector {
 
 	UnivariateParameter function = new UnivariateParameter("Function", this, new LumaFunction());
 
+	@Override
 	public String getName() {
 		return "Range";
 	}
 
+	@Override
 	public void init() {
 		min.setContinuous(true);
 
@@ -31,6 +38,7 @@ public class RangeSelect extends Selector {
 		function.add(new LogFunction());
 	}
 
+	@Override
 	public void update() {
 		if (range.getIntValue() == 1)
 			return;
@@ -38,6 +46,7 @@ public class RangeSelect extends Selector {
 		super.update();
 	}
 
+	@Override
 	public boolean selectsPoint(Frame img, int x, int y) {
 		return inRange(img.get(x, y));
 	}

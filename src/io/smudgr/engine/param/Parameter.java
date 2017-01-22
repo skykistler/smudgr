@@ -10,7 +10,7 @@ import io.smudgr.app.project.util.PropertyMap;
  * <p>
  * {@link Parameter} implements {@link Controllable}, which defines an interface
  * for reacting to input source events.
- * 
+ *
  * @see Controllable
  */
 public abstract class Parameter implements Controllable, ProjectItem {
@@ -20,7 +20,7 @@ public abstract class Parameter implements Controllable, ProjectItem {
 	 * to identify a {@link Parameter} in project files.
 	 * <p>
 	 * Currently set to {@value}.
-	 * 
+	 *
 	 * @see PropertyMap
 	 */
 	public static final String PROJECT_MAP_TAG = "parameter";
@@ -28,7 +28,7 @@ public abstract class Parameter implements Controllable, ProjectItem {
 	/**
 	 * Get the type of the value that this {@link Parameter} represents. This is
 	 * used to identify the specific {@link Parameter} type in project files.
-	 * 
+	 *
 	 * @return {@link String}
 	 */
 	public abstract String getType();
@@ -40,13 +40,11 @@ public abstract class Parameter implements Controllable, ProjectItem {
 
 	private String name;
 	private Parametric parent;
-	protected boolean reverse;
-	protected boolean continuous;
 
 	/**
 	 * Instantiate a new {@link Parameter} with the given name and
 	 * {@link Parameter} parent.
-	 * 
+	 *
 	 * @param name
 	 *            Parameter name.
 	 * @param parent
@@ -61,7 +59,7 @@ public abstract class Parameter implements Controllable, ProjectItem {
 	/**
 	 * Implement this method to set an arbitrarily typed value using a given
 	 * {@link Object}
-	 * 
+	 *
 	 * @param o
 	 *            {@link Object} arbitrarily typed object
 	 */
@@ -69,7 +67,7 @@ public abstract class Parameter implements Controllable, ProjectItem {
 
 	/**
 	 * Set the value of this parameter given a generic {@link Object}
-	 * 
+	 *
 	 * @param o
 	 *            {@link Object}
 	 */
@@ -83,7 +81,7 @@ public abstract class Parameter implements Controllable, ProjectItem {
 	 * <p>
 	 * This is used when a {@link ParameterObserver} needs to update a parameter
 	 * without causing an infinite stack overflow.
-	 * 
+	 *
 	 * @param o
 	 *            {@link Object}
 	 * @param ignoreObserver
@@ -100,7 +98,7 @@ public abstract class Parameter implements Controllable, ProjectItem {
 
 	/**
 	 * Get the string representation of this parameter.
-	 * 
+	 *
 	 * @return {@link String} representation of this parameter.
 	 */
 	public abstract String getStringValue();
@@ -124,7 +122,7 @@ public abstract class Parameter implements Controllable, ProjectItem {
 
 	/**
 	 * Gets the {@link Parametric} parent of this {@link Parameter}
-	 * 
+	 *
 	 * @return {@link Parametric}
 	 */
 	public Parametric getParent() {
