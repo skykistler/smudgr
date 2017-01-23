@@ -10,7 +10,7 @@ import io.smudgr.api.ApiMessage;
  * Gets a list of files and folders in a given path.
  * Path must be a directory or this command will fail.
  */
-public class GetFileList implements ApiCommand {
+public class FileList implements ApiCommand {
 
 	@Override
 	public String getCommand() {
