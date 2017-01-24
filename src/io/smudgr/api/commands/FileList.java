@@ -1,6 +1,7 @@
 package io.smudgr.api.commands;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import io.smudgr.api.ApiCommand;
@@ -40,9 +41,16 @@ public class FileList implements ApiCommand {
 			}
 		}
 
+		// Remove '..' etc
+		try {
+			path = folder.getCanonicalPath();
+		} catch (IOException e) {
+		}
+
 		ApiMessage response = new ApiMessage();
 		response.put("files", files);
 		response.put("folders", folders);
+		response.put("path", path);
 
 		return ApiMessage.success("file.list", response);
 	}
