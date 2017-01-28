@@ -8,6 +8,9 @@ import io.smudgr.engine.alg.op.DataBend;
 import io.smudgr.engine.alg.select.RangeSelect;
 import io.smudgr.extensions.automate.controls.AutomatorControl;
 
+/**
+ * Example class for creating a test {@link AppStart} main class
+ */
 public class SampleApp extends AppStart {
 
 	/*
@@ -40,6 +43,7 @@ public class SampleApp extends AppStart {
 	// non-fullscreen window
 	static boolean monitor = true;
 
+	@Override
 	public void buildSmudge() {
 		// Pro-tip: In eclipse, you can Ctrl+Click on a class name to quickly
 		// open that class
@@ -75,6 +79,9 @@ public class SampleApp extends AppStart {
 		bind(Controller.getInstance().getAppControl("Save Project"));
 	}
 
+	/**
+	 * Create
+	 */
 	public SampleApp() {
 		super(projectPath, sourcePath, outputPath, device, overwriteSmudge, deviceServer);
 
@@ -85,6 +92,12 @@ public class SampleApp extends AppStart {
 		start();
 	}
 
+	/**
+	 * Run
+	 * 
+	 * @param args
+	 *            unused
+	 */
 	public static void main(String[] args) {
 		new SampleApp();
 	}

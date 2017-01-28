@@ -10,6 +10,9 @@ import io.smudgr.engine.alg.op.SpectralShift;
 import io.smudgr.extensions.automate.controls.AutomatorControl;
 import io.smudgr.extensions.kinect.source.VideoSource;
 
+/**
+ * Used for testing the kinect
+ */
 public class KinectTest extends AppStart {
 
 	/*
@@ -42,6 +45,9 @@ public class KinectTest extends AppStart {
 	// non-fullscreen window
 	static boolean monitor = true;
 
+	/**
+	 * Create
+	 */
 	public KinectTest() {
 		super(projectPath, sourcePath, outputPath, device, newSmudge, deviceServer);
 
@@ -102,6 +108,12 @@ public class KinectTest extends AppStart {
 
 	}
 
+	/**
+	 * Run
+	 *
+	 * @param args
+	 *            unused
+	 */
 	public static void main(String[] args) {
 		new KinectTest();
 	}

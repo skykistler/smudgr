@@ -8,6 +8,9 @@ import io.smudgr.engine.alg.Algorithm;
 import io.smudgr.engine.alg.op.DataBend;
 import io.smudgr.engine.alg.select.RangeSelect;
 
+/**
+ * Used for testing a raspberry pi
+ */
 public class PiTest extends AppStart {
 
 	static String projectPath = "data/nano_pad.smudge";
@@ -24,6 +27,7 @@ public class PiTest extends AppStart {
 	static int fullscreenDisplay = 0;
 	static boolean monitor = !isLinux();
 
+	@Override
 	public void buildSmudge() {
 		Smudge smudge = Controller.getInstance().getProject().getSmudge();
 
@@ -48,6 +52,9 @@ public class PiTest extends AppStart {
 		bind(Controller.getInstance().getAppControl("Save Project"), false, 16);
 	}
 
+	/**
+	 * Create
+	 */
 	public PiTest() {
 		super(projectPath, sourcePath, outputPath, device, overwriteSmudge, deviceServer);
 
@@ -61,6 +68,12 @@ public class PiTest extends AppStart {
 		start();
 	}
 
+	/**
+	 * Run
+	 *
+	 * @param args
+	 *            unused
+	 */
 	public static void main(String[] args) {
 		new PiTest();
 	}

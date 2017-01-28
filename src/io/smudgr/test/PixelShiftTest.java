@@ -6,7 +6,11 @@ import io.smudgr.engine.Smudge;
 import io.smudgr.engine.alg.Algorithm;
 import io.smudgr.engine.alg.coord.RowCoords;
 import io.smudgr.engine.alg.op.PixelShift;
+import io.smudgr.engine.param.NumberParameter;
 
+/**
+ * Used for testing {@link PixelShift}
+ */
 public class PixelShiftTest extends AppStart {
 
 	/*
@@ -39,6 +43,7 @@ public class PixelShiftTest extends AppStart {
 	// non-fullscreen window
 	static boolean monitor = true;
 
+	@Override
 	public void buildSmudge() {
 		Smudge smudge = Controller.getInstance().getProject().getSmudge();
 
@@ -49,7 +54,7 @@ public class PixelShiftTest extends AppStart {
 		alg.add(new RowCoords());
 		smudge.add(alg);
 
-		shift.getParameter("Intervals").setContinuous(true);
+		((NumberParameter) shift.getParameter("Intervals")).setContinuous(true);
 		shift.getParameter("Shift Type").setValue(3);
 
 		shift.getParameter("Intervals").setValue(20);
@@ -60,6 +65,9 @@ public class PixelShiftTest extends AppStart {
 
 	}
 
+	/**
+	 * Create
+	 */
 	public PixelShiftTest() {
 		super(projectPath, sourcePath, outputPath, device, overwriteSmudge, deviceServer);
 
@@ -70,6 +78,12 @@ public class PixelShiftTest extends AppStart {
 		start();
 	}
 
+	/**
+	 * Run
+	 *
+	 * @param args
+	 *            unused
+	 */
 	public static void main(String[] args) {
 		new PixelShiftTest();
 	}

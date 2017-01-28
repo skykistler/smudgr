@@ -6,6 +6,9 @@ import io.smudgr.engine.Smudge;
 import io.smudgr.engine.alg.Algorithm;
 import io.smudgr.engine.alg.op.RainbowBend;
 
+/**
+ * Used for testing some Eric stuff
+ */
 public class RainbowBendTest extends AppStart {
 
 	/*
@@ -38,6 +41,7 @@ public class RainbowBendTest extends AppStart {
 	// non-fullscreen window
 	static boolean monitor = true;
 
+	@Override
 	public void buildSmudge() {
 		Smudge smudge = Controller.getInstance().getProject().getSmudge();
 
@@ -54,6 +58,9 @@ public class RainbowBendTest extends AppStart {
 
 	}
 
+	/**
+	 * Create
+	 */
 	public RainbowBendTest() {
 		super(projectPath, sourcePath, outputPath, device, overwriteSmudge, deviceServer);
 
@@ -64,6 +71,12 @@ public class RainbowBendTest extends AppStart {
 		start();
 	}
 
+	/**
+	 * Run
+	 * 
+	 * @param args
+	 *            unused
+	 */
 	public static void main(String[] args) {
 		new RainbowBendTest();
 	}
