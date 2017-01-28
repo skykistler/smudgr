@@ -2,12 +2,18 @@ package io.smudgr.engine.alg.math.blend;
 
 import io.smudgr.engine.alg.math.ColorHelper;
 
+/**
+ * The {@link MultiplyBlender} multiplies the red channel, green channel, and
+ * blue channel of the two colors and returns the composite.
+ */
 public class MultiplyBlender implements Blender {
 
+	@Override
 	public String getName() {
 		return "Multiply";
 	}
 
+	@Override
 	public int blend(int colorA, int colorB) {
 		int redA = ColorHelper.red(colorA);
 		int greenA = ColorHelper.green(colorA);

@@ -2,12 +2,19 @@ package io.smudgr.engine.alg.math.blend;
 
 import io.smudgr.engine.alg.math.ColorHelper;
 
+/**
+ * The {@link NormalBlender} returns a color blended using the alpha channel. If
+ * the first color is fully opaque, none of the second color will be blended,
+ * and vice versa.
+ */
 public class NormalBlender implements Blender {
 
+	@Override
 	public String getName() {
 		return "Normal";
 	}
 
+	@Override
 	public int blend(int colorA, int colorB) {
 		int redA = ColorHelper.red(colorA);
 		int greenA = ColorHelper.green(colorA);

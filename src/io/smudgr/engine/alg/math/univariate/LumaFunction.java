@@ -2,19 +2,19 @@ package io.smudgr.engine.alg.math.univariate;
 
 import io.smudgr.engine.alg.math.ColorHelper;
 
+/**
+ * Calculate the perceived brightness (luma) of an integer color
+ * <p>
+ * luma returned as a 0-1 value
+ */
 public class LumaFunction implements UnivariateFunction {
 
+	@Override
 	public String getName() {
 		return "Luma";
 	}
 
-	/**
-	 * Calculate the luma percentage of an integer color
-	 * 
-	 * @param value
-	 *            color in integer format
-	 * @return luma returned as a 0-1 value
-	 */
+	@Override
 	public double calculate(double value) {
 		int color = (int) value;
 
@@ -25,6 +25,13 @@ public class LumaFunction implements UnivariateFunction {
 		return ((red * 3 + blue + green * 4) >> 3) / 255.0;
 	}
 
+	/**
+	 * Tester method that provides a more precise value but slower calculation
+	 * 
+	 * @param value
+	 *            color
+	 * @return luma
+	 */
 	public double calculate_precise(double value) {
 		int color = (int) value;
 

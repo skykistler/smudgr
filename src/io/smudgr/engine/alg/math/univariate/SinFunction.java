@@ -2,19 +2,19 @@ package io.smudgr.engine.alg.math.univariate;
 
 import io.smudgr.engine.alg.math.ColorHelper;
 
+/**
+ * Calculate the sin percentage of an integer color
+ * <p>
+ * sin returned as a 0-1 value
+ */
 public class SinFunction implements UnivariateFunction {
 
+	@Override
 	public String getName() {
 		return "Sin";
 	}
 
-	/**
-	 * Calculate the sin percentage of an integer color
-	 * 
-	 * @param value
-	 *            color in integer format
-	 * @return sin returned as a 0-1 value
-	 */
+	@Override
 	public double calculate(double value) {
 		int color = (int) value;
 

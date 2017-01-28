@@ -1,5 +1,9 @@
 package io.smudgr.engine.alg.math.lerp;
 
+/**
+ * Linear interpolation assumes a straight line of constant slope between two
+ * points.
+ */
 public class LinearInterpolator implements Interpolator {
 
 	@Override

@@ -2,12 +2,18 @@ package io.smudgr.engine.alg.math.blend;
 
 import io.smudgr.engine.alg.math.ColorHelper;
 
+/**
+ * The {@link OverlayBlender} returns a blended color similar to typical photo
+ * editor 'overlay' modes.
+ */
 public class OverlayBlender implements Blender {
 
+	@Override
 	public String getName() {
 		return "Overlay";
 	}
 
+	@Override
 	public int blend(int colorA, int colorB) {
 		int redA = ColorHelper.red(colorA);
 		int greenA = ColorHelper.green(colorA);
@@ -29,8 +35,8 @@ public class OverlayBlender implements Blender {
 	}
 
 	private int process(int a0, int b0) {
-		double a = (double) a0;
-		double b = (double) b0;
+		double a = a0;
+		double b = b0;
 
 		int targetGreater = b > 0.5 ? 1 : 0;
 		int targetLesser = b <= 0.5 ? 1 : 0;

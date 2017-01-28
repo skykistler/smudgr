@@ -11,14 +11,26 @@ import javax.sound.midi.MidiMessage;
 import io.smudgr.extensions.midi.Device;
 import io.smudgr.extensions.midi.Device.DeviceObserver;
 
+/**
+ * Helper class used to test input signals from a MIDI device
+ */
 public class DeviceTest implements DeviceObserver {
 
 	protected SimpleDateFormat dateFormat;
 
+	/**
+	 * Create a new DeviceTest instance
+	 */
 	public DeviceTest() {
 		dateFormat = new SimpleDateFormat("HH:mm:ss");
 	}
 
+	/**
+	 * Start a new Console instance for listening to MIDI
+	 *
+	 * @param args
+	 *            unused
+	 */
 	public static void main(String[] args) {
 		String deviceIndex = selectDevice();
 
@@ -75,10 +87,11 @@ public class DeviceTest implements DeviceObserver {
 		return devices.get(deviceNumber);
 	}
 
+	@Override
 	public void midiInput(MidiMessage message) {
 		byte[] m = message.getMessage();
 		int status = message.getStatus();
-		int channel = (int) (status & 0x00F);
+		int channel = status & 0x00F;
 		String command = getMessageCommand(status);
 		String time = dateFormat.format(new Date());
 
@@ -86,7 +99,7 @@ public class DeviceTest implements DeviceObserver {
 
 		// First byte is the status.
 		for (int i = 1; i < message.getLength(); i++) {
-			int data = (int) (m[i] & 0xFF);
+			int data = m[i] & 0xFF;
 			System.out.print(" " + data);
 		}
 		System.out.println();
@@ -94,47 +107,48 @@ public class DeviceTest implements DeviceObserver {
 
 	/**
 	 * Return the command type from a MIDI status
-	 * 
-	 * @param status
+	 *
+	 * @param command
+	 *            {@code byte}
 	 * @return String
 	 */
-	public String getMessageCommand(int status) {
+	public String getMessageCommand(int command) {
 		// 0x8N (128-143)
-		if (status >= 0x80 && status <= 0x8F) {
+		if (command >= 0x80 && command <= 0x8F) {
 			return "Note Off";
 		}
 
 		// 0x9N (144-159)
-		if (status >= 0x90 && status <= 0x9F) {
+		if (command >= 0x90 && command <= 0x9F) {
 			return "Note On";
 		}
 
 		// 0xAN (160-175)
-		if (status >= 0xA0 && status <= 0xAF) {
+		if (command >= 0xA0 && command <= 0xAF) {
 			return "Polyphonic Aftertouch";
 		}
 
 		// 0xBN (176-191)
-		if (status >= 0xB0 && status <= 0xBF) {
+		if (command >= 0xB0 && command <= 0xBF) {
 			return "Control Change";
 		}
 
 		// 0xCN (192-207)
-		if (status >= 0xC0 && status <= 0xCF) {
+		if (command >= 0xC0 && command <= 0xCF) {
 			return "Program Change";
 		}
 
 		// 0xDN (208-223)
-		if (status >= 0xD0 && status <= 0xDF) {
+		if (command >= 0xD0 && command <= 0xDF) {
 			return "Channel Aftertouch";
 		}
 
 		// 0xEN (224-239)
-		if (status >= 0xE0 && status <= 0xEF) {
+		if (command >= 0xE0 && command <= 0xEF) {
 			return "Pitch Wheel";
 		}
 
-		return "0x" + Integer.toHexString(status);
+		return "0x" + Integer.toHexString(command);
 	}
 
 }

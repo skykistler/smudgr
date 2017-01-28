@@ -49,14 +49,24 @@ public class PixelSort extends Operation {
 	private void sortList(Frame img, PixelIndexList coords) {
 		sortSize = coords.size();
 
+		/*
+		 * If our working array is too small for the given coordinate list, make
+		 * a bigger one
+		 */
 		if (toSort.length < sortSize)
 			toSort = new int[sortSize];
 
+		/*
+		 * Copy the pixels at the given coordinates into our array
+		 */
 		for (i = 0; i < sortSize; i++)
 			toSort[i] = img.pixels[coords.get(i)];
 
 		sort(toSort, 0, sortSize - 1);
 
+		/**
+		 * Copy the results back into our image
+		 */
 		for (i = 0; i < sortSize; i++)
 			img.pixels[coords.get(i)] = toSort[i];
 	}

@@ -5,7 +5,11 @@ import io.smudgr.app.controller.Controller;
 import io.smudgr.engine.Smudge;
 import io.smudgr.engine.alg.Algorithm;
 import io.smudgr.engine.alg.op.ChannelBleed;
+import io.smudgr.engine.param.NumberParameter;
 
+/**
+ *
+ */
 public class ChannelBleedTest extends AppStart {
 
 	/*
@@ -38,6 +42,7 @@ public class ChannelBleedTest extends AppStart {
 	// non-fullscreen window
 	static boolean monitor = true;
 
+	@Override
 	public void buildSmudge() {
 		Smudge smudge = Controller.getInstance().getProject().getSmudge();
 
@@ -50,13 +55,13 @@ public class ChannelBleedTest extends AppStart {
 		// bleed.getParameter("Amount").setValue(3);
 		addAutomator("Animate", bleed.getParameter("Shift Amount"));
 
-		bleed.getParameter("Shift Amount").setContinuous(true);
+		((NumberParameter) bleed.getParameter("Shift Amount")).setContinuous(true);
 
 		smudge.getParameter("Downsample").setValue(1);
 
 	}
 
-	public ChannelBleedTest() {
+	protected ChannelBleedTest() {
 		super(projectPath, sourcePath, outputPath, device, overwriteSmudge, deviceServer);
 
 		fullscreenView(fullscreenDisplay);
@@ -66,6 +71,11 @@ public class ChannelBleedTest extends AppStart {
 		start();
 	}
 
+	/**
+	 *
+	 * @param args
+	 *            unused
+	 */
 	public static void main(String[] args) {
 		new ChannelBleedTest();
 	}

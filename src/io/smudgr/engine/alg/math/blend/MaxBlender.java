@@ -2,17 +2,22 @@ package io.smudgr.engine.alg.math.blend;
 
 import io.smudgr.engine.alg.math.ColorHelper;
 
+/**
+ * The {@link MaxBlender} returns a color with the max red, max green, and max
+ * blue between the two colors.
+ */
 public class MaxBlender implements Blender {
 
+	@Override
 	public String getName() {
 		return "Max Blender";
 	}
 
+	@Override
 	public int blend(int colorA, int colorB) {
 		int redA = ColorHelper.red(colorA);
 		int greenA = ColorHelper.green(colorA);
 		int blueA = ColorHelper.blue(colorA);
-		int alphaA = ColorHelper.alpha(colorA);
 
 		int redB = ColorHelper.red(colorB);
 		int greenB = ColorHelper.green(colorB);

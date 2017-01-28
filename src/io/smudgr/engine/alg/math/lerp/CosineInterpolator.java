@@ -1,5 +1,9 @@
 package io.smudgr.engine.alg.math.lerp;
 
+/**
+ * Cosine interpolation assumes a smooth curve between two points, with deep
+ * peaks and valleys when there are sharp changes in slope.
+ */
 public class CosineInterpolator implements Interpolator {
 
 	@Override

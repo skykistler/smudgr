@@ -1,5 +1,10 @@
 package io.smudgr.engine.alg.math.lerp;
 
+/**
+ * Nearest Neighbor interpolation simply returns the point closest to the bias.
+ * <p>
+ * A bias of <= .5 will return point a, otherwise point b
+ */
 public class NNInterpolator implements Interpolator {
 
 	@Override

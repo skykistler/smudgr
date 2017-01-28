@@ -5,7 +5,7 @@ import io.smudgr.engine.alg.math.blend.AverageBlender;
 import io.smudgr.engine.alg.math.blend.BitwiseAndBlender;
 import io.smudgr.engine.alg.math.blend.BitwiseOrBlender;
 import io.smudgr.engine.alg.math.blend.Blender;
-import io.smudgr.engine.alg.math.blend.ColorBlender;
+import io.smudgr.engine.alg.math.blend.LumaBlender;
 import io.smudgr.engine.alg.math.blend.HueBlender;
 import io.smudgr.engine.alg.math.blend.MaxBlender;
 import io.smudgr.engine.alg.math.blend.MinBlender;
@@ -51,7 +51,7 @@ public class SourceMixer extends Operation {
 		blenders.add(new BitwiseOrBlender());
 		blenders.add(new AverageBlender());
 		blenders.add(new HueBlender());
-		blenders.add(new ColorBlender());
+		blenders.add(new LumaBlender());
 	}
 
 	/**

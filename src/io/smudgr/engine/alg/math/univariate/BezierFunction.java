@@ -1,5 +1,8 @@
 package io.smudgr.engine.alg.math.univariate;
 
+/**
+ * Calculate the Bezier value of a given value
+ */
 public class BezierFunction implements UnivariateFunction {
 
 	@Override

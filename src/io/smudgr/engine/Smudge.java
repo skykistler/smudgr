@@ -12,8 +12,18 @@ import io.smudgr.util.source.AnimatedSource;
 import io.smudgr.util.source.Source;
 import io.smudgr.util.source.SourceSet;
 
+/**
+ * TODO: Refactor soon
+ * <p>
+ * The {@link Smudge} class is a {@link Parametric} {@link Algorithm} container.
+ * The application instance attempts to render the {@link Smudge} at a constant
+ * framerate.
+ */
 public class Smudge extends Parametric implements Source {
-	
+
+	/**
+	 * Project save file identifier
+	 */
 	public static final String PROJECT_MAP_TAG = "smudge";
 
 	private BooleanParameter enabled = new BooleanParameter("Enable", this, true);
@@ -25,6 +35,7 @@ public class Smudge extends Parametric implements Source {
 
 	private volatile Frame lastFrame;
 
+	@Override
 	public void init() {
 		System.out.println("Initializing smudge...");
 
@@ -36,6 +47,7 @@ public class Smudge extends Parametric implements Source {
 		System.out.println("Smudge initialized.");
 	}
 
+	@Override
 	public void update() {
 		if (source != null) {
 			source.update();
@@ -47,6 +59,11 @@ public class Smudge extends Parametric implements Source {
 		}
 	}
 
+	/**
+	 * Render the smudge to the current frame.
+	 *
+	 * @see Smudge#getFrame()
+	 */
 	public void render() {
 		Frame toRender = null;
 
@@ -68,19 +85,38 @@ public class Smudge extends Parametric implements Source {
 		lastFrame = toRender;
 	}
 
+	@Override
 	public Frame getFrame() {
 		return lastFrame;
 	}
 
+	/**
+	 * Gets the current source being operated on by this {@link Smudge}
+	 *
+	 * @return {@link Source}
+	 * @see Smudge#setSource(Source)
+	 */
 	public Source getSource() {
 		return source;
 	}
 
+	/**
+	 * Sets the current source to operate this {@link Smudge} on
+	 *
+	 * @param source
+	 *            {@link Source}
+	 */
 	public void setSource(Source source) {
 		if (source != this)
 			this.source = source;
 	}
 
+	/**
+	 * Add an algorithm to this {@link Smudge}
+	 *
+	 * @param alg
+	 *            {@link Algorithm}
+	 */
 	public void add(Algorithm alg) {
 		if (algorithms.contains(alg))
 			return;
@@ -92,14 +128,16 @@ public class Smudge extends Parametric implements Source {
 		alg.init();
 	}
 
-	public Algorithm getAlgorithm(int id) {
-		return algorithms.get(id);
-	}
-
+	/**
+	 * Gets all of the algorithms contained by this {@link Smudge}
+	 *
+	 * @return {@code ArrayList<Algorithm>}
+	 */
 	public ArrayList<Algorithm> getAlgorithms() {
 		return algorithms;
 	}
 
+	@Override
 	public void save(PropertyMap pm) {
 		super.save(pm);
 
@@ -111,6 +149,7 @@ public class Smudge extends Parametric implements Source {
 		}
 	}
 
+	@Override
 	public void load(PropertyMap pm) {
 		super.load(pm);
 
@@ -122,11 +161,13 @@ public class Smudge extends Parametric implements Source {
 		}
 	}
 
+	@Override
 	public void dispose() {
 		if (source != null)
 			source.dispose();
 	}
 
+	@Override
 	public String getName() {
 		return "Smudge";
 	}

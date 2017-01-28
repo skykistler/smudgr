@@ -1,5 +1,8 @@
 package io.smudgr.engine.alg.math.lerp;
 
+/**
+ * Cubic interpolation assumes a smooth curve between two points
+ */
 public class CubicInterpolator implements Interpolator {
 
 	@Override

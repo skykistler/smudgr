@@ -2,19 +2,19 @@ package io.smudgr.engine.alg.math.univariate;
 
 import io.smudgr.engine.alg.math.ColorHelper;
 
+/**
+ * Calculate the log percentage of an integer color
+ * <p>
+ * log returned as a 0-1 value
+ */
 public class LogFunction implements UnivariateFunction {
 
+	@Override
 	public String getName() {
 		return "Log";
 	}
 
-	/**
-	 * Calculate the log percentage of an integer color
-	 * 
-	 * @param value
-	 *            color in integer format
-	 * @return log returned as a 0-1 value
-	 */
+	@Override
 	public double calculate(double value) {
 		int color = (int) value;
 

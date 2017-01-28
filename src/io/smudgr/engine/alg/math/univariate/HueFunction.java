@@ -2,12 +2,17 @@ package io.smudgr.engine.alg.math.univariate;
 
 import io.smudgr.engine.alg.math.ColorHelper;
 
+/**
+ * Calculate the hue degrees of a given color
+ */
 public class HueFunction implements UnivariateFunction {
 
+	@Override
 	public String getName() {
 		return "Hue";
 	}
 
+	@Override
 	public double calculate(double value) {
 		int color = (int) value;
 
