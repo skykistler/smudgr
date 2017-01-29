@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import io.smudgr.app.project.util.PropertyMap;
 import io.smudgr.engine.alg.bound.Bound;
 import io.smudgr.engine.alg.coord.CoordFunction;
-import io.smudgr.engine.alg.coord.RowCoords;
+import io.smudgr.engine.alg.coord.StraightCoords;
 import io.smudgr.engine.alg.op.Operation;
 import io.smudgr.engine.alg.select.Selector;
 import io.smudgr.engine.element.Element;
@@ -44,7 +44,7 @@ public class Algorithm extends Parametric implements Element {
 			add(new Bound());
 
 		if (coordFunction == null) {
-			RowCoords defaultCoords = new RowCoords();
+			StraightCoords defaultCoords = new StraightCoords();
 			defaultCoords.getParameter("Continuous").setValue(true);
 
 			add(defaultCoords);

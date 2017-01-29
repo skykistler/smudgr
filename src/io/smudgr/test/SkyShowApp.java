@@ -4,8 +4,7 @@ import io.smudgr.app.AppStart;
 import io.smudgr.app.controller.Controller;
 import io.smudgr.engine.Smudge;
 import io.smudgr.engine.alg.Algorithm;
-import io.smudgr.engine.alg.coord.ColumnCoords;
-import io.smudgr.engine.alg.coord.RowCoords;
+import io.smudgr.engine.alg.coord.StraightCoords;
 import io.smudgr.engine.alg.op.ChannelBleed;
 import io.smudgr.engine.alg.op.DataBend;
 import io.smudgr.engine.alg.op.PixelShift;
@@ -44,7 +43,10 @@ public class SkyShowApp extends AppStart {
 		colum_sort_alg.add(pixelsort_range);
 		PixelSort column_sort = new PixelSort();
 		colum_sort_alg.add(column_sort);
-		colum_sort_alg.add(new ColumnCoords());
+		StraightCoords column_coords = new StraightCoords();
+		column_coords.getParameter("Vertical").setValue(true);
+		column_coords.getParameter("Continuous").setValue(false);
+		colum_sort_alg.add(column_coords);
 		pixelsort_range.getParameter("Range Length").setValue(0);
 		bind(pixelsort_range.getParameter("Range Length"));
 		bind(colum_sort_alg.getParameter("Enable"));
@@ -77,7 +79,9 @@ public class SkyShowApp extends AppStart {
 		smudge.add(spectral_alg);
 
 		Algorithm shift_rows = new Algorithm();
-		shift_rows.add(new RowCoords());
+		StraightCoords shift_rows_coords = new StraightCoords();
+		shift_rows_coords.getParameter("Continuous").setValue(false);
+		shift_rows.add(shift_rows_coords);
 		PixelShift pixel_shift_rows = new PixelShift();
 		bind(pixel_shift_rows.getParameter("Reverse"));
 		bind(pixel_shift_rows.getParameter("Intervals"));
@@ -89,7 +93,10 @@ public class SkyShowApp extends AppStart {
 		smudge.add(shift_rows);
 
 		Algorithm shift_columns = new Algorithm();
-		shift_columns.add(new ColumnCoords());
+		StraightCoords shift_column_coords = new StraightCoords();
+		shift_column_coords.getParameter("Vertical").setValue(true);
+		shift_column_coords.getParameter("Continuous").setValue(false);
+		shift_columns.add(shift_column_coords);
 		PixelShift pixel_shift_columns = new PixelShift();
 		bind(pixel_shift_columns.getParameter("Intervals"));
 		bind(pixel_shift_columns.getParameter("Reverse"));
@@ -117,7 +124,7 @@ public class SkyShowApp extends AppStart {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public SkyShowApp() {
 		super(projectPath, sourcePath, outputPath, device, overwriteSmudge, deviceServer);
@@ -133,7 +140,7 @@ public class SkyShowApp extends AppStart {
 
 	/**
 	 * Start application
-	 * 
+	 *
 	 * @param args
 	 *            {@code String[]}
 	 */
