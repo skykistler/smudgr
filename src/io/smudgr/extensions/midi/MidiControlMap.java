@@ -3,10 +3,18 @@ package io.smudgr.extensions.midi;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import io.smudgr.app.controller.Controllable;
 import io.smudgr.app.project.util.PropertyMap;
 
+/**
+ * The {@link MidiControlMap} is used by the {@link MidiExtension} to keep track
+ * of what MIDI inputs are bound to what {@link Controllable} items.
+ */
 public class MidiControlMap {
-	
+
+	/**
+	 * Unique identifier used to store a MIDI bind to the project map.
+	 */
 	public static final String PROJECT_MAP_TAG = "midi";
 
 	private ArrayList<Integer> bound = new ArrayList<Integer>();
@@ -14,7 +22,7 @@ public class MidiControlMap {
 
 	private HashMap<Integer, HashMap<Integer, Boolean>> absoluteBinds = new HashMap<Integer, HashMap<Integer, Boolean>>();
 
-	public void setBind(int control, int channel, int key, boolean absolute) {
+	protected void setBind(int control, int channel, int key, boolean absolute) {
 		HashMap<Integer, Integer> channelMap = midiMap.get(channel);
 
 		if (channelMap == null) {
@@ -29,7 +37,7 @@ public class MidiControlMap {
 			setAbsoluteBind(channel, key);
 	}
 
-	public int getBind(int channel, int key) {
+	protected int getBind(int channel, int key) {
 		HashMap<Integer, Integer> channelMap = midiMap.get(channel);
 
 		if (channelMap == null || !channelMap.containsKey(key))
@@ -38,7 +46,7 @@ public class MidiControlMap {
 		return channelMap.get(key);
 	}
 
-	public void unBind(int control) {
+	protected void unBind(int control) {
 		int[] keyBind = getBind(control);
 
 		if (keyBind == null)
@@ -48,7 +56,7 @@ public class MidiControlMap {
 		bound.remove(control);
 	}
 
-	public boolean hasBind(int control) {
+	protected boolean hasBind(int control) {
 		return bound.contains(control);
 	}
 
@@ -99,7 +107,7 @@ public class MidiControlMap {
 		channelMap.put(key, true);
 	}
 
-	public boolean isAbsoluteBind(int channel, int key) {
+	protected boolean isAbsoluteBind(int channel, int key) {
 		HashMap<Integer, Boolean> channelMap = absoluteBinds.get(channel);
 
 		if (channelMap == null || !channelMap.containsKey(key))

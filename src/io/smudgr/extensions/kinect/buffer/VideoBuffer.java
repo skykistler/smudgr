@@ -10,8 +10,17 @@ import org.openkinect.freenect.VideoHandler;
 import io.smudgr.engine.alg.math.ColorHelper;
 import io.smudgr.util.Frame;
 
+/**
+ * Processes and stores the video information received from the Kinect
+ */
 public class VideoBuffer extends KinectBuffer {
 
+	/**
+	 * Creates a new {@link VideoBuffer} with the given Kinect {@link Device}
+	 *
+	 * @param dev
+	 *            {@link Device}
+	 */
 	public VideoBuffer(Device dev) {
 		super(dev);
 	}
@@ -31,18 +40,19 @@ public class VideoBuffer extends KinectBuffer {
 
 	/*-
 	 * Need to remember to convert from RGB to the smudgr-specific encoding.
-	 * 
+	 *
 	 * 1) TByteArrayList needs to reuse memory and reset each processByteBuffers
 	 * call.
-	 * 
+	 *
 	 * 2) Reading ByteBuffer directly instead of copying into intermediate
-	 * array buffer 
-	 * 
+	 * array buffer
+	 *
 	 * 3) InputStream is used to convert bytes -> BufferedImage. It needs to be <reset> every time
 	 * we are done using it, so we don't waste time making the same sized InputStream.
-	 * 
+	 *
 	 */
 
+	@Override
 	protected void processByteBuffer(FrameMode mode, ByteBuffer frame, int timestamp) {
 
 		// byte[] imgData = ((DataBufferByte)

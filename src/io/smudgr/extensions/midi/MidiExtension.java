@@ -8,6 +8,7 @@ import javax.sound.midi.MidiMessage;
 import io.smudgr.api.ApiMessage;
 import io.smudgr.app.controller.Controllable;
 import io.smudgr.app.controller.Controller;
+import io.smudgr.app.project.Project;
 import io.smudgr.app.project.ProjectItem;
 import io.smudgr.app.project.util.PropertyMap;
 import io.smudgr.engine.param.Parameter;
@@ -25,8 +26,13 @@ import io.smudgr.extensions.midi.messages.StartMessage;
 import io.smudgr.extensions.midi.messages.StopMessage;
 import io.smudgr.extensions.midi.tcp.DeviceServer;
 
+/**
+ * The {@link MidiExtension} provides functionality for binding
+ * {@link Controllable} items to an arbitrary MIDI controller input.
+ */
 public class MidiExtension implements ControllerExtension, DeviceObserver {
 
+	@Override
 	public String getName() {
 		return "MIDI";
 	}
@@ -42,6 +48,9 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 	private int lastChannel = -1;
 	private int lastKeyPressed = -1;
 
+	/**
+	 * Initialize the {@link MidiExtension}
+	 */
 	public MidiExtension() {
 		devices = new ArrayList<Device>();
 		midiMap = new MidiControlMap();
@@ -57,22 +66,36 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 		messageStrategies.put(0xFF, new ResetMessage());
 	}
 
+	@Override
 	public void init() {
 		timingCalculator = new TimingCalculator();
 	}
 
+	@Override
 	public void update() {
 
 	}
 
+	@Override
 	public void stop() {
 
 	}
 
+	@Override
 	public void sendMessage(ApiMessage message) {
 
 	}
 
+	/**
+	 * Binds to a given device and optionally starts a {@link DeviceServer} to
+	 * broadcast messages from the given device across the network.
+	 *
+	 * @param deviceName
+	 *            Fully-qualified device name that the system currently has the
+	 *            device registered to.
+	 * @param startServer
+	 *            optionally start a {@link DeviceServer}
+	 */
 	public void bindDevice(String deviceName, boolean startServer) {
 		ArrayList<DeviceObserver> observers = new ArrayList<DeviceObserver>();
 		observers.add(this);
@@ -92,6 +115,18 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 		}
 	}
 
+	/**
+	 * Waits and listens for the user to trigger an input, and binds that input
+	 * to the given {@link Controllable} id
+	 *
+	 * @param control_id
+	 *            {@link Project#getId(ProjectItem)}
+	 * @param absolute
+	 *            {@code true} if the input should be an absolute value, such as
+	 *            a slider, or relative, such as a continuous knob
+	 * @param ignoreKey
+	 *            optional key to ignore accidental user input from
+	 */
 	public void waitForBind(int control_id, boolean absolute, int ignoreKey) {
 		if (devices.size() == 0)
 			return;
@@ -145,6 +180,7 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 		}
 	}
 
+	@Override
 	public void midiInput(MidiMessage message) {
 		int status = message.getStatus();
 
@@ -222,11 +258,13 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 		}
 	}
 
+	@Override
 	public void save(PropertyMap pm) {
 		for (PropertyMap mapping : midiMap.getBinds())
 			pm.add(mapping);
 	}
 
+	@Override
 	public void load(PropertyMap pm) {
 		ArrayList<PropertyMap> mappings = pm.getChildren(MidiControlMap.PROJECT_MAP_TAG);
 

@@ -14,9 +14,18 @@ import java.util.Enumeration;
 import io.smudgr.extensions.midi.Device.DeviceObserver;
 import io.smudgr.test.DeviceTest;
 
+/**
+ * The {@link DeviceClient} connects to a foreign {@link DeviceServer} and
+ * notifies a given {@link DeviceObserver} of messages broadcasted by the
+ * server.
+ */
 public class DeviceClient {
 
 	private static final boolean DEBUG = true;
+
+	/**
+	 * Used to test successful connection to a {@link DeviceServer}
+	 */
 	public static final String CONNECT_HELLO = "smudgr";
 
 	private DeviceObserver observer;
@@ -26,10 +35,26 @@ public class DeviceClient {
 	private DataInputStream server;
 	private ServerListener listener;
 
+	/**
+	 * Create a new {@link DeviceClient} to notify the given
+	 * {@link DeviceObserver}
+	 *
+	 * @param observer
+	 *            {@link DeviceObserver}
+	 */
 	public DeviceClient(DeviceObserver observer) {
 		this(observer, null);
 	}
 
+	/**
+	 * Create a new {@link DeviceClient} to notify the given
+	 * {@link DeviceObserver} with messages from the given IP address
+	 *
+	 * @param observer
+	 *            {@link DeviceObserver}
+	 * @param ip
+	 *            {@link String}
+	 */
 	public DeviceClient(DeviceObserver observer, String ip) {
 		this.observer = observer;
 		this.ip = ip;
@@ -123,6 +148,9 @@ public class DeviceClient {
 		return false;
 	}
 
+	/**
+	 * Stops the {@link DeviceClient}
+	 */
 	public void stop() {
 		listener.stop();
 
@@ -134,10 +162,6 @@ public class DeviceClient {
 		}
 	}
 
-	public String getServerIP() {
-		return ip;
-	}
-
 	private class ServerListener implements Runnable {
 
 		private volatile boolean listening, waiting;
@@ -147,6 +171,7 @@ public class DeviceClient {
 			(new Thread(this)).start();
 		}
 
+		@Override
 		public void run() {
 			while (waiting) {
 				if (ip == null)
@@ -180,6 +205,12 @@ public class DeviceClient {
 		}
 	}
 
+	/**
+	 * Unit test
+	 *
+	 * @param args
+	 *            unused
+	 */
 	public static void main(String[] args) {
 		new DeviceClient(new DeviceTest());
 	}

@@ -10,6 +10,11 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.Transmitter;
 
+/**
+ * The {@link Device} class represents a bound MIDI device.
+ * {@link DeviceObserver} implementors can be added to a {@link Device} to
+ * listen for input.
+ */
 public class Device {
 
 	private static ArrayList<Info> boundDevices = new ArrayList<Info>();
@@ -17,6 +22,14 @@ public class Device {
 	private ArrayList<DeviceObserver> observers;
 	private MidiDevice device;
 
+	/**
+	 * Connect to a {@link Device} with the given fully-qualified system name.
+	 *
+	 * @param name
+	 *            fully-qualified device name
+	 * @param observers
+	 *            list of observers to broadcast updates to
+	 */
 	public Device(String name, ArrayList<DeviceObserver> observers) {
 		this.observers = observers;
 
@@ -58,6 +71,7 @@ public class Device {
 			}
 	}
 
+	@Override
 	public String toString() {
 		if (device == null)
 			return "no device";
@@ -65,17 +79,25 @@ public class Device {
 			return device.getDeviceInfo().getName();
 	}
 
+	/**
+	 * The {@link DeviceReceiver} uses the standard Java library
+	 * {@link Receiver} interface to listen to {@link MidiMessage} packets from
+	 * the {@link Device}
+	 */
 	public class DeviceReceiver implements Receiver {
 
+		@Override
 		public void send(MidiMessage message, long timeStamp) {
 			for (DeviceObserver observer : observers)
 				observer.midiInput(message);
 		}
 
+		@Override
 		public String toString() {
 			return device.getDeviceInfo().getName();
 		}
 
+		@Override
 		public void close() {
 		}
 
@@ -83,7 +105,7 @@ public class Device {
 
 	/**
 	 * Return a list of device names.
-	 * 
+	 *
 	 * @return String[]
 	 */
 	public static ArrayList<String> getAvailableDevices() {
@@ -108,7 +130,18 @@ public class Device {
 		return devices;
 	}
 
+	/**
+	 * A {@link DeviceObserver} is notified of {@link Device} messages by
+	 * via the {@link DeviceObserver#midiInput(MidiMessage)} function.
+	 */
 	public interface DeviceObserver {
+		/**
+		 * This method is called when a {@link MidiMessage} is received from an
+		 * observed {@link Device}
+		 *
+		 * @param message
+		 *            {@link MidiMessage}
+		 */
 		public void midiInput(MidiMessage message);
 	}
 }

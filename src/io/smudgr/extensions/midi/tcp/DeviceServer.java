@@ -13,15 +13,29 @@ import javax.sound.midi.MidiMessage;
 import io.smudgr.extensions.midi.Device;
 import io.smudgr.extensions.midi.Device.DeviceObserver;
 
+/**
+ * The {@link DeviceServer} listens to connections and broadcasts MIDI messages
+ * to clients.
+ */
 public class DeviceServer implements DeviceObserver {
 
+	/**
+	 * Default port to listen on.
+	 */
 	public static final int SMUDGR_PORT = 45454;
+
+	/**
+	 * Default response to confirm successful connection.
+	 */
 	public static final String CONNECT_RESPONSE = "connected";
 
 	private ServerSocket server;
 	private ClientListener listener;
 	private ArrayList<DataOutputStream> clients = new ArrayList<DataOutputStream>();
 
+	/**
+	 * Create and start a new {@link DeviceServer}
+	 */
 	public DeviceServer() {
 		try {
 			server = new ServerSocket(SMUDGR_PORT);
@@ -35,6 +49,7 @@ public class DeviceServer implements DeviceObserver {
 		listener.start();
 	}
 
+	@Override
 	public void midiInput(MidiMessage message) {
 		byte[] byteMessage = message.getMessage();
 
@@ -49,6 +64,9 @@ public class DeviceServer implements DeviceObserver {
 		}
 	}
 
+	/**
+	 * Stops the {@link DeviceServer} and closes all connections
+	 */
 	public void stop() {
 		listener.stop();
 
@@ -76,6 +94,7 @@ public class DeviceServer implements DeviceObserver {
 			(new Thread(this)).start();
 		}
 
+		@Override
 		public void run() {
 			while (listening) {
 				Socket client;
@@ -102,6 +121,12 @@ public class DeviceServer implements DeviceObserver {
 
 	}
 
+	/**
+	 * Unit test
+	 * 
+	 * @param args
+	 *            unused
+	 */
 	public static void main(String[] args) {
 		ArrayList<DeviceObserver> observers = new ArrayList<DeviceObserver>();
 		observers.add(new DeviceServer());

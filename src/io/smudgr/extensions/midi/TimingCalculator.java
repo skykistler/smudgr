@@ -2,6 +2,11 @@ package io.smudgr.extensions.midi;
 
 import io.smudgr.app.controller.Controller;
 
+/**
+ * The {@link TimingCalculator} is used by the {@link MidiExtension} to
+ * calculate the BPM of a connected controller based on the frequency of MIDI
+ * clock updates.
+ */
 public class TimingCalculator {
 	private final long nsInMinute = 60l * 1000000000l;
 
@@ -10,6 +15,10 @@ public class TimingCalculator {
 	private double avgBPM = 0;
 	private int ticks;
 
+	/**
+	 * Signal to the {@link TimingCalculator} that a MIDI clock update message
+	 * has been received.
+	 */
 	public void tick() {
 		long now = System.nanoTime();
 		long unit = now - lastTick;

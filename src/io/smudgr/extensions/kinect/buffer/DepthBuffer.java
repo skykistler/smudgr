@@ -11,10 +11,19 @@ import org.openkinect.freenect.FrameMode;
 
 import io.smudgr.util.Frame;
 
+/**
+ * Processes and stores the depth information received from the Kinect
+ */
 public class DepthBuffer extends KinectBuffer {
 
 	BufferedImage bImage;
 
+	/**
+	 * Create a new {@link DepthBuffer} using the given Kinect {@link Device}
+	 *
+	 * @param dev
+	 *            {@link Device}
+	 */
 	public DepthBuffer(Device dev) {
 		super(dev);
 		bImage = new BufferedImage(640, 480, BufferedImage.TYPE_USHORT_GRAY);
