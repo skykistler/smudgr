@@ -4,13 +4,13 @@ import java.io.File;
 import java.util.ArrayList;
 
 import io.smudgr.app.controller.Controller;
+import io.smudgr.app.controller.ControllerExtension;
 import io.smudgr.app.project.util.IdProvider;
 import io.smudgr.app.project.util.ProjectLoader;
 import io.smudgr.app.project.util.ProjectSaver;
 import io.smudgr.app.project.util.PropertyMap;
 import io.smudgr.engine.Smudge;
 import io.smudgr.engine.param.ParameterObserverNotifier;
-import io.smudgr.extensions.ControllerExtension;
 import io.smudgr.util.DisposedFrameProvider;
 
 /**

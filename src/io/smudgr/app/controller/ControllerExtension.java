@@ -1,7 +1,6 @@
-package io.smudgr.extensions;
+package io.smudgr.app.controller;
 
 import io.smudgr.api.ApiMessage;
-import io.smudgr.app.controller.Controller;
 import io.smudgr.app.project.Project;
 import io.smudgr.app.project.util.PropertyMap;
 

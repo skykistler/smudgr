@@ -15,7 +15,6 @@ import io.smudgr.app.threads.RenderThread;
 import io.smudgr.app.threads.UpdateThread;
 import io.smudgr.app.threads.ViewThread;
 import io.smudgr.app.view.View;
-import io.smudgr.extensions.ControllerExtension;
 import io.smudgr.util.Reflect;
 import io.smudgr.util.output.FrameOutput;
 

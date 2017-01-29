@@ -10,7 +10,7 @@ public interface ProjectItem {
 
 	/**
 	 * Get the currently loaded {@link Project}
-	 * 
+	 *
 	 * @return {@link Project}
 	 */
 	public default Project getProject() {
@@ -23,10 +23,10 @@ public interface ProjectItem {
 	 * Implementers of this method <b>must</b> call the parent
 	 * {@code ProjectItem.save()} method in order for this {@link ProjectItem}
 	 * to persist correctly.
-	 * 
+	 *
 	 * @param pm
 	 *            The property map to save to.
-	 * 
+	 *
 	 * @see ProjectItem#load(PropertyMap)
 	 */
 	public default void save(PropertyMap pm) {
@@ -39,10 +39,10 @@ public interface ProjectItem {
 	 * Implementers of this method <b>must</b> call the parent
 	 * {@code ProjectItem.load()} method in order for this {@link ProjectItem}
 	 * to load correctly.
-	 * 
+	 *
 	 * @param pm
 	 *            The property map to load from.
-	 * 
+	 *
 	 * @see ProjectItem#save(PropertyMap)
 	 */
 	public default void load(PropertyMap pm) {

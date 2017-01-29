@@ -5,8 +5,8 @@ import java.io.IOException;
 import io.smudgr.api.ApiInvoker;
 import io.smudgr.api.ApiMessage;
 import io.smudgr.app.controller.Controller;
+import io.smudgr.app.controller.ControllerExtension;
 import io.smudgr.app.project.util.PropertyMap;
-import io.smudgr.extensions.ControllerExtension;
 import io.smudgr.extensions.cef.util.CommandServer;
 
 /**
