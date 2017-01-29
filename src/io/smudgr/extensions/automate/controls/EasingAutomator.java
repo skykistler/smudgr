@@ -6,8 +6,13 @@ import io.smudgr.engine.alg.math.univariate.UnivariateFunction;
 import io.smudgr.engine.param.NumberParameter;
 import io.smudgr.engine.param.Parameter;
 
+/**
+ * The {@link EasingAutomator} attempts to smoothen sharp value changes by
+ * easing into a base state after user interaction.
+ */
 public class EasingAutomator implements AutomatorControl {
 
+	@Override
 	public String getName() {
 		return "Ease";
 	}
@@ -20,10 +25,12 @@ public class EasingAutomator implements AutomatorControl {
 	private double step, initialVal, lastVal;
 	private double tick = 0;
 
+	@Override
 	public void init() {
 		lastVal = parameter.getValue() - parameter.getMin();
 	}
 
+	@Override
 	public void update() {
 		step += speed;
 
@@ -50,29 +57,36 @@ public class EasingAutomator implements AutomatorControl {
 
 	}
 
+	@Override
 	public void inputValue(int value) {
 	}
 
+	@Override
 	public void inputOn() {
 	}
 
+	@Override
 	public void inputOff() {
 	}
 
+	@Override
 	public void increment() {
 		speed += increment;
 	}
 
+	@Override
 	public void decrement() {
 		speed -= increment;
 		if (speed < 0)
 			speed = 0;
 	}
 
+	@Override
 	public Parameter getParameter() {
 		return parameter;
 	}
 
+	@Override
 	public void save(PropertyMap pm) {
 		int parameterId = getProject().getId(parameter);
 
@@ -81,6 +95,7 @@ public class EasingAutomator implements AutomatorControl {
 		pm.setAttribute("speed", speed);
 	}
 
+	@Override
 	public void load(PropertyMap pm) {
 		if (pm.hasAttribute("increment"))
 			increment = Double.parseDouble(pm.getAttribute("increment"));

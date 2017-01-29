@@ -4,8 +4,17 @@ import io.smudgr.app.project.util.PropertyMap;
 import io.smudgr.engine.param.NumberParameter;
 import io.smudgr.engine.param.Parameter;
 
+/**
+ * The {@link StepAutomator} simply changes a {@link NumberParameter} by it's
+ * {@link NumberParameter#getStep()} every tick.
+ * <p>
+ * The {@link NumberParameter#getStep()} is multiplied by a controllable speed
+ * property, which is adjusted with {@link StepAutomator#increment()} and
+ * {@link StepAutomator#decrement()}
+ */
 public class StepAutomator implements AutomatorControl {
 
+	@Override
 	public String getName() {
 		return "Animate";
 	}
@@ -15,10 +24,12 @@ public class StepAutomator implements AutomatorControl {
 
 	private double increment = .05, speed = increment;
 
+	@Override
 	public void init() {
 
 	}
 
+	@Override
 	public void update() {
 		if (!run)
 			return;
@@ -30,34 +41,41 @@ public class StepAutomator implements AutomatorControl {
 		parameter.setValue(val);
 	}
 
+	@Override
 	public void inputValue(int value) {
 
 	}
 
+	@Override
 	public void inputOn() {
 		run = true;
 	}
 
+	@Override
 	public void inputOff() {
 		run = false;
 	}
 
+	@Override
 	public void increment() {
 		run = true;
 
 		speed += increment;
 	}
 
+	@Override
 	public void decrement() {
 		speed -= increment;
 		if (speed < 0)
 			speed = 0;
 	}
 
+	@Override
 	public Parameter getParameter() {
 		return parameter;
 	}
 
+	@Override
 	public void save(PropertyMap pm) {
 		int parameterId = getProject().getId(parameter);
 
@@ -67,6 +85,7 @@ public class StepAutomator implements AutomatorControl {
 		pm.setAttribute("run", run);
 	}
 
+	@Override
 	public void load(PropertyMap pm) {
 		if (pm.hasAttribute("increment"))
 			increment = Double.parseDouble(pm.getAttribute("increment"));

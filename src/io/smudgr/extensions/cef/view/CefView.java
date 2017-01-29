@@ -29,6 +29,11 @@ import io.smudgr.extensions.cef.util.CefQueryHandler;
 import io.smudgr.extensions.cef.util.DialogHandler;
 import io.smudgr.util.Frame;
 
+/**
+ * The {@link CefView} is a {@link View} that represents a CEF instance. Adding
+ * this view to the current application instance will attempt to start a CEF
+ * instance.
+ */
 public class CefView extends JFrame implements View {
 
 	private boolean debug;
@@ -40,6 +45,12 @@ public class CefView extends JFrame implements View {
 	private CefBrowser cefBrowser;
 	private Component cefBrowserUI;
 
+	/**
+	 * Start a new CefView
+	 *
+	 * @param debug
+	 *            if {@code true}, host a DevTools instance on port 54321
+	 */
 	public CefView(boolean debug) {
 		super("smudgr");
 		this.debug = debug;
@@ -160,10 +171,6 @@ public class CefView extends JFrame implements View {
 		cefBrowser = cefClient.createBrowser("smudgr://ui/index.html", false, false);
 
 		cefBrowserUI = cefBrowser.getUIComponent();
-	}
-
-	public RenderFrame getRenderFrame() {
-		return renderFrame;
 	}
 
 	@Override

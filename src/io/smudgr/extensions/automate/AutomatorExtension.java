@@ -5,12 +5,19 @@ import java.util.HashMap;
 
 import io.smudgr.api.ApiMessage;
 import io.smudgr.app.project.util.PropertyMap;
+import io.smudgr.engine.param.Parameter;
 import io.smudgr.extensions.ControllerExtension;
 import io.smudgr.extensions.automate.controls.AutomatorControl;
 import io.smudgr.util.Reflect;
 
+/**
+ * The {@link AutomatorExtension} provides functionality for automatically
+ * controlling a {@link Parameter} using any {@link AutomatorControl}
+ * strategies.
+ */
 public class AutomatorExtension implements ControllerExtension {
 
+	@Override
 	public String getName() {
 		return "Automator";
 	}
@@ -18,24 +25,37 @@ public class AutomatorExtension implements ControllerExtension {
 	private HashMap<String, Class<?>> automatorTypes;
 	private ArrayList<AutomatorControl> automators = new ArrayList<AutomatorControl>();
 
+	@Override
 	public void init() {
 		for (AutomatorControl automator : automators)
 			automator.init();
 	}
 
+	@Override
 	public void update() {
 		for (AutomatorControl automator : automators)
 			automator.update();
 	}
 
+	@Override
 	public void stop() {
 
 	}
 
+	@Override
 	public void sendMessage(ApiMessage message) {
 
 	}
 
+	/**
+	 * Add an {@link AutomatorControl} to the extension.
+	 *
+	 * @param type
+	 *            Fully-qualified type name of automator to add
+	 * @param properties
+	 *            State information to pass to the new automator
+	 * @return {@link AutomatorControl}
+	 */
 	public AutomatorControl add(String type, PropertyMap properties) {
 		AutomatorControl control = getNewAutomator(type);
 
@@ -52,6 +72,7 @@ public class AutomatorExtension implements ControllerExtension {
 		return control;
 	}
 
+	@Override
 	public void save(PropertyMap pm) {
 		for (AutomatorControl automator : automators) {
 			PropertyMap map = new PropertyMap(AutomatorControl.PROJECT_MAP_TAG);
@@ -65,6 +86,7 @@ public class AutomatorExtension implements ControllerExtension {
 		}
 	}
 
+	@Override
 	public void load(PropertyMap pm) {
 		reflectAutomators();
 

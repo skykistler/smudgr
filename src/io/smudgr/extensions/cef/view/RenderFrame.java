@@ -13,10 +13,19 @@ import javax.swing.JFrame;
 import io.smudgr.app.view.Window;
 import io.smudgr.util.Frame;
 
+/**
+ * Deprecated hardware accelerated window meant to sit on top of the CEF
+ * instance and render smudgr.
+ */
 public class RenderFrame extends Window {
 
 	private static RenderFrame instance;
 
+	/**
+	 * Gets the current {@link RenderFrame} instance
+	 *
+	 * @return {@link RenderFrame}
+	 */
 	public static RenderFrame getInstance() {
 		return instance;
 	}
@@ -27,6 +36,12 @@ public class RenderFrame extends Window {
 	private int offsetX, offsetY;
 	private int viewWidth, viewHeight;
 
+	/**
+	 * Create a new {@link RenderFrame} for the given window
+	 *
+	 * @param parent
+	 *            {@link JFrame}
+	 */
 	public RenderFrame(JFrame parent) {
 		instance = this;
 
@@ -39,10 +54,12 @@ public class RenderFrame extends Window {
 		setFocusableWindowState(false);
 
 		addWindowListener(new WindowAdapter() {
+			@Override
 			public void windowActivated(WindowEvent e) {
 				parent.requestFocus();
 			}
 
+			@Override
 			public void windowDeactivated(WindowEvent e) {
 				if (e.getOppositeWindow() == parent)
 					parent.requestFocus();
@@ -50,11 +67,15 @@ public class RenderFrame extends Window {
 		});
 	}
 
+	/**
+	 * Starts the {@link RenderFrame}
+	 */
 	public void start() {
 		// setVisible(true);
 		// createBufferStrategy(2);
 	}
 
+	@Override
 	public void update(Frame frame) {
 		Frame lastFrame = currentFrame;
 
@@ -96,16 +117,23 @@ public class RenderFrame extends Window {
 		}
 	}
 
+	@Override
 	public void stop() {
 		dispose();
 	}
 
+	/**
+	 * Determine if the {@link RenderFrame} should be shown
+	 */
 	public void updateIsVisible() {
 		boolean visible = parent.isActive() && currentFrame != null;
 		if (isVisible() != visible)
 			setVisible(visible);
 	}
 
+	/**
+	 * Update the size of the {@link RenderFrame}
+	 */
 	public void updateDimensions() {
 		updateIsVisible();
 		if (!isVisible())
@@ -140,18 +168,42 @@ public class RenderFrame extends Window {
 		setLocation(x, y);
 	}
 
+	/**
+	 * Sets the X offset of this {@link RenderFrame}
+	 *
+	 * @param offsetX
+	 *            int
+	 */
 	public void setX(int offsetX) {
 		this.offsetX = offsetX;
 	}
 
+	/**
+	 * Sets the Y offset of this {@link RenderFrame}
+	 *
+	 * @param offsetY
+	 *            int
+	 */
 	public void setY(int offsetY) {
 		this.offsetY = offsetY;
 	}
 
+	/**
+	 * Set the width of this {@link RenderFrame}
+	 *
+	 * @param width
+	 *            int
+	 */
 	public void setWidth(int width) {
 		viewWidth = width;
 	}
 
+	/**
+	 * Set the height of this {@link RenderFrame}
+	 *
+	 * @param height
+	 *            int
+	 */
 	public void setHeight(int height) {
 		viewHeight = height;
 	}

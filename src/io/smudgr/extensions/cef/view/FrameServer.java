@@ -1,7 +1,6 @@
 package io.smudgr.extensions.cef.view;
 
 import java.net.InetSocketAddress;
-import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
@@ -12,25 +11,44 @@ import org.java_websocket.server.WebSocketServer;
 
 import io.smudgr.util.Frame;
 
+/**
+ * The {@link FrameServer} provides a {@link WebSocketServer} for streaming
+ * video data out of smudgr.
+ */
 public class FrameServer extends WebSocketServer {
 
 	private volatile Frame frame = null;
 	private volatile boolean dimensionsChanged;
 	private volatile ArrayList<WebSocket> activeSockets = new ArrayList<WebSocket>();
 
-	public volatile boolean writing;
+	private volatile boolean writing;
 
 	private ByteBuffer buffer = null;
 	private int bufferSize, i, color;
 
-	public FrameServer() throws UnknownHostException {
+	/**
+	 * Create a new {@link FrameServer} on any open port
+	 */
+	public FrameServer() {
 		this(0);
 	}
 
-	public FrameServer(int port) throws UnknownHostException {
+	/**
+	 * Create a new {@link FrameServer} on the given port
+	 *
+	 * @param port
+	 *            Desired port to start the server on
+	 */
+	public FrameServer(int port) {
 		super(new InetSocketAddress(port));
 	}
 
+	/**
+	 * Sets the current {@link Frame} to stream
+	 *
+	 * @param f
+	 *            current {@link Frame}
+	 */
 	public void setFrame(Frame f) {
 		Frame resized = f.fitToSize(600, 600, false);
 
@@ -49,6 +67,9 @@ public class FrameServer extends WebSocketServer {
 		}
 	}
 
+	/**
+	 * Write out the current {@link Frame} to all clients
+	 */
 	public synchronized void writeFrame() {
 		if (writing || frame == null || activeSockets.size() == 0)
 			return;
@@ -89,6 +110,7 @@ public class FrameServer extends WebSocketServer {
 		}
 	}
 
+	@Override
 	public synchronized void onOpen(WebSocket arg0, ClientHandshake arg1) {
 		activeSockets.add(arg0);
 
@@ -96,15 +118,18 @@ public class FrameServer extends WebSocketServer {
 		writeFrame();
 	}
 
+	@Override
 	public void onMessage(WebSocket arg0, String arg1) {
 		updateSize();
 		writeFrame();
 	}
 
+	@Override
 	public synchronized void onClose(WebSocket arg0, int arg1, String arg2, boolean arg3) {
 		activeSockets.remove(arg0);
 	}
 
+	@Override
 	public void onError(WebSocket arg0, Exception arg1) {
 	}
 

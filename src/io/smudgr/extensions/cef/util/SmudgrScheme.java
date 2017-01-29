@@ -9,8 +9,19 @@ import org.cef.network.CefResponse;
 
 import io.smudgr.util.SmudgrJar;
 
+/**
+ * The {@link SmudgrScheme} provides a protocol to allow CEF to load assets from
+ * the smudgr build
+ */
 public class SmudgrScheme extends CefResourceHandlerAdapter {
+	/**
+	 * The scheme:// tag to use
+	 */
 	public static final String scheme = "smudgr";
+
+	/**
+	 * The base path to serve files from
+	 */
 	public static final String basePath = "io/smudgr/ui/";
 
 	private byte[] data;
@@ -30,29 +41,29 @@ public class SmudgrScheme extends CefResourceHandlerAdapter {
 
 		if (data != null)
 			switch (ext) {
-			case "html":
-				mime_type = "text/html";
-				break;
+				case "html":
+					mime_type = "text/html";
+					break;
 
-			case "png":
-				mime_type = "image/png";
-				break;
+				case "png":
+					mime_type = "image/png";
+					break;
 
-			case "gif":
-				mime_type = "image/gif";
-				break;
+				case "gif":
+					mime_type = "image/gif";
+					break;
 
-			case "js":
-				mime_type = "application/javascript";
-				break;
+				case "js":
+					mime_type = "application/javascript";
+					break;
 
-			case "css":
-				mime_type = "application/css";
-				break;
+				case "css":
+					mime_type = "application/css";
+					break;
 
-			default:
-				mime_type = "application/octet-stream";
-				break;
+				default:
+					mime_type = "application/octet-stream";
+					break;
 			}
 		else {
 			String html = "<html><head><title>Error 404</title></head>";

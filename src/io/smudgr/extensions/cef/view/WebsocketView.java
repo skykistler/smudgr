@@ -1,7 +1,6 @@
 package io.smudgr.extensions.cef.view;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 
 import io.smudgr.app.controller.Controller;
 import io.smudgr.app.view.View;
@@ -22,12 +21,8 @@ public class WebsocketView implements View {
 
 	@Override
 	public void start() {
-		try {
-			server = new FrameServer(8887);
-			server.start();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
+		server = new FrameServer(8887);
+		server.start();
 	}
 
 	@Override
