@@ -22,13 +22,13 @@ import io.smudgr.util.DisposedFrameProvider;
  * and composition of user-configured {@link Smudge} components.
  * <p>
  * Users are meant to load a single project at a time and treat a project as a
- * unified workspace. The composition of the {@link Project} is still subject to
- * change, until a definitive smudge building process is decided upon.
+ * unified workspace. The {@link Project} contains loaded and configured
+ * smudges, which can be added to the rack any number of times in any sequence.
  * <p>
  * The {@link Project} uses a {@link PropertyMap} structure to record a
  * normalized model of itself. The {@link PropertyMap} is persisted to and
- * loaded from an XML file with a ".smudge" extension.
- * 
+ * loaded from an XML file with the ".sproj" extension.
+ *
  * @see Smudge
  * @see ProjectLoader
  * @see ProjectSaver
@@ -40,7 +40,7 @@ public class Project {
 	 * <p>
 	 * Currently set to: {@value}
 	 */
-	public static final String PROJECT_EXTENSION = ".smudge";
+	public static final String PROJECT_EXTENSION = ".sproj";
 
 	private IdProvider idProvider;
 	private ComponentLibrary componentLibrary;
@@ -65,7 +65,7 @@ public class Project {
 
 	/**
 	 * Initialize the project which initializes the {@link Smudge}..
-	 * 
+	 *
 	 * @see Smudge#init()
 	 */
 	public void init() {
@@ -74,7 +74,7 @@ public class Project {
 
 	/**
 	 * Update the project, which updates the current {@link Smudge}
-	 * 
+	 *
 	 * @see Smudge#update()
 	 */
 	public void update() {
@@ -85,10 +85,10 @@ public class Project {
 	/**
 	 * Save the project to the given {@link PropertyMap}. Recursively saves the
 	 * entire {@link ProjectItem} hierarchy.
-	 * 
+	 *
 	 * @param pm
 	 *            The property map to save to.
-	 * 
+	 *
 	 * @see ProjectSaver
 	 * @see Project#load(PropertyMap)
 	 */
@@ -110,10 +110,10 @@ public class Project {
 	/**
 	 * Load the project from the given {@link PropertyMap}. Recursively loads
 	 * the entire {@link ProjectItem} hierarchy.
-	 * 
+	 *
 	 * @param pm
 	 *            The property map to load from.
-	 * 
+	 *
 	 * @see ProjectLoader
 	 * @see Project#save(PropertyMap)
 	 */
@@ -155,7 +155,7 @@ public class Project {
 
 	/**
 	 * Set the path to save the project file to.
-	 * 
+	 *
 	 * @param path
 	 *            Project path.
 	 * @see Project#setOutputPath(String)
@@ -180,7 +180,7 @@ public class Project {
 
 	/**
 	 * Set the location to output recorded files to.
-	 * 
+	 *
 	 * @param path
 	 *            Output path location.
 	 * @see Project#setProjectPath(String)
@@ -209,10 +209,10 @@ public class Project {
 	/**
 	 * Add a {@link ProjectItem} to the {@link Project}. This method should be
 	 * used for items that do not yet have an ID for this project.
-	 * 
+	 *
 	 * @param item
 	 *            {@link ProjectItem}
-	 * 
+	 *
 	 * @see Project#put(ProjectItem, int)
 	 * @see Project#remove(ProjectItem)
 	 */
@@ -223,12 +223,12 @@ public class Project {
 	/**
 	 * Put a {@link ProjectItem} at the given ID. This method should be used to
 	 * register items that already have a project ID for this {@link Project}.
-	 * 
+	 *
 	 * @param item
 	 *            {@link ProjectItem}
 	 * @param id
 	 *            {@code int} Positive unique ID.
-	 * 
+	 *
 	 * @see Project#add(ProjectItem)
 	 */
 	public void put(ProjectItem item, int id) {
@@ -237,10 +237,10 @@ public class Project {
 
 	/**
 	 * Remove a {@link ProjectItem} from the project.
-	 * 
+	 *
 	 * @param item
 	 *            {@link ProjectItem}
-	 * 
+	 *
 	 * @see Project#add(ProjectItem)
 	 */
 	public void remove(ProjectItem item) {
@@ -249,7 +249,7 @@ public class Project {
 
 	/**
 	 * Check whether the project contains a given {@link ProjectItem}
-	 * 
+	 *
 	 * @param item
 	 *            {@link ProjectItem}
 	 * @return {@code true} if the project contains this item, {@code false} if
@@ -261,11 +261,11 @@ public class Project {
 
 	/**
 	 * Get the ID of a given {@link ProjectItem}
-	 * 
+	 *
 	 * @param item
 	 *            {@link ProjectItem}
 	 * @return {@code int} id
-	 * 
+	 *
 	 * @see Project#getItem(int)
 	 */
 	public int getId(ProjectItem item) {
@@ -274,11 +274,11 @@ public class Project {
 
 	/**
 	 * Get the {@link ProjectItem} associated with a given id.
-	 * 
+	 *
 	 * @param id
 	 *            {@code int}
 	 * @return {@link ProjectItem} or null
-	 * 
+	 *
 	 * @see Project#getId(ProjectItem)
 	 */
 	public ProjectItem getItem(int id) {
@@ -287,7 +287,7 @@ public class Project {
 
 	/**
 	 * Gets the current path for outputted files.
-	 * 
+	 *
 	 * @return Output location for files.
 	 */
 	public String getOutputPath() {
@@ -296,7 +296,7 @@ public class Project {
 
 	/**
 	 * Gets the current filename of the project.
-	 * 
+	 *
 	 * @return The project filename.
 	 */
 	public String getProjectPath() {
@@ -306,7 +306,7 @@ public class Project {
 	/**
 	 * Gets the currently loaded {@link Smudge} persisted by this
 	 * {@link Project}
-	 * 
+	 *
 	 * @return {@link Smudge}
 	 * @see Project#setSmudge(Smudge)
 	 */
@@ -316,7 +316,7 @@ public class Project {
 
 	/**
 	 * Set the project {@link Smudge}
-	 * 
+	 *
 	 * @param smudge
 	 *            {@link Smudge}
 	 * @see Project#getSmudge()
@@ -328,7 +328,7 @@ public class Project {
 	/**
 	 * Get the currently loaded component library in order to access all
 	 * available component types.
-	 * 
+	 *
 	 * @return {@link ComponentLibrary}
 	 * @see Project#getSourceLibrary()
 	 */
@@ -339,7 +339,7 @@ public class Project {
 	/**
 	 * Get the currently loaded source library in order to access loaded sources
 	 * for this project.
-	 * 
+	 *
 	 * @return {@link SourceLibrary}
 	 * @see Project#getComponentLibrary()
 	 */
@@ -350,7 +350,7 @@ public class Project {
 	/**
 	 * Get the {@link ParameterObserverNotifier} in order to attach a listener
 	 * to parameter changes.
-	 * 
+	 *
 	 * @return {@link ParameterObserverNotifier}
 	 */
 	public ParameterObserverNotifier getParameterObserverNotifier() {
@@ -359,7 +359,7 @@ public class Project {
 
 	/**
 	 * Get the current BPM of the {@link Project}
-	 * 
+	 *
 	 * @return {@code int} typically between 60 and 230
 	 */
 	public int getBPM() {
@@ -368,7 +368,7 @@ public class Project {
 
 	/**
 	 * Set the BPM for the {@link Project}
-	 * 
+	 *
 	 * @param bpm
 	 *            integer typically between 60 and 230, although not enforced.
 	 */

@@ -24,7 +24,7 @@ public class Frame {
 	/**
 	 * Create a new {@link Frame} with the given dimensions, without clearing
 	 * the backing memory.
-	 * <p.
+	 * <p>
 	 * The new {@link Frame} may contain disposed pixel data. If this is a
 	 * problem, use {@link Frame#Frame(BufferedImage)} instead.
 	 *
