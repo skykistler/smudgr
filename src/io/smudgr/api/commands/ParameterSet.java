@@ -11,10 +11,10 @@ import io.smudgr.extensions.cef.util.DebounceThread;
 /**
  * Set the current value of a specified parameter.
  * Takes id and value as arguments.
- * 
+ *
  * Used for both updating the back-end value from the UI, and updating the UI
  * value from the back-end.
- * 
+ *
  * @see ParameterObserver
  */
 public class ParameterSet implements ApiCommand, ParameterObserver {
@@ -97,10 +97,10 @@ public class ParameterSet implements ApiCommand, ParameterObserver {
 	}
 
 	private void sendParameterUpdate(Parameter param) {
-		ApiMessage response = new ApiMessage("id", getProject().getId(param) + "");
-		response.put("value", param.getStringValue());
+		ApiMessage paramUpdate = new ApiMessage("id", getProject().getId(param) + "");
+		paramUpdate.put("value", param.getStringValue());
 
-		sendMessage(ApiMessage.ok(getCommand(), response));
+		sendMessage(ApiMessage.ok(getCommand(), paramUpdate));
 	}
 
 }

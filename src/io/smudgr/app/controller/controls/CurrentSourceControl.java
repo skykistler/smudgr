@@ -7,7 +7,7 @@ import io.smudgr.util.source.SourceSet;
 
 /**
  * Change the current {@link Source} within the current {@link SourceSet}
- * 
+ *
  * @see SourceLibraryControl
  */
 public class CurrentSourceControl implements AppControl {
@@ -22,7 +22,7 @@ public class CurrentSourceControl implements AppControl {
 
 	/**
 	 * Does nothing.
-	 * 
+	 *
 	 * @see CurrentSourceControl#increment()
 	 * @see CurrentSourceControl#decrement()
 	 */
@@ -32,7 +32,7 @@ public class CurrentSourceControl implements AppControl {
 
 	/**
 	 * Does nothing.
-	 * 
+	 *
 	 * @see CurrentSourceControl#increment()
 	 * @see CurrentSourceControl#decrement()
 	 */
@@ -42,7 +42,7 @@ public class CurrentSourceControl implements AppControl {
 
 	/**
 	 * Does nothing.
-	 * 
+	 *
 	 * @see CurrentSourceControl#increment()
 	 * @see CurrentSourceControl#decrement()
 	 */
@@ -52,12 +52,12 @@ public class CurrentSourceControl implements AppControl {
 
 	/**
 	 * Switch to the next {@link Source} within the current {@link SourceSet}
-	 * 
+	 *
 	 * @see CurrentSourceControl#decrement()
 	 */
 	@Override
 	public void increment() {
-		Source src = Controller.getInstance().getProject().getSmudge().getSource();
+		Source src = Controller.getInstance().getProject().getRack().getSource();
 
 		if (src instanceof SourceSet)
 			((SourceSet) src).nextSource();
@@ -66,12 +66,12 @@ public class CurrentSourceControl implements AppControl {
 	/**
 	 * Switch to the previous {@link Source} within the current
 	 * {@link SourceSet}
-	 * 
+	 *
 	 * @see CurrentSourceControl#increment()
 	 */
 	@Override
 	public void decrement() {
-		Source src = Controller.getInstance().getProject().getSmudge().getSource();
+		Source src = Controller.getInstance().getProject().getRack().getSource();
 
 		if (src instanceof SourceSet)
 			((SourceSet) src).previousSource();

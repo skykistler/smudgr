@@ -37,6 +37,11 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 		return "MIDI";
 	}
 
+	@Override
+	public String getIdentifier() {
+		return "midi";
+	}
+
 	private ArrayList<Device> devices;
 	private DeviceServer deviceServer;
 	private MidiControlMap midiMap;
@@ -82,7 +87,7 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 	}
 
 	@Override
-	public void sendMessage(ApiMessage message) {
+	public void onMessage(ApiMessage message) {
 
 	}
 
@@ -243,7 +248,7 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 				if (bound != null && bound instanceof Controllable) {
 					MidiMessageStrategy ms = messageStrategies.get(status);
 
-					synchronized (Controller.getInstance().getProject().getSmudge()) {
+					synchronized (Controller.getInstance().getProject().getRack()) {
 						// If this is a CC message, we need to check if this is
 						// an absolute or relative bind
 						if (ms instanceof ControlChangeMessage) {

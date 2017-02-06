@@ -20,6 +20,11 @@ public class BeatAutomator implements AutomatorControl {
 		return "Beat Sync";
 	}
 
+	@Override
+	public String getIdentifier() {
+		return "beat-sync";
+	}
+
 	private NumberParameter parameter;
 	private boolean run = true;
 

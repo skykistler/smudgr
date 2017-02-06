@@ -17,6 +17,11 @@ public class EasingAutomator implements AutomatorControl {
 		return "Ease";
 	}
 
+	@Override
+	public String getIdentifier() {
+		return "ease";
+	}
+
 	private NumberParameter parameter;
 
 	private UnivariateFunction easingFunction = new BezierFunction();

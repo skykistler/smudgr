@@ -1,8 +1,7 @@
 package io.smudgr.engine.alg;
 
 import io.smudgr.app.project.Project;
-import io.smudgr.app.project.ProjectItem;
-import io.smudgr.app.project.util.PropertyMap;
+import io.smudgr.engine.SmudgeComponent;
 import io.smudgr.engine.param.Parametric;
 
 /**
@@ -11,15 +10,15 @@ import io.smudgr.engine.param.Parametric;
  * <p>
  * {@link AlgorithmComponent} implementations will be executed by a parent
  * {@link Algorithm} depending on their type (as given by
- * {@link AlgorithmComponent#getType()}), and are intended to have a behavioral
- * effect on the parent {@link Algorithm}
+ * {@link AlgorithmComponent#getComponentIdentifier()}), and are intended to
+ * have a behavioral effect on the parent {@link Algorithm}
  */
-public abstract class AlgorithmComponent extends Parametric {
+public abstract class AlgorithmComponent extends SmudgeComponent {
 
-	/**
-	 * Used to identify this {@link ProjectItem} in the save file
-	 */
-	public static final String PROJECT_MAP_TAG = "component";
+	@Override
+	public String getSmudgeIdentifier() {
+		return "algorithm";
+	}
 
 	private Algorithm parent;
 
@@ -54,25 +53,6 @@ public abstract class AlgorithmComponent extends Parametric {
 	public Algorithm getAlgorithm() {
 		return parent;
 	}
-
-	@Override
-	public void save(PropertyMap pm) {
-		super.save(pm);
-
-		pm.setAttribute("type", getType());
-		pm.setAttribute("name", getName());
-	}
-
-	@Override
-	public abstract String getName();
-
-	/**
-	 * Implementations of this method should return the unique category of
-	 * {@link AlgorithmComponent} they represent.
-	 *
-	 * @return {@link AlgorithmComponent} category
-	 */
-	public abstract String getType();
 
 	@Override
 	public String toString() {

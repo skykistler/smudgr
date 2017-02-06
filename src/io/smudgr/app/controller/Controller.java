@@ -8,6 +8,7 @@ import io.smudgr.api.ApiCommand;
 import io.smudgr.api.ApiInvoker;
 import io.smudgr.api.ApiMessage;
 import io.smudgr.app.project.Project;
+import io.smudgr.app.project.reflect.TypeLibrary;
 import io.smudgr.app.project.util.ProjectLoader;
 import io.smudgr.app.project.util.ProjectSaver;
 import io.smudgr.app.project.util.PropertyMap;
@@ -15,7 +16,6 @@ import io.smudgr.app.threads.RenderThread;
 import io.smudgr.app.threads.UpdateThread;
 import io.smudgr.app.threads.ViewThread;
 import io.smudgr.app.view.View;
-import io.smudgr.util.Reflect;
 import io.smudgr.util.output.FrameOutput;
 
 /**
@@ -28,14 +28,14 @@ public class Controller {
 	/**
 	 * Ideal targeted frames-per-second for rendering.
 	 * <p>
-	 * Currently set to {@value}.
+	 * Defaults to {@value}.
 	 */
 	public static final int TARGET_FPS = 60;
 
 	/**
 	 * Ideal count of update loops each beat.
 	 * <p>
-	 * Currently set to {@value}
+	 * Defaults to {@value}
 	 *
 	 * @see Project#getBPM()
 	 */
@@ -56,18 +56,27 @@ public class Controller {
 		return instance;
 	}
 
+	// Delegators
 	private Project project;
 	private ApiInvoker apiInvoker;
 
+	// Threads
 	private UpdateThread updater;
 	private RenderThread renderer;
 	private ArrayList<ViewThread> viewThreads = new ArrayList<ViewThread>();
 
+	// States
 	private volatile boolean started;
 	private volatile boolean paused;
 
+	// Views
 	private ArrayList<View> views = new ArrayList<View>();
 
+	// Type libraries
+	private TypeLibrary<ControllerExtension> extensionLibrary;
+	private TypeLibrary<AppControl> appControlLibrary;
+
+	// Loaded instances
 	private HashMap<String, AppControl> appControls;
 	private HashMap<String, ControllerExtension> extensions;
 
@@ -197,7 +206,7 @@ public class Controller {
 		renderer.stop();
 		updater.stop();
 
-		project.getSmudge().dispose();
+		project.disposeSources();
 
 		try {
 			Thread.sleep(300);
@@ -220,9 +229,9 @@ public class Controller {
 	 *
 	 * @see Controller#getApiInvoker()
 	 */
-	public void sendMessage(ApiMessage message) {
+	public void broadcastMessage(ApiMessage message) {
 		for (ControllerExtension e : extensions.values())
-			e.sendMessage(message);
+			e.onMessage(message);
 	}
 
 	private void startView(View view) {
@@ -233,7 +242,7 @@ public class Controller {
 	}
 
 	/**
-	 * Save any loaded {@link ControllerExtension} states and {@link AppControl}
+	 * Save all loaded {@link ControllerExtension} states and {@link AppControl}
 	 * states.
 	 *
 	 * @param pm
@@ -242,82 +251,40 @@ public class Controller {
 	 */
 	public void save(PropertyMap pm) {
 		for (AppControl control : getAppControls()) {
-			PropertyMap map = new PropertyMap(Controllable.PROJECT_MAP_TAG);
+			PropertyMap map = new PropertyMap(appControlLibrary.getTypeIdentifier());
 
 			control.save(map);
 			map.setAttribute("id", getProject().getId(control));
-			map.setAttribute("name", control.getName());
+			map.setAttribute("type", control.getIdentifier());
 
 			pm.add(map);
 		}
 
 		for (ControllerExtension extension : getExtensions()) {
-			PropertyMap map = new PropertyMap(ControllerExtension.PROJECT_MAP_TAG);
+			PropertyMap map = new PropertyMap(extensionLibrary.getTypeIdentifier());
 
 			extension.save(map);
-			map.setAttribute("name", extension.getName());
+			map.setAttribute("type", extension.getIdentifier());
 
 			pm.add(map);
 		}
 	}
 
 	/**
-	 * Load {@link ControllerExtension} states and {@link AppControl} states
-	 * from a {@link PropertyMap}
+	 * Load any {@link ControllerExtension} states and {@link AppControl} states
+	 * from the given {@link PropertyMap}
 	 *
 	 * @param pm
 	 *            The property map to load from.
 	 * @see ProjectLoader
 	 */
 	public void load(PropertyMap pm) {
-		// Enumerate all classes implementing {@link AppControl}
-		reflectAppControls();
-
-		// Set project ID for saved controls
-		for (PropertyMap mapping : pm.getChildren(Controllable.PROJECT_MAP_TAG)) {
-			AppControl control = getAppControl(mapping.getAttribute("name"));
-
-			if (control != null) {
-				int id = Integer.parseInt(mapping.getAttribute("id"));
-				getProject().put(control, id);
-			}
-		}
-
-		/*
-		 * Add any project controls that weren't saved. For example, if a new
-		 * {@link AppControl} is added and this is an older save file.
-		 */
-		for (AppControl control : getAppControls()) {
-			if (getProject().getId(control) == -1)
-				getProject().add(control);
-		}
-
-		// Enumerate all classes implementing {@link ControllerExtension}
-		reflectExtensions();
-
-		ArrayList<ControllerExtension> loadedExtensions = new ArrayList<ControllerExtension>();
-		for (PropertyMap mapping : pm.getChildren(ControllerExtension.PROJECT_MAP_TAG)) {
-			ControllerExtension ext = getExtension(mapping.getAttribute("name"));
-
-			if (ext != null) {
-				ext.load(mapping);
-				loadedExtensions.add(ext);
-			}
-		}
-
-		/*
-		 * Dry load any extensions that weren't saved. For example, if a user
-		 * has a {@link ControllerExtension} installed that was not installed
-		 * when the save file was created.
-		 */
-		for (ControllerExtension ext : getExtensions()) {
-			if (!loadedExtensions.contains(ext))
-				ext.load(new PropertyMap(ControllerExtension.PROJECT_MAP_TAG));
-		}
+		loadAppControls(pm);
+		loadExtensions(pm);
 	}
 
 	/**
-	 * Get the currently loaded {@link Project} for this application instance.
+	 * Gets the current loaded {@link Project} for the application instance.
 	 *
 	 * @return The current project.
 	 */
@@ -326,7 +293,7 @@ public class Controller {
 	}
 
 	/**
-	 * Set the currently loaded {@link Project} for this application instance.
+	 * Sets the current {@link Project} for the application instance.
 	 *
 	 * @param project
 	 *            The project to use.
@@ -337,54 +304,91 @@ public class Controller {
 	}
 
 	/**
-	 * Get the {@link ApiInvoker} currently in use by this application instance.
-	 * The invoker is used to execute an {@link ApiCommand}.
+	 * Gets the {@link ApiInvoker} in use by the application instance.
+	 * The invoker is used to handle {@link ApiCommand} messages via
+	 * {@link ApiInvoker#invoke(String)}
 	 *
-	 * @return The current {@link ApiInvoker}
-	 * @see Controller#sendMessage(ApiMessage)
+	 * @return {@link ApiInvoker}
+	 *
+	 * @see Controller#broadcastMessage(ApiMessage)
 	 */
 	public ApiInvoker getApiInvoker() {
 		return apiInvoker;
 	}
 
 	/**
-	 * Enumerate all classes currently loaded by the JVM that implement
-	 * {@link AppControl}
-	 *
-	 * @see Reflect
+	 * Create an instance for every available AppControl and load any project
+	 * states to them
 	 */
-	private void reflectAppControls() {
+	private void loadAppControls(PropertyMap pm) {
+		// Manages available app control implementations
+		appControlLibrary = new TypeLibrary<AppControl>(AppControl.class);
+
+		// Manages an instance for every available app control
 		appControls = new HashMap<String, AppControl>();
 
-		Reflect reflectControls = new Reflect(AppControl.class);
+		// Create an instance for every available app control
+		for (String id : appControlLibrary.getIdList()) {
+			appControls.put(id, appControlLibrary.getNewInstance(id));
+		}
 
-		for (Class<?> c : reflectControls.get()) {
-			try {
-				AppControl control = (AppControl) c.newInstance();
-				appControls.put(control.getName(), control);
-			} catch (InstantiationException | IllegalAccessException e) {
-				e.printStackTrace();
+		// Set project ID for saved controls
+		for (PropertyMap mapping : pm.getChildren(appControlLibrary.getTypeIdentifier())) {
+			AppControl control = getAppControl(mapping.getAttribute("type"));
+
+			if (control != null) {
+				int id = Integer.parseInt(mapping.getAttribute("id"));
+				getProject().put(control, id);
 			}
+		}
+
+		/**
+		 * Add any project controls that weren't saved. Usually, when a new
+		 * {@link AppControl} is added and this is an older save file.
+		 */
+		for (AppControl control : getAppControls()) {
+			if (getProject().getId(control) == -1)
+				getProject().add(control);
 		}
 	}
 
 	/**
-	 * Enumerate all classes currently loaded by the JVM that implement
-	 * {@link ControllerExtension}
-	 *
-	 * @see Reflect
+	 * Create an instance of every available {@link ControllerExtension} and
+	 * load and project states to them.
 	 */
-	private void reflectExtensions() {
+	private void loadExtensions(PropertyMap pm) {
+		// Manages available extension types
+		extensionLibrary = new TypeLibrary<ControllerExtension>(ControllerExtension.class);
+
+		// Manages loaded extension instances
 		extensions = new HashMap<String, ControllerExtension>();
 
-		Reflect reflectExt = new Reflect(ControllerExtension.class);
+		// Create an instance for every extension
+		for (String id : extensionLibrary.getIdList()) {
+			add(extensionLibrary.getNewInstance(id));
+		}
 
-		for (Class<?> c : reflectExt.get()) {
-			try {
-				add(c.newInstance());
-			} catch (InstantiationException | IllegalAccessException e) {
-				e.printStackTrace();
+		// Keep track of extensions loaded from the property map
+		ArrayList<ControllerExtension> savedExtensions = new ArrayList<ControllerExtension>();
+
+		// Load any states to the appropriate extension
+		for (PropertyMap mapping : pm.getChildren(extensionLibrary.getTypeIdentifier())) {
+			ControllerExtension ext = getExtension(mapping.getAttribute("type"));
+
+			if (ext != null) {
+				ext.load(mapping);
+				savedExtensions.add(ext);
 			}
+		}
+
+		/**
+		 * Dry load any extensions that weren't saved. Usually, when a user
+		 * has a {@link ControllerExtension} installed that was not installed
+		 * when the save file was created.
+		 */
+		for (ControllerExtension ext : getExtensions()) {
+			if (!savedExtensions.contains(ext))
+				ext.load(new PropertyMap(extensionLibrary.getTypeIdentifier()));
 		}
 	}
 
@@ -408,7 +412,7 @@ public class Controller {
 			if (started)
 				ext.init();
 
-			extensions.put(ext.getName(), ext);
+			extensions.put(ext.getIdentifier(), ext);
 		}
 	}
 
@@ -423,16 +427,16 @@ public class Controller {
 	}
 
 	/**
-	 * Get an {@link AppControl} by it's registered name.
+	 * Get an {@link AppControl} by it's identifier.
 	 *
-	 * @param name
-	 *            The registered name of the {@link AppControl}
-	 * @return Registered {@link AppControl}
+	 * @param identifier
+	 *            The identifier of the {@link AppControl}
+	 * @return Loaded {@link AppControl} instance
 	 *
-	 * @see AppControl#getName()
+	 * @see AppControl#getIdentifier()
 	 */
-	public AppControl getAppControl(String name) {
-		return appControls.get(name);
+	public AppControl getAppControl(String identifier) {
+		return appControls.get(identifier);
 	}
 
 	private Collection<AppControl> getAppControls() {

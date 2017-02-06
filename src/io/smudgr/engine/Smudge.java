@@ -2,148 +2,118 @@ package io.smudgr.engine;
 
 import java.util.ArrayList;
 
+import io.smudgr.app.project.ProjectItem;
+import io.smudgr.app.project.reflect.ReflectableType;
 import io.smudgr.app.project.util.PropertyMap;
-import io.smudgr.engine.alg.Algorithm;
 import io.smudgr.engine.param.BooleanParameter;
-import io.smudgr.engine.param.NumberParameter;
 import io.smudgr.engine.param.Parametric;
 import io.smudgr.util.Frame;
-import io.smudgr.util.source.AnimatedSource;
-import io.smudgr.util.source.Source;
-import io.smudgr.util.source.SourceSet;
 
 /**
- * TODO: Refactor soon
- * <p>
- * The {@link Smudge} class is a {@link Parametric} {@link Algorithm} container.
- * The application instance attempts to render the {@link Smudge} at a constant
- * framerate.
+ * A {@link Smudge} is a {@link Parametric} image manipulation. The application
+ * instance attempts to render each {@link Smudge} at a constant
+ * frame-rate.
  */
-public class Smudge extends Parametric implements Source {
+public abstract class Smudge extends Parametric implements ReflectableType, ProjectItem {
 
-	/**
-	 * Project save file identifier
-	 */
-	public static final String PROJECT_MAP_TAG = "smudge";
+	@Override
+	public String getTypeName() {
+		return "Smudge";
+	}
+
+	@Override
+	public String getTypeIdentifier() {
+		return "smudge";
+	}
 
 	private BooleanParameter enabled = new BooleanParameter("Enable", this, true);
-	private NumberParameter downsample = new NumberParameter("Downsample", this, 1, .01, 1, .01);
-	private NumberParameter sourceSpeed = new NumberParameter("Source Speed", this, 1, .25, 4, .05);
 
-	private Source source;
-	private ArrayList<Algorithm> algorithms = new ArrayList<Algorithm>();
+	private ArrayList<SmudgeComponent> components = new ArrayList<SmudgeComponent>();
 
-	private volatile Frame lastFrame;
-
-	@Override
+	/**
+	 * Initialize the smudge. This will be run when the {@link Smudge} is added
+	 * to the {@link Rack}, and every time the project is started.
+	 */
 	public void init() {
-		System.out.println("Initializing smudge...");
 
-		if (source != null)
-			source.init();
-
-		downsample.setReverse(true);
-
-		System.out.println("Smudge initialized.");
 	}
 
-	@Override
+	/**
+	 * Update the smudge, in time with the application update cycle.
+	 */
 	public void update() {
-		if (source != null) {
-			source.update();
 
-			// Update speed factor if current source is animated
-			Source s = source instanceof SourceSet ? ((SourceSet) source).getCurrentSource() : source;
-			if (s instanceof AnimatedSource)
-				((AnimatedSource) s).setSpeed(sourceSpeed.getValue());
+	}
+
+	/**
+	 * Render the smudge using the given frame, in time with the application
+	 * render cycle.
+	 *
+	 * @param image
+	 *            {@link Frame}
+	 */
+	public void render(Frame image) {
+		if (enabled.getValue()) {
+			apply(image);
 		}
 	}
 
 	/**
-	 * Render the smudge to the current frame.
+	 * Add a {@link SmudgeComponent} to this {@link Smudge}.
 	 *
-	 * @see Smudge#getFrame()
+	 * @param componentState
+	 *            {@link PropertyMap} representing a {@link SmudgeComponent}
+	 *
+	 * @return {@link SmudgeComponent} or {@code null}
 	 */
-	public void render() {
-		Frame toRender = null;
+	public SmudgeComponent add(PropertyMap componentState) {
+		String componentType = componentState.getAttribute("type");
+		SmudgeComponent component = getProject().getComponentLibrary().getNewInstance(componentType);
 
-		if (source != null)
-			toRender = source.getFrame();
+		if (!component.getSmudgeIdentifier().equals(getIdentifier()))
+			return null;
 
-		if (toRender != null) {
-			toRender = toRender.resize(downsample.getValue());
+		if (componentState.hasAttribute("id"))
+			getProject().put(component, Integer.parseInt(componentState.getAttribute("id")));
+		else
+			getProject().add(component);
 
-			if (enabled.getValue()) {
-				for (Algorithm a : getAlgorithms())
-					a.apply(toRender);
-			}
-		}
+		components.add(component);
 
-		if (lastFrame != null)
-			lastFrame.dispose();
-
-		lastFrame = toRender;
-	}
-
-	@Override
-	public Frame getFrame() {
-		return lastFrame;
+		return component;
 	}
 
 	/**
-	 * Gets the current source being operated on by this {@link Smudge}
+	 * {@link Smudge} types implement this method to apply their image
+	 * manipulations to any given {@link Frame}
 	 *
-	 * @return {@link Source}
-	 * @see Smudge#setSource(Source)
+	 * @param image
 	 */
-	public Source getSource() {
-		return source;
-	}
+	protected abstract void apply(Frame image);
 
 	/**
-	 * Sets the current source to operate this {@link Smudge} on
-	 *
-	 * @param source
-	 *            {@link Source}
+	 * Return all of the {@link SmudgeComponent} instances added to this
+	 * {@link Smudge}
+	 * 
+	 * @return {@code ArrayList<SmudgeComponent>}
 	 */
-	public void setSource(Source source) {
-		if (source != this)
-			this.source = source;
-	}
-
-	/**
-	 * Add an algorithm to this {@link Smudge}
-	 *
-	 * @param alg
-	 *            {@link Algorithm}
-	 */
-	public void add(Algorithm alg) {
-		if (algorithms.contains(alg))
-			return;
-
-		getProject().add(alg);
-
-		algorithms.add(alg);
-
-		alg.init();
-	}
-
-	/**
-	 * Gets all of the algorithms contained by this {@link Smudge}
-	 *
-	 * @return {@code ArrayList<Algorithm>}
-	 */
-	public ArrayList<Algorithm> getAlgorithms() {
-		return algorithms;
+	public ArrayList<SmudgeComponent> getComponents() {
+		return components;
 	}
 
 	@Override
 	public void save(PropertyMap pm) {
 		super.save(pm);
 
-		for (Algorithm alg : getAlgorithms()) {
-			PropertyMap map = new PropertyMap(Algorithm.PROJECT_MAP_TAG);
-			alg.save(map);
+		pm.setAttribute("type", getIdentifier());
+
+		for (SmudgeComponent component : components) {
+			PropertyMap map = new PropertyMap(component.getTypeIdentifier());
+
+			map.setAttribute("component", component.getComponentIdentifier());
+			map.setAttribute("type", component.getIdentifier());
+
+			component.save(map);
 
 			pm.add(map);
 		}
@@ -153,23 +123,9 @@ public class Smudge extends Parametric implements Source {
 	public void load(PropertyMap pm) {
 		super.load(pm);
 
-		for (PropertyMap map : pm.getChildren(Algorithm.PROJECT_MAP_TAG)) {
-			Algorithm alg = new Algorithm();
-			alg.load(map);
-
-			add(alg);
+		for (PropertyMap component : pm.getChildren(getProject().getComponentLibrary().getTypeIdentifier())) {
+			add(component);
 		}
-	}
-
-	@Override
-	public void dispose() {
-		if (source != null)
-			source.dispose();
-	}
-
-	@Override
-	public String getName() {
-		return "Smudge";
 	}
 
 }

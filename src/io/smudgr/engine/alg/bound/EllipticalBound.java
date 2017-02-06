@@ -14,6 +14,11 @@ public class EllipticalBound extends Bound {
 	}
 
 	@Override
+	public String getIdentifier() {
+		return "elliptical";
+	}
+
+	@Override
 	public boolean containsPoint(int x, int y, int w, int h) {
 		boolean inImage = x >= 0 && y >= 0 && x < w && y < h;
 		if (!inImage)

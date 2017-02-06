@@ -2,6 +2,7 @@ package io.smudgr.app.controller;
 
 import io.smudgr.api.ApiMessage;
 import io.smudgr.app.project.Project;
+import io.smudgr.app.project.reflect.ReflectableType;
 import io.smudgr.app.project.util.PropertyMap;
 
 /**
@@ -10,18 +11,24 @@ import io.smudgr.app.project.util.PropertyMap;
  * to the application, such as controlling parameters with external devices or
  * providing user interfaces.
  */
-public interface ControllerExtension {
+public interface ControllerExtension extends ReflectableType {
 
-	/**
-	 * Unique identifier for use in the project save file.
-	 */
-	public static final String PROJECT_MAP_TAG = "extension";
+	@Override
+	public default String getTypeIdentifier() {
+		return "extension";
+	}
+
+	@Override
+	public default String getTypeName() {
+		return "Controller Extension";
+	}
 
 	/**
 	 * Gets the name of this {@link ControllerExtension}
 	 *
 	 * @return {@link String}
 	 */
+	@Override
 	public String getName();
 
 	/**
@@ -45,9 +52,9 @@ public interface ControllerExtension {
 	 *
 	 * @param message
 	 *            {@link ApiMessage}
-	 * @see Controller#sendMessage(ApiMessage)
+	 * @see Controller#broadcastMessage(ApiMessage)
 	 */
-	public void sendMessage(ApiMessage message);
+	public void onMessage(ApiMessage message);
 
 	/**
 	 * This method is called to save the current state of this

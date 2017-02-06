@@ -23,6 +23,11 @@ public class CefExtension implements ControllerExtension {
 		return "CEF";
 	}
 
+	@Override
+	public String getIdentifier() {
+		return "cef";
+	}
+
 	private CommandServer server;
 
 	/**
@@ -53,7 +58,7 @@ public class CefExtension implements ControllerExtension {
 	}
 
 	@Override
-	public void sendMessage(ApiMessage message) {
+	public void onMessage(ApiMessage message) {
 		getServer().sendMessage(message);
 	}
 

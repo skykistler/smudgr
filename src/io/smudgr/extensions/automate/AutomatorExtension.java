@@ -1,14 +1,13 @@
 package io.smudgr.extensions.automate;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import io.smudgr.api.ApiMessage;
 import io.smudgr.app.controller.ControllerExtension;
+import io.smudgr.app.project.reflect.TypeLibrary;
 import io.smudgr.app.project.util.PropertyMap;
 import io.smudgr.engine.param.Parameter;
 import io.smudgr.extensions.automate.controls.AutomatorControl;
-import io.smudgr.util.Reflect;
 
 /**
  * The {@link AutomatorExtension} provides functionality for automatically
@@ -22,7 +21,12 @@ public class AutomatorExtension implements ControllerExtension {
 		return "Automator";
 	}
 
-	private HashMap<String, Class<?>> automatorTypes;
+	@Override
+	public String getIdentifier() {
+		return "automator";
+	}
+
+	private TypeLibrary<AutomatorControl> automatorLibrary;
 	private ArrayList<AutomatorControl> automators = new ArrayList<AutomatorControl>();
 
 	@Override
@@ -43,29 +47,35 @@ public class AutomatorExtension implements ControllerExtension {
 	}
 
 	@Override
-	public void sendMessage(ApiMessage message) {
+	public void onMessage(ApiMessage message) {
 
 	}
 
 	/**
 	 * Add an {@link AutomatorControl} to the extension.
 	 *
-	 * @param type
-	 *            Fully-qualified type name of automator to add
+	 * @param identifier
+	 *            Fully-qualified type identifier of automator to add
 	 * @param properties
 	 *            State information to pass to the new automator
 	 * @return {@link AutomatorControl}
+	 * @see AutomatorControl#getIdentifier()
 	 */
-	public AutomatorControl add(String type, PropertyMap properties) {
-		AutomatorControl control = getNewAutomator(type);
+	public AutomatorControl add(String identifier, PropertyMap properties) {
+		AutomatorControl control = automatorLibrary.getNewInstance(identifier);
 
 		if (control == null) {
-			System.out.println("Could not make automator of type: " + type);
+			System.out.println("Could not find automator with identifier: " + identifier);
 			return null;
 		}
 
 		automators.add(control);
-		getProject().add(control);
+
+		// If the control was registered with the project, use the same ID
+		if (properties.hasAttribute("id"))
+			getProject().put(control, Integer.parseInt(properties.getAttribute("id")));
+		else
+			getProject().add(control);
 
 		control.load(properties);
 
@@ -75,10 +85,10 @@ public class AutomatorExtension implements ControllerExtension {
 	@Override
 	public void save(PropertyMap pm) {
 		for (AutomatorControl automator : automators) {
-			PropertyMap map = new PropertyMap(AutomatorControl.PROJECT_MAP_TAG);
+			PropertyMap map = new PropertyMap(automator.getTypeIdentifier());
 
 			map.setAttribute("id", getProject().getId(automator));
-			map.setAttribute("name", automator.getName());
+			map.setAttribute("type", automator.getIdentifier());
 
 			automator.save(map);
 
@@ -88,47 +98,11 @@ public class AutomatorExtension implements ControllerExtension {
 
 	@Override
 	public void load(PropertyMap pm) {
-		reflectAutomators();
+		automatorLibrary = new TypeLibrary<AutomatorControl>(AutomatorControl.class);
 
-		for (PropertyMap map : pm.getChildren(AutomatorControl.PROJECT_MAP_TAG)) {
-			AutomatorControl control = getNewAutomator(map.getAttribute("name"));
-
-			automators.add(control);
-			getProject().put(control, Integer.parseInt(map.getAttribute("id")));
-
-			control.load(map);
+		for (PropertyMap map : pm.getChildren(automatorLibrary.getTypeIdentifier())) {
+			add(map.getAttribute("type"), map);
 		}
-	}
-
-	private void reflectAutomators() {
-		automatorTypes = new HashMap<String, Class<?>>();
-
-		Reflect reflectControls = new Reflect(AutomatorControl.class);
-
-		for (Class<?> c : reflectControls.get()) {
-			try {
-				AutomatorControl control = (AutomatorControl) c.newInstance();
-
-				automatorTypes.put(control.getName(), control.getClass());
-			} catch (InstantiationException | IllegalAccessException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	private AutomatorControl getNewAutomator(String name) {
-		try {
-			Class<?> type = automatorTypes.get(name);
-
-			if (type == null)
-				return null;
-
-			return (AutomatorControl) type.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
-
-		return null;
 	}
 
 }

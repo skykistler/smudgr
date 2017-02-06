@@ -15,26 +15,23 @@ import io.smudgr.app.project.util.PropertyMap;
  */
 public abstract class Parameter implements Controllable, ProjectItem {
 
-	/**
-	 * Tag to reference parameters by in the project property map. This is used
-	 * to identify a {@link Parameter} in project files.
-	 * <p>
-	 * Currently set to {@value}.
-	 *
-	 * @see PropertyMap
-	 */
-	public static final String PROJECT_MAP_TAG = "parameter";
+	@Override
+	public String getTypeName() {
+		return "Parameter";
+	}
 
-	/**
-	 * Get the type of the value that this {@link Parameter} represents. This is
-	 * used to identify the specific {@link Parameter} type in project files.
-	 *
-	 * @return {@link String}
-	 */
-	public abstract String getType();
+	@Override
+	public String getTypeIdentifier() {
+		return "parameter";
+	}
 
 	@Override
 	public String getName() {
+		return name;
+	}
+
+	@Override
+	public String getIdentifier() {
 		return name;
 	}
 
@@ -105,7 +102,7 @@ public abstract class Parameter implements Controllable, ProjectItem {
 
 	@Override
 	public void save(PropertyMap pm) {
-		pm.setAttribute("type", getType());
+		pm.setAttribute("type", getIdentifier());
 		pm.setAttribute("value", getStringValue());
 	}
 

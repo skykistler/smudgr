@@ -29,7 +29,7 @@ public class PropertyMap {
 
 	/**
 	 * Create a new {@link PropertyMap} identified by the given tag name.
-	 * 
+	 *
 	 * @param tag
 	 *            Not necessarily unique identifier of the type of data this map
 	 *            holds.
@@ -40,7 +40,7 @@ public class PropertyMap {
 
 	/**
 	 * Get the tag used to specify the type of data held in this map.
-	 * 
+	 *
 	 * @return Map type.
 	 */
 	public String getTag() {
@@ -49,7 +49,7 @@ public class PropertyMap {
 
 	/**
 	 * {@code true} if the given attribute exists in this mapping.
-	 * 
+	 *
 	 * @param attribute
 	 *            Given key.
 	 * @return {@code true} if this map contains a mapping for the specified key
@@ -62,7 +62,7 @@ public class PropertyMap {
 	/**
 	 * Get the value of the specified attribute, or {@code null} if no mapping
 	 * exists.
-	 * 
+	 *
 	 * @param attribute
 	 *            Given key.
 	 * @return the value at the specified attribute or {@code null} if no
@@ -75,7 +75,7 @@ public class PropertyMap {
 
 	/**
 	 * Sets the value of a given attribute
-	 * 
+	 *
 	 * @param attribute
 	 *            Given key.
 	 * @param value
@@ -88,7 +88,7 @@ public class PropertyMap {
 
 	/**
 	 * Gets full list of currently mapped attributes
-	 * 
+	 *
 	 * @return currently mapped attributes
 	 * @see PropertyMap#hasAttribute(String)
 	 */
@@ -98,7 +98,7 @@ public class PropertyMap {
 
 	/**
 	 * Add a {@link PropertyMap} as a child to this map.
-	 * 
+	 *
 	 * @param pm
 	 *            Child map.
 	 */
@@ -108,8 +108,8 @@ public class PropertyMap {
 	}
 
 	/**
-	 * Get all children of this map of the given tag.
-	 * 
+	 * Gets all children of this map of the given tag.
+	 *
 	 * @param tag
 	 *            Type of map.
 	 * @return List of children of given type.
@@ -125,8 +125,25 @@ public class PropertyMap {
 	}
 
 	/**
+	 * Returns if the map has any children with the given tag
+	 *
+	 * @param tag
+	 *            children
+	 * @return {@code true} if there's at least one entry with the given tag,
+	 *         {@code false} if otherwise
+	 */
+	public boolean hasChildren(String tag) {
+		// If there's no child entry for this tag, there's no children
+		if (!children.containsKey(tag))
+			return false;
+
+		// If there is at least one child, return true
+		return children.get(tag).size() > 0;
+	}
+
+	/**
 	 * Get all the tag types of children on this map.
-	 * 
+	 *
 	 * @return all children tags
 	 * @see PropertyMap#getChildren(String)
 	 */

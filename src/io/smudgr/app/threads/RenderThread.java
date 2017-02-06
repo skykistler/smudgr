@@ -2,12 +2,13 @@ package io.smudgr.app.threads;
 
 import io.smudgr.app.controller.Controller;
 import io.smudgr.app.project.Project;
+import io.smudgr.engine.Smudge;
 import io.smudgr.util.output.FrameOutput;
 
 /**
- * The {@link RenderThread} is responsible for rendering the current application
- * instance {@link Project#getSmudge()} at the {@link Controller#TARGET_FPS}
- * rate.
+ * The {@link RenderThread} is responsible for rendering every {@link Smudge} in
+ * the current application instance {@link Project#getRack()} at the
+ * {@link Controller#TARGET_FPS} rate.
  */
 public class RenderThread extends AppThread {
 
@@ -27,7 +28,7 @@ public class RenderThread extends AppThread {
 	/**
 	 * Start outputting rendered frames to the specified {@link FrameOutput} at
 	 * a rate of {@code everyXTicks}
-	 * 
+	 *
 	 * @param output
 	 *            {@link FrameOutput} to output to
 	 * @param everyXTicks
@@ -41,7 +42,7 @@ public class RenderThread extends AppThread {
 
 	/**
 	 * Stop any existing {@link FrameOutput}
-	 * 
+	 *
 	 * @see Controller#stopOutput()
 	 */
 	public void stopOutput() {
@@ -56,13 +57,13 @@ public class RenderThread extends AppThread {
 				Controller.getInstance().update();
 
 		try {
-			Controller.getInstance().getProject().getSmudge().render();
+			Controller.getInstance().getProject().getRack().render();
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 		}
 
 		if (output != null)
-			output.addFrame(Controller.getInstance().getProject().getSmudge().getFrame().copy());
+			output.addFrame(Controller.getInstance().getProject().getRack().getLastFrame().copy());
 	}
 
 	@Override

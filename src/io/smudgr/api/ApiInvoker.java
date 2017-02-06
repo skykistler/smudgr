@@ -1,15 +1,14 @@
 package io.smudgr.api;
 
 import java.util.HashMap;
-import java.util.Set;
 
-import io.smudgr.util.Reflect;
+import io.smudgr.app.project.reflect.TypeLibrary;
 
 /**
  * API controller for loading and invoking API commands. This class does not
  * listen for commands on its own, and should be invoked by any API listening
  * service.
- * 
+ *
  * @see ApiCommand
  * @see ApiMessage
  */
@@ -20,7 +19,7 @@ public class ApiInvoker {
 	/**
 	 * Initialize the ApiInvoker by enumerating all classes implementing
 	 * ApiCommand.
-	 * 
+	 *
 	 * @see ApiCommand
 	 */
 	public void init() {
@@ -29,22 +28,16 @@ public class ApiInvoker {
 
 		commands = new HashMap<String, ApiCommand>();
 
-		Reflect commandReflect = new Reflect(ApiCommand.class);
-		Set<Class<?>> commandClasses = commandReflect.get();
+		TypeLibrary<ApiCommand> commandLibrary = new TypeLibrary<ApiCommand>(ApiCommand.class);
 
-		for (Class<?> c : commandClasses) {
-			try {
-				ApiCommand command = (ApiCommand) c.newInstance();
-				commands.put(command.getCommand(), command);
-			} catch (InstantiationException | IllegalAccessException e) {
-				e.printStackTrace();
-			}
+		for (String id : commandLibrary.getIdList()) {
+			commands.put(id, commandLibrary.getNewInstance(id));
 		}
 	}
 
 	/**
 	 * Invoke an API command given a serialized request packet.
-	 * 
+	 *
 	 * @param request
 	 *            serialized JSON request packet
 	 * @return API response

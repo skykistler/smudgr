@@ -3,14 +3,13 @@ package io.smudgr.engine.alg;
 import java.util.ArrayList;
 
 import io.smudgr.app.project.util.PropertyMap;
+import io.smudgr.engine.Smudge;
+import io.smudgr.engine.SmudgeComponent;
 import io.smudgr.engine.alg.bound.Bound;
 import io.smudgr.engine.alg.coord.CoordFunction;
 import io.smudgr.engine.alg.coord.StraightCoords;
 import io.smudgr.engine.alg.op.Operation;
 import io.smudgr.engine.alg.select.Selector;
-import io.smudgr.engine.element.Element;
-import io.smudgr.engine.param.BooleanParameter;
-import io.smudgr.engine.param.Parametric;
 import io.smudgr.util.Frame;
 
 /**
@@ -18,27 +17,38 @@ import io.smudgr.util.Frame;
  * instances. Each {@link AlgorithmComponent} serves a role in determining the
  * entire {@link Algorithm} behavior.
  */
-public class Algorithm extends Parametric implements Element {
+public class Algorithm extends Smudge {
 
 	@Override
-	public String getType() {
-		return "Algorithm";
+	public String getName() {
+		StringBuffer name = new StringBuffer();
+
+		for (SmudgeComponent component : getComponents())
+			if (component instanceof CoordFunction)
+				name.append(coordFunction + " ");
+
+		for (SmudgeComponent component : getComponents())
+			if (component instanceof Operation)
+				name.append(component + " ");
+
+		return name.append("Algorithm").toString().trim();
 	}
 
-	private BooleanParameter enabled = new BooleanParameter("Enable", this, true);
+	@Override
+	public String getIdentifier() {
+		return "algorithm";
+	}
 
 	private Bound bound;
 	private CoordFunction coordFunction;
 
-	private ArrayList<AlgorithmComponent> components = new ArrayList<AlgorithmComponent>();
-
 	private ArrayList<PixelIndexList> selectedPixels = new ArrayList<PixelIndexList>();
-
 	protected Frame lastFrame;
 
 	/**
 	 * Initialize the {@link Algorithm} with default components
 	 */
+	@Override
 	public void init() {
 		if (bound == null)
 			add(new Bound());
@@ -62,10 +72,8 @@ public class Algorithm extends Parametric implements Element {
 	 * @param img
 	 *            {@link Frame}
 	 */
-	public void apply(Frame img) {
-		if (!enabled.getValue())
-			return;
-
+	@Override
+	protected void apply(Frame img) {
 		bound.update();
 
 		boolean boundChanged = lastBoundX != bound.getOffsetX() || lastBoundY != bound.getOffsetY() || lastBoundW != bound.getWidth() || lastBoundH != bound.getHeight();
@@ -101,20 +109,9 @@ public class Algorithm extends Parametric implements Element {
 		lastBoundH = bound.getHeight();
 	}
 
-	/**
-	 * Add a given {@link AlgorithmComponent} to this {@link Algorithm}
-	 *
-	 * @param component
-	 *            {@link AlgorithmComponent}
-	 */
-	public void add(AlgorithmComponent component) {
-		if (components.contains(component))
-			return;
-
-		getProject().add(component);
-
-		component.setAlgorithm(this);
-		components.add(component);
+	@Override
+	public void add(PropertyMap componentState) {
+		SmudgeComponent component = super.add(componentState);
 
 		if (component instanceof Bound)
 			setBound((Bound) component);
@@ -125,26 +122,17 @@ public class Algorithm extends Parametric implements Element {
 		component.init();
 	}
 
-	/**
-	 * Gets every {@link AlgorithmComponent} contained in this {@link Algorithm}
-	 *
-	 * @return List of {@link AlgorithmComponent}
-	 */
-	public ArrayList<AlgorithmComponent> getComponents() {
-		return components;
-	}
-
 	private void setBound(Bound bound) {
 		if (bound == null)
 			return;
 
-		ArrayList<AlgorithmComponent> otherBounds = new ArrayList<AlgorithmComponent>();
+		ArrayList<SmudgeComponent> otherBounds = new ArrayList<SmudgeComponent>();
 
-		for (AlgorithmComponent component : getComponents())
+		for (SmudgeComponent component : getComponents())
 			if (component instanceof CoordFunction)
 				otherBounds.add(component);
 
-		components.remove(otherBounds);
+		getComponents().remove(otherBounds);
 
 		this.bound = bound;
 
@@ -165,13 +153,13 @@ public class Algorithm extends Parametric implements Element {
 		if (cf == null)
 			return;
 
-		ArrayList<AlgorithmComponent> otherCoordFunctions = new ArrayList<AlgorithmComponent>();
+		ArrayList<SmudgeComponent> otherCoordFunctions = new ArrayList<SmudgeComponent>();
 
-		for (AlgorithmComponent component : getComponents())
+		for (SmudgeComponent component : getComponents())
 			if (component instanceof CoordFunction)
 				otherCoordFunctions.add(component);
 
-		components.remove(otherCoordFunctions);
+		getComponents().remove(otherCoordFunctions);
 
 		coordFunction = cf;
 
@@ -200,55 +188,6 @@ public class Algorithm extends Parametric implements Element {
 	 */
 	public ArrayList<PixelIndexList> getSelectedPixels() {
 		return selectedPixels;
-	}
-
-	@Override
-	public void save(PropertyMap pm) {
-		super.save(pm);
-
-		pm.setAttribute("type", getType());
-
-		for (AlgorithmComponent component : getComponents()) {
-			PropertyMap map = new PropertyMap(AlgorithmComponent.PROJECT_MAP_TAG);
-
-			component.save(map);
-
-			pm.add(map);
-		}
-	}
-
-	@Override
-	public void load(PropertyMap pm) {
-		super.load(pm);
-
-		ArrayList<PropertyMap> children = pm.getChildren(AlgorithmComponent.PROJECT_MAP_TAG);
-
-		for (PropertyMap map : children) {
-			String type = map.getAttribute("type");
-			String name = map.getAttribute("name");
-
-			AlgorithmComponent comp = getProject().getComponentLibrary().getNewComponent(type, name);
-
-			if (comp != null) {
-				comp.load(map);
-				add(comp);
-			}
-		}
-	}
-
-	@Override
-	public String getName() {
-		StringBuffer name = new StringBuffer();
-
-		for (AlgorithmComponent component : getComponents())
-			if (component instanceof CoordFunction)
-				name.append(coordFunction + " ");
-
-		for (AlgorithmComponent component : getComponents())
-			if (component instanceof Operation)
-				name.append(component + " ");
-
-		return name.toString().trim();
 	}
 
 }

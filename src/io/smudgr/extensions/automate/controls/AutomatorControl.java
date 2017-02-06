@@ -13,10 +13,15 @@ import io.smudgr.engine.param.Parameter;
  */
 public interface AutomatorControl extends Controllable, ProjectItem {
 
-	/**
-	 * Unique identifier for use in project files
-	 */
-	public static final String PROJECT_MAP_TAG = "automator";
+	@Override
+	public default String getTypeName() {
+		return "Automator";
+	}
+
+	@Override
+	public default String getTypeIdentifier() {
+		return "automator";
+	}
 
 	/**
 	 * This method is called when the {@link AutomatorControl} is initialized,

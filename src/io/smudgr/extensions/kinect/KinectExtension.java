@@ -26,6 +26,11 @@ public class KinectExtension implements ControllerExtension {
 	}
 
 	@Override
+	public String getIdentifier() {
+		return "kinect";
+	}
+
+	@Override
 	public void init() {
 		// Open the kinect device through the context
 		try {
@@ -94,7 +99,7 @@ public class KinectExtension implements ControllerExtension {
 	}
 
 	@Override
-	public void sendMessage(ApiMessage message) {
+	public void onMessage(ApiMessage message) {
 	}
 
 	@Override

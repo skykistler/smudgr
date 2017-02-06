@@ -1,6 +1,5 @@
 package io.smudgr.engine.param;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -18,7 +17,7 @@ public abstract class Parametric implements ProjectItem {
 
 	/**
 	 * Add a parameter to be tracked and used by this {@link Parametric}
-	 * 
+	 *
 	 * @param p
 	 *            {@link Parameter} to add
 	 */
@@ -31,7 +30,7 @@ public abstract class Parametric implements ProjectItem {
 
 	/**
 	 * Gets a {@link Parameter} added to this {@link Parametric} by name.
-	 * 
+	 *
 	 * @param name
 	 *            {@link String}
 	 * @return {@link Parameter} or {@code null} if none exists by given name.
@@ -43,7 +42,7 @@ public abstract class Parametric implements ProjectItem {
 	/**
 	 * Gets list of all {@link Parameter} instances used by this
 	 * {@link Parametric}
-	 * 
+	 *
 	 * @return {@code Collection<Parameter>}
 	 */
 	public Collection<Parameter> getParameters() {
@@ -90,8 +89,7 @@ public abstract class Parametric implements ProjectItem {
 		else
 			getProject().add(this);
 
-		ArrayList<PropertyMap> children = pm.getChildren(Parameter.PROJECT_MAP_TAG);
-		for (PropertyMap map : children) {
+		for (PropertyMap map : pm.getChildren(Parameter.PROJECT_MAP_TAG)) {
 			Parameter param = getParameter(map.getAttribute("name"));
 
 			if (param != null) {
@@ -110,7 +108,7 @@ public abstract class Parametric implements ProjectItem {
 
 	/**
 	 * Gets the identifying name of this {@link Parametric}
-	 * 
+	 *
 	 * @return {@link String} identifying name
 	 */
 	public abstract String getName();

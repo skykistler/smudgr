@@ -19,6 +19,11 @@ public class StepAutomator implements AutomatorControl {
 		return "Animate";
 	}
 
+	@Override
+	public String getIdentifier() {
+		return "step";
+	}
+
 	private NumberParameter parameter;
 	private boolean run = true;
 

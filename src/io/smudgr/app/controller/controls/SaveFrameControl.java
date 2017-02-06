@@ -6,7 +6,7 @@ import io.smudgr.util.output.ImageOutput;
 
 /**
  * Capture and save the currently rendered frame.
- * 
+ *
  * @see ImageOutput
  */
 public class SaveFrameControl implements AppControl {
@@ -21,7 +21,7 @@ public class SaveFrameControl implements AppControl {
 
 	/**
 	 * Does nothing.
-	 * 
+	 *
 	 * @see SaveFrameControl#inputOn()
 	 */
 	@Override
@@ -30,12 +30,12 @@ public class SaveFrameControl implements AppControl {
 
 	/**
 	 * Capture and save the currently rendered frame.
-	 * 
+	 *
 	 * @see ImageOutput
 	 */
 	@Override
 	public void inputOn() {
-		Frame frame = getProject().getSmudge().getFrame();
+		Frame frame = getProject().getRack().getLastFrame();
 
 		// TODO project wide output folder
 		ImageOutput out = new ImageOutput("frame", frame.getWidth(), frame.getHeight());
@@ -44,7 +44,7 @@ public class SaveFrameControl implements AppControl {
 
 	/**
 	 * Does nothing.
-	 * 
+	 *
 	 * @see SaveFrameControl#inputOn()
 	 */
 	@Override
@@ -53,7 +53,7 @@ public class SaveFrameControl implements AppControl {
 
 	/**
 	 * Does nothing.
-	 * 
+	 *
 	 * @see SaveFrameControl#inputOn()
 	 */
 	@Override
@@ -62,7 +62,7 @@ public class SaveFrameControl implements AppControl {
 
 	/**
 	 * Does nothing.
-	 * 
+	 *
 	 * @see SaveFrameControl#inputOn()
 	 */
 	@Override

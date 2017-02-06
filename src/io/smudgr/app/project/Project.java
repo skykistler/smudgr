@@ -5,11 +5,14 @@ import java.util.ArrayList;
 
 import io.smudgr.app.controller.Controller;
 import io.smudgr.app.controller.ControllerExtension;
+import io.smudgr.app.project.reflect.TypeLibrary;
 import io.smudgr.app.project.util.IdProvider;
 import io.smudgr.app.project.util.ProjectLoader;
 import io.smudgr.app.project.util.ProjectSaver;
 import io.smudgr.app.project.util.PropertyMap;
+import io.smudgr.engine.Rack;
 import io.smudgr.engine.Smudge;
+import io.smudgr.engine.SmudgeComponent;
 import io.smudgr.engine.param.ParameterObserverNotifier;
 import io.smudgr.util.DisposedFrameProvider;
 
@@ -38,17 +41,23 @@ public class Project {
 	/**
 	 * The path extension used to identify project files.
 	 * <p>
-	 * Currently set to: {@value}
+	 * Currently, this is set to {@value}
 	 */
 	public static final String PROJECT_EXTENSION = ".sproj";
 
+	// Services
 	private IdProvider idProvider;
-	private ComponentLibrary componentLibrary;
 	private SourceLibrary sourceLibrary;
 	private ParameterObserverNotifier paramObserverNotifier;
 
-	private Smudge smudge;
+	// Type libraries
+	private TypeLibrary<Smudge> smudgeLibrary;
+	private TypeLibrary<SmudgeComponent> componentLibrary;
 
+	// Rack configurations
+	private ArrayList<Rack> racks;
+
+	// Project configuration
 	private String location;
 	private String outputPath;
 	private int bpm = 120;
@@ -58,28 +67,34 @@ public class Project {
 	 */
 	public Project() {
 		idProvider = new IdProvider();
-		componentLibrary = new ComponentLibrary();
 		sourceLibrary = new SourceLibrary();
 		paramObserverNotifier = new ParameterObserverNotifier();
+
+		smudgeLibrary = new TypeLibrary<Smudge>(Smudge.class);
+		componentLibrary = new TypeLibrary<SmudgeComponent>(SmudgeComponent.class);
+
+		racks = new ArrayList<Rack>();
 	}
 
 	/**
-	 * Initialize the project which initializes the {@link Smudge}..
+	 * Initialize the project which initializes every {@link Rack}.
 	 *
-	 * @see Smudge#init()
+	 * @see Rack#init()
 	 */
 	public void init() {
-		smudge.init();
+		for (Rack r : racks) {
+			r.init();
+		}
 	}
 
 	/**
-	 * Update the project, which updates the current {@link Smudge}
+	 * Update the project, which updates the current {@link Rack}
 	 *
-	 * @see Smudge#update()
+	 * @see Rack#update()
 	 */
 	public void update() {
 		DisposedFrameProvider.getInstance().update();
-		smudge.update();
+		getRack().update();
 	}
 
 	/**
@@ -98,9 +113,11 @@ public class Project {
 
 		pm.setAttribute("bpm", bpm);
 
-		PropertyMap smudgeMap = new PropertyMap("smudge");
-		smudge.save(smudgeMap);
-		pm.add(smudgeMap);
+		for (Rack rack : racks) {
+			PropertyMap rackMap = new PropertyMap(rack.getIdentifier());
+			rack.save(rackMap);
+			pm.add(rackMap);
+		}
 
 		PropertyMap appMap = new PropertyMap("app");
 		Controller.getInstance().save(appMap);
@@ -118,32 +135,39 @@ public class Project {
 	 * @see Project#save(PropertyMap)
 	 */
 	public void load(PropertyMap pm) {
+		// Update the current application project
 		if (Controller.getInstance().getProject() != this)
 			Controller.getInstance().setProject(this);
 
-		smudge = new Smudge();
-
+		// Set the output path
 		if (pm.hasAttribute("outputPath"))
 			setOutputPath(pm.getAttribute("outputPath"));
 
+		// Set the BPM
 		if (pm.hasAttribute("bpm"))
 			setBPM(Integer.parseInt(pm.getAttribute("bpm")));
 
-		// If our smudge tag existed, load with it; else make a new smudge entry
-		ArrayList<PropertyMap> smudgeMap = pm.getChildren("smudge");
-		if (smudgeMap.size() == 1)
-			smudge.load(smudgeMap.get(0));
-		else
-			smudge.load(new PropertyMap("smudge"));
+		// Load any racks
+		for (PropertyMap rackMap : pm.getChildren(Rack.RACK_IDENTIFIER)) {
+			Rack rack = new Rack();
+			rack.load(rackMap);
+			racks.add(rack);
+		}
 
-		// If our app tag existed, load with it; else make a new app entry
+		// If no racks were loaded, make the first one
+		if (racks.size() == 0) {
+			Rack rack = new Rack();
+			rack.load(new PropertyMap(rack.getIdentifier()));
+		}
+
+		// If the app tag exists, load with it; else make a new app entry
 		ArrayList<PropertyMap> appMap = pm.getChildren("app");
 		if (appMap.size() == 1)
 			Controller.getInstance().load(appMap.get(0));
 		else
 			Controller.getInstance().load(new PropertyMap("app"));
 
-		// If our sources tag existed, load with it; else make a new sources tag
+		// If the sources tag exists, load with it; else make a new sources tag
 		ArrayList<PropertyMap> sources = pm.getChildren("sources");
 		if (sources.size() == 1)
 			sourceLibrary.load(sources.get(0));
@@ -304,35 +328,44 @@ public class Project {
 	}
 
 	/**
-	 * Gets the currently loaded {@link Smudge} persisted by this
-	 * {@link Project}
+	 * Gets the currently focused {@link Rack}
 	 *
-	 * @return {@link Smudge}
-	 * @see Project#setSmudge(Smudge)
+	 * @return {@link Rack}
+	 * @see Project#setRack(Rack)
 	 */
-	public Smudge getSmudge() {
-		return smudge;
+	public Rack getRack() {
+		return racks.get(0);
 	}
 
 	/**
-	 * Set the project {@link Smudge}
+	 * Set the project {@link Rack}
 	 *
-	 * @param smudge
-	 *            {@link Smudge}
-	 * @see Project#getSmudge()
+	 * @param rack
+	 *            {@link Rack}
+	 * @see Project#getRack()
 	 */
-	public void setSmudge(Smudge smudge) {
-		this.smudge = smudge;
+	public void setRack(Rack rack) {
+		racks.add(rack);
 	}
 
 	/**
-	 * Get the currently loaded component library in order to access all
-	 * available component types.
+	 * Gets the library for managing currently loaded {@link Smudge} types
 	 *
-	 * @return {@link ComponentLibrary}
-	 * @see Project#getSourceLibrary()
+	 * @return {@link TypeLibrary}
+	 * @see Project#getComponentLibrary()
 	 */
-	public ComponentLibrary getComponentLibrary() {
+	public TypeLibrary<Smudge> getSmudgeLibrary() {
+		return smudgeLibrary;
+	}
+
+	/**
+	 * Gets the library for managing currently loaded {@link SmudgeComponent}
+	 * types
+	 *
+	 * @return {@link TypeLibrary}
+	 * @see Project#getSmudgeLibrary()
+	 */
+	public TypeLibrary<SmudgeComponent> getComponentLibrary() {
 		return componentLibrary;
 	}
 
@@ -377,6 +410,13 @@ public class Project {
 			return;
 
 		this.bpm = bpm;
+	}
+
+	/**
+	 * Dispose all loaded sources
+	 */
+	public void disposeSources() {
+
 	}
 
 }

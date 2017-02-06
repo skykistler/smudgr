@@ -16,7 +16,7 @@ import io.smudgr.util.source.Video;
  * Managed collection of sources for manipulation and mixing. Sources are
  * aggregated in a {@link SourceSet} for organization and efficiency. This
  * system will hopefully change soon as the UI is developed.
- * 
+ *
  * @see SourceSet
  * @see Source
  */
@@ -29,7 +29,7 @@ public class SourceLibrary {
 
 	/**
 	 * Set the folder location of the sources to load, and load them.
-	 * 
+	 *
 	 * @param location
 	 *            Path to sources.
 	 * @see SourceSet
@@ -65,7 +65,7 @@ public class SourceLibrary {
 
 	/**
 	 * Switch to the next set in the library.
-	 * 
+	 *
 	 * @see SourceLibrary#previousSet()
 	 */
 	public void nextSet() {
@@ -74,7 +74,7 @@ public class SourceLibrary {
 
 	/**
 	 * Switch to the previous set in the library.
-	 * 
+	 *
 	 * @see SourceLibrary#nextSet()
 	 */
 	public void previousSet() {
@@ -124,13 +124,13 @@ public class SourceLibrary {
 		current = sourceSets.get(currentSet);
 		current.init();
 
-		Controller.getInstance().getProject().getSmudge().setSource(current);
+		Controller.getInstance().getProject().getRack().setSource(current);
 	}
 
 	/**
 	 * Save this {@link SourceLibrary} location to the given
 	 * {@link PropertyMap}
-	 * 
+	 *
 	 * @param pm
 	 *            The {@link PropertyMap} to save to.
 	 */
@@ -140,7 +140,7 @@ public class SourceLibrary {
 
 	/**
 	 * Load {@link SourceLibrary} location from the given {@link PropertyMap}.
-	 * 
+	 *
 	 * @param pm
 	 *            The {@link PropertyMap} to load from.
 	 */
@@ -151,11 +151,11 @@ public class SourceLibrary {
 
 	/**
 	 * Get a {@link Source} object from a given path.
-	 * 
+	 *
 	 * @param path
 	 *            Relative or absolute path of source to load.
 	 * @return {@link Source} object of type based on file extension.
-	 * 
+	 *
 	 * @see Image
 	 * @see Gif
 	 * @see Video
@@ -168,17 +168,17 @@ public class SourceLibrary {
 
 		try {
 			switch (ext) {
-			case "mov":
-			case "mp4":
-				return new Video(path);
-			case "gif":
-				return new Gif(path);
-			case "png":
-			case "jpg":
-			case "jpeg":
-				return new Image(path);
-			default:
-				return null;
+				case "mov":
+				case "mp4":
+					return new Video(path);
+				case "gif":
+					return new Gif(path);
+				case "png":
+				case "jpg":
+				case "jpeg":
+					return new Image(path);
+				default:
+					return null;
 			}
 		} catch (Exception e) {
 			return null;

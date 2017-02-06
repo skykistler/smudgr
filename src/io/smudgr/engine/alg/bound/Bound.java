@@ -17,8 +17,13 @@ import io.smudgr.util.Frame;
 public class Bound extends AlgorithmComponent {
 
 	@Override
-	public String getType() {
+	public String getComponentName() {
 		return "Bound";
+	}
+
+	@Override
+	public String getComponentIdentifier() {
+		return "bound";
 	}
 
 	@Override
@@ -26,10 +31,15 @@ public class Bound extends AlgorithmComponent {
 		return "Rectangle";
 	}
 
-	protected NumberParameter	offsetX	= new NumberParameter("Bound X", this, 0, 0, 1, 0.005);
-	protected NumberParameter	offsetY	= new NumberParameter("Bound Y", this, 0, 0, 1, 0.005);
-	protected NumberParameter	width	= new NumberParameter("Bound Width", this, 1, 0, 1, 0.005);
-	protected NumberParameter	height	= new NumberParameter("Bound Height", this, 1, 0, 1, 0.005);
+	@Override
+	public String getIdentifier() {
+		return "rectangle";
+	}
+
+	protected NumberParameter offsetX = new NumberParameter("Bound X", this, 0, 0, 1, 0.005);
+	protected NumberParameter offsetY = new NumberParameter("Bound Y", this, 0, 0, 1, 0.005);
+	protected NumberParameter width = new NumberParameter("Bound Width", this, 1, 0, 1, 0.005);
+	protected NumberParameter height = new NumberParameter("Bound Height", this, 1, 0, 1, 0.005);
 
 	@Override
 	public void init() {

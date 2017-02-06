@@ -5,13 +5,15 @@ import javax.swing.SwingUtilities;
 import io.smudgr.app.controller.Controller;
 import io.smudgr.app.project.Project;
 import io.smudgr.app.view.View;
+import io.smudgr.engine.Rack;
 import io.smudgr.util.Frame;
 
 /**
- * The {@link ViewThread} is responsible for taking the latest rendered
- * {@link Project#getSmudge()} frame and passing it to the given {@link View}
+ * The {@link ViewThread} is responsible for taking the last frame rendered
+ * {@link Rack#getLastFrame()} and passing it to a given {@link View}
  * instance, with a default rate of {@link Controller#TARGET_FPS}.
  *
+ * @see Project#getRack()
  * @see Controller#add(Object)
  */
 public class ViewThread extends AppThread {
@@ -41,7 +43,7 @@ public class ViewThread extends AppThread {
 	@Override
 	protected void execute() {
 		try {
-			Frame frame = Controller.getInstance().getProject().getSmudge().getFrame().copy();
+			Frame frame = Controller.getInstance().getProject().getRack().getLastFrame().copy();
 
 			view.update(frame);
 
