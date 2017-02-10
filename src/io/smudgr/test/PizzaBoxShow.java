@@ -21,7 +21,7 @@ import io.smudgr.engine.param.NumberParameter;
  */
 public class PizzaBoxShow extends AppStart {
 
-	static String projectPath = "data/pizza";
+	static String projectPath = "data/pizzabox/pizza.sproj";
 
 	static boolean overwriteSmudge = false;
 
@@ -53,6 +53,8 @@ public class PizzaBoxShow extends AppStart {
 		// addChannelBleed(smudge);
 
 		addMarbeler(smudge);
+
+		addStraightPixelSort(smudge);
 
 		// bind(smudge.getParameter("Source Speed"));
 		bind(smudge.getParameter("Downsample"));
@@ -150,16 +152,22 @@ public class PizzaBoxShow extends AppStart {
 	 */
 	public void addDatabend(Smudge smudge) {
 		DataBend databend = new DataBend();
-		Algorithm databend_alg = getOperationAlgorithm(smudge, databend);
+		databend.getParameter("Amount").setValue(2);
+
+		Algorithm alg = getOperationAlgorithm(smudge, databend);
+
+		StraightCoords coords = new StraightCoords();
+		alg.add(coords);
+		coords.getParameter("Vertical").setValue(true);
+		coords.getParameter("Continuous").setValue(false);
 
 		RangeSelect databend_range = new RangeSelect();
 		databend_range.getParameter("Range Length").setValue(1);
-		databend_alg.add(databend_range);
-
-		databend.getParameter("Amount").setValue(2);
+		alg.add(databend_range);
 
 		bind(addAutomator("Animate", databend.getParameter("Target")));
 		bind(databend.getParameter("Amount"));
+		bind(coords.getParameter("Vertical"));
 	}
 
 	/**
@@ -205,7 +213,7 @@ public class PizzaBoxShow extends AppStart {
 		bind(marb.getParameter("Frequency"));
 		bind(marb.getParameter("Iterations"));
 		bind(marb.getParameter("Strength"));
-		bind(marb.getParameter("Seed"));
+		// bind(marb.getParameter("Seed"));
 	}
 
 	/**
