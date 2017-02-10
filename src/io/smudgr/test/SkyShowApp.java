@@ -26,7 +26,7 @@ public class SkyShowApp extends AppStart {
 
 	static String sourcePath = "data/testing";
 
-	static String outputPath = "data";
+	static String outputPath = "data/output";
 
 	static String device = "Arturia BeatStep Pro";
 	static boolean deviceServer = false;

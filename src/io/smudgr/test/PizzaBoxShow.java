@@ -27,7 +27,7 @@ public class PizzaBoxShow extends AppStart {
 
 	static String sourcePath = "data/testing";
 
-	static String outputPath = "data";
+	static String outputPath = "data/output";
 
 	static String device = "Arturia BeatStepPro";
 	static boolean deviceServer = false;
@@ -42,11 +42,10 @@ public class PizzaBoxShow extends AppStart {
 		// addStraightPixelShift(smudge, true);
 		// addStraightPixelShift(smudge, false);
 
+		addDatabend(smudge);
 		addConvergePixelShift(smudge);
 
 		// addStraightPixelSort(smudge);
-
-		// addDatabend(smudge);
 
 		// addChannelBleed(smudge);
 
@@ -55,10 +54,10 @@ public class PizzaBoxShow extends AppStart {
 		// addMarbeler(smudge);
 
 		// bind(smudge.getParameter("Source Speed"));
-		// bind(smudge.getParameter("Downsample"));
+		bind(smudge.getParameter("Downsample"));
 		//
 		// bind(Controller.getInstance().getAppControl("Source Switcher"));
-		// bind(Controller.getInstance().getAppControl("Source Set Switcher"));
+		bind(Controller.getInstance().getAppControl("Source Set Switcher"));
 		// bind(Controller.getInstance().getAppControl("Save Project"));
 	}
 
