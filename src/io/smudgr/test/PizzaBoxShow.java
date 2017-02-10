@@ -25,9 +25,9 @@ public class PizzaBoxShow extends AppStart {
 
 	static boolean overwriteSmudge = false;
 
-	static String sourcePath = "data/testing";
+	static String sourcePath = "data/pizzabox";
 
-	static String outputPath = "data/output";
+	static String outputPath = "data/output/pizzabox";
 
 	static String device = "Arturia BeatStepPro";
 	static boolean deviceServer = false;
@@ -42,23 +42,24 @@ public class PizzaBoxShow extends AppStart {
 		// addStraightPixelShift(smudge, true);
 		// addStraightPixelShift(smudge, false);
 
-		addDatabend(smudge);
+		addSpectralShift(smudge);
+
 		addConvergePixelShift(smudge);
 
-		// addStraightPixelSort(smudge);
+		addDatabend(smudge);
+
+		addStraightPixelSort(smudge);
 
 		// addChannelBleed(smudge);
 
-		// addSpectralShift(smudge);
-
-		// addMarbeler(smudge);
+		addMarbeler(smudge);
 
 		// bind(smudge.getParameter("Source Speed"));
 		bind(smudge.getParameter("Downsample"));
 		//
-		// bind(Controller.getInstance().getAppControl("Source Switcher"));
-		bind(Controller.getInstance().getAppControl("Source Set Switcher"));
-		// bind(Controller.getInstance().getAppControl("Save Project"));
+		bind(Controller.getInstance().getAppControl("Source Switcher"));
+		// bind(Controller.getInstance().getAppControl("Source Set Switcher"));
+		bind(Controller.getInstance().getAppControl("Save Project"));
 	}
 
 	/**
@@ -104,19 +105,20 @@ public class PizzaBoxShow extends AppStart {
 	 *            Smudge
 	 */
 	public void addStraightPixelSort(Smudge smudge) {
-		PixelSort column_sort = new PixelSort();
-		Algorithm colum_sort_alg = getOperationAlgorithm(smudge, column_sort);
+		PixelSort sort = new PixelSort();
+		Algorithm alg = getOperationAlgorithm(smudge, sort);
 
 		RangeSelect pixelsort_range = new RangeSelect();
-		colum_sort_alg.add(pixelsort_range);
+		alg.add(pixelsort_range);
 		pixelsort_range.getParameter("Range Length").setValue(0);
 
 		StraightCoords coords = new StraightCoords();
-		colum_sort_alg.add(coords);
+		alg.add(coords);
 		coords.getParameter("Vertical").setValue(true);
 		coords.getParameter("Continuous").setValue(false);
 
 		bind(pixelsort_range.getParameter("Range Length"));
+		bind(sort.getParameter("Reverse"));
 		bind(coords.getParameter("Vertical"));
 	}
 
