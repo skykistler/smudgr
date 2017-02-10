@@ -90,7 +90,7 @@ public class Algorithm extends Smudge {
 		if (lastFrame != img) {
 			setSelectedPixels(coordFunction.getCoordSet());
 
-			for (AlgorithmComponent component : getComponents())
+			for (SmudgeComponent component : getComponents())
 				if (component instanceof Selector) {
 					Selector selector = ((Selector) component);
 					selector.setFrame(img);
@@ -98,7 +98,7 @@ public class Algorithm extends Smudge {
 				}
 		}
 
-		for (AlgorithmComponent component : getComponents())
+		for (SmudgeComponent component : getComponents())
 			if (component instanceof Operation)
 				((Operation) component).execute(img);
 
