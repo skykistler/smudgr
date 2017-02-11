@@ -7,7 +7,7 @@ import io.smudgr.util.Frame;
 /**
  * I honestly haven't played with this so who knows
  */
-public class Smear extends Operation {
+public class Smear extends ParallelOperation {
 
 	@Override
 	public String getName() {
@@ -18,50 +18,76 @@ public class Smear extends Operation {
 	private NumberParameter start = new NumberParameter("Start", this, 0, 0, 1, 0.01);
 	private NumberParameter length = new NumberParameter("Length", this, 1, 0, 1, 0.01);
 
-	@Override
-	public void execute(Frame img) {
-		Frame stretched = img.copy();
+	private Frame stretched;
+	private int ints, n0, nLength;
+	private double startPos, len;
 
-		for (PixelIndexList coords : getAlgorithm().getSelectedPixels()) {
-			stretch(coords, stretched, img);
+	@Override
+	public void preParallel(Frame img) {
+		if (stretched == null || stretched.getWidth() != img.getWidth() || stretched.getHeight() != img.getHeight()) {
+			if (stretched != null)
+				stretched.dispose();
+
+			stretched = img.copy();
+		} else {
+			img.copyTo(stretched);
 		}
 
+		ints = intervals.getIntValue();
+		startPos = start.getValue();
+		len = length.getValue();
+
+		// set start and end of intervals affected
+		n0 = (int) (ints * startPos);
+		nLength = (int) (ints * len);
+	}
+
+	@Override
+	public void postParallel(Frame img) {
 		stretched.copyTo(img);
 	}
 
-	private void stretch(PixelIndexList coords, Frame stretched, Frame orig) {
+	@Override
+	public ParallelOperationTask getParallelTask() {
+		return new SmearTask();
+	}
 
-		int size = coords.size();
-		int ints = intervals.getIntValue();
+	class SmearTask extends ParallelOperationTask {
 
-		// set start and end of intervals affected
-		int n0 = (int) (ints * start.getValue());
-		int nLength = (int) (ints * length.getValue());
+		private int size, n1, n, interval, color, i, index;
+		private double intervalWidth;
 
-		double intervalWidth = size / ints;
-
-		if (intervalWidth <= 1) {
-			intervalWidth = 1;
-			ints = size;
+		@Override
+		public void executeParallel(Frame img, PixelIndexList coords) {
+			size = coords.size();
+			stretch(coords, img);
 		}
 
-		int n1;
+		private void stretch(PixelIndexList coords, Frame orig) {
+			intervalWidth = size / ints;
 
-		if (n0 + nLength >= ints)
-			n1 = ints;
-		else
-			n1 = n0 + nLength;
-
-		for (int n = n0 + 1; n < n1 + 1; n++) {
-
-			int interval = (int) ((n - 1) * intervalWidth);
-
-			int color = orig.pixels[coords.get(interval)];
-
-			for (int i = 0; i < intervalWidth; i++) {
-				int index = interval + i;
-				stretched.pixels[coords.get(index)] = color;
+			if (intervalWidth <= 1) {
+				intervalWidth = 1;
+				ints = size;
 			}
+
+			if (n0 + nLength >= ints)
+				n1 = ints;
+			else
+				n1 = n0 + nLength;
+
+			for (n = n0 + 1; n < n1 + 1; n++) {
+
+				interval = (int) ((n - 1) * intervalWidth);
+
+				color = orig.pixels[coords.get(interval)];
+
+				for (i = 0; i < intervalWidth; i++) {
+					index = interval + i;
+					stretched.pixels[coords.get(index)] = color;
+				}
+			}
+
 		}
 	}
 

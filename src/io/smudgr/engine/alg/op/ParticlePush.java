@@ -34,10 +34,10 @@ public class ParticlePush extends ParallelOperation {
 			if (buffer != null)
 				buffer.dispose();
 
-			buffer = new Frame(img.getWidth(), img.getHeight());
+			buffer = img.copy();
+		} else {
+			img.copyTo(buffer);
 		}
-
-		img.copyTo(buffer);
 	}
 
 	@Override

@@ -8,7 +8,7 @@ import io.smudgr.util.Frame;
 /**
  * Channel Drift shifts image RGB layers separately by parameterized amounts.
  */
-public class ChannelDrift extends Operation {
+public class ChannelDrift extends ParallelOperation {
 
 	@Override
 	public String getName() {
@@ -22,8 +22,9 @@ public class ChannelDrift extends Operation {
 	NumberParameter blueX = new NumberParameter("Blue Offset - X", this, 0, 0, 1, 0.001);
 	NumberParameter blueY = new NumberParameter("Blue Offset - Y", this, 0, 0, 1, 0.001);
 
-	private int boundWidth;
-	private int boundHeight;
+	private Frame buffer;
+	private int boundWidth, boundHeight;
+	private int redShiftX, redShiftY, greenShiftX, greenShiftY, blueShiftX, blueShiftY;
 
 	@Override
 	public void init() {
@@ -40,43 +41,63 @@ public class ChannelDrift extends Operation {
 	}
 
 	@Override
-	public void execute(Frame img) {
+	public void preParallel(Frame img) {
 		boundWidth = getAlgorithm().getBound().getTranslatedWidth(img.getWidth());
 		boundHeight = getAlgorithm().getBound().getTranslatedHeight(img.getHeight());
 
-		Frame copy = img.copy();
+		if (buffer == null || buffer.getWidth() != img.getWidth() || buffer.getHeight() != img.getHeight()) {
+			if (buffer != null)
+				buffer.dispose();
 
-		int redShiftX = (int) (redX.getValue() * boundWidth);
-		int redShiftY = (int) (redY.getValue() * boundHeight);
-		int greenShiftX = (int) (greenX.getValue() * boundWidth);
-		int greenShiftY = (int) (greenY.getValue() * boundHeight);
-		int blueShiftX = (int) (blueX.getValue() * boundWidth);
-		int blueShiftY = (int) (blueY.getValue() * boundHeight);
+			buffer = img.copy();
+		} else {
+			img.copyTo(buffer);
+		}
 
-		for (PixelIndexList coords : getAlgorithm().getSelectedPixels()) {
-			for (int index = 0; index < coords.size(); index++) {
-				int coord = coords.get(index);
+		redShiftX = (int) (redX.getValue() * boundWidth);
+		redShiftY = (int) (redY.getValue() * boundHeight);
+		greenShiftX = (int) (greenX.getValue() * boundWidth);
+		greenShiftY = (int) (greenY.getValue() * boundHeight);
+		blueShiftX = (int) (blueX.getValue() * boundWidth);
+		blueShiftY = (int) (blueY.getValue() * boundHeight);
+	}
 
-				int x = coord % copy.getWidth();
-				int y = (coord - x) / copy.getWidth();
+	@Override
+	public void postParallel(Frame img) {
+		buffer.copyTo(img);
+	}
 
-				int r = ColorHelper.red(getShifted(img, x, y, redShiftX, redShiftY));
-				int g = ColorHelper.green(getShifted(img, x, y, greenShiftX, greenShiftY));
-				int b = ColorHelper.blue(getShifted(img, x, y, blueShiftX, blueShiftY));
+	@Override
+	public ParallelOperationTask getParallelTask() {
+		return new ChannelDriftTask();
+	}
 
-				copy.pixels[coord] = ColorHelper.color(255, r, g, b);
+	class ChannelDriftTask extends ParallelOperationTask {
+
+		private int index, coord, x, y, r, g, b, x1, y1;
+
+		@Override
+		public void executeParallel(Frame img, PixelIndexList coords) {
+			for (index = 0; index < coords.size(); index++) {
+				coord = coords.get(index);
+
+				x = coord % buffer.getWidth();
+				y = (coord - x) / buffer.getWidth();
+
+				r = ColorHelper.red(getShifted(img, x, y, redShiftX, redShiftY));
+				g = ColorHelper.green(getShifted(img, x, y, greenShiftX, greenShiftY));
+				b = ColorHelper.blue(getShifted(img, x, y, blueShiftX, blueShiftY));
+
+				buffer.pixels[coord] = ColorHelper.color(255, r, g, b);
 			}
 		}
 
-		copy.copyTo(img);
-		copy.dispose();
-	}
+		private int getShifted(Frame orig, int x, int y, int shiftX, int shiftY) {
+			x1 = (x + shiftX) % boundWidth;
+			y1 = (y + shiftY) % boundHeight;
 
-	private int getShifted(Frame orig, int x, int y, int shiftX, int shiftY) {
-		int x1 = (x + shiftX) % boundWidth;
-		int y1 = (y + shiftY) % boundHeight;
-
-		return orig.get(x1, y1);
+			return orig.get(x1, y1);
+		}
 	}
 
 }
