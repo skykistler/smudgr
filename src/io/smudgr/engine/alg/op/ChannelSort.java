@@ -12,6 +12,7 @@ import io.smudgr.util.Frame;
  */
 public class ChannelSort extends Operation {
 
+	@Override
 	public String getName() {
 		return "Channel Sort";
 	}

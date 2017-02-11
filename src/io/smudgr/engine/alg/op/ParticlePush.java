@@ -16,8 +16,8 @@ public class ParticlePush extends Operation {
 	private NumberParameter shift = new NumberParameter("Shift", this, 50, 0, 1000, 1);
 
 	private UnivariateFunction univariate = new LumaFunction();
-	private int currentShift, coordsLen, i, index, pixel, offset, newIndex;
-	private double currentScale, scale;
+	private int shiftParam, coordsLen, i, index, pixel, offset, newIndex;
+	private double scaleParam, currentScale;
 
 	@Override
 	public String getName() {
@@ -26,9 +26,8 @@ public class ParticlePush extends Operation {
 
 	@Override
 	public void execute(Frame img) {
-
-		currentShift = shift.getIntValue();
-		currentScale = scale.getValue();
+		shiftParam = shift.getIntValue();
+		scaleParam = scale.getValue();
 
 		Frame buffer = new Frame(img.getWidth(), img.getHeight());
 
@@ -45,8 +44,8 @@ public class ParticlePush extends Operation {
 		for (i = 0; i < coordsLen; i++) {
 			index = coords.get(i);
 			pixel = img.pixels[index];
-			scale = univariate.calculate(pixel) * currentScale;
-			offset = (int) (currentShift * scale);
+			currentScale = univariate.calculate(pixel) * scaleParam;
+			offset = (int) (shiftParam * currentScale);
 			newIndex = coords.get(Math.floorMod(i + offset, coordsLen));
 			bufferImg.pixels[newIndex] = pixel;
 		}

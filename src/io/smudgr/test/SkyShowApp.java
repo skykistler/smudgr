@@ -4,15 +4,20 @@ import io.smudgr.app.AppStart;
 import io.smudgr.app.controller.Controller;
 import io.smudgr.engine.Smudge;
 import io.smudgr.engine.alg.Algorithm;
+import io.smudgr.engine.alg.coord.ConvergeCoords;
 import io.smudgr.engine.alg.coord.StraightCoords;
 import io.smudgr.engine.alg.op.ChannelBleed;
+import io.smudgr.engine.alg.op.ChannelSort;
 import io.smudgr.engine.alg.op.DataBend;
+import io.smudgr.engine.alg.op.HSVLModifier;
+import io.smudgr.engine.alg.op.Marbeler;
+import io.smudgr.engine.alg.op.Operation;
+import io.smudgr.engine.alg.op.ParticlePush;
 import io.smudgr.engine.alg.op.PixelShift;
 import io.smudgr.engine.alg.op.PixelSort;
 import io.smudgr.engine.alg.op.SpectralShift;
 import io.smudgr.engine.alg.select.RangeSelect;
 import io.smudgr.engine.param.NumberParameter;
-import io.smudgr.extensions.automate.controls.AutomatorControl;
 import io.smudgr.extensions.cef.view.WebsocketView;
 
 /**
@@ -38,89 +43,207 @@ public class SkyShowApp extends AppStart {
 	public void buildSmudge() {
 		Smudge smudge = Controller.getInstance().getProject().getSmudge();
 
-		Algorithm colum_sort_alg = new Algorithm();
-		RangeSelect pixelsort_range = new RangeSelect();
-		colum_sort_alg.add(pixelsort_range);
-		PixelSort column_sort = new PixelSort();
-		colum_sort_alg.add(column_sort);
-		StraightCoords column_coords = new StraightCoords();
-		column_coords.getParameter("Vertical").setValue(true);
-		column_coords.getParameter("Continuous").setValue(false);
-		colum_sort_alg.add(column_coords);
-		pixelsort_range.getParameter("Range Length").setValue(0);
-		bind(pixelsort_range.getParameter("Range Length"));
-		bind(colum_sort_alg.getParameter("Enable"));
-		colum_sort_alg.getParameter("Enable").setValue(false);
-		smudge.add(colum_sort_alg);
+		// addStraightPixelShift(smudge, true);
+		// addStraightPixelShift(smudge, false);
 
-		Algorithm databend_alg = new Algorithm();
-		RangeSelect databend_range = new RangeSelect();
-		databend_alg.add(databend_range);
+		addSpectralShift(smudge);
+
+		addConvergePixelShift(smudge);
+
+		addDatabend(smudge);
+
+		addStraightPixelSort(smudge);
+
+		// addChannelBleed(smudge);
+
+		addMarbeler(smudge);
+
+		addStraightPixelSort(smudge);
+
+		getOperationAlgorithm(smudge, new HSVLModifier());
+		getOperationAlgorithm(smudge, new ChannelSort());
+		getOperationAlgorithm(smudge, new ParticlePush());
+
+		// bind(smudge.getParameter("Source Speed"));
+		bind(smudge.getParameter("Downsample"));
+		//
+		bind(Controller.getInstance().getAppControl("Source Switcher"));
+		// bind(Controller.getInstance().getAppControl("Source Set Switcher"));
+		bind(Controller.getInstance().getAppControl("Save Project"));
+	}
+
+	/**
+	 * @param smudge
+	 *            Smudge
+	 * @param columns
+	 *            boolean
+	 */
+	public void addStraightPixelShift(Smudge smudge, boolean columns) {
+		PixelShift pixel_shift = new PixelShift();
+		Algorithm shift_alg = getOperationAlgorithm(smudge, pixel_shift);
+
+		StraightCoords shift_coords = new StraightCoords();
+		shift_alg.add(shift_coords);
+		shift_coords.getParameter("Vertical").setValue(columns);
+		shift_coords.getParameter("Continuous").setValue(false);
+
+		bind(pixel_shift.getParameter("Reverse"));
+		bind(pixel_shift.getParameter("Intervals"));
+		bind(addAutomator("Animate", pixel_shift.getParameter("Amount")));
+	}
+
+	/**
+	 * @param smudge
+	 *            Smudge
+	 */
+	public void addConvergePixelShift(Smudge smudge) {
+		PixelShift pixel_shift = new PixelShift();
+		Algorithm shift_alg = getOperationAlgorithm(smudge, pixel_shift);
+
+		ConvergeCoords shift_coords = new ConvergeCoords();
+		shift_alg.add(shift_coords);
+		shift_coords.getParameter("Continuous").setValue(false);
+
+		bind(pixel_shift.getParameter("Reverse"));
+		bind(pixel_shift.getParameter("Intervals"));
+		bind(addAutomator("Animate", pixel_shift.getParameter("Amount")));
+	}
+
+	/**
+	 *
+	 * @param smudge
+	 *            Smudge
+	 */
+	public void addStraightPixelSort(Smudge smudge) {
+		PixelSort sort = new PixelSort();
+		Algorithm alg = getOperationAlgorithm(smudge, sort);
+
+		RangeSelect pixelsort_range = new RangeSelect();
+		alg.add(pixelsort_range);
+		pixelsort_range.getParameter("Range Length").setValue(0);
+
+		StraightCoords coords = new StraightCoords();
+		alg.add(coords);
+		coords.getParameter("Vertical").setValue(true);
+		coords.getParameter("Continuous").setValue(false);
+
+		bind(pixelsort_range.getParameter("Range Length"));
+		bind(sort.getParameter("Reverse"));
+		bind(coords.getParameter("Vertical"));
+	}
+
+	/**
+	 *
+	 * @param smudge
+	 *            Smudge
+	 */
+	public void addConvergePixelSort(Smudge smudge) {
+		PixelSort sort = new PixelSort();
+		Algorithm alg = getOperationAlgorithm(smudge, sort);
+
+		RangeSelect pixelsort_range = new RangeSelect();
+		alg.add(pixelsort_range);
+		pixelsort_range.getParameter("Range Length").setValue(0);
+
+		ConvergeCoords coords = new ConvergeCoords();
+		alg.add(coords);
+		coords.getParameter("Continuous").setValue(false);
+
+		bind(pixelsort_range.getParameter("Range Length"));
+		bind(sort.getParameter("Reverse"));
+	}
+
+	/**
+	 *
+	 * @param smudge
+	 *            Smudge
+	 */
+	public void addDatabend(Smudge smudge) {
 		DataBend databend = new DataBend();
 		databend.getParameter("Amount").setValue(2);
-		bind(databend.getParameter("Amount"));
-		databend_range.getParameter("Range Length").setValue(1);
-		databend_alg.add(databend);
-		AutomatorControl automator1 = addAutomator("Animate", databend.getParameter("Target"));
-		bind(automator1);
-		bind(databend_alg.getParameter("Enable"));
-		databend_alg.getParameter("Enable").setValue(false);
-		smudge.add(databend_alg);
 
-		Algorithm spectral_alg = new Algorithm();
+		Algorithm alg = getOperationAlgorithm(smudge, databend);
+
+		StraightCoords coords = new StraightCoords();
+		alg.add(coords);
+		coords.getParameter("Vertical").setValue(true);
+		coords.getParameter("Continuous").setValue(false);
+
+		RangeSelect databend_range = new RangeSelect();
+		databend_range.getParameter("Range Length").setValue(1);
+		alg.add(databend_range);
+
+		bind(addAutomator("Animate", databend.getParameter("Target")));
+		bind(databend.getParameter("Amount"));
+		bind(coords.getParameter("Vertical"));
+	}
+
+	/**
+	 *
+	 * @param smudge
+	 *            Smudge
+	 */
+	public void addSpectralShift(Smudge smudge) {
 		SpectralShift spectral_shift = new SpectralShift();
+		getOperationAlgorithm(smudge, spectral_shift);
+
+		spectral_shift.getParameter("Colors").setValue(6);
+
+		bind(addAutomator("Beat Sync", spectral_shift.getParameter("Shift")));
+
 		bind(spectral_shift.getParameter("Colors"));
 		bind(spectral_shift.getParameter("Palette"));
-		spectral_alg.add(spectral_shift);
-		AutomatorControl automator4 = addAutomator("Beat Sync", spectral_shift.getParameter("Shift"));
-		bind(automator4);
-		bind(spectral_alg.getParameter("Enable"));
-		spectral_alg.getParameter("Enable").setValue(false);
-		smudge.add(spectral_alg);
+	}
 
-		Algorithm shift_rows = new Algorithm();
-		StraightCoords shift_rows_coords = new StraightCoords();
-		shift_rows_coords.getParameter("Continuous").setValue(false);
-		shift_rows.add(shift_rows_coords);
-		PixelShift pixel_shift_rows = new PixelShift();
-		bind(pixel_shift_rows.getParameter("Reverse"));
-		bind(pixel_shift_rows.getParameter("Intervals"));
-		AutomatorControl automator2 = addAutomator("Animate", pixel_shift_rows.getParameter("Amount"));
-		bind(automator2);
-		shift_rows.add(pixel_shift_rows);
-		bind(shift_rows.getParameter("Enable"));
-		shift_rows.getParameter("Enable").setValue(false);
-		smudge.add(shift_rows);
-
-		Algorithm shift_columns = new Algorithm();
-		StraightCoords shift_column_coords = new StraightCoords();
-		shift_column_coords.getParameter("Vertical").setValue(true);
-		shift_column_coords.getParameter("Continuous").setValue(false);
-		shift_columns.add(shift_column_coords);
-		PixelShift pixel_shift_columns = new PixelShift();
-		bind(pixel_shift_columns.getParameter("Intervals"));
-		bind(pixel_shift_columns.getParameter("Reverse"));
-		shift_columns.add(pixel_shift_columns);
-		AutomatorControl automator3 = addAutomator("Animate", pixel_shift_columns.getParameter("Amount"));
-		bind(automator3);
-		bind(shift_columns.getParameter("Enable"));
-		shift_columns.getParameter("Enable").setValue(false);
-		smudge.add(shift_columns);
-
-		Algorithm chan_bleed = new Algorithm();
+	/**
+	 *
+	 * @param smudge
+	 *            Smudge
+	 */
+	public void addChannelBleed(Smudge smudge) {
 		ChannelBleed bleed = new ChannelBleed();
-		chan_bleed.add(bleed);
 		((NumberParameter) bleed.getParameter("Shift Amount")).setContinuous(true);
-		chan_bleed.getParameter("Enable").setValue(false);
-		addAutomator("Animate", bleed.getParameter("Shift Amount"));
-		smudge.add(chan_bleed);
 
-		bind(smudge.getParameter("Source Speed"));
-		bind(smudge.getParameter("Downsample"));
+		getOperationAlgorithm(smudge, bleed);
 
-		bind(Controller.getInstance().getAppControl("Source Switcher"));
-		bind(Controller.getInstance().getAppControl("Source Set Switcher"));
-		bind(Controller.getInstance().getAppControl("Save Project"));
+		bind(bleed.getParameter("Shift Amount"));
+	}
+
+	/**
+	 *
+	 * @param smudge
+	 *            Smudge
+	 */
+	public void addMarbeler(Smudge smudge) {
+		Marbeler marb = new Marbeler();
+		getOperationAlgorithm(smudge, marb);
+
+		bind(marb.getParameter("Frequency"));
+		bind(marb.getParameter("Iterations"));
+		bind(marb.getParameter("Strength"));
+		// bind(marb.getParameter("Seed"));
+	}
+
+	/**
+	 * Get a new algorithm wrapping the given operation
+	 *
+	 * @param smudge
+	 *            {@link Smudge}
+	 * @param op
+	 *            {@link Operation}
+	 * @return {@link Algorithm}
+	 */
+	public Algorithm getOperationAlgorithm(Smudge smudge, Operation op) {
+		Algorithm alg = new Algorithm();
+
+		alg.getParameter("Enable").setValue(false);
+		bind(alg.getParameter("Enable"));
+
+		alg.add(op);
+
+		smudge.add(alg);
+
+		return alg;
 	}
 
 	/**
