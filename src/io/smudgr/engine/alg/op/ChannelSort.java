@@ -24,7 +24,7 @@ public class ChannelSort extends Operation {
 	private int[] toSort = null;
 
 	// Declared for memory reuse
-	private int i, sortSize;
+	private int quality, i, sortSize, pixel, index;
 
 	private int mask;
 	private int invertMask;
@@ -40,7 +40,7 @@ public class ChannelSort extends Operation {
 
 		reverseVal = reverse.getValue();
 
-		int quality = 7 - sortQuality.getIntValue();
+		quality = 7 - sortQuality.getIntValue();
 
 		mask = (0x000000ff >>> quality) << quality;
 
@@ -63,8 +63,8 @@ public class ChannelSort extends Operation {
 		Arrays.sort(toSort);
 
 		for (i = 0; i < sortSize; i++) {
-			int pixel = (img.pixels[coords.get(i)] & invertMask) | toSort[i];
-			int index = reverseVal ? ((sortSize - 1) - i) : i;
+			pixel = (img.pixels[coords.get(i)] & invertMask) | toSort[i];
+			index = reverseVal ? ((sortSize - 1) - i) : i;
 			img.pixels[coords.get(index)] = pixel;
 		}
 	}
