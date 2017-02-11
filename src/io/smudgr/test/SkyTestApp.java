@@ -7,9 +7,11 @@ import io.smudgr.engine.alg.Algorithm;
 import io.smudgr.engine.alg.coord.ConvergeCoords;
 import io.smudgr.engine.alg.coord.StraightCoords;
 import io.smudgr.engine.alg.op.ChannelBleed;
+import io.smudgr.engine.alg.op.ChannelSort;
 import io.smudgr.engine.alg.op.DataBend;
 import io.smudgr.engine.alg.op.Marbeler;
 import io.smudgr.engine.alg.op.Operation;
+import io.smudgr.engine.alg.op.ParticlePush;
 import io.smudgr.engine.alg.op.PixelShift;
 import io.smudgr.engine.alg.op.PixelSort;
 import io.smudgr.engine.alg.op.SpectralShift;
@@ -20,7 +22,7 @@ import io.smudgr.extensions.cef.view.WebsocketView;
 /**
  * Example class for creating a test {@link AppStart} main class
  */
-public class SampleApp extends AppStart {
+public class SkyTestApp extends AppStart {
 
 	/*
 	 * To make your own test class, just duplicate this file and change the
@@ -50,16 +52,18 @@ public class SampleApp extends AppStart {
 	static int fullscreenDisplay = -1;
 
 	// non-fullscreen window
-	static boolean monitor = true;
+	static boolean monitor = false;
 
 	// whether to allow front-end streaming connections
-	static boolean streaming = false;
+	static boolean streaming = true;
 
 	@Override
 	public void buildSmudge() {
 		Smudge smudge = Controller.getInstance().getProject().getSmudge();
 
+		getOperationAlgorithm(smudge, new ParticlePush());
 		addStraightPixelSort(smudge);
+		getOperationAlgorithm(smudge, new ChannelSort());
 
 		bind(smudge.getParameter("Source Speed"));
 		bind(smudge.getParameter("Downsample"));
@@ -115,9 +119,11 @@ public class SampleApp extends AppStart {
 		PixelSort sort = new PixelSort();
 		Algorithm alg = getOperationAlgorithm(smudge, sort);
 
+		alg.getParameter("Enable").setValue(true);
+
 		RangeSelect pixelsort_range = new RangeSelect();
 		alg.add(pixelsort_range);
-		pixelsort_range.getParameter("Range Length").setValue(0);
+		pixelsort_range.getParameter("Range Length").setValue(1);
 
 		StraightCoords coords = new StraightCoords();
 		alg.add(coords);
@@ -246,7 +252,7 @@ public class SampleApp extends AppStart {
 	/**
 	 * Create
 	 */
-	public SampleApp() {
+	public SkyTestApp() {
 		super(projectPath, sourcePath, outputPath, device, overwriteSmudge, deviceServer);
 
 		fullscreenView(fullscreenDisplay);
@@ -267,7 +273,7 @@ public class SampleApp extends AppStart {
 	 *            unused
 	 */
 	public static void main(String[] args) {
-		new SampleApp();
+		new SkyTestApp();
 	}
 
 }

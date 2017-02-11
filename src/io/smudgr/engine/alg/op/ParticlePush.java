@@ -10,14 +10,15 @@ import io.smudgr.util.Frame;
  * Particle Push takes pixels and displaces them by a univariate scaled shift
  * amount.
  */
-public class ParticlePush extends Operation {
+public class ParticlePush extends ParallelOperation {
 
 	private NumberParameter scale = new NumberParameter("Scale", this, 1, -1, 1, 0.01);
 	private NumberParameter shift = new NumberParameter("Shift", this, 50, 0, 1000, 1);
 
 	private UnivariateFunction univariate = new LumaFunction();
-	private int shiftParam, coordsLen, i, index, pixel, offset, newIndex;
-	private double scaleParam, currentScale;
+	private Frame buffer;
+	private int shiftParam;
+	private double scaleParam;
 
 	@Override
 	public String getName() {
@@ -25,30 +26,52 @@ public class ParticlePush extends Operation {
 	}
 
 	@Override
-	public void execute(Frame img) {
+	protected void preParallel(Frame img) {
 		shiftParam = shift.getIntValue();
 		scaleParam = scale.getValue();
 
-		Frame buffer = new Frame(img.getWidth(), img.getHeight());
+		if (buffer == null || buffer.getWidth() != img.getWidth() || buffer.getHeight() != img.getHeight()) {
+			if (buffer != null)
+				buffer.dispose();
 
-		for (PixelIndexList coords : getAlgorithm().getSelectedPixels()) {
-			shiftPixels(coords, img, buffer);
+			buffer = new Frame(img.getWidth(), img.getHeight());
 		}
 
-		buffer.copyTo(img);
-		buffer.dispose();
+		img.copyTo(buffer);
 	}
 
-	private void shiftPixels(PixelIndexList coords, Frame img, Frame bufferImg) {
-		coordsLen = coords.size();
-		for (i = 0; i < coordsLen; i++) {
-			index = coords.get(i);
-			pixel = img.pixels[index];
-			currentScale = univariate.calculate(pixel) * scaleParam;
-			offset = (int) (shiftParam * currentScale);
-			newIndex = coords.get(Math.floorMod(i + offset, coordsLen));
-			bufferImg.pixels[newIndex] = pixel;
+	@Override
+	public void postParallel(Frame img) {
+		buffer.copyTo(img);
+	}
+
+	@Override
+	public ParallelOperationTask getParallelTask() {
+		return new ParticlePushTask();
+	}
+
+	class ParticlePushTask extends ParallelOperationTask {
+
+		private int coordsLen, i, index, pixel, offset, newIndex;
+		private double currentScale;
+
+		@Override
+		public void executeParallel(Frame img, PixelIndexList coords) {
+			coordsLen = coords.size();
+			shiftPixels(coords, img);
 		}
+
+		private void shiftPixels(PixelIndexList coords, Frame img) {
+			for (i = 0; i < coordsLen; i++) {
+				index = coords.get(i);
+				pixel = img.pixels[index];
+				currentScale = univariate.calculate(pixel) * scaleParam;
+				offset = (int) (shiftParam * currentScale);
+				newIndex = coords.get(Math.floorMod(i + offset, coordsLen));
+				buffer.pixels[newIndex] = pixel;
+			}
+		}
+
 	}
 
 }
