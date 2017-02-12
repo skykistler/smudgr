@@ -7,37 +7,33 @@ import io.smudgr.engine.alg.Algorithm;
 import io.smudgr.engine.alg.coord.ConvergeCoords;
 import io.smudgr.engine.alg.coord.StraightCoords;
 import io.smudgr.engine.alg.op.ChannelBleed;
-import io.smudgr.engine.alg.op.ChannelSort;
 import io.smudgr.engine.alg.op.DataBend;
-import io.smudgr.engine.alg.op.HSVLModifier;
 import io.smudgr.engine.alg.op.Marbeler;
 import io.smudgr.engine.alg.op.Operation;
-import io.smudgr.engine.alg.op.ParticlePush;
 import io.smudgr.engine.alg.op.PixelShift;
 import io.smudgr.engine.alg.op.PixelSort;
 import io.smudgr.engine.alg.op.SpectralShift;
 import io.smudgr.engine.alg.select.RangeSelect;
 import io.smudgr.engine.param.NumberParameter;
-import io.smudgr.extensions.cef.view.WebsocketView;
 
 /**
  * Test file for large smudge used in multiple live shows before.
  */
-public class SkyShowApp extends AppStart {
+public class PizzaBoxShow extends AppStart {
 
-	static String projectPath = "data/show.smudge";
+	static String projectPath = "data/pizzabox/pizza.sproj";
 
 	static boolean overwriteSmudge = false;
 
-	static String sourcePath = "data/testing";
+	static String sourcePath = "data/pizzabox";
 
-	static String outputPath = "data/output";
+	static String outputPath = "data/output/pizzabox";
 
-	static String device = "Arturia BeatStep Pro";
+	static String device = "Arturia BeatStepPro";
 	static boolean deviceServer = false;
 
 	static int fullscreenDisplay = -1;
-	static boolean monitor = false;
+	static boolean monitor = true;
 
 	@Override
 	public void buildSmudge() {
@@ -59,10 +55,6 @@ public class SkyShowApp extends AppStart {
 		addMarbeler(smudge);
 
 		addStraightPixelSort(smudge);
-
-		getOperationAlgorithm(smudge, new HSVLModifier());
-		getOperationAlgorithm(smudge, new ChannelSort());
-		getOperationAlgorithm(smudge, new ParticlePush());
 
 		// bind(smudge.getParameter("Source Speed"));
 		bind(smudge.getParameter("Downsample"));
@@ -249,14 +241,14 @@ public class SkyShowApp extends AppStart {
 	/**
 	 *
 	 */
-	public SkyShowApp() {
+	public PizzaBoxShow() {
 		super(projectPath, sourcePath, outputPath, device, overwriteSmudge, deviceServer);
 
 		fullscreenView(fullscreenDisplay);
 		if (monitor)
 			monitorView();
 
-		Controller.getInstance().add(new WebsocketView());
+		// Controller.getInstance().add(new WebsocketView());
 
 		start();
 	}
@@ -268,7 +260,7 @@ public class SkyShowApp extends AppStart {
 	 *            {@code String[]}
 	 */
 	public static void main(String[] args) {
-		new SkyShowApp();
+		new PizzaBoxShow();
 	}
 
 }

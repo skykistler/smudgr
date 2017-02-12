@@ -9,6 +9,7 @@ import io.smudgr.engine.alg.math.univariate.HueFunction;
 import io.smudgr.engine.alg.math.univariate.LogFunction;
 import io.smudgr.engine.alg.math.univariate.LumaFunction;
 import io.smudgr.engine.alg.math.univariate.SinFunction;
+import io.smudgr.engine.alg.math.univariate.UnivariateFunction;
 import io.smudgr.engine.param.BooleanParameter;
 import io.smudgr.engine.param.NumberParameter;
 import io.smudgr.engine.param.UnivariateParameter;
@@ -20,7 +21,7 @@ import io.smudgr.util.Frame;
  * buckets/colors, the palette to replace with, and the function to calculate
  * pixel values with are all configurable.
  */
-public class SpectralShift extends Operation {
+public class SpectralShift extends ParallelOperation {
 
 	@Override
 	public String getName() {
@@ -33,38 +34,41 @@ public class SpectralShift extends Operation {
 	BooleanParameter sort = new BooleanParameter("Sort", this, false);
 	BooleanParameter reverse = new BooleanParameter("Reverse", this, false);
 
-	private UnivariateParameter function = new UnivariateParameter("Function", this, new LumaFunction());
+	private UnivariateParameter functionParam = new UnivariateParameter("Function", this, new LumaFunction());
 
 	int buckets = 0;
 	int[] values = null;
 	int[] counters = null;
 
-	boolean wasSorted = false;
+	private UnivariateFunction function;
+	private boolean wasSorted, negate, shouldSort;
+	private int paletteId, p1, p2, p3, shift_amount;
 
 	@Override
 	public void init() {
 		shift.setContinuous(true);
 		palette.setContinuous(true);
 
-		function.add(new ChromaFunction());
-		function.add(new HueFunction());
-		function.add(new SinFunction());
-		function.add(new LogFunction());
+		functionParam.add(new ChromaFunction());
+		functionParam.add(new HueFunction());
+		functionParam.add(new SinFunction());
+		functionParam.add(new LogFunction());
 	}
 
 	@Override
-	public void execute(Frame img) {
-		boolean negate = reverse.getValue();
+	public void preParallel(Frame img) {
+		function = functionParam.getValue();
+		negate = reverse.getValue();
 
 		buckets = colors.getIntValue();
 		shift.setMax(buckets - 1);
 
-		int paletteId = palette.getIntValue();
-		int p1 = paletteId % 3;
-		int p2 = (paletteId / 3) % 3;
-		int p3 = (paletteId / 9) % 3;
+		paletteId = palette.getIntValue();
+		p1 = paletteId % 3;
+		p2 = (paletteId / 3) % 3;
+		p3 = (paletteId / 9) % 3;
 
-		boolean shouldSort = sort.getValue();
+		shouldSort = sort.getValue();
 		if (values == null || values.length != buckets || shouldSort != wasSorted) {
 			values = new int[buckets];
 			counters = new int[buckets];
@@ -84,30 +88,41 @@ public class SpectralShift extends Operation {
 			wasSorted = shouldSort;
 		}
 
-		int shift_amount = shift.getIntValue() % buckets;
+		shift_amount = shift.getIntValue() % buckets;
+	}
 
-		for (PixelIndexList coords : getAlgorithm().getSelectedPixels())
-			for (int index = 0; index < coords.size(); index++) {
-				int coord = coords.get(index);
-				int val = getBucket(img.pixels[coord]);
-				int bucket_index = Math.abs((val + shift_amount * (negate ? -1 : 1)) % buckets);
+	@Override
+	public ParallelOperationTask getParallelTask() {
+		return new SpectralShiftTask();
+	}
 
-				int pixel = values[bucket_index] / (counters[bucket_index] + 1);
-				int red = ColorHelper.red(pixel);
-				int blue = ColorHelper.blue(pixel);
-				int green = ColorHelper.green(pixel);
+	class SpectralShiftTask extends ParallelOperationTask {
 
-				int r = p1 == 0 ? red : p1 == 1 ? green : blue;
-				int g = p2 == 0 ? green : p2 == 1 ? blue : red;
-				int b = p3 == 0 ? blue : p3 == 1 ? red : green;
+		private int index, coord, val, bucket_index, pixel, red, blue, green, r, g, b;
+
+		@Override
+		public void executeParallel(Frame img, PixelIndexList coords) {
+			for (index = 0; index < coords.size(); index++) {
+				coord = coords.get(index);
+				val = getBucket(img.pixels[coord]);
+				bucket_index = Math.abs((val + shift_amount * (negate ? -1 : 1)) % buckets);
+
+				pixel = values[bucket_index] / (counters[bucket_index] + 1);
+				red = ColorHelper.red(pixel);
+				blue = ColorHelper.blue(pixel);
+				green = ColorHelper.green(pixel);
+
+				r = p1 == 0 ? red : p1 == 1 ? green : blue;
+				g = p2 == 0 ? green : p2 == 1 ? blue : red;
+				b = p3 == 0 ? blue : p3 == 1 ? red : green;
 
 				img.pixels[coord] = ColorHelper.color(255, r, g, b);
 			}
-
+		}
 	}
 
 	private int getBucket(int value) {
-		return (int) (function.getValue().calculate(value) * (buckets - 1));
+		return (int) (function.calculate(value) * (buckets - 1));
 	}
 
 }

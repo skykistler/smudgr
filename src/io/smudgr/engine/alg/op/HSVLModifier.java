@@ -9,7 +9,7 @@ import io.smudgr.util.Frame;
  * HSV/L Modifier provides a traditional manipulation for saturation, hue, and
  * brightness.
  */
-public class HSVLModifier extends Operation {
+public class HSVLModifier extends ParallelOperation {
 
 	@Override
 	public String getName() {
@@ -21,31 +21,42 @@ public class HSVLModifier extends Operation {
 	NumberParameter value = new NumberParameter("Value/Lightness", this, 0, -1.0, 1.0, 0.01);
 	NumberParameter type = new NumberParameter("Color Space", this, 1, 1, 2, 1);
 
-	@Override
-	public void execute(Frame img) {
-		double sat = saturation.getValue();
-		double val = value.getValue();
-		int deg = degree.getIntValue();
+	private double sat, val;
+	private int deg, colorSpace, index, coord;
 
-		for (PixelIndexList coords : getAlgorithm().getSelectedPixels()) {
-			for (int index = 0; index < coords.size(); index++) {
-				int coord = coords.get(index);
+	@Override
+	public void preParallel(Frame img) {
+		sat = saturation.getValue();
+		val = value.getValue();
+		deg = degree.getIntValue();
+		colorSpace = type.getIntValue();
+	}
+
+	@Override
+	public ParallelOperationTask getParallelTask() {
+		return new HSVLTask();
+	}
+
+	class HSVLTask extends ParallelOperationTask {
+
+		@Override
+		public void executeParallel(Frame img, PixelIndexList coords) {
+			for (index = 0; index < coords.size(); index++) {
+				coord = coords.get(index);
 				img.pixels[coord] = manipulate(img.pixels[coord], deg, sat, val);
 			}
 		}
-	}
 
-	private int manipulate(int color, int deg, double sat, double val) {
-		int newRGB;
-		switch (type.getIntValue()) {
-			case 1:
-				newRGB = ColorHelper.modifyHSV(color, deg, sat, val);
-			case 2:
-				newRGB = ColorHelper.modifyHSL(color, deg, sat, val);
-			default:
-				newRGB = ColorHelper.modifyHSL(color, deg, sat, val);
+		private int manipulate(int color, int deg, double sat, double val) {
+			switch (colorSpace) {
+				case 1:
+					return ColorHelper.modifyHSV(color, deg, sat, val);
+				case 2:
+					return ColorHelper.modifyHSL(color, deg, sat, val);
+				default:
+					return ColorHelper.modifyHSL(color, deg, sat, val);
+			}
 		}
-		return newRGB;
 	}
 
 }

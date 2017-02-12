@@ -8,7 +8,7 @@ import io.smudgr.util.Frame;
  * Channel Bleed rotates colors using a bitwise function for a weird digi-acid
  * effect.
  */
-public class ChannelBleed extends Operation {
+public class ChannelBleed extends ParallelOperation {
 
 	@Override
 	public String getName() {
@@ -16,31 +16,38 @@ public class ChannelBleed extends Operation {
 	}
 
 	private NumberParameter shift = new NumberParameter("Shift Amount", this, 0, 0, 23, 1);
-	// private UnivariateParameter function = new
-	// UnivariateParameter("Function", this, new LumaFunction());
 
-	// private UnivariateFunction univariate = null;
 	private int rotateAmount;
 
 	@Override
-	public void execute(Frame img) {
+	public void preParallel(Frame img) {
 		rotateAmount = shift.getIntValue();
-		// univariate = function.getValue();
-
-		for (PixelIndexList coords : getAlgorithm().getSelectedPixels())
-			rotatePixels(coords, rotateAmount, img);
 	}
 
-	private void rotatePixels(PixelIndexList coords, int shift, Frame img) {
-		for (int i = 0; i < coords.size(); i++) {
-			int index = coords.get(i);
-			int pixel = img.pixels[index] & 0x00ffffff;
-			int k = shift; // (int) ((univariate.calculate(pixel)) * shift);
+	@Override
+	public ParallelOperationTask getParallelTask() {
+		return new ChannelBleedTask();
+	}
 
-			pixel = (pixel >>> k) | (pixel << (24 - k));
+	class ChannelBleedTask extends ParallelOperationTask {
 
-			img.pixels[index] = pixel | 0xff000000;
+		private int i, index, pixel, k;
+
+		@Override
+		public void executeParallel(Frame img, PixelIndexList coords) {
+			rotatePixels(img, coords);
+		}
+
+		private void rotatePixels(Frame img, PixelIndexList coords) {
+			for (i = 0; i < coords.size(); i++) {
+				index = coords.get(i);
+				pixel = img.pixels[index] & 0x00ffffff;
+				k = rotateAmount;
+
+				pixel = (pixel >>> k) | (pixel << (24 - k));
+
+				img.pixels[index] = pixel | 0xff000000;
+			}
 		}
 	}
-
 }

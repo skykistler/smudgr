@@ -4,7 +4,8 @@ import io.smudgr.app.AppStart;
 import io.smudgr.app.controller.Controller;
 import io.smudgr.engine.Smudge;
 import io.smudgr.engine.alg.Algorithm;
-import io.smudgr.engine.alg.op.DataBend;
+import io.smudgr.engine.alg.op.ChannelSort;
+import io.smudgr.engine.alg.op.ParticlePush;
 import io.smudgr.engine.alg.select.RangeSelect;
 import io.smudgr.extensions.cef.view.WebsocketView;
 
@@ -32,18 +33,18 @@ public class EricUiTest extends AppStart {
 		Smudge smudge = Controller.getInstance().getProject().getSmudge();
 
 		Algorithm alg = new Algorithm();
-
 		RangeSelect range = new RangeSelect();
 		alg.add(range);
-
 		range.getParameter("Range Length").setValue(0);
-
-		DataBend databend = new DataBend();
-		databend.getParameter("Amount").setValue(2);
-		alg.add(databend);
-		range.getParameter("Range Length").setValue(1);
+		ChannelSort sort = new ChannelSort();
+		alg.add(sort);
+		// range.getParameter("Range Length").setValue(1);
 
 		smudge.add(alg);
+
+		Algorithm alg2 = new Algorithm();
+		alg2.add(new ParticlePush());
+		smudge.add(alg2);
 
 		// AutomatorControl automator1 = addAutomator("Animate",
 		// range.getParameter("Range Length"));
@@ -51,11 +52,10 @@ public class EricUiTest extends AppStart {
 		// databend.getParameter("Target"));
 
 		// bind(smudge.getParameter("Source Speed"));
-		bind(smudge.getParameter("Downsample"));
 		// bind(automator1);
 		// bind(range.getParameter("Range Length"));
 
-		smudge.getParameter("Downsample").setValue(0.6);
+		smudge.getParameter("Downsample").setValue(1);
 
 		bind(Controller.getInstance().getAppControl("Source Switcher"));
 		bind(Controller.getInstance().getAppControl("Source Set Switcher"));
