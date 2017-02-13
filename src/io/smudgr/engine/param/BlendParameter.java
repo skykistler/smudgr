@@ -8,14 +8,19 @@ import io.smudgr.engine.alg.math.blend.Blender;
  * The {@link BlendParameter} class is used to parameterize specifically
  * different {@link Blender} functions. This will probably be consolidated into
  * a single 'Function' parameter in the future.
- * 
+ *
  * @see UnivariateParameter
  */
 public class BlendParameter extends Parameter {
 
 	@Override
-	public String getType() {
-		return "Blend";
+	public String getParameterTypeName() {
+		return "Blender";
+	}
+
+	@Override
+	public String getParameterTypeIdentifier() {
+		return "blender";
 	}
 
 	private ArrayList<Blender> blenders = new ArrayList<Blender>();
@@ -23,7 +28,15 @@ public class BlendParameter extends Parameter {
 	private int current;
 
 	/**
-	 * 
+	 * Instantiate a totally empty {@link BlendParameter}, for reflection
+	 * purposes.
+	 */
+	public BlendParameter() {
+		super();
+	}
+
+	/**
+	 *
 	 * @param name
 	 *            Identifier
 	 * @param parent
@@ -38,7 +51,7 @@ public class BlendParameter extends Parameter {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param name
 	 *            Identifier
 	 * @param parent
@@ -75,7 +88,7 @@ public class BlendParameter extends Parameter {
 
 	/**
 	 * Get the {@link Blender} function currently in use
-	 * 
+	 *
 	 * @return {@link Blender} function
 	 */
 	public Blender getValue() {
@@ -95,7 +108,7 @@ public class BlendParameter extends Parameter {
 
 	/**
 	 * Add a possible {@link Blender} function value.
-	 * 
+	 *
 	 * @param func
 	 *            {@link Blender}
 	 */

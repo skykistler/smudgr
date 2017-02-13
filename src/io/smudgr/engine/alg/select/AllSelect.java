@@ -18,7 +18,7 @@ public class AllSelect extends Selector {
 	}
 
 	@Override
-	public void update() {
+	public void generate() {
 		// do nothing to save performance time
 	}
 }

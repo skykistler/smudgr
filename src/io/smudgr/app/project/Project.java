@@ -13,6 +13,7 @@ import io.smudgr.app.project.util.PropertyMap;
 import io.smudgr.engine.Rack;
 import io.smudgr.engine.Smudge;
 import io.smudgr.engine.SmudgeComponent;
+import io.smudgr.engine.SmudgeComponentLibrary;
 import io.smudgr.engine.param.ParameterObserverNotifier;
 import io.smudgr.util.DisposedFrameProvider;
 
@@ -52,10 +53,12 @@ public class Project {
 
 	// Type libraries
 	private TypeLibrary<Smudge> smudgeLibrary;
-	private TypeLibrary<SmudgeComponent> componentLibrary;
+	private SmudgeComponentLibrary<SmudgeComponent> componentLibrary;
+	private TypeLibrary<Rack> rackLibrary;
 
 	// Rack configurations
 	private ArrayList<Rack> racks;
+	private int currentRack = 0;
 
 	// Project configuration
 	private String location;
@@ -71,7 +74,8 @@ public class Project {
 		paramObserverNotifier = new ParameterObserverNotifier();
 
 		smudgeLibrary = new TypeLibrary<Smudge>(Smudge.class);
-		componentLibrary = new TypeLibrary<SmudgeComponent>(SmudgeComponent.class);
+		rackLibrary = new TypeLibrary<Rack>(Rack.class);
+		componentLibrary = new SmudgeComponentLibrary<SmudgeComponent>();
 
 		racks = new ArrayList<Rack>();
 	}
@@ -114,8 +118,9 @@ public class Project {
 		pm.setAttribute("bpm", bpm);
 
 		for (Rack rack : racks) {
-			PropertyMap rackMap = new PropertyMap(rack.getIdentifier());
+			PropertyMap rackMap = new PropertyMap(rack);
 			rack.save(rackMap);
+
 			pm.add(rackMap);
 		}
 
@@ -148,7 +153,7 @@ public class Project {
 			setBPM(Integer.parseInt(pm.getAttribute("bpm")));
 
 		// Load any racks
-		for (PropertyMap rackMap : pm.getChildren(Rack.RACK_IDENTIFIER)) {
+		for (PropertyMap rackMap : pm.getChildren(rackLibrary)) {
 			Rack rack = new Rack();
 			rack.load(rackMap);
 			racks.add(rack);
@@ -157,7 +162,8 @@ public class Project {
 		// If no racks were loaded, make the first one
 		if (racks.size() == 0) {
 			Rack rack = new Rack();
-			rack.load(new PropertyMap(rack.getIdentifier()));
+			rack.load(new PropertyMap(rack));
+			racks.add(rack);
 		}
 
 		// If the app tag exists, load with it; else make a new app entry
@@ -288,7 +294,7 @@ public class Project {
 	 *
 	 * @param item
 	 *            {@link ProjectItem}
-	 * @return {@code int} id
+	 * @return {@code int} ID of the {@link ProjectItem}, or -1 if not found.
 	 *
 	 * @see Project#getItem(int)
 	 */
@@ -328,13 +334,13 @@ public class Project {
 	}
 
 	/**
-	 * Gets the currently focused {@link Rack}
+	 * Gets the currently {@link Rack} in use
 	 *
 	 * @return {@link Rack}
 	 * @see Project#setRack(Rack)
 	 */
 	public Rack getRack() {
-		return racks.get(0);
+		return racks.get(currentRack);
 	}
 
 	/**
@@ -346,6 +352,7 @@ public class Project {
 	 */
 	public void setRack(Rack rack) {
 		racks.add(rack);
+		currentRack++;
 	}
 
 	/**
@@ -362,10 +369,10 @@ public class Project {
 	 * Gets the library for managing currently loaded {@link SmudgeComponent}
 	 * types
 	 *
-	 * @return {@link TypeLibrary}
+	 * @return {@link SmudgeComponentLibrary}
 	 * @see Project#getSmudgeLibrary()
 	 */
-	public TypeLibrary<SmudgeComponent> getComponentLibrary() {
+	public SmudgeComponentLibrary<SmudgeComponent> getComponentLibrary() {
 		return componentLibrary;
 	}
 

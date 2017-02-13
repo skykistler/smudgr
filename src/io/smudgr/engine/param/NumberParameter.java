@@ -14,7 +14,12 @@ import io.smudgr.app.project.util.PropertyMap;
 public class NumberParameter extends Parameter {
 
 	@Override
-	public String getType() {
+	public String getParameterTypeName() {
+		return "Number";
+	}
+
+	@Override
+	public String getParameterTypeIdentifier() {
 		return "number";
 	}
 
@@ -26,35 +31,11 @@ public class NumberParameter extends Parameter {
 	private boolean continuous;
 
 	/**
-	 * Declare a new {@link NumberParameter} with an initial value of {@code 0}
-	 *
-	 * @param name
-	 *            Name to identify this parameter by.
-	 * @param parent
-	 *            {@link Parametric} parent of this parameter.
-	 *
-	 * @see NumberParameter#NumberParameter(String, Parametric, double, double,
-	 *      double) new NumberParemeter(name, parent, initial, minimum, maximum)
+	 * Instantiate a totally empty {@link NumberParameter}, for reflection
+	 * purposes.
 	 */
-	public NumberParameter(String name, Parametric parent) {
-		this(name, parent, 0);
-	}
-
-	/**
-	 * Declare a new {@link NumberParameter} and set the initial value
-	 *
-	 * @param name
-	 *            Name to identify this parameter by.
-	 * @param parent
-	 *            {@link Parametric} parent of this parameter.
-	 * @param initial
-	 *            Initial value of the parameter.
-	 *
-	 * @see NumberParameter#NumberParameter(String, Parametric, double, double,
-	 *      double) new NumberParemeter(name, parent, initial, minimum, maximum)
-	 */
-	public NumberParameter(String name, Parametric parent, double initial) {
-		this(name, parent, initial, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 1);
+	public NumberParameter() {
+		super();
 	}
 
 	/**

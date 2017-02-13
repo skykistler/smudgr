@@ -26,7 +26,7 @@ public class RainbowBend extends ParallelOperation {
 	private int subAmount, lastSubAmount, len, i;
 
 	@Override
-	public void init() {
+	public void onInit() {
 		target.setContinuous(true);
 		subAmount = amount.getIntValue();
 		lastSubAmount = subAmount;

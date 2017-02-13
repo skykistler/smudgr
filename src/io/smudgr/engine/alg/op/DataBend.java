@@ -26,7 +26,7 @@ public class DataBend extends ParallelOperation {
 	private int subAmount;
 
 	@Override
-	public void init() {
+	public void onInit() {
 		target.setContinuous(true);
 	}
 

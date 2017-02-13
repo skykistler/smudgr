@@ -35,13 +35,13 @@ public class PixelShift extends Operation {
 	private int intervalEnd;
 
 	@Override
-	public void init() {
+	public void onInit() {
 		amount.setContinuous(true);
 	}
 
 	@Override
 	public void execute(Frame img) {
-		int size = getAlgorithm().getSelectedPixels().size();
+		int size = getSelectedPixels().size();
 
 		selectedShiftType = shiftType.getIntValue();
 		isReversed = reverse.getValue();
@@ -77,7 +77,7 @@ public class PixelShift extends Operation {
 			for (int i = 0; i < intervalWidth; i++) {
 				int index = (int) (interval + i);
 				if (index < size) {
-					PixelIndexList coords = getAlgorithm().getSelectedPixels().get(index);
+					PixelIndexList coords = getSelectedPixels().get(index);
 					shift(shifted, img, coords, n, shift, i, ints);
 				}
 			}

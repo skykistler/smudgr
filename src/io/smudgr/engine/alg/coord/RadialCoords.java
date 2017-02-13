@@ -19,7 +19,7 @@ public class RadialCoords extends CoordFunction {
 	private NumberParameter innerRadius = new NumberParameter("Donut Hole", this, 0, 0, 1, 0.005);
 
 	@Override
-	protected void generate(int imageWidth, int imageHeight, int boundX, int boundY, int boundWidth, int boundHeight) {
+	protected void generateCoordinates(int imageWidth, int imageHeight, int boundX, int boundY, int boundWidth, int boundHeight) {
 		int radiusX = boundWidth / 2;
 		int radiusY = boundHeight / 2;
 

@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import io.smudgr.app.project.ProjectItem;
+import io.smudgr.app.project.reflect.TypeLibrary;
 import io.smudgr.app.project.util.PropertyMap;
 
 /**
@@ -12,6 +13,8 @@ import io.smudgr.app.project.util.PropertyMap;
  * parameters.
  */
 public abstract class Parametric implements ProjectItem {
+
+	private static TypeLibrary<Parameter> parameterLibrary = new TypeLibrary<Parameter>(Parameter.class);
 
 	private HashMap<String, Parameter> parameters = new HashMap<String, Parameter>();
 
@@ -22,21 +25,22 @@ public abstract class Parametric implements ProjectItem {
 	 *            {@link Parameter} to add
 	 */
 	public void addParameter(Parameter p) {
-		parameters.put(p.getName(), p);
+		parameters.put(p.getIdentifier(), p);
 
 		if (getProject() != null)
 			getProject().add(p);
 	}
 
 	/**
-	 * Gets a {@link Parameter} added to this {@link Parametric} by name.
+	 * Gets a {@link Parameter} added to this {@link Parametric} by identifier.
 	 *
-	 * @param name
+	 * @param identifier
 	 *            {@link String}
 	 * @return {@link Parameter} or {@code null} if none exists by given name.
+	 * @see Parameter#getIdentifier()
 	 */
-	public Parameter getParameter(String name) {
-		return parameters.get(name);
+	public Parameter getParameter(String identifier) {
+		return parameters.get(identifier);
 	}
 
 	/**
@@ -68,14 +72,10 @@ public abstract class Parametric implements ProjectItem {
 
 	@Override
 	public void save(PropertyMap pm) {
-		pm.setAttribute("id", getProject().getId(this));
+		ProjectItem.super.save(pm);
 
 		for (Parameter param : getParameters()) {
-			PropertyMap map = new PropertyMap(Parameter.PROJECT_MAP_TAG);
-
-			map.setAttribute("id", getProject().getId(param));
-			map.setAttribute("name", param.getName());
-
+			PropertyMap map = new PropertyMap(param);
 			param.save(map);
 
 			pm.add(map);
@@ -84,19 +84,15 @@ public abstract class Parametric implements ProjectItem {
 
 	@Override
 	public void load(PropertyMap pm) {
-		if (pm.hasAttribute("id"))
-			getProject().put(this, Integer.parseInt(pm.getAttribute("id")));
-		else
-			getProject().add(this);
+		ProjectItem.super.load(pm);
 
-		for (PropertyMap map : pm.getChildren(Parameter.PROJECT_MAP_TAG)) {
-			Parameter param = getParameter(map.getAttribute("name"));
+		for (PropertyMap map : pm.getChildren(parameterLibrary)) {
+			Parameter param = getParameter(map.getAttribute("type"));
 
-			if (param != null) {
-				getProject().put(param, Integer.parseInt(map.getAttribute("id")));
+			if (param == null)
+				continue;
 
-				param.load(map);
-			}
+			param.load(map);
 		}
 
 		// Add any unloaded parameters to the project
@@ -105,13 +101,6 @@ public abstract class Parametric implements ProjectItem {
 				getProject().add(param);
 		}
 	}
-
-	/**
-	 * Gets the identifying name of this {@link Parametric}
-	 *
-	 * @return {@link String} identifying name
-	 */
-	public abstract String getName();
 
 	@Override
 	public String toString() {

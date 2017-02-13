@@ -1,7 +1,6 @@
 package io.smudgr.engine.param;
 
 import io.smudgr.app.controller.Controllable;
-import io.smudgr.app.project.ProjectItem;
 import io.smudgr.app.project.util.PropertyMap;
 
 /**
@@ -13,7 +12,7 @@ import io.smudgr.app.project.util.PropertyMap;
  *
  * @see Controllable
  */
-public abstract class Parameter implements Controllable, ProjectItem {
+public abstract class Parameter implements Controllable {
 
 	@Override
 	public String getTypeName() {
@@ -25,18 +24,47 @@ public abstract class Parameter implements Controllable, ProjectItem {
 		return "parameter";
 	}
 
+	/**
+	 * Gets the user-recognizable parameter type name
+	 *
+	 * @return {@link String} Name of the parameter type this class implements
+	 */
+	public abstract String getParameterTypeName();
+
+	/**
+	 * Gets the unique identifying name of the parameter type this class
+	 * implements.
+	 *
+	 * @return {@link String} Parameter type identifier
+	 */
+	public abstract String getParameterTypeIdentifier();
+
 	@Override
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * The default identifier for a parameter is just its name, but in the case
+	 * of changing display names, the identifier may be an older name for
+	 * backwards compatibility.
+	 */
 	@Override
 	public String getIdentifier() {
-		return name;
+		return identifier;
 	}
 
 	private String name;
+	private String identifier;
 	private Parametric parent;
+
+	/**
+	 * Instantiate a totally empty {@link Parameter}, for reflection purposes.
+	 */
+	public Parameter() {
+		name = getParameterTypeName();
+		identifier = getParameterTypeIdentifier();
+	}
 
 	/**
 	 * Instantiate a new {@link Parameter} with the given name and
@@ -44,13 +72,30 @@ public abstract class Parameter implements Controllable, ProjectItem {
 	 *
 	 * @param name
 	 *            Parameter name.
+	 * @param identifier
+	 *            If the parameter name changes between versions, this property
+	 *            can be set for backwards compatibility for save files.
 	 * @param parent
 	 *            {@link Parametric} parent.
 	 */
-	public Parameter(String name, Parametric parent) {
+	public Parameter(String name, String identifier, Parametric parent) {
 		this.name = name;
+		this.identifier = identifier;
 		this.parent = parent;
 		this.parent.addParameter(this);
+	}
+
+	/**
+	 * Instantiate a new {@link Parameter} with the given name and
+	 * {@link Parameter} parent.
+	 *
+	 * @param name
+	 *            Parameter user-identifiable name.
+	 * @param parent
+	 *            {@link Parametric} parent
+	 */
+	public Parameter(String name, Parametric parent) {
+		this(name, name, parent);
 	}
 
 	/**
@@ -102,12 +147,15 @@ public abstract class Parameter implements Controllable, ProjectItem {
 
 	@Override
 	public void save(PropertyMap pm) {
-		pm.setAttribute("type", getIdentifier());
+		Controllable.super.save(pm);
+
 		pm.setAttribute("value", getStringValue());
 	}
 
 	@Override
 	public void load(PropertyMap pm) {
+		Controllable.super.load(pm);
+
 		if (pm.hasAttribute("value"))
 			setValue(pm.getAttribute("value"));
 	}

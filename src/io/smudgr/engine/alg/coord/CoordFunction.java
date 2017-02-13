@@ -3,7 +3,6 @@ package io.smudgr.engine.alg.coord;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import io.smudgr.engine.alg.Algorithm;
 import io.smudgr.engine.alg.AlgorithmComponent;
 import io.smudgr.engine.alg.PixelIndexList;
 import io.smudgr.engine.alg.bound.Bound;
@@ -19,19 +18,24 @@ import io.smudgr.util.Frame;
  * In many operations though, order will dramatically change the form of the
  * image.
  * <p>
- * Generating the coordinate set ({@link CoordFunction#update()}) is expensive
- * and happens conservatively, usually only on bound or image dimension changes.
+ * Generating the coordinate set ({@link CoordFunction#generateIfChanged()}) is
+ * expensive and happens conservatively, usually only on bound or image
+ * dimension changes.
  */
 public abstract class CoordFunction extends AlgorithmComponent {
 
 	@Override
-	public String getType() {
+	public String getComponentTypeName() {
 		return "Flow";
+	}
+
+	@Override
+	public String getComponentTypeIdentifier() {
+		return "coord-function";
 	}
 
 	private BooleanParameter continuous = new BooleanParameter("Continuous", this, false);
 
-	private Algorithm parent;
 	private boolean wasChanged = true;
 
 	protected Bound bound;
@@ -41,13 +45,10 @@ public abstract class CoordFunction extends AlgorithmComponent {
 
 	protected int imageWidth, imageHeight, boundX, boundY, boundWidth, boundHeight;
 
-	@Override
-	public void init() {
-
-	}
-
-	@Override
-	public void update() {
+	/**
+	 * Generates pixel index lists using this coordinate function.
+	 */
+	public void generateIfChanged() {
 		if (bound == null || imageWidth <= 0 || imageHeight <= 0)
 			return;
 
@@ -56,7 +57,7 @@ public abstract class CoordFunction extends AlgorithmComponent {
 
 		reset();
 
-		generate(imageWidth, imageHeight, boundX, boundY, boundWidth, boundHeight);
+		generateCoordinates(imageWidth, imageHeight, boundX, boundY, boundWidth, boundHeight);
 		nextSet();
 	}
 
@@ -92,7 +93,7 @@ public abstract class CoordFunction extends AlgorithmComponent {
 	 * @param boundWidth
 	 * @param boundHeight
 	 */
-	protected abstract void generate(int imageWidth, int imageHeight, int boundX, int boundY, int boundWidth, int boundHeight);
+	protected abstract void generateCoordinates(int imageWidth, int imageHeight, int boundX, int boundY, int boundWidth, int boundHeight);
 
 	protected void nextSet() {
 		boolean breakSet = !continuous.getValue();
@@ -201,11 +202,6 @@ public abstract class CoordFunction extends AlgorithmComponent {
 		boundY = bound.getTranslatedY(imageHeight);
 		boundWidth = bound.getTranslatedWidth(imageWidth);
 		boundHeight = bound.getTranslatedHeight(imageHeight);
-	}
-
-	@Override
-	public Algorithm getAlgorithm() {
-		return parent;
 	}
 
 }

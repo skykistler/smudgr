@@ -1,12 +1,13 @@
 package io.smudgr.app.project;
 
 import io.smudgr.app.controller.Controller;
+import io.smudgr.app.project.reflect.ReflectableType;
 import io.smudgr.app.project.util.PropertyMap;
 
 /**
  * Interface for defining objects that can be stored in the project.
  */
-public interface ProjectItem {
+public interface ProjectItem extends ReflectableType {
 
 	/**
 	 * Get the currently loaded {@link Project}
@@ -31,6 +32,7 @@ public interface ProjectItem {
 	 */
 	public default void save(PropertyMap pm) {
 		pm.setAttribute("id", getProject().getId(this));
+		pm.setAttribute("type", getIdentifier());
 	}
 
 	/**
@@ -46,7 +48,10 @@ public interface ProjectItem {
 	 * @see ProjectItem#save(PropertyMap)
 	 */
 	public default void load(PropertyMap pm) {
-		getProject().put(this, Integer.parseInt(pm.getAttribute("id")));
+		if (pm.hasAttribute("id"))
+			getProject().put(this, Integer.parseInt(pm.getAttribute("id")));
+		else
+			getProject().add(this);
 	}
 
 }

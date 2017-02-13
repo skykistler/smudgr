@@ -2,7 +2,7 @@ package io.smudgr.test;
 
 import io.smudgr.app.AppStart;
 import io.smudgr.app.controller.Controller;
-import io.smudgr.engine.Smudge;
+import io.smudgr.engine.Rack;
 import io.smudgr.engine.alg.Algorithm;
 import io.smudgr.engine.alg.coord.ConvergeCoords;
 import io.smudgr.engine.alg.coord.StraightCoords;
@@ -17,13 +17,13 @@ import io.smudgr.engine.alg.select.RangeSelect;
 import io.smudgr.engine.param.NumberParameter;
 
 /**
- * Test file for large smudge used in multiple live shows before.
+ * Test file for large rack used in multiple live shows before.
  */
 public class PizzaBoxShow extends AppStart {
 
 	static String projectPath = "data/pizzabox/pizza.sproj";
 
-	static boolean overwriteSmudge = false;
+	static boolean overwriteProject = false;
 
 	static String sourcePath = "data/pizzabox";
 
@@ -36,28 +36,28 @@ public class PizzaBoxShow extends AppStart {
 	static boolean monitor = true;
 
 	@Override
-	public void buildSmudge() {
-		Smudge smudge = Controller.getInstance().getProject().getSmudge();
+	public void buildRack() {
+		Rack rack = Controller.getInstance().getProject().getRack();
 
-		// addStraightPixelShift(smudge, true);
-		// addStraightPixelShift(smudge, false);
+		// addStraightPixelShift(rack, true);
+		// addStraightPixelShift(rack, false);
 
-		addSpectralShift(smudge);
+		addSpectralShift(rack);
 
-		addConvergePixelShift(smudge);
+		addConvergePixelShift(rack);
 
-		addDatabend(smudge);
+		addDatabend(rack);
 
-		addStraightPixelSort(smudge);
+		addStraightPixelSort(rack);
 
-		// addChannelBleed(smudge);
+		// addChannelBleed(rack);
 
-		addMarbeler(smudge);
+		addMarbeler(rack);
 
-		addStraightPixelSort(smudge);
+		addStraightPixelSort(rack);
 
-		// bind(smudge.getParameter("Source Speed"));
-		bind(smudge.getParameter("Downsample"));
+		// bind(rack.getParameter("Source Speed"));
+		bind(rack.getParameter("Downsample"));
 		//
 		bind(Controller.getInstance().getAppControl("Source Switcher"));
 		// bind(Controller.getInstance().getAppControl("Source Set Switcher"));
@@ -65,14 +65,14 @@ public class PizzaBoxShow extends AppStart {
 	}
 
 	/**
-	 * @param smudge
-	 *            Smudge
+	 * @param rack
+	 *            Rack
 	 * @param columns
 	 *            boolean
 	 */
-	public void addStraightPixelShift(Smudge smudge, boolean columns) {
+	public void addStraightPixelShift(Rack rack, boolean columns) {
 		PixelShift pixel_shift = new PixelShift();
-		Algorithm shift_alg = getOperationAlgorithm(smudge, pixel_shift);
+		Algorithm shift_alg = getOperationAlgorithm(rack, pixel_shift);
 
 		StraightCoords shift_coords = new StraightCoords();
 		shift_alg.add(shift_coords);
@@ -85,12 +85,12 @@ public class PizzaBoxShow extends AppStart {
 	}
 
 	/**
-	 * @param smudge
-	 *            Smudge
+	 * @param rack
+	 *            Rack
 	 */
-	public void addConvergePixelShift(Smudge smudge) {
+	public void addConvergePixelShift(Rack rack) {
 		PixelShift pixel_shift = new PixelShift();
-		Algorithm shift_alg = getOperationAlgorithm(smudge, pixel_shift);
+		Algorithm shift_alg = getOperationAlgorithm(rack, pixel_shift);
 
 		ConvergeCoords shift_coords = new ConvergeCoords();
 		shift_alg.add(shift_coords);
@@ -103,12 +103,12 @@ public class PizzaBoxShow extends AppStart {
 
 	/**
 	 *
-	 * @param smudge
-	 *            Smudge
+	 * @param rack
+	 *            Rack
 	 */
-	public void addStraightPixelSort(Smudge smudge) {
+	public void addStraightPixelSort(Rack rack) {
 		PixelSort sort = new PixelSort();
-		Algorithm alg = getOperationAlgorithm(smudge, sort);
+		Algorithm alg = getOperationAlgorithm(rack, sort);
 
 		RangeSelect pixelsort_range = new RangeSelect();
 		alg.add(pixelsort_range);
@@ -126,12 +126,12 @@ public class PizzaBoxShow extends AppStart {
 
 	/**
 	 *
-	 * @param smudge
-	 *            Smudge
+	 * @param rack
+	 *            Rack
 	 */
-	public void addConvergePixelSort(Smudge smudge) {
+	public void addConvergePixelSort(Rack rack) {
 		PixelSort sort = new PixelSort();
-		Algorithm alg = getOperationAlgorithm(smudge, sort);
+		Algorithm alg = getOperationAlgorithm(rack, sort);
 
 		RangeSelect pixelsort_range = new RangeSelect();
 		alg.add(pixelsort_range);
@@ -147,14 +147,14 @@ public class PizzaBoxShow extends AppStart {
 
 	/**
 	 *
-	 * @param smudge
-	 *            Smudge
+	 * @param rack
+	 *            Rack
 	 */
-	public void addDatabend(Smudge smudge) {
+	public void addDatabend(Rack rack) {
 		DataBend databend = new DataBend();
 		databend.getParameter("Amount").setValue(2);
 
-		Algorithm alg = getOperationAlgorithm(smudge, databend);
+		Algorithm alg = getOperationAlgorithm(rack, databend);
 
 		StraightCoords coords = new StraightCoords();
 		alg.add(coords);
@@ -172,12 +172,12 @@ public class PizzaBoxShow extends AppStart {
 
 	/**
 	 *
-	 * @param smudge
-	 *            Smudge
+	 * @param rack
+	 *            Rack
 	 */
-	public void addSpectralShift(Smudge smudge) {
+	public void addSpectralShift(Rack rack) {
 		SpectralShift spectral_shift = new SpectralShift();
-		getOperationAlgorithm(smudge, spectral_shift);
+		getOperationAlgorithm(rack, spectral_shift);
 
 		spectral_shift.getParameter("Colors").setValue(6);
 
@@ -189,26 +189,26 @@ public class PizzaBoxShow extends AppStart {
 
 	/**
 	 *
-	 * @param smudge
-	 *            Smudge
+	 * @param rack
+	 *            Rack
 	 */
-	public void addChannelBleed(Smudge smudge) {
+	public void addChannelBleed(Rack rack) {
 		ChannelBleed bleed = new ChannelBleed();
 		((NumberParameter) bleed.getParameter("Shift Amount")).setContinuous(true);
 
-		getOperationAlgorithm(smudge, bleed);
+		getOperationAlgorithm(rack, bleed);
 
 		bind(bleed.getParameter("Shift Amount"));
 	}
 
 	/**
 	 *
-	 * @param smudge
-	 *            Smudge
+	 * @param rack
+	 *            Rack
 	 */
-	public void addMarbeler(Smudge smudge) {
+	public void addMarbeler(Rack rack) {
 		Marbeler marb = new Marbeler();
-		getOperationAlgorithm(smudge, marb);
+		getOperationAlgorithm(rack, marb);
 
 		bind(marb.getParameter("Frequency"));
 		bind(marb.getParameter("Iterations"));
@@ -219,13 +219,13 @@ public class PizzaBoxShow extends AppStart {
 	/**
 	 * Get a new algorithm wrapping the given operation
 	 *
-	 * @param smudge
-	 *            {@link Smudge}
+	 * @param rack
+	 *            {@link Rack}
 	 * @param op
 	 *            {@link Operation}
 	 * @return {@link Algorithm}
 	 */
-	public Algorithm getOperationAlgorithm(Smudge smudge, Operation op) {
+	public Algorithm getOperationAlgorithm(Rack rack, Operation op) {
 		Algorithm alg = new Algorithm();
 
 		alg.getParameter("Enable").setValue(false);
@@ -233,7 +233,7 @@ public class PizzaBoxShow extends AppStart {
 
 		alg.add(op);
 
-		smudge.add(alg);
+		rack.add(alg);
 
 		return alg;
 	}
@@ -242,7 +242,7 @@ public class PizzaBoxShow extends AppStart {
 	 *
 	 */
 	public PizzaBoxShow() {
-		super(projectPath, sourcePath, outputPath, device, overwriteSmudge, deviceServer);
+		super(projectPath, sourcePath, outputPath, device, overwriteProject, deviceServer);
 
 		fullscreenView(fullscreenDisplay);
 		if (monitor)

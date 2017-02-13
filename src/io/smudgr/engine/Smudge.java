@@ -2,8 +2,7 @@ package io.smudgr.engine;
 
 import java.util.ArrayList;
 
-import io.smudgr.app.project.ProjectItem;
-import io.smudgr.app.project.reflect.ReflectableType;
+import io.smudgr.app.project.Project;
 import io.smudgr.app.project.util.PropertyMap;
 import io.smudgr.engine.param.BooleanParameter;
 import io.smudgr.engine.param.Parametric;
@@ -14,7 +13,7 @@ import io.smudgr.util.Frame;
  * instance attempts to render each {@link Smudge} at a constant
  * frame-rate.
  */
-public abstract class Smudge extends Parametric implements ReflectableType, ProjectItem {
+public abstract class Smudge extends Parametric {
 
 	@Override
 	public String getTypeName() {
@@ -34,14 +33,7 @@ public abstract class Smudge extends Parametric implements ReflectableType, Proj
 	 * Initialize the smudge. This will be run when the {@link Smudge} is added
 	 * to the {@link Rack}, and every time the project is started.
 	 */
-	public void init() {
-
-	}
-
-	/**
-	 * Update the smudge, in time with the application update cycle.
-	 */
-	public void update() {
+	public void onInit() {
 
 	}
 
@@ -54,47 +46,83 @@ public abstract class Smudge extends Parametric implements ReflectableType, Proj
 	 */
 	public void render(Frame image) {
 		if (enabled.getValue()) {
-			apply(image);
+			smudge(image);
 		}
 	}
 
 	/**
-	 * Add a {@link SmudgeComponent} to this {@link Smudge}.
+	 * Add a {@link SmudgeComponent} to this {@link Smudge} using a
+	 * {@link PropertyMap} state.
+	 * <p>
+	 * If the given {@link PropertyMap} isn't a type that belongs to this
+	 * {@link Smudge}, this method will return {@code null}.
 	 *
-	 * @param componentState
+	 * @param state
 	 *            {@link PropertyMap} representing a {@link SmudgeComponent}
 	 *
 	 * @return {@link SmudgeComponent} or {@code null}
 	 */
-	public SmudgeComponent add(PropertyMap componentState) {
-		String componentType = componentState.getAttribute("type");
-		SmudgeComponent component = getProject().getComponentLibrary().getNewInstance(componentType);
+	public SmudgeComponent add(PropertyMap state) {
+		SmudgeComponent component = getProject().getComponentLibrary().getNewInstance(this, state);
 
-		if (!component.getSmudgeIdentifier().equals(getIdentifier()))
+		if (component == null)
 			return null;
 
-		if (componentState.hasAttribute("id"))
-			getProject().put(component, Integer.parseInt(componentState.getAttribute("id")));
-		else
-			getProject().add(component);
+		component.setParent(this);
+		component.load(state);
+
+		component.onInit();
 
 		components.add(component);
+		onAdd(component);
 
 		return component;
 	}
 
 	/**
+	 * Adds an instantiated {@link SmudgeComponent} to this {@link Smudge} and
+	 * registers it with the whole {@link Project}
+	 *
+	 * @param component
+	 *            {@link SmudgeComponent}
+	 */
+	public void add(SmudgeComponent component) {
+		if (component.getSmudgeTypeIdentifier() != getIdentifier())
+			return;
+
+		component.setParent(this);
+		getProject().add(component);
+
+		component.onInit();
+
+		components.add(component);
+		onAdd(component);
+	}
+
+	/**
+	 * Called when a {@link SmudgeComponent} has been added to this
+	 * {@link Smudge}
+	 *
+	 * @param component
+	 */
+	protected void onAdd(SmudgeComponent component) {
+
+	}
+
+	/**
 	 * {@link Smudge} types implement this method to apply their image
-	 * manipulations to any given {@link Frame}
+	 * manipulations using any given {@link Frame}
 	 *
 	 * @param image
+	 *            {@link Frame}
+	 * @return resulting frame
 	 */
-	protected abstract void apply(Frame image);
+	public abstract Frame smudge(Frame image);
 
 	/**
 	 * Return all of the {@link SmudgeComponent} instances added to this
 	 * {@link Smudge}
-	 * 
+	 *
 	 * @return {@code ArrayList<SmudgeComponent>}
 	 */
 	public ArrayList<SmudgeComponent> getComponents() {
@@ -105,14 +133,8 @@ public abstract class Smudge extends Parametric implements ReflectableType, Proj
 	public void save(PropertyMap pm) {
 		super.save(pm);
 
-		pm.setAttribute("type", getIdentifier());
-
 		for (SmudgeComponent component : components) {
-			PropertyMap map = new PropertyMap(component.getTypeIdentifier());
-
-			map.setAttribute("component", component.getComponentIdentifier());
-			map.setAttribute("type", component.getIdentifier());
-
+			PropertyMap map = new PropertyMap(component);
 			component.save(map);
 
 			pm.add(map);

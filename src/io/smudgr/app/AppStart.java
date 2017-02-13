@@ -23,7 +23,7 @@ import io.smudgr.extensions.midi.MidiExtension;
  */
 public abstract class AppStart {
 
-	private boolean newSmudge;
+	private boolean newProject;
 	private ArrayList<MidiBinding> toBind = new ArrayList<MidiBinding>();
 
 	/**
@@ -36,22 +36,22 @@ public abstract class AppStart {
 	 *            where to record
 	 * @param device
 	 *            MIDI controller to bind to
-	 * @param overwriteSmudge
+	 * @param overwriteProject
 	 *            Whether to delete the existing project file on application
 	 *            start
 	 * @param deviceServer
 	 *            Whether to start a MIDI device server
 	 */
-	public AppStart(String projectPath, String sourceLocation, String outputDir, String device, boolean overwriteSmudge,
+	public AppStart(String projectPath, String sourceLocation, String outputDir, String device, boolean overwriteProject,
 			boolean deviceServer) {
 		File project = new File(projectPath);
 		if (project.exists()) {
-			if (overwriteSmudge) {
+			if (overwriteProject) {
 				project.delete();
-				newSmudge = true;
+				newProject = true;
 			}
 		} else
-			newSmudge = true;
+			newProject = true;
 
 		ProjectLoader loader = new ProjectLoader(projectPath);
 		loader.load();
@@ -66,8 +66,8 @@ public abstract class AppStart {
 	 * Start the application, bind to controller
 	 */
 	public void start() {
-		if (newSmudge)
-			buildSmudge();
+		if (newProject)
+			buildRack();
 
 		for (MidiBinding c : toBind)
 			waitForBind(c);
@@ -80,7 +80,7 @@ public abstract class AppStart {
 	 * Implementations of this method should create a new smudge object and add
 	 * algorithms and configure parameters
 	 */
-	public abstract void buildSmudge();
+	public abstract void buildRack();
 
 	/**
 	 * Register a control to bind to a MIDI input on start
@@ -157,11 +157,11 @@ public abstract class AppStart {
 	}
 
 	private AutomatorExtension getAutomator() {
-		return (AutomatorExtension) Controller.getInstance().getExtension("Automator");
+		return (AutomatorExtension) Controller.getInstance().getExtension("automator");
 	}
 
 	protected MidiExtension getMidi() {
-		return (MidiExtension) Controller.getInstance().getExtension("MIDI");
+		return (MidiExtension) Controller.getInstance().getExtension("midi");
 	}
 
 	// TODO: write a better way of handling binding metadata

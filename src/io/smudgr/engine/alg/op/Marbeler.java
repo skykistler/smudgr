@@ -21,7 +21,7 @@ public class Marbeler extends Operation {
 	NumberParameter freq = new NumberParameter("Frequency", this, 5, 1, 128);
 	NumberParameter iterations = new NumberParameter("Iterations", this, 4, 0, 32, 1);
 	NumberParameter mod = new NumberParameter("Strength", this, .3, 0, 1);
-	NumberParameter seed = new NumberParameter("Seed", this, 0);
+	NumberParameter seed = new NumberParameter("Seed", this, 0, 1, 100);
 	NumberParameter offsetXY = new NumberParameter("Offset - X/Y", this, .75, 0, 1);
 	NumberParameter offsetX = new NumberParameter("Offset - X", this, 0, 0, 1);
 	NumberParameter offsetY = new NumberParameter("Offset - Y", this, 0, 0, 1);
@@ -40,7 +40,7 @@ public class Marbeler extends Operation {
 	double modParam, offsetXYParam, offsetYParam, offsetXParam;
 
 	@Override
-	public void init() {
+	public void onInit() {
 		offsetXY.setContinuous(true);
 		offsetX.setContinuous(true);
 		offsetY.setContinuous(true);

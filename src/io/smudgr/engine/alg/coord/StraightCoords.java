@@ -17,7 +17,7 @@ public class StraightCoords extends CoordFunction {
 	}
 
 	@Override
-	protected void generate(int imageWidth, int imageHeight, int boundX, int boundY, int boundWidth, int boundHeight) {
+	protected void generateCoordinates(int imageWidth, int imageHeight, int boundX, int boundY, int boundWidth, int boundHeight) {
 		boolean isVertical = vertical.getValue();
 
 		int firstDirection = isVertical ? boundWidth : boundHeight;

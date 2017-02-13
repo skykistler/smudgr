@@ -2,8 +2,6 @@ package io.smudgr.engine;
 
 import java.util.ArrayList;
 
-import io.smudgr.app.project.ProjectItem;
-import io.smudgr.app.project.reflect.TypeLibrary;
 import io.smudgr.app.project.util.PropertyMap;
 import io.smudgr.engine.param.BooleanParameter;
 import io.smudgr.engine.param.NumberParameter;
@@ -17,34 +15,30 @@ import io.smudgr.util.source.SourceSet;
  * The {@link Rack} stores a deliberately ordered list of {@link Smudge} items
  * and applies them sequentially to the current source.
  */
-public class Rack extends Parametric implements ProjectItem {
-
-	/**
-	 * This is needed since {@link Rack} isn't being loaded with reflection.
-	 * <p>
-	 * Currently set to {@value}.
-	 */
-	public static final String RACK_IDENTIFIER = "rack";
+public class Rack extends Parametric {
 
 	@Override
-	public String getName() {
+	public String getTypeName() {
 		return "Rack";
 	}
 
-	/**
-	 * Gets the tag used to identify {@link Rack} states in the save file
-	 *
-	 * @return {@link #RACK_IDENTIFIER}
-	 */
+	@Override
+	public String getTypeIdentifier() {
+		return "rack";
+	}
+
+	@Override
+	public String getName() {
+		return getTypeName();
+	}
+
+	@Override
 	public String getIdentifier() {
-		return RACK_IDENTIFIER;
+		return getTypeIdentifier();
 	}
 
 	// Currently active smudges
-	private ArrayList<Smudge> smudges;
-
-	// Available Smudge types
-	private TypeLibrary<Smudge> smudgeLibrary;
+	private ArrayList<Smudge> smudges = new ArrayList<Smudge>();
 
 	/* These parameters control runtime settings for the rack */
 	private BooleanParameter enabled = new BooleanParameter("Enable", this, true);
@@ -118,17 +112,25 @@ public class Rack extends Parametric implements ProjectItem {
 	 *            without ID
 	 */
 	public void add(PropertyMap state) {
-		Smudge smudge = smudgeLibrary.getNewInstance(state.getAttribute("type"));
-
-		// If state already has a project ID,
-		if (state.hasAttribute("id"))
-			getProject().put(smudge, Integer.parseInt(state.getAttribute("id")));
-		else
-			getProject().add(smudge);
+		Smudge smudge = getProject().getSmudgeLibrary().getNewInstance(state);
+		smudge.load(state);
 
 		getSmudges().add(smudge);
 
-		smudge.init();
+		smudge.onInit();
+	}
+
+	/**
+	 * Adds the given {@link Smudge} to the end of this {@link Rack}
+	 *
+	 * @param smudge
+	 *            {@link Smudge}
+	 */
+	public void add(Smudge smudge) {
+		getProject().add(smudge);
+		getSmudges().add(smudge);
+
+		smudge.onInit();
 	}
 
 	@Override
@@ -136,11 +138,7 @@ public class Rack extends Parametric implements ProjectItem {
 		super.save(pm);
 
 		for (Smudge smudge : getSmudges()) {
-			PropertyMap map = new PropertyMap(smudgeLibrary.getTypeIdentifier());
-
-			map.setAttribute("id", getProject().getId(smudge));
-			map.setAttribute("type", smudge.getIdentifier());
-
+			PropertyMap map = new PropertyMap(smudge);
 			smudge.save(map);
 
 			pm.add(map);
@@ -151,9 +149,7 @@ public class Rack extends Parametric implements ProjectItem {
 	public void load(PropertyMap pm) {
 		super.load(pm);
 
-		smudgeLibrary = new TypeLibrary<Smudge>(Smudge.class);
-
-		for (PropertyMap map : pm.getChildren(smudgeLibrary.getTypeIdentifier())) {
+		for (PropertyMap map : pm.getChildren(getProject().getSmudgeLibrary())) {
 			add(map);
 		}
 	}

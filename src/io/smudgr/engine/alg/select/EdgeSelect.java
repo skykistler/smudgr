@@ -26,7 +26,7 @@ public class EdgeSelect extends Selector {
 	NumberParameter max = new NumberParameter("Max Edge Strength", this, 1, 0, 1, 0.01);
 
 	@Override
-	public void init() {
+	public void onInit() {
 		function.add(new ChromaFunction());
 		function.add(new HueFunction());
 		function.add(new SinFunction());

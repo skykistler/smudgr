@@ -7,12 +7,25 @@ package io.smudgr.engine.param;
 public class BooleanParameter extends Parameter {
 
 	@Override
-	public String getType() {
+	public String getParameterTypeName() {
+		return "Toggle";
+	}
+
+	@Override
+	public String getParameterTypeIdentifier() {
 		return "boolean";
 	}
 
 	private boolean value;
 	private boolean reverse;
+
+	/**
+	 * Instantiate a totally empty {@link BooleanParameter}, for reflection
+	 * purposes.
+	 */
+	public BooleanParameter() {
+		super();
+	}
 
 	/**
 	 * Declare a new {@link BooleanParameter} with an initial value of

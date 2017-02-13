@@ -29,7 +29,7 @@ public class RangeSelect extends Selector {
 	}
 
 	@Override
-	public void init() {
+	public void onInit() {
 		min.setContinuous(true);
 
 		function.add(new ChromaFunction());
@@ -39,11 +39,11 @@ public class RangeSelect extends Selector {
 	}
 
 	@Override
-	public void update() {
+	public void generate() {
 		if (range.getIntValue() == 1)
 			return;
 
-		super.update();
+		super.generate();
 	}
 
 	@Override

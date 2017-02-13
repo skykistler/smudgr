@@ -12,14 +12,19 @@ import io.smudgr.engine.alg.math.univariate.UnivariateFunction;
  * <p>
  * {@link UnivariateParameter} instances can be used to switch between
  * manipulation functions.
- * 
+ *
  * @see UnivariateFunction
  */
 public class UnivariateParameter extends Parameter {
 
 	@Override
-	public String getType() {
-		return "Univariate";
+	public String getParameterTypeName() {
+		return "Function";
+	}
+
+	@Override
+	public String getParameterTypeIdentifier() {
+		return "function";
 	}
 
 	private ArrayList<UnivariateFunction> univariates = new ArrayList<UnivariateFunction>();
@@ -27,8 +32,16 @@ public class UnivariateParameter extends Parameter {
 	private int current;
 
 	/**
+	 * Instantiate a totally empty {@link UnivariateParameter}, for reflection
+	 * purposes.
+	 */
+	public UnivariateParameter() {
+		super();
+	}
+
+	/**
 	 * Instantiate a new {@link UnivariateParameter} and set an initial value.
-	 * 
+	 *
 	 * @param name
 	 *            Identifying name
 	 * @param parent
@@ -45,7 +58,7 @@ public class UnivariateParameter extends Parameter {
 
 	/**
 	 * Instantiate a new {@link UnivariateParameter}
-	 * 
+	 *
 	 * @param name
 	 *            Identifying name
 	 * @param parent
@@ -101,7 +114,7 @@ public class UnivariateParameter extends Parameter {
 	 * Gets the current {@link UnivariateFunction} this parameter is set to, or
 	 * {@code null} if no {@link UnivariateFunction} instances have been added
 	 * to this parameter.
-	 * 
+	 *
 	 * @return current {@link UnivariateFunction} this parameter is set to, or
 	 *         {@code null}
 	 * @see UnivariateParameter#add(UnivariateFunction)
@@ -115,10 +128,10 @@ public class UnivariateParameter extends Parameter {
 
 	/**
 	 * Add a possible {@link UnivariateFunction} value to this parameter.
-	 * 
+	 *
 	 * @param func
 	 *            {@link UnivariateFunction} to add.
-	 * 
+	 *
 	 * @see UnivariateParameter#getValue()
 	 */
 	public void add(UnivariateFunction func) {

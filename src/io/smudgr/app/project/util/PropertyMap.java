@@ -5,7 +5,10 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import io.smudgr.api.ApiMessage;
+import io.smudgr.app.controller.Controller;
 import io.smudgr.app.project.Project;
+import io.smudgr.app.project.ProjectItem;
+import io.smudgr.app.project.reflect.TypeLibrary;
 
 /**
  * The {@link PropertyMap} class can be used to store hierarchical DOM-style
@@ -36,6 +39,27 @@ public class PropertyMap {
 	 */
 	public PropertyMap(String tag) {
 		this.tag = tag;
+	}
+
+	/**
+	 * Create a property map with the given {@link ProjectItem}.
+	 * <p>
+	 * This sets the map tag to {@link ProjectItem#getTypeIdentifier()} and
+	 * the type attribute to {@link ProjectItem#getIdentifier()}.
+	 * <p>
+	 * If the given element has a project ID, the id attribute is set to
+	 * {@link Project#getId(ProjectItem)}
+	 *
+	 * @param item
+	 *            {@link ProjectItem}
+	 */
+	public PropertyMap(ProjectItem item) {
+		this.tag = item.getTypeIdentifier();
+
+		setAttribute("type", item.getIdentifier());
+
+		if (getProject().contains(item))
+			setAttribute("id", getProject().getId(item));
 	}
 
 	/**
@@ -125,6 +149,18 @@ public class PropertyMap {
 	}
 
 	/**
+	 * Gets all children that correspond to the given {@link TypeLibrary}
+	 *
+	 * @param typeLibrary
+	 *            Type library of desired children types.
+	 * @return List of children of given type.
+	 * @see PropertyMap#getChildren(String)
+	 */
+	public ArrayList<PropertyMap> getChildren(TypeLibrary<?> typeLibrary) {
+		return getChildren(typeLibrary.getTypeIdentifier());
+	}
+
+	/**
 	 * Returns if the map has any children with the given tag
 	 *
 	 * @param tag
@@ -149,6 +185,10 @@ public class PropertyMap {
 	 */
 	public Collection<String> getChildrenTags() {
 		return children.keySet();
+	}
+
+	private Project getProject() {
+		return Controller.getInstance().getProject();
 	}
 
 }

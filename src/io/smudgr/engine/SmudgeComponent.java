@@ -3,8 +3,7 @@
  */
 package io.smudgr.engine;
 
-import io.smudgr.app.project.ProjectItem;
-import io.smudgr.app.project.reflect.ReflectableType;
+import io.smudgr.engine.param.Parametric;
 
 /**
  * {@link SmudgeComponent} types diversify the configuration ability of a
@@ -12,7 +11,7 @@ import io.smudgr.app.project.reflect.ReflectableType;
  * <p>
  *
  */
-public abstract class SmudgeComponent implements ProjectItem, ReflectableType {
+public abstract class SmudgeComponent extends Parametric {
 
 	@Override
 	public String getTypeName() {
@@ -25,25 +24,58 @@ public abstract class SmudgeComponent implements ProjectItem, ReflectableType {
 	}
 
 	/**
-	 * Gets the user-recognizable component type name
+	 * Gets the user-recognizable name of the type of {@link SmudgeComponent}
+	 * this class represents.
 	 *
-	 * @return {@link String} Name of the component type this class implements
+	 * @return component type name
 	 */
-	public abstract String getComponentName();
+	public abstract String getComponentTypeName();
 
 	/**
-	 * Gets the unique identifying name of the component type this class
-	 * implements.
+	 * Gets the unique identifiable string of the type of
+	 * {@link SmudgeComponent}
+	 * this class represents.
 	 *
-	 * @return {@link String} Component type identifier
+	 * @return component type identifier
 	 */
-	public abstract String getComponentIdentifier();
+	public abstract String getComponentTypeIdentifier();
 
 	/**
-	 * Gets the unique identifying name of the smudge type this component
+	 * Gets the unique identifying name of the type of smudge this component
 	 * is built for.
 	 *
 	 * @return {@link String} Smudge type identifier
 	 */
-	public abstract String getSmudgeIdentifier();
+	public abstract String getSmudgeTypeIdentifier();
+
+	/**
+	 * This method should be implemented to execute any initialization code.
+	 * Avoid using a constructor to implement any initialization code, implement
+	 * this instead.
+	 */
+	public void onInit() {
+
+	}
+
+	private Smudge parent;
+
+	/**
+	 * Sets the parent {@link Smudge}
+	 *
+	 * @param smudge
+	 *            {@link Smudge}
+	 */
+	public void setParent(Smudge smudge) {
+		parent = smudge;
+	}
+
+	/**
+	 * Gets the parent {@link Smudge}
+	 *
+	 * @return {@link Smudge} parent
+	 */
+	public Smudge getParent() {
+		return parent;
+	}
+
 }

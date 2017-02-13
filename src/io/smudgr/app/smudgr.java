@@ -7,7 +7,7 @@ import java.io.PrintStream;
 import java.net.URLDecoder;
 
 import io.smudgr.app.controller.Controller;
-import io.smudgr.engine.Smudge;
+import io.smudgr.engine.Rack;
 import io.smudgr.engine.alg.Algorithm;
 import io.smudgr.engine.alg.op.DataBend;
 import io.smudgr.engine.alg.select.RangeSelect;
@@ -63,11 +63,11 @@ public class smudgr extends AppStart {
 	}
 
 	@Override
-	public void buildSmudge() {
+	public void buildRack() {
 		// Pro-tip: In eclipse, you can Ctrl+Click on a class name to quickly
 		// open that class
 		// There, you can see the names of available parameters
-		Smudge smudge = Controller.getInstance().getProject().getSmudge();
+		Rack rack = Controller.getInstance().getProject().getRack();
 
 		// Put algorithm/smudge building stuff here
 		Algorithm alg = new Algorithm();
@@ -81,13 +81,13 @@ public class smudgr extends AppStart {
 		alg.add(databend);
 
 		// Make sure to add any new algorithms to the smudge
-		smudge.add(alg);
+		rack.add(alg);
 
 		// This is how you make an automated thingy, I've included a method
 		// writing this easier
 		AutomatorControl automator1 = addAutomator("Animate", databend.getParameter("Target"));
 
-		bind(smudge.getParameter("Downsample"));
+		bind(rack.getParameter("Downsample"));
 		bind(databend.getParameter("Amount"));
 		bind(automator1);
 		bind(range.getParameter("Range Length"));

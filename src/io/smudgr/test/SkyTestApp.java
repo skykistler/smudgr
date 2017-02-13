@@ -2,7 +2,7 @@ package io.smudgr.test;
 
 import io.smudgr.app.AppStart;
 import io.smudgr.app.controller.Controller;
-import io.smudgr.engine.Smudge;
+import io.smudgr.engine.Rack;
 import io.smudgr.engine.alg.Algorithm;
 import io.smudgr.engine.alg.op.ChannelBleed;
 import io.smudgr.engine.alg.op.ChannelCrush;
@@ -31,10 +31,10 @@ public class SkyTestApp extends AppStart {
 	 */
 
 	// where to save/load project file
-	static String projectPath = "data/test.smudge";
+	static String projectPath = "data/test.sproj";
 
 	// whether to overwrite the existing project file
-	static boolean overwriteSmudge = true;
+	static boolean overwriteProject = true;
 
 	// where to load source files from
 	static String sourcePath = "data/testing";
@@ -59,25 +59,25 @@ public class SkyTestApp extends AppStart {
 	static boolean streaming = true;
 
 	@Override
-	public void buildSmudge() {
-		Smudge smudge = Controller.getInstance().getProject().getSmudge();
+	public void buildRack() {
+		Rack rack = Controller.getInstance().getProject().getRack();
 
-		getOperationAlgorithm(smudge, new ChannelBleed());
-		getOperationAlgorithm(smudge, new ChannelCrush());
-		getOperationAlgorithm(smudge, new ChannelDrift());
-		getOperationAlgorithm(smudge, new ChannelSort());
-		getOperationAlgorithm(smudge, new DataBend());
-		getOperationAlgorithm(smudge, new HSVLModifier());
-		getOperationAlgorithm(smudge, new Marbeler());
-		getOperationAlgorithm(smudge, new ParticlePush());
-		getOperationAlgorithm(smudge, new PixelShift());
-		getOperationAlgorithm(smudge, new PixelSort());
-		getOperationAlgorithm(smudge, new RainbowBend());
-		getOperationAlgorithm(smudge, new Smear());
-		getOperationAlgorithm(smudge, new SpectralShift());
+		getOperationAlgorithm(rack, new ChannelBleed());
+		getOperationAlgorithm(rack, new ChannelCrush());
+		getOperationAlgorithm(rack, new ChannelDrift());
+		getOperationAlgorithm(rack, new ChannelSort());
+		getOperationAlgorithm(rack, new DataBend());
+		getOperationAlgorithm(rack, new HSVLModifier());
+		getOperationAlgorithm(rack, new Marbeler());
+		getOperationAlgorithm(rack, new ParticlePush());
+		getOperationAlgorithm(rack, new PixelShift());
+		getOperationAlgorithm(rack, new PixelSort());
+		getOperationAlgorithm(rack, new RainbowBend());
+		getOperationAlgorithm(rack, new Smear());
+		getOperationAlgorithm(rack, new SpectralShift());
 
-		bind(smudge.getParameter("Source Speed"));
-		bind(smudge.getParameter("Downsample"));
+		bind(rack.getParameter("Source Speed"));
+		bind(rack.getParameter("Downsample"));
 
 		bind(Controller.getInstance().getAppControl("Source Switcher"));
 		bind(Controller.getInstance().getAppControl("Source Set Switcher"));
@@ -87,13 +87,13 @@ public class SkyTestApp extends AppStart {
 	/**
 	 * Get a new algorithm wrapping the given operation
 	 *
-	 * @param smudge
-	 *            {@link Smudge}
+	 * @param rack
+	 *            {@link Rack}
 	 * @param op
 	 *            {@link Operation}
 	 * @return {@link Algorithm}
 	 */
-	public Algorithm getOperationAlgorithm(Smudge smudge, Operation op) {
+	public Algorithm getOperationAlgorithm(Rack rack, Operation op) {
 		Algorithm alg = new Algorithm();
 
 		alg.getParameter("Enable").setValue(false);
@@ -101,7 +101,7 @@ public class SkyTestApp extends AppStart {
 
 		alg.add(op);
 
-		smudge.add(alg);
+		rack.add(alg);
 
 		return alg;
 	}
@@ -110,7 +110,7 @@ public class SkyTestApp extends AppStart {
 	 * Create
 	 */
 	public SkyTestApp() {
-		super(projectPath, sourcePath, outputPath, device, overwriteSmudge, deviceServer);
+		super(projectPath, sourcePath, outputPath, device, overwriteProject, deviceServer);
 
 		fullscreenView(fullscreenDisplay);
 

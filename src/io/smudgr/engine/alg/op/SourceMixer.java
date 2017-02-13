@@ -48,7 +48,7 @@ public class SourceMixer extends ParallelOperation {
 	private Blender blender;
 
 	@Override
-	public void init() {
+	public void onInit() {
 		mixSource.init();
 		blenders.add(new MaxBlender());
 		blenders.add(new MinBlender());

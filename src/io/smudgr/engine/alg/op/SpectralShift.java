@@ -45,7 +45,7 @@ public class SpectralShift extends ParallelOperation {
 	private int paletteId, p1, p2, p3, shift_amount;
 
 	@Override
-	public void init() {
+	public void onInit() {
 		shift.setContinuous(true);
 		palette.setContinuous(true);
 
@@ -73,7 +73,7 @@ public class SpectralShift extends ParallelOperation {
 			values = new int[buckets];
 			counters = new int[buckets];
 
-			for (PixelIndexList coords : getAlgorithm().getSelectedPixels())
+			for (PixelIndexList coords : getSelectedPixels())
 				for (int index = 0; index < coords.size(); index++) {
 					int coord = coords.get(index);
 					int i = getBucket(img.pixels[coord]);

@@ -12,18 +12,13 @@ import io.smudgr.util.Frame;
 public abstract class Operation extends AlgorithmComponent {
 
 	@Override
-	public String getType() {
+	public String getComponentTypeName() {
 		return "Operation";
 	}
 
 	@Override
-	public void init() {
-
-	}
-
-	@Override
-	public void update() {
-
+	public String getComponentTypeIdentifier() {
+		return "operation";
 	}
 
 	/**

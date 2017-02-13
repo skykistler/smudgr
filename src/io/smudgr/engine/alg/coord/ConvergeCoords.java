@@ -17,7 +17,7 @@ public class ConvergeCoords extends CoordFunction {
 	private NumberParameter centerY = new NumberParameter("Point Y", this, .5, 0, 1, 0.005);
 
 	@Override
-	protected void generate(int imageWidth, int imageHeight, int boundX, int boundY, int boundWidth, int boundHeight) {
+	protected void generateCoordinates(int imageWidth, int imageHeight, int boundX, int boundY, int boundWidth, int boundHeight) {
 		int middleX = (int) (centerX.getValue() * boundWidth);
 		int middleY = (int) (centerY.getValue() * boundHeight);
 

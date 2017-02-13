@@ -19,6 +19,7 @@ public abstract class ParallelOperation extends Operation {
 	private ArrayList<ParallelOperationTask> tasks = new ArrayList<ParallelOperationTask>();
 	private ForkJoinPool pool = new ForkJoinPool();
 
+	// Declared for memory reuse
 	private int taskIndex;
 	private ArrayList<PixelIndexList> selectedPixelLists;
 
@@ -27,7 +28,7 @@ public abstract class ParallelOperation extends Operation {
 		// Pre-parallel operations
 		preParallel(img);
 
-		selectedPixelLists = getAlgorithm().getSelectedPixels();
+		selectedPixelLists = getSelectedPixels();
 
 		// Add any necessary task instances and set all of their working data
 		for (taskIndex = 0; taskIndex < selectedPixelLists.size(); taskIndex++) {

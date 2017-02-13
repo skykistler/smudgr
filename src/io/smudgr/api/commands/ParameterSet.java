@@ -44,6 +44,9 @@ public class ParameterSet implements ApiCommand, ParameterObserver {
 
 	@Override
 	public void parameterUpdated(Parameter param) {
+		if (true)
+			return;
+
 		/*
 		 * Check if this parameter has been debounced to prevent packet spam
 		 */

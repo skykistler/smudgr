@@ -1,6 +1,3 @@
-/**
- *
- */
 package io.smudgr.app.project.reflect;
 
 /**

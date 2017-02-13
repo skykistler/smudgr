@@ -20,13 +20,14 @@ public class PixelSort extends ParallelOperation {
 		return "Pixel Sort";
 	}
 
-	private BooleanParameter reverse = new BooleanParameter("Reverse", this, false);
+	private BooleanParameter reverseParam = new BooleanParameter("Reverse", this, false);
 	private UnivariateParameter function = new UnivariateParameter("Function", this, new LumaFunction());
 
 	private UnivariateFunction comparator = null;
+	private boolean reverse;
 
 	@Override
-	public void init() {
+	public void onInit() {
 		function.add(new ChromaFunction());
 		function.add(new HueFunction());
 	}
@@ -34,6 +35,7 @@ public class PixelSort extends ParallelOperation {
 	@Override
 	protected void preParallel(Frame img) {
 		comparator = function.getValue();
+		reverse = reverseParam.getValue();
 	}
 
 	@Override
@@ -125,7 +127,7 @@ public class PixelSort extends ParallelOperation {
 			if (o1l > o2l)
 				ret = -1;
 
-			if (reverse.getValue())
+			if (reverse)
 				ret *= -1;
 
 			return ret;

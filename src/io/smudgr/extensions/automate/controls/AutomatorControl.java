@@ -1,7 +1,6 @@
 package io.smudgr.extensions.automate.controls;
 
 import io.smudgr.app.controller.Controllable;
-import io.smudgr.app.project.ProjectItem;
 import io.smudgr.engine.param.Parameter;
 
 /**
@@ -11,7 +10,7 @@ import io.smudgr.engine.param.Parameter;
  * {@link AutomatorControl} instances are also {@link Controllable}, which
  * allows for additional user interaction with the automation behavior.
  */
-public interface AutomatorControl extends Controllable, ProjectItem {
+public interface AutomatorControl extends Controllable {
 
 	@Override
 	public default String getTypeName() {

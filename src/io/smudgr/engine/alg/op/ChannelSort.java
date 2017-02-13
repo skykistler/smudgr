@@ -10,7 +10,7 @@ import io.smudgr.util.Frame;
 /**
  * ChannelSort sorts pixels but on a masked portion of the pixel.
  */
-public class ChannelSort extends Operation {
+public class ChannelSort extends ParallelOperation {
 
 	@Override
 	public String getName() {
@@ -22,23 +22,16 @@ public class ChannelSort extends Operation {
 
 	private NumberParameter sortQuality = new NumberParameter("Sort Quality", this, 7, 0, 7, 1);
 
-	private int[] toSort = null;
-
 	// Declared for memory reuse
-	private int quality, i, sortSize, pixel, index;
-
-	private int mask;
-	private int invertMask;
+	private int quality, mask, invertMask;
 	private boolean reverseVal;
 
 	@Override
-	public void init() {
-		toSort = new int[1024];
+	public void onInit() {
 	}
 
 	@Override
-	public void execute(Frame img) {
-
+	public void preParallel(Frame img) {
 		reverseVal = reverse.getValue();
 
 		quality = 7 - sortQuality.getIntValue();
@@ -47,26 +40,40 @@ public class ChannelSort extends Operation {
 
 		mask = mask << channel.getIntValue();
 		invertMask = ~mask;
-
-		for (PixelIndexList coords : getAlgorithm().getSelectedPixels())
-			sortList(img, coords, mask);
 	}
 
-	private void sortList(Frame img, PixelIndexList coords, int mask) {
-		sortSize = coords.size();
+	@Override
+	public ParallelOperationTask getParallelTask() {
+		return new ChannelSortTask();
+	}
 
-		if (toSort.length < sortSize)
-			toSort = new int[sortSize];
+	class ChannelSortTask extends ParallelOperationTask {
 
-		for (i = 0; i < sortSize; i++)
-			toSort[i] = img.pixels[coords.get(i)] & mask;
+		private int[] toSort = new int[1024];
+		private int sortSize, i, pixel, index;
 
-		Arrays.sort(toSort);
+		@Override
+		public void executeParallel(Frame img, PixelIndexList coords) {
+			sortSize = coords.size();
 
-		for (i = 0; i < sortSize; i++) {
-			pixel = (img.pixels[coords.get(i)] & invertMask) | toSort[i];
-			index = reverseVal ? ((sortSize - 1) - i) : i;
-			img.pixels[coords.get(index)] = pixel;
+			if (toSort.length < sortSize)
+				toSort = new int[sortSize];
+
+			sortList(img, coords, mask);
+		}
+
+		private void sortList(Frame img, PixelIndexList coords, int mask) {
+
+			for (i = 0; i < sortSize; i++)
+				toSort[i] = img.pixels[coords.get(i)] & mask;
+
+			Arrays.sort(toSort);
+
+			for (i = 0; i < sortSize; i++) {
+				pixel = (img.pixels[coords.get(i)] & invertMask) | toSort[i];
+				index = reverseVal ? ((sortSize - 1) - i) : i;
+				img.pixels[coords.get(index)] = pixel;
+			}
 		}
 	}
 

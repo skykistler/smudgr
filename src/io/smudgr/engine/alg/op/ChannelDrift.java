@@ -27,7 +27,7 @@ public class ChannelDrift extends ParallelOperation {
 	private int redShiftX, redShiftY, greenShiftX, greenShiftY, blueShiftX, blueShiftY;
 
 	@Override
-	public void init() {
+	public void onInit() {
 		redX.setContinuous(true);
 		redY.setContinuous(true);
 		greenX.setContinuous(true);

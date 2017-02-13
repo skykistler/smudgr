@@ -2,7 +2,6 @@ package io.smudgr.engine.alg;
 
 import java.util.ArrayList;
 
-import io.smudgr.app.project.util.PropertyMap;
 import io.smudgr.engine.Smudge;
 import io.smudgr.engine.SmudgeComponent;
 import io.smudgr.engine.alg.bound.Bound;
@@ -49,7 +48,7 @@ public class Algorithm extends Smudge {
 	 * Initialize the {@link Algorithm} with default components
 	 */
 	@Override
-	public void init() {
+	public void onInit() {
 		if (bound == null)
 			add(new Bound());
 
@@ -66,16 +65,8 @@ public class Algorithm extends Smudge {
 	private double lastBoundW;
 	private double lastBoundH;
 
-	/**
-	 * Apply this {@link Algorithm} to the given {@link Frame}
-	 *
-	 * @param img
-	 *            {@link Frame}
-	 */
 	@Override
-	protected void apply(Frame img) {
-		bound.update();
-
+	public Frame smudge(Frame img) {
 		boolean boundChanged = lastBoundX != bound.getOffsetX() || lastBoundY != bound.getOffsetY() || lastBoundW != bound.getWidth() || lastBoundH != bound.getHeight();
 		boolean dimensionsChanged = lastFrame == null || (img.getWidth() != this.lastFrame.getWidth() || img.getHeight() != this.lastFrame.getHeight());
 
@@ -85,7 +76,7 @@ public class Algorithm extends Smudge {
 		if (dimensionsChanged || boundChanged)
 			coordFunction.triggerChange();
 
-		coordFunction.update();
+		coordFunction.generateIfChanged();
 
 		if (lastFrame != img) {
 			setSelectedPixels(coordFunction.getCoordSet());
@@ -94,7 +85,7 @@ public class Algorithm extends Smudge {
 				if (component instanceof Selector) {
 					Selector selector = ((Selector) component);
 					selector.setFrame(img);
-					selector.update();
+					selector.generate();
 				}
 		}
 
@@ -107,19 +98,17 @@ public class Algorithm extends Smudge {
 		lastBoundY = bound.getOffsetY();
 		lastBoundW = bound.getWidth();
 		lastBoundH = bound.getHeight();
+
+		return lastFrame;
 	}
 
 	@Override
-	public void add(PropertyMap componentState) {
-		SmudgeComponent component = super.add(componentState);
-
+	protected void onAdd(SmudgeComponent component) {
 		if (component instanceof Bound)
 			setBound((Bound) component);
 
 		if (component instanceof CoordFunction)
 			setCoordFunction((CoordFunction) component);
-
-		component.init();
 	}
 
 	private void setBound(Bound bound) {

@@ -2,7 +2,7 @@ package io.smudgr.test;
 
 import io.smudgr.app.AppStart;
 import io.smudgr.app.controller.Controller;
-import io.smudgr.engine.Smudge;
+import io.smudgr.engine.Rack;
 import io.smudgr.engine.alg.Algorithm;
 import io.smudgr.engine.alg.op.ChannelSort;
 import io.smudgr.engine.alg.op.ParticlePush;
@@ -14,9 +14,9 @@ import io.smudgr.extensions.cef.view.WebsocketView;
  */
 public class EricUiTest extends AppStart {
 
-	static String projectPath = "data/test.smudge";
+	static String projectPath = "data/test.sproj";
 
-	static boolean overwriteSmudge = false;
+	static boolean overwriteProject = false;
 
 	static String sourcePath = "data/ui_sources";
 
@@ -29,8 +29,8 @@ public class EricUiTest extends AppStart {
 	static boolean monitor = true;
 
 	@Override
-	public void buildSmudge() {
-		Smudge smudge = Controller.getInstance().getProject().getSmudge();
+	public void buildRack() {
+		Rack rack = Controller.getInstance().getProject().getRack();
 
 		Algorithm alg = new Algorithm();
 		RangeSelect range = new RangeSelect();
@@ -40,11 +40,11 @@ public class EricUiTest extends AppStart {
 		alg.add(sort);
 		// range.getParameter("Range Length").setValue(1);
 
-		smudge.add(alg);
+		rack.add(alg);
 
 		Algorithm alg2 = new Algorithm();
 		alg2.add(new ParticlePush());
-		smudge.add(alg2);
+		rack.add(alg2);
 
 		// AutomatorControl automator1 = addAutomator("Animate",
 		// range.getParameter("Range Length"));
@@ -55,7 +55,7 @@ public class EricUiTest extends AppStart {
 		// bind(automator1);
 		// bind(range.getParameter("Range Length"));
 
-		smudge.getParameter("Downsample").setValue(1);
+		rack.getParameter("Downsample").setValue(1);
 
 		bind(Controller.getInstance().getAppControl("Source Switcher"));
 		bind(Controller.getInstance().getAppControl("Source Set Switcher"));
@@ -64,10 +64,10 @@ public class EricUiTest extends AppStart {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public EricUiTest() {
-		super(projectPath, sourcePath, outputPath, device, overwriteSmudge, deviceServer);
+		super(projectPath, sourcePath, outputPath, device, overwriteProject, deviceServer);
 
 		// fullscreenView(fullscreenDisplay);
 		// if (monitor)
@@ -80,7 +80,7 @@ public class EricUiTest extends AppStart {
 
 	/**
 	 * Entry point
-	 * 
+	 *
 	 * @param args
 	 *            {@code String[]}
 	 */

@@ -1,13 +1,12 @@
 package io.smudgr.app.controller;
 
 import io.smudgr.app.project.ProjectItem;
-import io.smudgr.app.project.reflect.ReflectableType;
 
 /**
  * Interface for defining a controllable action, behavior, etc for use
  * throughout the app.
  */
-public interface Controllable extends ProjectItem, ReflectableType {
+public interface Controllable extends ProjectItem {
 
 	/**
 	 * Unique name to identify this control by.

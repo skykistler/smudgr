@@ -17,12 +17,12 @@ import io.smudgr.util.Frame;
 public class Bound extends AlgorithmComponent {
 
 	@Override
-	public String getComponentName() {
+	public String getComponentTypeName() {
 		return "Bound";
 	}
 
 	@Override
-	public String getComponentIdentifier() {
+	public String getComponentTypeIdentifier() {
 		return "bound";
 	}
 
@@ -40,16 +40,6 @@ public class Bound extends AlgorithmComponent {
 	protected NumberParameter offsetY = new NumberParameter("Bound Y", this, 0, 0, 1, 0.005);
 	protected NumberParameter width = new NumberParameter("Bound Width", this, 1, 0, 1, 0.005);
 	protected NumberParameter height = new NumberParameter("Bound Height", this, 1, 0, 1, 0.005);
-
-	@Override
-	public void init() {
-
-	}
-
-	@Override
-	public void update() {
-
-	}
 
 	/**
 	 * Checks whether a given point is contained within the current state of

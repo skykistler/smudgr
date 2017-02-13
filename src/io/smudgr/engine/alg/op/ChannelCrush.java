@@ -28,7 +28,7 @@ public class ChannelCrush extends ParallelOperation {
 	private int redMaskShift, redShift, greenMaskShift, greenShift, blueMaskShift, blueShift;
 
 	@Override
-	public void init() {
+	public void onInit() {
 		redShiftParam.setReverse(true);
 		blueShiftParam.setReverse(true);
 		greenShiftParam.setReverse(true);

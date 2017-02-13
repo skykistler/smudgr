@@ -3,6 +3,7 @@ package io.smudgr.engine.alg.select;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import io.smudgr.engine.alg.Algorithm;
 import io.smudgr.engine.alg.AlgorithmComponent;
 import io.smudgr.engine.alg.PixelIndexList;
 import io.smudgr.engine.alg.coord.CoordFunction;
@@ -18,8 +19,13 @@ import io.smudgr.util.Frame;
 public abstract class Selector extends AlgorithmComponent {
 
 	@Override
-	public String getType() {
+	public String getComponentTypeName() {
 		return "Selector";
+	}
+
+	@Override
+	public String getComponentTypeIdentifier() {
+		return "selector";
 	}
 
 	protected ArrayList<PixelIndexList> selectedList = new ArrayList<PixelIndexList>();
@@ -27,17 +33,14 @@ public abstract class Selector extends AlgorithmComponent {
 
 	private Frame frame;
 
-	@Override
-	public void init() {
-
-	}
-
-	@Override
-	public void update() {
+	/**
+	 * Generates the selected pixel list.
+	 */
+	public void generate() {
 		if (frame == null)
 			return;
 
-		ArrayList<PixelIndexList> selected = getAlgorithm().getSelectedPixels();
+		ArrayList<PixelIndexList> selected = getSelectedPixels();
 
 		for (PixelIndexList list : selectedList)
 			disposedLists.push(list);
@@ -68,7 +71,11 @@ public abstract class Selector extends AlgorithmComponent {
 			}
 		}
 
-		getAlgorithm().setSelectedPixels(selectedList);
+		setSelectedPixels(selectedList);
+	}
+
+	protected void setSelectedPixels(ArrayList<PixelIndexList> selectedPixels) {
+		((Algorithm) getParent()).setSelectedPixels(selectedPixels);
 	}
 
 	protected PixelIndexList getNewSet() {

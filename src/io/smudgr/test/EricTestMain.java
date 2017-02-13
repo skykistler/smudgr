@@ -2,7 +2,7 @@ package io.smudgr.test;
 
 import io.smudgr.app.AppStart;
 import io.smudgr.app.controller.Controller;
-import io.smudgr.engine.Smudge;
+import io.smudgr.engine.Rack;
 import io.smudgr.engine.alg.Algorithm;
 import io.smudgr.engine.alg.op.SourceMixer;
 import io.smudgr.engine.alg.select.RangeSelect;
@@ -18,10 +18,10 @@ public class EricTestMain extends AppStart {
 	 */
 
 	// where to save/load project file
-	static String projectPath = "data/test.smudge";
+	static String projectPath = "data/test.sproj";
 
 	// whether to overwrite the existing project file
-	static boolean overwriteSmudge = true;
+	static boolean overwriteProject = true;
 
 	// where to load source files from
 	static String sourcePath = "data/work";
@@ -43,11 +43,11 @@ public class EricTestMain extends AppStart {
 	static boolean monitor = true;
 
 	@Override
-	public void buildSmudge() {
+	public void buildRack() {
 		// Pro-tip: In eclipse, you can Ctrl+Click on a class name to quickly
 		// open that class
 		// There, you can see the names of available parameters
-		Smudge smudge = Controller.getInstance().getProject().getSmudge();
+		Rack rack = Controller.getInstance().getProject().getRack();
 
 		// Put algorithm/smudge building stuff here
 		Algorithm alg = new Algorithm();
@@ -60,7 +60,7 @@ public class EricTestMain extends AppStart {
 		alg.add(mixer);
 
 		// Make sure to add any new algorithms to the smudge
-		smudge.add(alg);
+		rack.add(alg);
 
 		bind(mixer.getParameter("Size"));
 		bind(mixer.getParameter("Translation X"));
@@ -69,7 +69,7 @@ public class EricTestMain extends AppStart {
 
 		// This is how you make an automated thingy, I've included a method
 		// writing this easier
-		bind(smudge.getParameter("Downsample"));
+		bind(rack.getParameter("Downsample"));
 
 		bind(Controller.getInstance().getAppControl("Source Set Switcher"));
 		bind(Controller.getInstance().getAppControl("Source Switcher"));
@@ -79,10 +79,10 @@ public class EricTestMain extends AppStart {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public EricTestMain() {
-		super(projectPath, sourcePath, outputPath, device, overwriteSmudge, deviceServer);
+		super(projectPath, sourcePath, outputPath, device, overwriteProject, deviceServer);
 
 		fullscreenView(fullscreenDisplay);
 		if (monitor)
@@ -93,7 +93,7 @@ public class EricTestMain extends AppStart {
 
 	/**
 	 * Entry point
-	 * 
+	 *
 	 * @param args
 	 *            {@code String[]}
 	 */

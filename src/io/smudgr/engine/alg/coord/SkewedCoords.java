@@ -23,7 +23,7 @@ public class SkewedCoords extends CoordFunction {
 	private int selectedEndY;
 
 	@Override
-	protected void generate(int imageWidth, int imageHeight, int boundX, int boundY, int boundWidth, int boundHeight) {
+	protected void generateCoordinates(int imageWidth, int imageHeight, int boundX, int boundY, int boundWidth, int boundHeight) {
 		double offset = endCoordOffset.getValue();
 
 		/*

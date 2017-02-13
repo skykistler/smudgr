@@ -3,7 +3,7 @@ package io.smudgr.test;
 import io.smudgr.app.AppStart;
 import io.smudgr.app.controller.Controller;
 import io.smudgr.app.view.PiFullscreenView;
-import io.smudgr.engine.Smudge;
+import io.smudgr.engine.Rack;
 import io.smudgr.engine.alg.Algorithm;
 import io.smudgr.engine.alg.op.DataBend;
 import io.smudgr.engine.alg.op.SpectralShift;
@@ -21,10 +21,10 @@ public class KinectTest extends AppStart {
 	 */
 
 	// where to save/load project file
-	static String projectPath = "data/test.smudge";
+	static String projectPath = "data/kinect.sproj";
 
 	// whether to load the existing file or delete it and make a new one
-	static boolean newSmudge = true;
+	static boolean overwriteProject = true;
 
 	// where to load source files from
 	static String sourcePath = "data/test";
@@ -49,7 +49,7 @@ public class KinectTest extends AppStart {
 	 * Create
 	 */
 	public KinectTest() {
-		super(projectPath, sourcePath, outputPath, device, newSmudge, deviceServer);
+		super(projectPath, sourcePath, outputPath, device, overwriteProject, deviceServer);
 
 		// fullscreenView(fullscreenDisplay);
 		// if (monitor)
@@ -61,15 +61,15 @@ public class KinectTest extends AppStart {
 	}
 
 	@Override
-	public void buildSmudge() {
+	public void buildRack() {
 		// Pro-tip: In eclipse, you can Ctrl+Click on a class name to quickly
 		// open that class
 		// There, you can see the names of available parameters
-		Smudge smudge = Controller.getInstance().getProject().getSmudge();
+		Rack rack = Controller.getInstance().getProject().getRack();
 
-		smudge.setSource(new VideoSource());
+		rack.setSource(new VideoSource());
 
-		// Put algorithm/smudge building stuff here
+		// Put algorithm/rack building stuff here
 		Algorithm alg = new Algorithm();
 
 		// Example Selector
@@ -87,15 +87,15 @@ public class KinectTest extends AppStart {
 		sshift.getParameter("Sort").setValue(true);
 		// alg.add(databend);
 
-		// Make sure to add any new algorithms to the smudge
-		smudge.add(alg);
+		// Make sure to add any new algorithms to the rack
+		rack.add(alg);
 
 		databend.getParameter("Amount").setValue(2);
 		// This is how you make an automated thingy, I've included a method
 		// writing this easier
 		AutomatorControl automator1 = addAutomator("Animate", databend.getParameter("Target"));
 
-		bind(smudge.getParameter("Downsample"));
+		bind(rack.getParameter("Downsample"));
 		// bind(databend.getParameter("Amount"));
 
 		bind(automator1);

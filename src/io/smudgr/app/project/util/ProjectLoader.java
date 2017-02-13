@@ -16,7 +16,7 @@ import io.smudgr.app.project.Project;
 /**
  * The {@link ProjectLoader} class can load an XML file containing
  * {@link Project} data.
- * 
+ *
  * @see ProjectSaver
  */
 public class ProjectLoader {
@@ -27,7 +27,7 @@ public class ProjectLoader {
 	 * Create a new {@link ProjectLoader} without a specified path. This can be
 	 * used to bootstrap a new {@link Project} without immediately specifying a
 	 * save location.
-	 * 
+	 *
 	 * @see ProjectLoader#ProjectLoader(String)
 	 */
 	public ProjectLoader() {
@@ -37,7 +37,7 @@ public class ProjectLoader {
 	/**
 	 * Create a new {@link ProjectLoader} to load a project from an existing
 	 * file.
-	 * 
+	 *
 	 * @param path
 	 *            Absolute or relative project file location.
 	 * @see ProjectLoader#ProjectLoader()
