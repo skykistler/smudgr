@@ -87,7 +87,7 @@ public abstract class Smudge extends Parametric {
 	 *            {@link SmudgeComponent}
 	 */
 	public void add(SmudgeComponent component) {
-		if (component.getSmudgeTypeIdentifier() != getIdentifier())
+		if (component.getSmudgeTypeIdentifier() != getElementIdentifier())
 			return;
 
 		component.setParent(this);

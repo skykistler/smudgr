@@ -25,6 +25,16 @@ import io.smudgr.app.project.reflect.TypeLibrary;
  */
 public class PropertyMap {
 
+	/**
+	 * The universal attribute name for serializing a project ID
+	 */
+	public static final String ID_ATTR = "id";
+
+	/**
+	 * The universal attribute name for serializing an element type identifier
+	 */
+	public static final String ELEMENT_ATTR = "element";
+
 	private String tag;
 
 	private HashMap<String, String> attributes = new HashMap<String, String>();
@@ -45,7 +55,7 @@ public class PropertyMap {
 	 * Create a property map with the given {@link ProjectItem}.
 	 * <p>
 	 * This sets the map tag to {@link ProjectItem#getTypeIdentifier()} and
-	 * the type attribute to {@link ProjectItem#getIdentifier()}.
+	 * the type attribute to {@link ProjectItem#getElementIdentifier()}.
 	 * <p>
 	 * If the given element has a project ID, the id attribute is set to
 	 * {@link Project#getId(ProjectItem)}
@@ -56,10 +66,10 @@ public class PropertyMap {
 	public PropertyMap(ProjectItem item) {
 		this.tag = item.getTypeIdentifier();
 
-		setAttribute("type", item.getIdentifier());
+		setAttribute(ELEMENT_ATTR, item.getElementIdentifier());
 
 		if (getProject().contains(item))
-			setAttribute("id", getProject().getId(item));
+			setAttribute(ID_ATTR, getProject().getId(item));
 	}
 
 	/**

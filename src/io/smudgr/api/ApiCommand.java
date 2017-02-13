@@ -75,12 +75,12 @@ public interface ApiCommand extends ReflectableType {
 	};
 
 	@Override
-	public default String getIdentifier() {
+	public default String getElementIdentifier() {
 		return getCommand();
 	}
 
 	@Override
-	public default String getName() {
+	public default String getElementName() {
 		return getCommand();
 	}
 

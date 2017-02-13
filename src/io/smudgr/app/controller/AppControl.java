@@ -20,7 +20,7 @@ public interface AppControl extends Controllable, ReflectableType {
 	}
 
 	@Override
-	public default String getIdentifier() {
-		return getName();
+	public default String getElementIdentifier() {
+		return getElementName();
 	}
 }

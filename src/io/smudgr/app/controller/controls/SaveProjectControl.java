@@ -14,7 +14,7 @@ public class SaveProjectControl implements AppControl {
 	 * @return "Save Project"
 	 */
 	@Override
-	public String getName() {
+	public String getElementName() {
 		return "Save Project";
 	}
 

@@ -33,12 +33,12 @@ import io.smudgr.extensions.midi.tcp.DeviceServer;
 public class MidiExtension implements ControllerExtension, DeviceObserver {
 
 	@Override
-	public String getName() {
+	public String getElementName() {
 		return "MIDI";
 	}
 
 	@Override
-	public String getIdentifier() {
+	public String getElementIdentifier() {
 		return "midi";
 	}
 
@@ -143,17 +143,17 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 
 		Controllable control = (Controllable) item;
 
-		String name = control.getName();
+		String name = control.getElementName();
 		if (control instanceof Parameter) {
 			Parameter param = (Parameter) control;
-			name = param.getParent().getName() + " - " + param.getName();
+			name = param.getParent().getElementName() + " - " + param.getElementName();
 		}
 
 		if (control instanceof AutomatorControl) {
 			Parameter param = ((AutomatorControl) control).getParameter();
 
 			if (param != null)
-				name = control.getName() + " Automator on " + param.getParent().getName() + " - " + param.getName();
+				name = control.getElementName() + " Automator on " + param.getParent().getElementName() + " - " + param.getElementName();
 		}
 
 		if (midiMap.hasBind(control_id)) {

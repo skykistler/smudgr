@@ -21,12 +21,12 @@ public class KinectExtension implements ControllerExtension {
 	private VideoBuffer vBuffer;
 
 	@Override
-	public String getName() {
+	public String getElementName() {
 		return "Kinect";
 	}
 
 	@Override
-	public String getIdentifier() {
+	public String getElementIdentifier() {
 		return "kinect";
 	}
 

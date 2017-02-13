@@ -9,12 +9,12 @@ import io.smudgr.engine.alg.Algorithm;
 public class EllipticalBound extends Bound {
 
 	@Override
-	public String getName() {
+	public String getElementName() {
 		return "Elliptical";
 	}
 
 	@Override
-	public String getIdentifier() {
+	public String getElementIdentifier() {
 		return "elliptical";
 	}
 

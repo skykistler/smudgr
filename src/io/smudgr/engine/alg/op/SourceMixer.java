@@ -23,7 +23,7 @@ import io.smudgr.util.source.Source;
 public class SourceMixer extends ParallelOperation {
 
 	@Override
-	public String getName() {
+	public String getElementName() {
 		return "Source Mixer";
 	}
 

@@ -31,8 +31,8 @@ public interface ProjectItem extends ReflectableType {
 	 * @see ProjectItem#load(PropertyMap)
 	 */
 	public default void save(PropertyMap pm) {
-		pm.setAttribute("id", getProject().getId(this));
-		pm.setAttribute("type", getIdentifier());
+		pm.setAttribute(PropertyMap.ID_ATTR, getProject().getId(this));
+		pm.setAttribute(PropertyMap.ELEMENT_ATTR, getElementIdentifier());
 	}
 
 	/**
@@ -48,8 +48,8 @@ public interface ProjectItem extends ReflectableType {
 	 * @see ProjectItem#save(PropertyMap)
 	 */
 	public default void load(PropertyMap pm) {
-		if (pm.hasAttribute("id"))
-			getProject().put(this, Integer.parseInt(pm.getAttribute("id")));
+		if (pm.hasAttribute(PropertyMap.ID_ATTR))
+			getProject().put(this, Integer.parseInt(pm.getAttribute(PropertyMap.ID_ATTR)));
 		else
 			getProject().add(this);
 	}

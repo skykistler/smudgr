@@ -16,7 +16,7 @@ public class CurrentSourceControl implements AppControl {
 	 * @return "Source Switcher"
 	 */
 	@Override
-	public String getName() {
+	public String getElementName() {
 		return "Source Switcher";
 	}
 

@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import io.smudgr.api.ApiCommand;
 import io.smudgr.api.ApiMessage;
+import io.smudgr.app.project.util.PropertyMap;
 import io.smudgr.engine.param.Parameter;
 import io.smudgr.engine.param.ParameterObserver;
 import io.smudgr.extensions.cef.util.DebounceThread;
@@ -36,7 +37,7 @@ public class ParameterSet implements ApiCommand, ParameterObserver {
 
 	@Override
 	public ApiMessage execute(ApiMessage data) {
-		Parameter param = (Parameter) getProject().getItem((int) data.getNumber("id"));
+		Parameter param = (Parameter) getProject().getItem((int) data.getNumber(PropertyMap.ID_ATTR));
 		param.setValue(data.get("value"), this);
 
 		return null;
@@ -100,7 +101,7 @@ public class ParameterSet implements ApiCommand, ParameterObserver {
 	}
 
 	private void sendParameterUpdate(Parameter param) {
-		ApiMessage paramUpdate = new ApiMessage("id", getProject().getId(param) + "");
+		ApiMessage paramUpdate = new ApiMessage(PropertyMap.ID_ATTR, getProject().getId(param) + "");
 		paramUpdate.put("value", param.getStringValue());
 
 		sendMessage(ApiMessage.ok(getCommand(), paramUpdate));

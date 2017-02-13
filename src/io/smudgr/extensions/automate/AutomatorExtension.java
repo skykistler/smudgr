@@ -17,12 +17,12 @@ import io.smudgr.extensions.automate.controls.AutomatorControl;
 public class AutomatorExtension implements ControllerExtension {
 
 	@Override
-	public String getName() {
+	public String getElementName() {
 		return "Automator";
 	}
 
 	@Override
-	public String getIdentifier() {
+	public String getElementIdentifier() {
 		return "automator";
 	}
 
@@ -54,30 +54,21 @@ public class AutomatorExtension implements ControllerExtension {
 	/**
 	 * Add an {@link AutomatorControl} to the extension.
 	 *
-	 * @param identifier
-	 *            Fully-qualified type identifier of automator to add
-	 * @param properties
+	 * @param state
 	 *            State information to pass to the new automator
 	 * @return {@link AutomatorControl}
-	 * @see AutomatorControl#getIdentifier()
+	 * @see AutomatorControl#getElementIdentifier()
 	 */
-	public AutomatorControl add(String identifier, PropertyMap properties) {
-		AutomatorControl control = automatorLibrary.getNewInstance(identifier);
+	public AutomatorControl add(PropertyMap state) {
+		AutomatorControl control = automatorLibrary.getNewInstance(state);
 
 		if (control == null) {
-			System.out.println("Could not find automator with identifier: " + identifier);
+			System.out.println("Could not find automator type: " + state.getAttribute(PropertyMap.ELEMENT_ATTR));
 			return null;
 		}
 
+		control.load(state);
 		automators.add(control);
-
-		// If the control was registered with the project, use the same ID
-		if (properties.hasAttribute("id"))
-			getProject().put(control, Integer.parseInt(properties.getAttribute("id")));
-		else
-			getProject().add(control);
-
-		control.load(properties);
 
 		return control;
 	}
@@ -85,11 +76,7 @@ public class AutomatorExtension implements ControllerExtension {
 	@Override
 	public void save(PropertyMap pm) {
 		for (AutomatorControl automator : automators) {
-			PropertyMap map = new PropertyMap(automator.getTypeIdentifier());
-
-			map.setAttribute("id", getProject().getId(automator));
-			map.setAttribute("type", automator.getIdentifier());
-
+			PropertyMap map = new PropertyMap(automator);
 			automator.save(map);
 
 			pm.add(map);
@@ -100,9 +87,8 @@ public class AutomatorExtension implements ControllerExtension {
 	public void load(PropertyMap pm) {
 		automatorLibrary = new TypeLibrary<AutomatorControl>(AutomatorControl.class);
 
-		for (PropertyMap map : pm.getChildren(automatorLibrary.getTypeIdentifier())) {
-			add(map.getAttribute("type"), map);
-		}
+		for (PropertyMap map : pm.getChildren(automatorLibrary))
+			add(map);
 	}
 
 }

@@ -29,7 +29,7 @@ public interface ControllerExtension extends ReflectableType {
 	 * @return {@link String}
 	 */
 	@Override
-	public String getName();
+	public String getElementName();
 
 	/**
 	 * This method is called on application startup.

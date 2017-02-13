@@ -12,7 +12,7 @@ import io.smudgr.engine.param.NumberParameter;
 public class RadialCoords extends CoordFunction {
 
 	@Override
-	public String getName() {
+	public String getElementName() {
 		return "Spiral";
 	}
 

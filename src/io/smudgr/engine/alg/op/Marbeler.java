@@ -14,7 +14,7 @@ import io.smudgr.util.Frame;
 public class Marbeler extends Operation {
 
 	@Override
-	public String getName() {
+	public String getElementName() {
 		return "Cubic Marbeler";
 	}
 

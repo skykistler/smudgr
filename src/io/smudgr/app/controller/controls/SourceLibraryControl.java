@@ -16,7 +16,7 @@ public class SourceLibraryControl implements AppControl {
 	 * @return "Source Set Switcher"
 	 */
 	@Override
-	public String getName() {
+	public String getElementName() {
 		return "Source Set Switcher";
 	}
 

@@ -251,11 +251,8 @@ public class Controller {
 	 */
 	public void save(PropertyMap pm) {
 		for (AppControl control : getAppControls()) {
-			PropertyMap map = new PropertyMap(appControlLibrary.getTypeIdentifier());
-
+			PropertyMap map = new PropertyMap(control);
 			control.save(map);
-			map.setAttribute("id", getProject().getId(control));
-			map.setAttribute("type", control.getIdentifier());
 
 			pm.add(map);
 		}
@@ -264,7 +261,7 @@ public class Controller {
 			PropertyMap map = new PropertyMap(extensionLibrary.getTypeIdentifier());
 
 			extension.save(map);
-			map.setAttribute("type", extension.getIdentifier());
+			map.setAttribute(PropertyMap.ELEMENT_ATTR, extension.getElementIdentifier());
 
 			pm.add(map);
 		}
@@ -334,10 +331,10 @@ public class Controller {
 
 		// Set project ID for saved controls
 		for (PropertyMap mapping : pm.getChildren(appControlLibrary.getTypeIdentifier())) {
-			AppControl control = getAppControl(mapping.getAttribute("type"));
+			AppControl control = getAppControl(mapping.getAttribute(PropertyMap.ELEMENT_ATTR));
 
 			if (control != null) {
-				int id = Integer.parseInt(mapping.getAttribute("id"));
+				int id = Integer.parseInt(mapping.getAttribute(PropertyMap.ID_ATTR));
 				getProject().put(control, id);
 			}
 		}
@@ -373,7 +370,7 @@ public class Controller {
 
 		// Load any states to the appropriate extension
 		for (PropertyMap mapping : pm.getChildren(extensionLibrary.getTypeIdentifier())) {
-			ControllerExtension ext = getExtension(mapping.getAttribute("type"));
+			ControllerExtension ext = getExtension(mapping.getAttribute(PropertyMap.ELEMENT_ATTR));
 
 			if (ext != null) {
 				ext.load(mapping);
@@ -412,7 +409,7 @@ public class Controller {
 			if (started)
 				ext.init();
 
-			extensions.put(ext.getIdentifier(), ext);
+			extensions.put(ext.getElementIdentifier(), ext);
 		}
 	}
 
@@ -433,7 +430,7 @@ public class Controller {
 	 *            The identifier of the {@link AppControl}
 	 * @return Loaded {@link AppControl} instance
 	 *
-	 * @see AppControl#getIdentifier()
+	 * @see AppControl#getElementIdentifier()
 	 */
 	public AppControl getAppControl(String identifier) {
 		return appControls.get(identifier);
@@ -450,7 +447,7 @@ public class Controller {
 	 *            The registered name of the {@link ControllerExtension}
 	 * @return Registered {@link ControllerExtension}
 	 *
-	 * @see ControllerExtension#getName()
+	 * @see ControllerExtension#getElementName()
 	 */
 	public ControllerExtension getExtension(String name) {
 		return extensions.get(name);

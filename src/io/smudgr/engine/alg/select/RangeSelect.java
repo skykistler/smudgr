@@ -24,7 +24,7 @@ public class RangeSelect extends Selector {
 	UnivariateParameter function = new UnivariateParameter("Function", this, new LumaFunction());
 
 	@Override
-	public String getName() {
+	public String getElementName() {
 		return "Range";
 	}
 

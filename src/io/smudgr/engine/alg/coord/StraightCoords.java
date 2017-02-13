@@ -12,7 +12,7 @@ public class StraightCoords extends CoordFunction {
 	private BooleanParameter vertical = new BooleanParameter("Vertical", this, false);
 
 	@Override
-	public String getName() {
+	public String getElementName() {
 		return "Straight";
 	}
 

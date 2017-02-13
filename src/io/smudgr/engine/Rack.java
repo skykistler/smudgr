@@ -28,12 +28,12 @@ public class Rack extends Parametric {
 	}
 
 	@Override
-	public String getName() {
+	public String getElementName() {
 		return getTypeName();
 	}
 
 	@Override
-	public String getIdentifier() {
+	public String getElementIdentifier() {
 		return getTypeIdentifier();
 	}
 

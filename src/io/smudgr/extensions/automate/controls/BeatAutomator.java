@@ -16,12 +16,12 @@ public class BeatAutomator implements AutomatorControl {
 	private static final double[] SPEEDS = { 1 / 32.0, 1 / 16.0, 1 / 8.0, 1 / 4.0, 1 / 2.0, 1.0, 2.0, 4.0, 8.0 };
 
 	@Override
-	public String getName() {
+	public String getElementName() {
 		return "Beat Sync";
 	}
 
 	@Override
-	public String getIdentifier() {
+	public String getElementIdentifier() {
 		return "beat-sync";
 	}
 
@@ -88,15 +88,17 @@ public class BeatAutomator implements AutomatorControl {
 
 	@Override
 	public void save(PropertyMap pm) {
-		int parameterId = getProject().getId(parameter);
+		AutomatorControl.super.save(pm);
 
-		pm.setAttribute("parameter", parameterId);
+		pm.setAttribute("parameter", getProject().getId(parameter));
 		pm.setAttribute("speed", speed);
 		pm.setAttribute("run", run);
 	}
 
 	@Override
 	public void load(PropertyMap pm) {
+		AutomatorControl.super.load(pm);
+
 		if (pm.hasAttribute("speed"))
 			speed = Integer.parseInt(pm.getAttribute("speed"));
 

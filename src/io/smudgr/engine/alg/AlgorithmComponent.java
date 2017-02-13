@@ -22,13 +22,13 @@ public abstract class AlgorithmComponent extends SmudgeComponent {
 	}
 
 	@Override
-	public String getIdentifier() {
-		return getName();
+	public String getElementIdentifier() {
+		return getElementName();
 	}
 
 	@Override
 	public String toString() {
-		return getName();
+		return getElementName();
 	}
 
 	/**

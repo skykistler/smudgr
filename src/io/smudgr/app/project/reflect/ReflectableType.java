@@ -23,10 +23,25 @@ public interface ReflectableType {
 	 * @return String that will enumerate this type across versions of the
 	 *         application
 	 *
-	 * @see #getIdentifier()
+	 * @see #getElementIdentifier()
 	 * @see #getTypeName()
 	 */
 	public String getTypeIdentifier();
+
+	/**
+	 * The user identifiable name of this type.
+	 * <p>
+	 * This name can safely be changed between versions of the application, and
+	 * may be used for translations.
+	 * <p>
+	 * Implementations of this type should not override this method.
+	 *
+	 * @return String that will identify this type to the user.
+	 *
+	 * @see #getElementName()
+	 * @see #getTypeIdentifier()
+	 */
+	public String getTypeName();
 
 	/**
 	 * This should return a unique identifier of this implementation.
@@ -45,24 +60,9 @@ public interface ReflectableType {
 	 *         application
 	 *
 	 * @see #getTypeIdentifier()
-	 * @see #getName()
+	 * @see #getElementName()
 	 */
-	public String getIdentifier();
-
-	/**
-	 * The user identifiable name of this type.
-	 * <p>
-	 * This name can safely be changed between versions of the application, and
-	 * may be used for translations.
-	 * <p>
-	 * Implementations of this type should not override this method.
-	 *
-	 * @return String that will identify this type to the user.
-	 *
-	 * @see #getName()
-	 * @see #getTypeIdentifier()
-	 */
-	public String getTypeName();
+	public String getElementIdentifier();
 
 	/**
 	 * The user identifiable name of this implementation.
@@ -75,7 +75,7 @@ public interface ReflectableType {
 	 * @return String that will identify this implementation to the user.
 	 *
 	 * @see #getTypeName()
-	 * @see #getIdentifier()
+	 * @see #getElementIdentifier()
 	 */
-	public String getName();
+	public String getElementName();
 }

@@ -13,12 +13,12 @@ import io.smudgr.engine.param.Parameter;
 public class EasingAutomator implements AutomatorControl {
 
 	@Override
-	public String getName() {
+	public String getElementName() {
 		return "Ease";
 	}
 
 	@Override
-	public String getIdentifier() {
+	public String getElementIdentifier() {
 		return "ease";
 	}
 

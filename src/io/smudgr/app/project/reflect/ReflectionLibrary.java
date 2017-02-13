@@ -121,7 +121,7 @@ public abstract class ReflectionLibrary<T extends ReflectableType> {
 
 			// Make sure we're not hitting collisions
 			if (contains(reflectedType)) {
-				throw new InstantiationException("Tried to load two " + reflectedType.getTypeIdentifier() + " implementations with the same identifier: " + reflectedType.getIdentifier());
+				throw new InstantiationException("Tried to load two " + reflectedType.getTypeIdentifier() + " implementations with the same identifier: " + reflectedType.getElementIdentifier());
 			}
 
 			// Save it to the map

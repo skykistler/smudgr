@@ -10,7 +10,7 @@ import io.smudgr.util.Frame;
 public class Smear extends ParallelOperation {
 
 	@Override
-	public String getName() {
+	public String getElementName() {
 		return "Smear";
 	}
 

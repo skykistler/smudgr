@@ -13,7 +13,7 @@ import io.smudgr.util.Frame;
 public class ChannelSort extends ParallelOperation {
 
 	@Override
-	public String getName() {
+	public String getElementName() {
 		return "Channel Sort";
 	}
 

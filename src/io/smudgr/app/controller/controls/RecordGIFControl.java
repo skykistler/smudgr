@@ -15,7 +15,7 @@ public class RecordGIFControl implements AppControl {
 	 * @return "Record GIF"
 	 */
 	@Override
-	public String getName() {
+	public String getElementName() {
 		return "Record GIF";
 	}
 

@@ -40,7 +40,7 @@ public abstract class Parameter implements Controllable {
 	public abstract String getParameterTypeIdentifier();
 
 	@Override
-	public String getName() {
+	public String getElementName() {
 		return name;
 	}
 
@@ -50,7 +50,7 @@ public abstract class Parameter implements Controllable {
 	 * backwards compatibility.
 	 */
 	@Override
-	public String getIdentifier() {
+	public String getElementIdentifier() {
 		return identifier;
 	}
 
@@ -162,7 +162,7 @@ public abstract class Parameter implements Controllable {
 
 	@Override
 	public String toString() {
-		return getName();
+		return getElementName();
 	}
 
 	/**
