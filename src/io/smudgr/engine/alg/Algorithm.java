@@ -42,7 +42,9 @@ public class Algorithm extends Smudge {
 	private CoordFunction coordFunction;
 
 	private ArrayList<PixelIndexList> selectedPixels = new ArrayList<PixelIndexList>();
+
 	protected Frame lastFrame;
+	private double lastBoundX, lastBoundY, lastBoundW, lastBoundH;
 
 	/**
 	 * Initialize the {@link Algorithm} with default components
@@ -59,11 +61,6 @@ public class Algorithm extends Smudge {
 			add(defaultCoords);
 		}
 	}
-
-	private double lastBoundX;
-	private double lastBoundY;
-	private double lastBoundW;
-	private double lastBoundH;
 
 	@Override
 	public Frame smudge(Frame img) {
