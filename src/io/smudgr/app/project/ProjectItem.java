@@ -32,7 +32,7 @@ public interface ProjectItem extends ReflectableType {
 	 */
 	public default void save(PropertyMap pm) {
 		pm.setAttribute(PropertyMap.ID_ATTR, getProject().getId(this));
-		pm.setAttribute(PropertyMap.ELEMENT_ATTR, getElementIdentifier());
+		pm.setAttribute(PropertyMap.TYPE_ATTR, getTypeIdentifier());
 	}
 
 	/**

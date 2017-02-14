@@ -16,12 +16,12 @@ import io.smudgr.util.Frame;
 public abstract class Smudge extends Parametric {
 
 	@Override
-	public String getTypeName() {
+	public String getTypeCategoryName() {
 		return "Smudge";
 	}
 
 	@Override
-	public String getTypeIdentifier() {
+	public String getTypeCategoryIdentifier() {
 		return "smudge";
 	}
 
@@ -87,7 +87,7 @@ public abstract class Smudge extends Parametric {
 	 *            {@link SmudgeComponent}
 	 */
 	public void add(SmudgeComponent component) {
-		if (component.getSmudgeTypeIdentifier() != getElementIdentifier())
+		if (this.getTypeIdentifier() != component.getSmudgeTypeIdentifier())
 			return;
 
 		component.setParent(this);

@@ -21,7 +21,7 @@ public class ParticlePush extends ParallelOperation {
 	private double scaleParam;
 
 	@Override
-	public String getElementName() {
+	public String getTypeName() {
 		return "Particle Push";
 	}
 

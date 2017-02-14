@@ -25,7 +25,7 @@ public abstract class Parametric implements ProjectItem {
 	 *            {@link Parameter} to add
 	 */
 	public void addParameter(Parameter p) {
-		parameters.put(p.getElementIdentifier(), p);
+		parameters.put(p.getTypeIdentifier(), p);
 
 		if (getProject() != null)
 			getProject().add(p);
@@ -37,7 +37,7 @@ public abstract class Parametric implements ProjectItem {
 	 * @param identifier
 	 *            {@link String}
 	 * @return {@link Parameter} or {@code null} if none exists by given name.
-	 * @see Parameter#getElementIdentifier()
+	 * @see Parameter#getTypeIdentifier()
 	 */
 	public Parameter getParameter(String identifier) {
 		return parameters.get(identifier);
@@ -87,7 +87,7 @@ public abstract class Parametric implements ProjectItem {
 		ProjectItem.super.load(pm);
 
 		for (PropertyMap map : pm.getChildren(parameterLibrary)) {
-			Parameter param = getParameter(map.getAttribute(PropertyMap.ELEMENT_ATTR));
+			Parameter param = getParameter(map.getAttribute(PropertyMap.TYPE_ATTR));
 
 			if (param == null)
 				continue;
@@ -104,7 +104,7 @@ public abstract class Parametric implements ProjectItem {
 
 	@Override
 	public String toString() {
-		return getElementName();
+		return getTypeName();
 	}
 
 }

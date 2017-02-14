@@ -13,12 +13,12 @@ import io.smudgr.engine.param.Parameter;
 public interface AutomatorControl extends Controllable {
 
 	@Override
-	public default String getTypeName() {
+	public default String getTypeCategoryName() {
 		return "Automator";
 	}
 
 	@Override
-	public default String getTypeIdentifier() {
+	public default String getTypeCategoryIdentifier() {
 		return "automator";
 	}
 

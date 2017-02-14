@@ -12,7 +12,7 @@ import io.smudgr.util.Frame;
 public class RainbowBend extends ParallelOperation {
 
 	@Override
-	public String getElementName() {
+	public String getTypeName() {
 		return "Rainbow Bend";
 	}
 

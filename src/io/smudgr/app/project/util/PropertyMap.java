@@ -31,9 +31,9 @@ public class PropertyMap {
 	public static final String ID_ATTR = "id";
 
 	/**
-	 * The universal attribute name for serializing an element type identifier
+	 * The universal attribute name for serializing an element type
 	 */
-	public static final String ELEMENT_ATTR = "element";
+	public static final String TYPE_ATTR = "type";
 
 	private String tag;
 
@@ -54,8 +54,8 @@ public class PropertyMap {
 	/**
 	 * Create a property map with the given {@link ProjectItem}.
 	 * <p>
-	 * This sets the map tag to {@link ProjectItem#getTypeIdentifier()} and
-	 * the type attribute to {@link ProjectItem#getElementIdentifier()}.
+	 * This sets the map tag to {@link ProjectItem#getTypeCategoryIdentifier()} and
+	 * the type attribute to {@link ProjectItem#getTypeIdentifier()}.
 	 * <p>
 	 * If the given element has a project ID, the id attribute is set to
 	 * {@link Project#getId(ProjectItem)}
@@ -64,9 +64,9 @@ public class PropertyMap {
 	 *            {@link ProjectItem}
 	 */
 	public PropertyMap(ProjectItem item) {
-		this.tag = item.getTypeIdentifier();
+		this.tag = item.getTypeCategoryIdentifier();
 
-		setAttribute(ELEMENT_ATTR, item.getElementIdentifier());
+		setAttribute(TYPE_ATTR, item.getTypeIdentifier());
 
 		if (getProject().contains(item))
 			setAttribute(ID_ATTR, getProject().getId(item));

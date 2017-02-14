@@ -15,42 +15,35 @@ import io.smudgr.app.project.util.PropertyMap;
 public abstract class Parameter implements Controllable {
 
 	@Override
-	public String getTypeName() {
+	public String getTypeCategoryName() {
 		return "Parameter";
 	}
 
 	@Override
-	public String getTypeIdentifier() {
+	public String getTypeCategoryIdentifier() {
 		return "parameter";
 	}
 
 	/**
-	 * Gets the user-recognizable parameter type name
+	 * Gets the user-recognizable parameter name. This may change beween
+	 * versions.
 	 *
-	 * @return {@link String} Name of the parameter type this class implements
+	 * @return {@link String} Name of the parameter
+	 * @see #getParameterIdentifier()
 	 */
-	public abstract String getParameterTypeName();
-
-	/**
-	 * Gets the unique identifying name of the parameter type this class
-	 * implements.
-	 *
-	 * @return {@link String} Parameter type identifier
-	 */
-	public abstract String getParameterTypeIdentifier();
-
-	@Override
-	public String getElementName() {
+	public String getParameterName() {
 		return name;
 	}
 
 	/**
-	 * The default identifier for a parameter is just its name, but in the case
-	 * of changing display names, the identifier may be an older name for
-	 * backwards compatibility.
+	 * Gets the unique string that identifies this parameter between versions
+	 * and changes to the user-recognizable name.
+	 * <p>
+	 * This will be the parameter name by default.
+	 *
+	 * @return {@link String} Parameter type identifier
 	 */
-	@Override
-	public String getElementIdentifier() {
+	public String getParameterIdentifier() {
 		return identifier;
 	}
 
@@ -59,11 +52,19 @@ public abstract class Parameter implements Controllable {
 	private Parametric parent;
 
 	/**
-	 * Instantiate a totally empty {@link Parameter}, for reflection purposes.
+	 * Instantiate a totally empty {@link Parameter}, for reflection.
+	 * <p>
+	 * Because parameters are instantiated in the code and not by loaded states,
+	 * an empty constructor is required to allow parameter type (i.e. number,
+	 * boolean, etc) enumeration.
+	 * <p>
+	 * This could be fixed in the future by instantiating parameters in
+	 * {@link Parametric} instances via super methods instead of directly. The
+	 * super methods could call setters and return the correct {@link Parameter}
+	 * instance, instead of relying on {@link Parametric} implementations to do
+	 * this properly.
 	 */
 	public Parameter() {
-		name = getParameterTypeName();
-		identifier = getParameterTypeIdentifier();
 	}
 
 	/**
@@ -162,7 +163,7 @@ public abstract class Parameter implements Controllable {
 
 	@Override
 	public String toString() {
-		return getElementName();
+		return getTypeName();
 	}
 
 	/**

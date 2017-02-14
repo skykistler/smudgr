@@ -15,7 +15,7 @@ public class SaveFrameControl implements AppControl {
 	 * @return "Save Frame"
 	 */
 	@Override
-	public String getElementName() {
+	public String getTypeName() {
 		return "Save Frame";
 	}
 

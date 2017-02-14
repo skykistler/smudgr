@@ -17,7 +17,7 @@ import io.smudgr.util.Frame;
 public class EdgeSelect extends Selector {
 
 	@Override
-	public String getElementName() {
+	public String getTypeName() {
 		return "Edges";
 	}
 

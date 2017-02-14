@@ -27,12 +27,12 @@ public class Bound extends AlgorithmComponent {
 	}
 
 	@Override
-	public String getElementName() {
+	public String getTypeName() {
 		return "Rectangle";
 	}
 
 	@Override
-	public String getElementIdentifier() {
+	public String getTypeIdentifier() {
 		return "rectangle";
 	}
 

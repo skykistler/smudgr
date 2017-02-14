@@ -14,12 +14,12 @@ import io.smudgr.engine.alg.math.blend.Blender;
 public class BlendParameter extends Parameter {
 
 	@Override
-	public String getParameterTypeName() {
+	public String getTypeName() {
 		return "Blender";
 	}
 
 	@Override
-	public String getParameterTypeIdentifier() {
+	public String getTypeIdentifier() {
 		return "blender";
 	}
 
@@ -28,8 +28,7 @@ public class BlendParameter extends Parameter {
 	private int current;
 
 	/**
-	 * Instantiate a totally empty {@link BlendParameter}, for reflection
-	 * purposes.
+	 * Instantiate a totally empty {@link BlendParameter}, for reflection.
 	 */
 	public BlendParameter() {
 		super();

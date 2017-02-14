@@ -65,22 +65,22 @@ public interface ApiCommand extends ReflectableType {
 	}
 
 	@Override
-	public default String getTypeIdentifier() {
+	public default String getTypeCategoryIdentifier() {
 		return "api-command";
 	}
 
 	@Override
-	public default String getTypeName() {
+	public default String getTypeCategoryName() {
 		return "API Command";
 	};
 
 	@Override
-	public default String getElementIdentifier() {
+	public default String getTypeIdentifier() {
 		return getCommand();
 	}
 
 	@Override
-	public default String getElementName() {
+	public default String getTypeName() {
 		return getCommand();
 	}
 

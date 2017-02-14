@@ -18,12 +18,12 @@ import io.smudgr.engine.alg.math.univariate.UnivariateFunction;
 public class UnivariateParameter extends Parameter {
 
 	@Override
-	public String getParameterTypeName() {
+	public String getTypeName() {
 		return "Function";
 	}
 
 	@Override
-	public String getParameterTypeIdentifier() {
+	public String getTypeIdentifier() {
 		return "function";
 	}
 
@@ -32,8 +32,7 @@ public class UnivariateParameter extends Parameter {
 	private int current;
 
 	/**
-	 * Instantiate a totally empty {@link UnivariateParameter}, for reflection
-	 * purposes.
+	 * Instantiate a totally empty {@link UnivariateParameter}, for reflection.
 	 */
 	public UnivariateParameter() {
 		super();

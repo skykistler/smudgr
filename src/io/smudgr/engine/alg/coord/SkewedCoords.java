@@ -10,7 +10,7 @@ import io.smudgr.engine.param.NumberParameter;
 public class SkewedCoords extends CoordFunction {
 
 	@Override
-	public String getElementName() {
+	public String getTypeName() {
 		return "Diagonals";
 	}
 

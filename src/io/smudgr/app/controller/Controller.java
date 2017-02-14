@@ -261,7 +261,7 @@ public class Controller {
 			PropertyMap map = new PropertyMap(extensionLibrary.getTypeIdentifier());
 
 			extension.save(map);
-			map.setAttribute(PropertyMap.ELEMENT_ATTR, extension.getElementIdentifier());
+			map.setAttribute(PropertyMap.TYPE_ATTR, extension.getTypeIdentifier());
 
 			pm.add(map);
 		}
@@ -331,7 +331,7 @@ public class Controller {
 
 		// Set project ID for saved controls
 		for (PropertyMap mapping : pm.getChildren(appControlLibrary.getTypeIdentifier())) {
-			AppControl control = getAppControl(mapping.getAttribute(PropertyMap.ELEMENT_ATTR));
+			AppControl control = getAppControl(mapping.getAttribute(PropertyMap.TYPE_ATTR));
 
 			if (control != null) {
 				int id = Integer.parseInt(mapping.getAttribute(PropertyMap.ID_ATTR));
@@ -370,7 +370,7 @@ public class Controller {
 
 		// Load any states to the appropriate extension
 		for (PropertyMap mapping : pm.getChildren(extensionLibrary.getTypeIdentifier())) {
-			ControllerExtension ext = getExtension(mapping.getAttribute(PropertyMap.ELEMENT_ATTR));
+			ControllerExtension ext = getExtension(mapping.getAttribute(PropertyMap.TYPE_ATTR));
 
 			if (ext != null) {
 				ext.load(mapping);
@@ -409,7 +409,7 @@ public class Controller {
 			if (started)
 				ext.init();
 
-			extensions.put(ext.getElementIdentifier(), ext);
+			extensions.put(ext.getTypeIdentifier(), ext);
 		}
 	}
 
@@ -430,7 +430,7 @@ public class Controller {
 	 *            The identifier of the {@link AppControl}
 	 * @return Loaded {@link AppControl} instance
 	 *
-	 * @see AppControl#getElementIdentifier()
+	 * @see AppControl#getTypeIdentifier()
 	 */
 	public AppControl getAppControl(String identifier) {
 		return appControls.get(identifier);
@@ -447,7 +447,7 @@ public class Controller {
 	 *            The registered name of the {@link ControllerExtension}
 	 * @return Registered {@link ControllerExtension}
 	 *
-	 * @see ControllerExtension#getElementName()
+	 * @see ControllerExtension#getTypeName()
 	 */
 	public ControllerExtension getExtension(String name) {
 		return extensions.get(name);

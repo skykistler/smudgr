@@ -36,7 +36,7 @@ public class TypeLibrary<T extends ReflectableType> extends ReflectionLibrary<T>
 	 *
 	 * @param identifier
 	 *            The identifier returned by
-	 *            {@link ReflectableType#getElementIdentifier()}
+	 *            {@link ReflectableType#getTypeIdentifier()}
 	 * @return A new instance of the given identifier, or {@code null} if it
 	 *         can't be found or instantiated.
 	 */
@@ -61,7 +61,7 @@ public class TypeLibrary<T extends ReflectableType> extends ReflectionLibrary<T>
 	 *         can't be found or instantiated.
 	 */
 	public T getNewInstance(PropertyMap state) {
-		return getNewInstance(state.getAttribute(PropertyMap.ELEMENT_ATTR));
+		return getNewInstance(state.getAttribute(PropertyMap.TYPE_ATTR));
 	}
 
 	/**
@@ -89,8 +89,8 @@ public class TypeLibrary<T extends ReflectableType> extends ReflectionLibrary<T>
 	 * Get the user-recognizable name of an implementation by ID
 	 *
 	 * @param id
-	 *            {@link ReflectableType#getElementIdentifier()}
-	 * @return {@link ReflectableType#getElementName()}
+	 *            {@link ReflectableType#getTypeIdentifier()}
+	 * @return {@link ReflectableType#getTypeName()}
 	 * @see #getIdList()
 	 */
 	public String getNameById(String id) {
@@ -99,13 +99,13 @@ public class TypeLibrary<T extends ReflectableType> extends ReflectionLibrary<T>
 
 	@Override
 	public boolean contains(ReflectableType implementation) {
-		return implementations.get(implementation.getElementIdentifier()) != null;
+		return implementations.get(implementation.getTypeIdentifier()) != null;
 	}
 
 	@Override
 	protected void add(Class<T> type, ReflectableType implementation) {
-		implementations.put(implementation.getElementIdentifier(), type);
-		idToName.put(implementation.getElementIdentifier(), implementation.getElementName());
+		implementations.put(implementation.getTypeIdentifier(), type);
+		idToName.put(implementation.getTypeIdentifier(), implementation.getTypeName());
 	}
 
 	@Override

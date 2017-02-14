@@ -13,7 +13,7 @@ import io.smudgr.util.Frame;
 public class PixelShift extends Operation {
 
 	@Override
-	public String getElementName() {
+	public String getTypeName() {
 		return "Pixel Shift";
 	}
 

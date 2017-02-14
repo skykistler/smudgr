@@ -8,7 +8,7 @@ import io.smudgr.util.Frame;
 public class AllSelect extends Selector {
 
 	@Override
-	public String getElementName() {
+	public String getTypeName() {
 		return "Select All";
 	}
 

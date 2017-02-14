@@ -14,12 +14,12 @@ import io.smudgr.engine.param.Parametric;
 public abstract class SmudgeComponent extends Parametric {
 
 	@Override
-	public String getTypeName() {
+	public String getTypeCategoryName() {
 		return "Smudge Component";
 	}
 
 	@Override
-	public String getTypeIdentifier() {
+	public String getTypeCategoryIdentifier() {
 		return "component";
 	}
 

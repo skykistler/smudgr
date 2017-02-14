@@ -19,12 +19,12 @@ import io.smudgr.extensions.cef.util.CommandServer;
 public class CefExtension implements ControllerExtension {
 
 	@Override
-	public String getElementName() {
+	public String getTypeName() {
 		return "CEF";
 	}
 
 	@Override
-	public String getElementIdentifier() {
+	public String getTypeIdentifier() {
 		return "cef";
 	}
 

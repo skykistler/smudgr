@@ -68,7 +68,7 @@ public abstract class ReflectionLibrary<T extends ReflectableType> {
 	 * Gets the type identifier loaded by this {@link ReflectionLibrary}
 	 *
 	 * @return {@link String} type identifier
-	 * @see ReflectableType#getTypeIdentifier()
+	 * @see ReflectableType#getTypeCategoryIdentifier()
 	 */
 	public String getTypeIdentifier() {
 		return typeIdentifier;
@@ -78,7 +78,7 @@ public abstract class ReflectionLibrary<T extends ReflectableType> {
 	 * Gets the type name loaded by this {@link ReflectionLibrary}
 	 *
 	 * @return {@link String} type identifier
-	 * @see ReflectableType#getTypeName()
+	 * @see ReflectableType#getTypeCategoryName()
 	 */
 	public String getTypeName() {
 		return typeName;
@@ -115,13 +115,13 @@ public abstract class ReflectionLibrary<T extends ReflectableType> {
 			// Use the first instance to record the type identifier/name
 			// this class is using
 			if (typeIdentifier == null) {
-				typeIdentifier = reflectedType.getTypeIdentifier();
-				typeName = reflectedType.getTypeName();
+				typeIdentifier = reflectedType.getTypeCategoryIdentifier();
+				typeName = reflectedType.getTypeCategoryName();
 			}
 
 			// Make sure we're not hitting collisions
 			if (contains(reflectedType)) {
-				throw new InstantiationException("Tried to load two " + reflectedType.getTypeIdentifier() + " implementations with the same identifier: " + reflectedType.getElementIdentifier());
+				throw new InstantiationException("Tried to load two " + reflectedType.getTypeCategoryIdentifier() + " implementations with the same identifier: " + reflectedType.getTypeIdentifier());
 			}
 
 			// Save it to the map

@@ -24,7 +24,7 @@ import io.smudgr.util.Frame;
 public class SpectralShift extends ParallelOperation {
 
 	@Override
-	public String getElementName() {
+	public String getTypeName() {
 		return "Spectral Shift";
 	}
 

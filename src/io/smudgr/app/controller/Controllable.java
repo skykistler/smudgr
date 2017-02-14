@@ -14,7 +14,7 @@ public interface Controllable extends ProjectItem {
 	 * @return The name of this controllable.
 	 */
 	@Override
-	public String getElementName();
+	public String getTypeName();
 
 	/**
 	 * Trigger an inputed value on this control. For generic use with devices

@@ -16,7 +16,7 @@ import io.smudgr.util.Frame;
 public class PixelSort extends ParallelOperation {
 
 	@Override
-	public String getElementName() {
+	public String getTypeName() {
 		return "Pixel Sort";
 	}
 

@@ -19,7 +19,7 @@ import io.smudgr.util.Frame;
 public class Algorithm extends Smudge {
 
 	@Override
-	public String getElementName() {
+	public String getTypeName() {
 		StringBuffer name = new StringBuffer();
 
 		for (SmudgeComponent component : getComponents())
@@ -34,7 +34,7 @@ public class Algorithm extends Smudge {
 	}
 
 	@Override
-	public String getElementIdentifier() {
+	public String getTypeIdentifier() {
 		return "algorithm";
 	}
 

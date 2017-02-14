@@ -41,10 +41,10 @@ public class SmudgeComponentLibrary<T extends SmudgeComponent> extends Reflectio
 	 *
 	 * @param smudgeIdentifier
 	 *            The identifier returned by
-	 *            {@link Smudge#getElementIdentifier()}
+	 *            {@link Smudge#getTypeIdentifier()}
 	 * @param identifier
 	 *            The identifier returned by
-	 *            {@link ReflectableType#getElementIdentifier()}
+	 *            {@link ReflectableType#getTypeIdentifier()}
 	 * @return A new instance of the given identifier, or {@code null} if it
 	 *         can't be found or instantiated.
 	 */
@@ -71,7 +71,7 @@ public class SmudgeComponentLibrary<T extends SmudgeComponent> extends Reflectio
 	 *         can't be found or instantiated.
 	 */
 	public T getNewInstance(Smudge smudge, PropertyMap state) {
-		return getNewInstance(smudge.getElementIdentifier(), state.getAttribute(PropertyMap.ELEMENT_ATTR));
+		return getNewInstance(smudge.getTypeIdentifier(), state.getAttribute(PropertyMap.TYPE_ATTR));
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class SmudgeComponentLibrary<T extends SmudgeComponent> extends Reflectio
 	 *
 	 * @param smudgeIdentifier
 	 *            The identifier returned by
-	 *            {@link Smudge#getElementIdentifier()}
+	 *            {@link Smudge#getTypeIdentifier()}
 	 * @return List of implementation identifiers
 	 * @see #getNewInstance(String, String) getNewInstance(smudge, identifier)
 	 * @see #getNameById(String, String) getNameById(smudge, id)
@@ -93,7 +93,7 @@ public class SmudgeComponentLibrary<T extends SmudgeComponent> extends Reflectio
 	 *
 	 * @param smudgeIdentifier
 	 *            The identifier returned by
-	 *            {@link Smudge#getElementIdentifier()}
+	 *            {@link Smudge#getTypeIdentifier()}
 	 * @return List of implementation names
 	 * @see #getNewInstance(String, String) getNewInstance(smudge, identifier)
 	 */
@@ -106,10 +106,10 @@ public class SmudgeComponentLibrary<T extends SmudgeComponent> extends Reflectio
 	 *
 	 * @param smudgeIdentifier
 	 *            The identifier returned by
-	 *            {@link Smudge#getElementIdentifier()}
+	 *            {@link Smudge#getTypeIdentifier()}
 	 * @param id
-	 *            {@link ReflectableType#getElementIdentifier()}
-	 * @return {@link ReflectableType#getElementName()}
+	 *            {@link ReflectableType#getTypeIdentifier()}
+	 * @return {@link ReflectableType#getTypeName()}
 	 * @see #getIdList(String) getIdList(smudge)
 	 */
 	public String getNameById(String smudgeIdentifier, String id) {
@@ -126,7 +126,7 @@ public class SmudgeComponentLibrary<T extends SmudgeComponent> extends Reflectio
 		if (!implementationsBySmudge.containsKey(component.getSmudgeTypeIdentifier()))
 			return false;
 
-		return implementationsBySmudge.get(component.getSmudgeTypeIdentifier()).get(component.getElementIdentifier()) != null;
+		return implementationsBySmudge.get(component.getSmudgeTypeIdentifier()).get(component.getTypeIdentifier()) != null;
 	}
 
 	@Override
@@ -143,8 +143,8 @@ public class SmudgeComponentLibrary<T extends SmudgeComponent> extends Reflectio
 		if (!idToNameBySmudge.containsKey(smudgeType))
 			idToNameBySmudge.put(smudgeType, new HashMap<String, String>());
 
-		implementationsBySmudge.get(smudgeType).put(implementation.getElementIdentifier(), type);
-		idToNameBySmudge.get(smudgeType).put(implementation.getElementIdentifier(), implementation.getElementName());
+		implementationsBySmudge.get(smudgeType).put(implementation.getTypeIdentifier(), type);
+		idToNameBySmudge.get(smudgeType).put(implementation.getTypeIdentifier(), implementation.getTypeName());
 
 		size++;
 	}

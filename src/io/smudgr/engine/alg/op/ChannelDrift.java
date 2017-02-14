@@ -11,7 +11,7 @@ import io.smudgr.util.Frame;
 public class ChannelDrift extends ParallelOperation {
 
 	@Override
-	public String getElementName() {
+	public String getTypeName() {
 		return "Channel Drift";
 	}
 

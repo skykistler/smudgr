@@ -14,12 +14,12 @@ import io.smudgr.app.project.util.PropertyMap;
 public class NumberParameter extends Parameter {
 
 	@Override
-	public String getParameterTypeName() {
+	public String getTypeName() {
 		return "Number";
 	}
 
 	@Override
-	public String getParameterTypeIdentifier() {
+	public String getTypeIdentifier() {
 		return "number";
 	}
 
@@ -31,8 +31,7 @@ public class NumberParameter extends Parameter {
 	private boolean continuous;
 
 	/**
-	 * Instantiate a totally empty {@link NumberParameter}, for reflection
-	 * purposes.
+	 * Instantiate a totally empty {@link NumberParameter}, for reflection.
 	 */
 	public NumberParameter() {
 		super();

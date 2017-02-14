@@ -13,7 +13,7 @@ import io.smudgr.util.Frame;
 public class DataBend extends ParallelOperation {
 
 	@Override
-	public String getElementName() {
+	public String getTypeName() {
 		return "Data Bend";
 	}
 

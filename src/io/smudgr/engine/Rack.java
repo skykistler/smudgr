@@ -18,23 +18,23 @@ import io.smudgr.util.source.SourceSet;
 public class Rack extends Parametric {
 
 	@Override
-	public String getTypeName() {
+	public String getTypeCategoryName() {
 		return "Rack";
 	}
 
 	@Override
-	public String getTypeIdentifier() {
+	public String getTypeCategoryIdentifier() {
 		return "rack";
 	}
 
 	@Override
-	public String getElementName() {
-		return getTypeName();
+	public String getTypeName() {
+		return getTypeCategoryName();
 	}
 
 	@Override
-	public String getElementIdentifier() {
-		return getTypeIdentifier();
+	public String getTypeIdentifier() {
+		return getTypeCategoryIdentifier();
 	}
 
 	// Currently active smudges

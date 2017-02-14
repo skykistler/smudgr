@@ -9,7 +9,7 @@ import io.smudgr.engine.param.NumberParameter;
 public class ConvergeCoords extends CoordFunction {
 
 	@Override
-	public String getElementName() {
+	public String getTypeName() {
 		return "Point";
 	}
 

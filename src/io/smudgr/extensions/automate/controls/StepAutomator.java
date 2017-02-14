@@ -15,12 +15,12 @@ import io.smudgr.engine.param.Parameter;
 public class StepAutomator implements AutomatorControl {
 
 	@Override
-	public String getElementName() {
+	public String getTypeName() {
 		return "Animate";
 	}
 
 	@Override
-	public String getElementIdentifier() {
+	public String getTypeIdentifier() {
 		return "step";
 	}
 

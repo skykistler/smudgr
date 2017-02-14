@@ -10,43 +10,43 @@ package io.smudgr.app.project.reflect;
 public interface ReflectableType {
 
 	/**
-	 * This should return a unique identifier of this type.
+	 * This should return a unique identifier of the category of this type.
 	 * <p>
-	 * The name that this type is identified to the user with may differ from
-	 * this identifier. This concept is similar to a 'slug'.
+	 * The name that this type category is identified to the user with may
+	 * differ from this identifier. This concept is similar to a 'slug'.
 	 * <p>
 	 * Implementations of a type should not override this method.
 	 * <p>
 	 * The {@link String} returned by this method should not be changed between
 	 * versions.
 	 *
-	 * @return String that will enumerate this type across versions of the
-	 *         application
+	 * @return String that will enumerate this type category across versions of
+	 *         the application
 	 *
-	 * @see #getElementIdentifier()
-	 * @see #getTypeName()
+	 * @see #getTypeIdentifier()
+	 * @see #getTypeCategoryName()
 	 */
-	public String getTypeIdentifier();
+	public String getTypeCategoryIdentifier();
 
 	/**
-	 * The user identifiable name of this type.
+	 * The user identifiable name of the category of this type.
 	 * <p>
 	 * This name can safely be changed between versions of the application, and
 	 * may be used for translations.
 	 * <p>
 	 * Implementations of this type should not override this method.
 	 *
-	 * @return String that will identify this type to the user.
+	 * @return String that will identify this type category to the user.
 	 *
-	 * @see #getElementName()
-	 * @see #getTypeIdentifier()
+	 * @see #getTypeName()
+	 * @see #getTypeCategoryIdentifier()
 	 */
-	public String getTypeName();
+	public String getTypeCategoryName();
 
 	/**
-	 * This should return a unique identifier of this implementation.
+	 * This should return a unique identifier of this type implementation.
 	 * <p>
-	 * The name that this implementation is identified to the user with may
+	 * The name that this type implementation is identified to the user with may
 	 * differ from this identifier. This concept is similar to a 'slug'.
 	 * <p>
 	 * Implementations of a type should use this method to distinguish
@@ -56,13 +56,12 @@ public interface ReflectableType {
 	 * versions.
 	 *
 	 * @return String that will enumerate this implementation across versions of
-	 *         the
-	 *         application
+	 *         the application
 	 *
-	 * @see #getTypeIdentifier()
-	 * @see #getElementName()
+	 * @see #getTypeCategoryIdentifier()
+	 * @see #getTypeName()
 	 */
-	public String getElementIdentifier();
+	public String getTypeIdentifier();
 
 	/**
 	 * The user identifiable name of this implementation.
@@ -74,8 +73,8 @@ public interface ReflectableType {
 	 *
 	 * @return String that will identify this implementation to the user.
 	 *
-	 * @see #getTypeName()
-	 * @see #getElementIdentifier()
+	 * @see #getTypeCategoryName()
+	 * @see #getTypeIdentifier()
 	 */
-	public String getElementName();
+	public String getTypeName();
 }

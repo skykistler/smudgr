@@ -12,7 +12,7 @@ import io.smudgr.util.Frame;
 public class HSVLModifier extends ParallelOperation {
 
 	@Override
-	public String getElementName() {
+	public String getTypeName() {
 		return "HSV/HSL Modifier";
 	}
 

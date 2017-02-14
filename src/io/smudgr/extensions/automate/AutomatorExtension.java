@@ -17,12 +17,12 @@ import io.smudgr.extensions.automate.controls.AutomatorControl;
 public class AutomatorExtension implements ControllerExtension {
 
 	@Override
-	public String getElementName() {
+	public String getTypeName() {
 		return "Automator";
 	}
 
 	@Override
-	public String getElementIdentifier() {
+	public String getTypeIdentifier() {
 		return "automator";
 	}
 
@@ -57,13 +57,13 @@ public class AutomatorExtension implements ControllerExtension {
 	 * @param state
 	 *            State information to pass to the new automator
 	 * @return {@link AutomatorControl}
-	 * @see AutomatorControl#getElementIdentifier()
+	 * @see AutomatorControl#getTypeIdentifier()
 	 */
 	public AutomatorControl add(PropertyMap state) {
 		AutomatorControl control = automatorLibrary.getNewInstance(state);
 
 		if (control == null) {
-			System.out.println("Could not find automator type: " + state.getAttribute(PropertyMap.ELEMENT_ATTR));
+			System.out.println("Could not find automator type: " + state.getAttribute(PropertyMap.TYPE_ATTR));
 			return null;
 		}
 

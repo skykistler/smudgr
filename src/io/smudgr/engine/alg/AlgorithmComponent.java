@@ -11,7 +11,7 @@ import io.smudgr.engine.param.Parametric;
  * <p>
  * {@link AlgorithmComponent} implementations will be executed by a parent
  * {@link Algorithm} depending on their type (as given by
- * {@link AlgorithmComponent#getTypeIdentifier()}), and are intended to
+ * {@link AlgorithmComponent#getTypeCategoryIdentifier()}), and are intended to
  * have a behavioral effect on the parent {@link Algorithm}
  */
 public abstract class AlgorithmComponent extends SmudgeComponent {
@@ -22,13 +22,13 @@ public abstract class AlgorithmComponent extends SmudgeComponent {
 	}
 
 	@Override
-	public String getElementIdentifier() {
-		return getElementName();
+	public String getTypeIdentifier() {
+		return getTypeName();
 	}
 
 	@Override
 	public String toString() {
-		return getElementName();
+		return getTypeName();
 	}
 
 	/**

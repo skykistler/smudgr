@@ -14,12 +14,12 @@ import io.smudgr.app.project.util.PropertyMap;
 public interface ControllerExtension extends ReflectableType {
 
 	@Override
-	public default String getTypeIdentifier() {
+	public default String getTypeCategoryIdentifier() {
 		return "extension";
 	}
 
 	@Override
-	public default String getTypeName() {
+	public default String getTypeCategoryName() {
 		return "Controller Extension";
 	}
 
@@ -29,7 +29,7 @@ public interface ControllerExtension extends ReflectableType {
 	 * @return {@link String}
 	 */
 	@Override
-	public String getElementName();
+	public String getTypeName();
 
 	/**
 	 * This method is called on application startup.

@@ -16,12 +16,12 @@ public class BeatAutomator implements AutomatorControl {
 	private static final double[] SPEEDS = { 1 / 32.0, 1 / 16.0, 1 / 8.0, 1 / 4.0, 1 / 2.0, 1.0, 2.0, 4.0, 8.0 };
 
 	@Override
-	public String getElementName() {
+	public String getTypeName() {
 		return "Beat Sync";
 	}
 
 	@Override
-	public String getElementIdentifier() {
+	public String getTypeIdentifier() {
 		return "beat-sync";
 	}
 

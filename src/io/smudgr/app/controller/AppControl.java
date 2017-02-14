@@ -10,17 +10,17 @@ import io.smudgr.app.project.reflect.ReflectableType;
 public interface AppControl extends Controllable, ReflectableType {
 
 	@Override
-	public default String getTypeIdentifier() {
+	public default String getTypeCategoryIdentifier() {
 		return "control";
 	}
 
 	@Override
-	public default String getTypeName() {
+	public default String getTypeCategoryName() {
 		return "App Control";
 	}
 
 	@Override
-	public default String getElementIdentifier() {
-		return getElementName();
+	public default String getTypeIdentifier() {
+		return getTypeName();
 	}
 }
