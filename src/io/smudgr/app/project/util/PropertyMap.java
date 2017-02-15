@@ -58,15 +58,18 @@ public class PropertyMap {
 	/**
 	 * Create a property map with the given {@link ProjectItem}.
 	 * <p>
-	 * This sets the map tag to {@link ProjectItem#getTypeCategoryIdentifier()}
-	 * and
-	 * the type attribute to {@link ProjectItem#getTypeIdentifier()}.
+	 * This immediately calls {@link ProjectItem#save(PropertyMap)}.
+	 * <p>
+	 * This will set the map tag to
+	 * {@link ProjectItem#getTypeCategoryIdentifier()} and the type attribute to
+	 * {@link ProjectItem#getTypeIdentifier()}.
 	 * <p>
 	 * If the given element has a project ID, the id attribute is set to
 	 * {@link Project#getId(ProjectItem)}
 	 *
 	 * @param item
 	 *            {@link ProjectItem}
+	 * @see ProjectItem#save(PropertyMap)
 	 */
 	public PropertyMap(ProjectItem item) {
 		this.tag = item.getTypeCategoryIdentifier();
