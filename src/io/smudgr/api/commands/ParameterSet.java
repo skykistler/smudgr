@@ -1,13 +1,13 @@
 package io.smudgr.api.commands;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 import io.smudgr.api.ApiCommand;
 import io.smudgr.api.ApiMessage;
 import io.smudgr.app.project.util.PropertyMap;
+import io.smudgr.app.threads.AppThread;
 import io.smudgr.engine.param.Parameter;
 import io.smudgr.engine.param.ParameterObserver;
-import io.smudgr.extensions.cef.util.DebounceThread;
 
 /**
  * Set the current value of a specified parameter.
@@ -25,14 +25,21 @@ public class ParameterSet implements ApiCommand, ParameterObserver {
 		return "parameter.set";
 	}
 
-	private static final long PARAMETER_UPDATE_DEBOUNCE_MS = 250;
-	private HashMap<Parameter, DebounceThread> debounceMap = new HashMap<Parameter, DebounceThread>();
+	// Send out the batch every 10 seconds
+	private static final int PARAMETER_UPDATE_RATE = 10;
+
+	private ArrayList<Parameter> nextBatch;
+	private ArrayList<Parameter> currentBatch;
 
 	/**
 	 * Attach this command as an observer of all parameter changes.
 	 */
 	public ParameterSet() {
 		getProject().getParameterObserverNotifier().attach(this);
+		nextBatch = new ArrayList<Parameter>();
+
+		ParameterBatchThread batchUpdater = new ParameterBatchThread();
+		batchUpdater.start();
 	}
 
 	@Override
@@ -45,64 +52,49 @@ public class ParameterSet implements ApiCommand, ParameterObserver {
 
 	@Override
 	public void parameterUpdated(Parameter param) {
-		if (true)
-			return;
-
-		/*
-		 * Check if this parameter has been debounced to prevent packet spam
-		 */
-		DebounceThread debouncer = debounceMap.get(param);
-
-		if (debouncer == null) {
-			/*
-			 * If this parameter has never been debounced, send the message and
-			 * schedule a debouncer
-			 */
-			sendParameterUpdate(param);
-
-			/*
-			 * Start a debounce thread to prevent another update for
-			 * PARAMETER_UPDATE_DEBOUNCE_MS milliseconds
-			 */
-			debouncer = new DebounceThread(PARAMETER_UPDATE_DEBOUNCE_MS);
-			debouncer.start();
-			debounceMap.put(param, debouncer);
-
-		} else if (debouncer.isDebouncing()) {
-			/*
-			 * TODO: Code currently disabled until we have better front-end
-			 * knobs to test this with.
-			 */
-
-			// /*
-			// * If currently debouncing, set a callback to
-			// sendParameterUpdate()
-			// * on completion.
-			// *
-			// * This ensures that if this parameter has stopped being updated,
-			// * the most recent value will still be sent to the front-end
-			// */
-			// DebounceCallback callback = new DebounceCallback() {
-			// @Override
-			// public void onComplete() {
-			// sendParameterUpdate(param);
-			// }
-			// };
-			//
-			// debouncer.setCallback(callback);
-		} else {
-			/*
-			 * If not debouncing but this parameter the debouncer exists,
-			 * send and debounce.
-			 */
-			sendParameterUpdate(param);
-			debouncer.start();
+		synchronized (ParameterSet.class) {
+			if (!nextBatch.contains(param))
+				nextBatch.add(param);
 		}
 	}
 
-	private void sendParameterUpdate(Parameter param) {
-		ApiMessage paramUpdate = ApiMessage.normalize(new PropertyMap(param));
-		sendMessage(ApiMessage.ok(getCommand(), paramUpdate));
+	class ParameterBatchThread extends AppThread {
+
+		/**
+		 * Instantiate the {@link ParameterBatchThread}
+		 */
+		public ParameterBatchThread() {
+			super("Parameter Batch Updater");
+			setTarget(PARAMETER_UPDATE_RATE);
+		}
+
+		@Override
+		protected void execute() {
+			// Thread-safe batch swap
+			synchronized (ParameterSet.class) {
+				ArrayList<Parameter> swap = nextBatch;
+
+				currentBatch.clear();
+				nextBatch = currentBatch;
+
+				currentBatch = swap;
+			}
+
+			// Serialize every parameter
+			PropertyMap batch = new PropertyMap("batch");
+			for (Parameter param : currentBatch) {
+				batch.add(new PropertyMap(param));
+			}
+
+			// Send the batch packet
+			ApiMessage batchPacket = ApiMessage.normalize(batch);
+			sendMessage(ApiMessage.ok(getCommand() + ".batch", batchPacket));
+		}
+
+		@Override
+		protected void printStatus() {
+		}
+
 	}
 
 }
