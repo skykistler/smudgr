@@ -11,7 +11,12 @@ public class SkewedCoords extends CoordFunction {
 
 	@Override
 	public String getTypeName() {
-		return "Diagonals";
+		return "Diagonal Lines";
+	}
+
+	@Override
+	public String getTypeIdentifier() {
+		return "skewed-coords";
 	}
 
 	// Which end coordinate do we want

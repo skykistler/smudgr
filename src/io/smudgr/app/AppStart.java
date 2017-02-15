@@ -120,7 +120,7 @@ public abstract class AppStart {
 	public AutomatorControl addAutomator(String type, Parameter param) {
 		PropertyMap properties = new PropertyMap("automator");
 
-		properties.setAttribute(PropertyMap.TYPE_ATTR, "type");
+		properties.setAttribute(PropertyMap.TYPE_ID_ATTR, type);
 
 		if (param != null)
 			properties.setAttribute("parameter", Controller.getInstance().getProject().getId(param));

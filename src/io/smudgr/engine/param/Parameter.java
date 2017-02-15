@@ -14,6 +14,18 @@ import io.smudgr.app.project.util.PropertyMap;
  */
 public abstract class Parameter implements Controllable {
 
+	/**
+	 * Attribute that identifies the {@link Parameter} instance that a map entry
+	 * is referencing.
+	 */
+	public static final String PARAMETER_ID_ATTR = "parameter-id";
+
+	/**
+	 * Attribute that signifies the user recognizable name of the
+	 * {@link Parameter}.
+	 */
+	public static final String PARAMETER_NAME_ATTR = "name";
+
 	@Override
 	public String getTypeCategoryName() {
 		return "Parameter";
@@ -149,6 +161,9 @@ public abstract class Parameter implements Controllable {
 	@Override
 	public void save(PropertyMap pm) {
 		Controllable.super.save(pm);
+
+		pm.setAttribute(PARAMETER_ID_ATTR, getParameterIdentifier());
+		pm.setAttribute(PARAMETER_NAME_ATTR, getParameterName());
 
 		pm.setAttribute("value", getStringValue());
 	}

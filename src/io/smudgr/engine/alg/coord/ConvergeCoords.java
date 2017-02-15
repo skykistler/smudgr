@@ -10,7 +10,12 @@ public class ConvergeCoords extends CoordFunction {
 
 	@Override
 	public String getTypeName() {
-		return "Point";
+		return "Gravity";
+	}
+
+	@Override
+	public String getTypeIdentifier() {
+		return "converge-coords";
 	}
 
 	private NumberParameter centerX = new NumberParameter("Point X", this, .5, 0, 1, 0.005);

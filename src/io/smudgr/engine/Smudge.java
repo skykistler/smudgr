@@ -33,22 +33,25 @@ public abstract class Smudge extends Parametric {
 	 * Initialize the smudge. This will be run when the {@link Smudge} is added
 	 * to the {@link Rack}, and every time the project is started.
 	 */
-	public void onInit() {
-
-	}
+	public abstract void onInit();
 
 	/**
-	 * Render the smudge using the given frame, in time with the application
-	 * render cycle.
+	 * {@link Smudge} types implement this method to apply their image
+	 * manipulations using any given {@link Frame}
 	 *
 	 * @param image
 	 *            {@link Frame}
+	 * @return resulting frame
 	 */
-	public void render(Frame image) {
-		if (enabled.getValue()) {
-			smudge(image);
-		}
-	}
+	public abstract Frame smudge(Frame image);
+
+	/**
+	 * Called when a {@link SmudgeComponent} has been added to this
+	 * {@link Smudge}
+	 *
+	 * @param component
+	 */
+	protected abstract void onAdd(SmudgeComponent component);
 
 	/**
 	 * Add a {@link SmudgeComponent} to this {@link Smudge} using a
@@ -100,27 +103,7 @@ public abstract class Smudge extends Parametric {
 	}
 
 	/**
-	 * Called when a {@link SmudgeComponent} has been added to this
-	 * {@link Smudge}
-	 *
-	 * @param component
-	 */
-	protected void onAdd(SmudgeComponent component) {
-
-	}
-
-	/**
-	 * {@link Smudge} types implement this method to apply their image
-	 * manipulations using any given {@link Frame}
-	 *
-	 * @param image
-	 *            {@link Frame}
-	 * @return resulting frame
-	 */
-	public abstract Frame smudge(Frame image);
-
-	/**
-	 * Return all of the {@link SmudgeComponent} instances added to this
+	 * Gets all {@link SmudgeComponent}s added to this
 	 * {@link Smudge}
 	 *
 	 * @return {@code ArrayList<SmudgeComponent>}
@@ -129,14 +112,24 @@ public abstract class Smudge extends Parametric {
 		return components;
 	}
 
+	/**
+	 * Gets whether this {@link Smudge} is currently enabled. If false,
+	 * {@link Smudge#smudge(Frame)} won't be executed and any manipulations
+	 * won't be applied.
+	 *
+	 * @return {@code true} if this {@link Smudge} is enabled, {@code false} if
+	 *         otherwise
+	 */
+	public boolean isEnabled() {
+		return enabled.getValue();
+	}
+
 	@Override
 	public void save(PropertyMap pm) {
 		super.save(pm);
 
 		for (SmudgeComponent component : components) {
 			PropertyMap map = new PropertyMap(component);
-			component.save(map);
-
 			pm.add(map);
 		}
 	}
@@ -145,9 +138,8 @@ public abstract class Smudge extends Parametric {
 	public void load(PropertyMap pm) {
 		super.load(pm);
 
-		for (PropertyMap component : pm.getChildren(getProject().getComponentLibrary().getTypeIdentifier())) {
+		for (PropertyMap component : pm.getChildren(getProject().getComponentLibrary()))
 			add(component);
-		}
 	}
 
 }

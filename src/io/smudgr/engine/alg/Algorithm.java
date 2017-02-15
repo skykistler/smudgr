@@ -20,17 +20,12 @@ public class Algorithm extends Smudge {
 
 	@Override
 	public String getTypeName() {
-		StringBuffer name = new StringBuffer();
-
 		for (SmudgeComponent component : getComponents())
-			if (component instanceof CoordFunction)
-				name.append(coordFunction + " ");
+			if (component instanceof Operation) {
+				return component.toString();
+			}
 
-		for (SmudgeComponent component : getComponents())
-			if (component instanceof Operation)
-				name.append(component + " ");
-
-		return name.append("Algorithm").toString().trim();
+		return "Algorithm";
 	}
 
 	@Override

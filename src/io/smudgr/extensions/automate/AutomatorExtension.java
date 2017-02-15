@@ -63,7 +63,7 @@ public class AutomatorExtension implements ControllerExtension {
 		AutomatorControl control = automatorLibrary.getNewInstance(state);
 
 		if (control == null) {
-			System.out.println("Could not find automator type: " + state.getAttribute(PropertyMap.TYPE_ATTR));
+			System.out.println("Could not find automator type: " + state.getAttribute(PropertyMap.TYPE_ID_ATTR));
 			return null;
 		}
 
@@ -77,8 +77,6 @@ public class AutomatorExtension implements ControllerExtension {
 	public void save(PropertyMap pm) {
 		for (AutomatorControl automator : automators) {
 			PropertyMap map = new PropertyMap(automator);
-			automator.save(map);
-
 			pm.add(map);
 		}
 	}

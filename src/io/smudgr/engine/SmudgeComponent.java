@@ -3,6 +3,7 @@
  */
 package io.smudgr.engine;
 
+import io.smudgr.app.project.util.PropertyMap;
 import io.smudgr.engine.param.Parametric;
 
 /**
@@ -12,6 +13,11 @@ import io.smudgr.engine.param.Parametric;
  *
  */
 public abstract class SmudgeComponent extends Parametric {
+
+	/**
+	 * The universal attribute identifying a component type.
+	 */
+	public static final String COMPONENT_TYPE_ID_ATTR = "component-type";
 
 	@Override
 	public String getTypeCategoryName() {
@@ -55,6 +61,13 @@ public abstract class SmudgeComponent extends Parametric {
 	 */
 	public void onInit() {
 
+	}
+
+	@Override
+	public void save(PropertyMap pm) {
+		super.save(pm);
+
+		pm.setAttribute(COMPONENT_TYPE_ID_ATTR, getComponentTypeIdentifier());
 	}
 
 	private Smudge parent;

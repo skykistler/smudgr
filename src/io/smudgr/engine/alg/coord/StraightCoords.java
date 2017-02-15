@@ -13,7 +13,12 @@ public class StraightCoords extends CoordFunction {
 
 	@Override
 	public String getTypeName() {
-		return "Straight";
+		return "Straight Lines";
+	}
+
+	@Override
+	public String getTypeIdentifier() {
+		return "straight-coords";
 	}
 
 	@Override

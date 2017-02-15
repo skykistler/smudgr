@@ -16,6 +16,11 @@ public class RadialCoords extends CoordFunction {
 		return "Spiral";
 	}
 
+	@Override
+	public String getTypeIdentifier() {
+		return "radial-coords";
+	}
+
 	private NumberParameter innerRadius = new NumberParameter("Donut Hole", this, 0, 0, 1, 0.005);
 
 	@Override

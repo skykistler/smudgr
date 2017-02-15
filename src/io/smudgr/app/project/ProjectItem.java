@@ -31,8 +31,11 @@ public interface ProjectItem extends ReflectableType {
 	 * @see ProjectItem#load(PropertyMap)
 	 */
 	public default void save(PropertyMap pm) {
-		pm.setAttribute(PropertyMap.ID_ATTR, getProject().getId(this));
-		pm.setAttribute(PropertyMap.TYPE_ATTR, getTypeIdentifier());
+		if (getProject().contains(this))
+			pm.setAttribute(PropertyMap.PROJECT_ID_ATTR, getProject().getId(this));
+
+		pm.setAttribute(PropertyMap.TYPE_ID_ATTR, getTypeIdentifier());
+		pm.setAttribute(PropertyMap.NAME_ATTR, getTypeName());
 	}
 
 	/**
@@ -48,8 +51,8 @@ public interface ProjectItem extends ReflectableType {
 	 * @see ProjectItem#save(PropertyMap)
 	 */
 	public default void load(PropertyMap pm) {
-		if (pm.hasAttribute(PropertyMap.ID_ATTR))
-			getProject().put(this, Integer.parseInt(pm.getAttribute(PropertyMap.ID_ATTR)));
+		if (pm.hasAttribute(PropertyMap.PROJECT_ID_ATTR))
+			getProject().put(this, Integer.parseInt(pm.getAttribute(PropertyMap.PROJECT_ID_ATTR)));
 		else
 			getProject().add(this);
 	}

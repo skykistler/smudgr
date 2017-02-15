@@ -61,7 +61,7 @@ public class TypeLibrary<T extends ReflectableType> extends ReflectionLibrary<T>
 	 *         can't be found or instantiated.
 	 */
 	public T getNewInstance(PropertyMap state) {
-		return getNewInstance(state.getAttribute(PropertyMap.TYPE_ATTR));
+		return getNewInstance(state.getAttribute(PropertyMap.TYPE_ID_ATTR));
 	}
 
 	/**

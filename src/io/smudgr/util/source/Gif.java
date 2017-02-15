@@ -192,7 +192,7 @@ public class Gif implements AnimatedSource {
 					try {
 						image = reader.read(frameIndex);
 					} catch (IndexOutOfBoundsException e) {
-						System.out.println("Finished loading gif");
+						System.out.println("Finished loading a GIF: " + filename);
 						break;
 					}
 

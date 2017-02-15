@@ -12,7 +12,7 @@ import io.smudgr.app.project.ProjectItem;
  * {@link ProjectItem} map paired with unique integer IDs.
  */
 public class IdProvider {
-	private static final int MAX_ID = 100000;
+	private static final int MAX_ID = 1000000;
 
 	private HashMap<Integer, ProjectItem> idToItem = new HashMap<Integer, ProjectItem>();
 	private HashMap<ProjectItem, Integer> itemToId = new HashMap<ProjectItem, Integer>();
@@ -52,10 +52,10 @@ public class IdProvider {
 	 * <p>
 	 * If the item has an ID, it has already been added, and this method does
 	 * nothing.
-	 * 
+	 *
 	 * @param item
 	 *            {@link ProjectItem} to add
-	 * 
+	 *
 	 * @see Project#add(ProjectItem)
 	 */
 	public void add(ProjectItem item) {
@@ -83,7 +83,7 @@ public class IdProvider {
 	 * If the item exists at a different ID and the given ID is available, this
 	 * method removes the old ID reference and then puts them item at the given
 	 * ID.
-	 * 
+	 *
 	 * @param item
 	 *            {@link ProjectItem}
 	 * @param id
@@ -117,7 +117,7 @@ public class IdProvider {
 	/**
 	 * Remove a {@link ProjectItem} item from the ID map. The old item ID is
 	 * made available for use again.
-	 * 
+	 *
 	 * @param item
 	 *            {@link ProjectItem}
 	 * @see Project#remove(ProjectItem)
@@ -135,7 +135,7 @@ public class IdProvider {
 
 	/**
 	 * Get the {@link ProjectItem} at this ID, or null is doesn't exist.
-	 * 
+	 *
 	 * @param id
 	 *            {@code int}
 	 * @return {@link ProjectItem} or null
@@ -148,7 +148,7 @@ public class IdProvider {
 	/**
 	 * Get the ID associated with a given {@link ProjectItem}, or -1 if the item
 	 * doesn't exist.
-	 * 
+	 *
 	 * @param item
 	 *            {@link ProjectItem}
 	 * @return The ID of the {@link ProjectItem}, or -1 if not found.

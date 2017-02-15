@@ -71,7 +71,7 @@ public class SmudgeComponentLibrary<T extends SmudgeComponent> extends Reflectio
 	 *         can't be found or instantiated.
 	 */
 	public T getNewInstance(Smudge smudge, PropertyMap state) {
-		return getNewInstance(smudge.getTypeIdentifier(), state.getAttribute(PropertyMap.TYPE_ATTR));
+		return getNewInstance(smudge.getTypeIdentifier(), state.getAttribute(PropertyMap.TYPE_ID_ATTR));
 	}
 
 	/**

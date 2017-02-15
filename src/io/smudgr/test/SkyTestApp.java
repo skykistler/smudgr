@@ -2,6 +2,7 @@ package io.smudgr.test;
 
 import io.smudgr.app.AppStart;
 import io.smudgr.app.controller.Controller;
+import io.smudgr.app.project.util.ProjectSaver;
 import io.smudgr.engine.Rack;
 import io.smudgr.engine.alg.Algorithm;
 import io.smudgr.engine.alg.op.ChannelBleed;
@@ -121,6 +122,9 @@ public class SkyTestApp extends AppStart {
 			Controller.getInstance().add(new WebsocketView());
 
 		start();
+
+		ProjectSaver save = new ProjectSaver();
+		save.save();
 	}
 
 	/**

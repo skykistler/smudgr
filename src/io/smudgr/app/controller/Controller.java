@@ -252,8 +252,6 @@ public class Controller {
 	public void save(PropertyMap pm) {
 		for (AppControl control : getAppControls()) {
 			PropertyMap map = new PropertyMap(control);
-			control.save(map);
-
 			pm.add(map);
 		}
 
@@ -261,7 +259,8 @@ public class Controller {
 			PropertyMap map = new PropertyMap(extensionLibrary.getTypeIdentifier());
 
 			extension.save(map);
-			map.setAttribute(PropertyMap.TYPE_ATTR, extension.getTypeIdentifier());
+			map.setAttribute(PropertyMap.TYPE_ID_ATTR, extension.getTypeIdentifier());
+			map.setAttribute(PropertyMap.NAME_ATTR, extension.getTypeName());
 
 			pm.add(map);
 		}
@@ -331,12 +330,8 @@ public class Controller {
 
 		// Set project ID for saved controls
 		for (PropertyMap mapping : pm.getChildren(appControlLibrary.getTypeIdentifier())) {
-			AppControl control = getAppControl(mapping.getAttribute(PropertyMap.TYPE_ATTR));
-
-			if (control != null) {
-				int id = Integer.parseInt(mapping.getAttribute(PropertyMap.ID_ATTR));
-				getProject().put(control, id);
-			}
+			AppControl control = getAppControl(mapping);
+			control.load(mapping);
 		}
 
 		/**
@@ -344,7 +339,7 @@ public class Controller {
 		 * {@link AppControl} is added and this is an older save file.
 		 */
 		for (AppControl control : getAppControls()) {
-			if (getProject().getId(control) == -1)
+			if (!getProject().contains(control))
 				getProject().add(control);
 		}
 	}
@@ -370,7 +365,7 @@ public class Controller {
 
 		// Load any states to the appropriate extension
 		for (PropertyMap mapping : pm.getChildren(extensionLibrary.getTypeIdentifier())) {
-			ControllerExtension ext = getExtension(mapping.getAttribute(PropertyMap.TYPE_ATTR));
+			ControllerExtension ext = getExtension(mapping.getAttribute(PropertyMap.TYPE_ID_ATTR));
 
 			if (ext != null) {
 				ext.load(mapping);
@@ -434,6 +429,19 @@ public class Controller {
 	 */
 	public AppControl getAppControl(String identifier) {
 		return appControls.get(identifier);
+	}
+
+	/**
+	 * Get an {@link AppControl} by it's identifier.
+	 *
+	 * @param state
+	 *            {@link PropertyMap} with type attribute
+	 * @return Loaded {@link AppControl} instance
+	 *
+	 * @see AppControl#getTypeIdentifier()
+	 */
+	public AppControl getAppControl(PropertyMap state) {
+		return appControls.get(state.getAttribute(PropertyMap.TYPE_ID_ATTR));
 	}
 
 	private Collection<AppControl> getAppControls() {

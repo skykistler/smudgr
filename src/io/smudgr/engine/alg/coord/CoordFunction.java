@@ -31,7 +31,7 @@ public abstract class CoordFunction extends AlgorithmComponent {
 
 	@Override
 	public String getComponentTypeIdentifier() {
-		return "coord-function";
+		return "coord-func";
 	}
 
 	private BooleanParameter continuous = new BooleanParameter("Continuous", this, false);

@@ -83,24 +83,26 @@ public class Rack extends Parametric {
 	 * @see Rack#getLastFrame()
 	 */
 	public void render() {
-		Frame toRender = null;
+		if (!enabled.getValue())
+			return;
 
-		if (source != null)
-			toRender = source.getFrame();
+		Frame nextFrame = null;
 
-		if (toRender != null) {
-			toRender = toRender.resize(downsample.getValue());
-
-			if (enabled.getValue()) {
-				for (Smudge s : getSmudges())
-					s.render(toRender);
-			}
+		// If source is null or gives a null frame, clear last frame and return
+		if (source == null || (nextFrame = source.getFrame()) == null) {
+			setLastFrame(null);
+			return;
 		}
 
-		if (lastFrame != null)
-			lastFrame.dispose();
+		// Downsample according to the downsample parameter
+		nextFrame = nextFrame.resize(downsample.getValue());
 
-		lastFrame = toRender;
+		// Render each smudge successively
+		for (Smudge s : getSmudges())
+			if (s.isEnabled())
+				nextFrame = s.smudge(nextFrame);
+
+		setLastFrame(nextFrame);
 	}
 
 	/**
@@ -139,8 +141,6 @@ public class Rack extends Parametric {
 
 		for (Smudge smudge : getSmudges()) {
 			PropertyMap map = new PropertyMap(smudge);
-			smudge.save(map);
-
 			pm.add(map);
 		}
 	}
@@ -161,6 +161,13 @@ public class Rack extends Parametric {
 	 */
 	public Frame getLastFrame() {
 		return lastFrame;
+	}
+
+	protected void setLastFrame(Frame nextFrame) {
+		if (lastFrame != null)
+			lastFrame.dispose();
+
+		lastFrame = nextFrame;
 	}
 
 	/**

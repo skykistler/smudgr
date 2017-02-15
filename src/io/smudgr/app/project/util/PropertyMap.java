@@ -5,10 +5,9 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import io.smudgr.api.ApiMessage;
-import io.smudgr.app.controller.Controller;
 import io.smudgr.app.project.Project;
 import io.smudgr.app.project.ProjectItem;
-import io.smudgr.app.project.reflect.TypeLibrary;
+import io.smudgr.app.project.reflect.ReflectionLibrary;
 
 /**
  * The {@link PropertyMap} class can be used to store hierarchical DOM-style
@@ -26,17 +25,22 @@ import io.smudgr.app.project.reflect.TypeLibrary;
 public class PropertyMap {
 
 	/**
-	 * The universal attribute name for serializing a project ID
+	 * The universal attribute for serializing a project ID
 	 */
-	public static final String ID_ATTR = "id";
+	public static final String PROJECT_ID_ATTR = "id";
 
 	/**
-	 * The universal attribute name for serializing an element type
+	 * The universal attribute for serializing an element type
 	 */
-	public static final String TYPE_ATTR = "type";
+	public static final String TYPE_ID_ATTR = "type";
+
+	/**
+	 * The universal attribute for serializing an element's user-recognizable
+	 * name.
+	 */
+	public static final String NAME_ATTR = "name";
 
 	private String tag;
-
 	private HashMap<String, String> attributes = new HashMap<String, String>();
 	private HashMap<String, ArrayList<PropertyMap>> children = new HashMap<String, ArrayList<PropertyMap>>();
 
@@ -54,7 +58,8 @@ public class PropertyMap {
 	/**
 	 * Create a property map with the given {@link ProjectItem}.
 	 * <p>
-	 * This sets the map tag to {@link ProjectItem#getTypeCategoryIdentifier()} and
+	 * This sets the map tag to {@link ProjectItem#getTypeCategoryIdentifier()}
+	 * and
 	 * the type attribute to {@link ProjectItem#getTypeIdentifier()}.
 	 * <p>
 	 * If the given element has a project ID, the id attribute is set to
@@ -65,11 +70,7 @@ public class PropertyMap {
 	 */
 	public PropertyMap(ProjectItem item) {
 		this.tag = item.getTypeCategoryIdentifier();
-
-		setAttribute(TYPE_ATTR, item.getTypeIdentifier());
-
-		if (getProject().contains(item))
-			setAttribute(ID_ATTR, getProject().getId(item));
+		item.save(this);
 	}
 
 	/**
@@ -159,15 +160,15 @@ public class PropertyMap {
 	}
 
 	/**
-	 * Gets all children that correspond to the given {@link TypeLibrary}
+	 * Gets all children that correspond to the given {@link ReflectionLibrary}
 	 *
-	 * @param typeLibrary
-	 *            Type library of desired children types.
+	 * @param library
+	 *            Reflection library of desired children types.
 	 * @return List of children of given type.
 	 * @see PropertyMap#getChildren(String)
 	 */
-	public ArrayList<PropertyMap> getChildren(TypeLibrary<?> typeLibrary) {
-		return getChildren(typeLibrary.getTypeIdentifier());
+	public ArrayList<PropertyMap> getChildren(ReflectionLibrary<?> library) {
+		return getChildren(library.getTypeIdentifier());
 	}
 
 	/**
@@ -195,10 +196,6 @@ public class PropertyMap {
 	 */
 	public Collection<String> getChildrenTags() {
 		return children.keySet();
-	}
-
-	private Project getProject() {
-		return Controller.getInstance().getProject();
 	}
 
 }

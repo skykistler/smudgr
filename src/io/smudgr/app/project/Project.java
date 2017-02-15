@@ -113,14 +113,12 @@ public class Project {
 	 */
 	public void save(PropertyMap pm) {
 		if (outputPath != null)
-			pm.setAttribute("outputPath", outputPath);
+			pm.setAttribute("output-path", outputPath);
 
 		pm.setAttribute("bpm", bpm);
 
 		for (Rack rack : racks) {
 			PropertyMap rackMap = new PropertyMap(rack);
-			rack.save(rackMap);
-
 			pm.add(rackMap);
 		}
 
@@ -145,8 +143,8 @@ public class Project {
 			Controller.getInstance().setProject(this);
 
 		// Set the output path
-		if (pm.hasAttribute("outputPath"))
-			setOutputPath(pm.getAttribute("outputPath"));
+		if (pm.hasAttribute("output-path"))
+			setOutputPath(pm.getAttribute("output-path"));
 
 		// Set the BPM
 		if (pm.hasAttribute("bpm"))

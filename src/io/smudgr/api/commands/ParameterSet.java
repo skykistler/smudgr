@@ -37,7 +37,7 @@ public class ParameterSet implements ApiCommand, ParameterObserver {
 
 	@Override
 	public ApiMessage execute(ApiMessage data) {
-		Parameter param = (Parameter) getProject().getItem((int) data.getNumber(PropertyMap.ID_ATTR));
+		Parameter param = (Parameter) getProject().getItem((int) data.getNumber(PropertyMap.PROJECT_ID_ATTR));
 		param.setValue(data.get("value"), this);
 
 		return null;
@@ -101,9 +101,7 @@ public class ParameterSet implements ApiCommand, ParameterObserver {
 	}
 
 	private void sendParameterUpdate(Parameter param) {
-		ApiMessage paramUpdate = new ApiMessage(PropertyMap.ID_ATTR, getProject().getId(param) + "");
-		paramUpdate.put("value", param.getStringValue());
-
+		ApiMessage paramUpdate = ApiMessage.normalize(new PropertyMap(param));
 		sendMessage(ApiMessage.ok(getCommand(), paramUpdate));
 	}
 
