@@ -72,17 +72,17 @@ public class MidiExtension implements ControllerExtension, DeviceObserver {
 	}
 
 	@Override
-	public void init() {
+	public void onInit() {
 		timingCalculator = new TimingCalculator();
 	}
 
 	@Override
-	public void update() {
+	public void onUpdate() {
 
 	}
 
 	@Override
-	public void stop() {
+	public void onStop() {
 
 	}
 

@@ -31,7 +31,7 @@ public class KinectExtension implements ControllerExtension {
 	}
 
 	@Override
-	public void init() {
+	public void onInit() {
 		// Open the kinect device through the context
 		try {
 			ctx = Freenect.createContext();
@@ -86,11 +86,11 @@ public class KinectExtension implements ControllerExtension {
 	}
 
 	@Override
-	public void update() {
+	public void onUpdate() {
 	}
 
 	@Override
-	public void stop() {
+	public void onStop() {
 		if (device == null)
 			return;
 

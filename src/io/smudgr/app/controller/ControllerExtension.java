@@ -34,17 +34,17 @@ public interface ControllerExtension extends ReflectableType {
 	/**
 	 * This method is called on application startup.
 	 */
-	public void init();
+	public void onInit();
 
 	/**
 	 * This method is called every application update loop.
 	 */
-	public void update();
+	public void onUpdate();
 
 	/**
 	 * This method is called when the application is shutting down.
 	 */
-	public void stop();
+	public void onStop();
 
 	/**
 	 * This method is called when an {@link ApiMessage} is broadcasted to the

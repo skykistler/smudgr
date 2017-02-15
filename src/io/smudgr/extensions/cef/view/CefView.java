@@ -23,7 +23,6 @@ import org.cef.browser.CefMessageRouter;
 
 import io.smudgr.app.controller.Controller;
 import io.smudgr.app.view.View;
-import io.smudgr.extensions.cef.CefExtension;
 import io.smudgr.extensions.cef.util.CefAppHandler;
 import io.smudgr.extensions.cef.util.CefQueryHandler;
 import io.smudgr.extensions.cef.util.DialogHandler;
@@ -162,8 +161,7 @@ public class CefView extends JFrame implements View {
 
 		cefClient = cefApp.createClient();
 
-		CefExtension extension = (CefExtension) Controller.getInstance().getExtension("CEF");
-		CefMessageRouter msgRouter = CefMessageRouter.create(new CefQueryHandler(extension.getInvoker()));
+		CefMessageRouter msgRouter = CefMessageRouter.create(new CefQueryHandler(Controller.getInstance().getApiInvoker()));
 		cefClient.addMessageRouter(msgRouter);
 
 		cefClient.addDialogHandler(new DialogHandler());

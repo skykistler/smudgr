@@ -30,19 +30,19 @@ public class AutomatorExtension implements ControllerExtension {
 	private ArrayList<AutomatorControl> automators = new ArrayList<AutomatorControl>();
 
 	@Override
-	public void init() {
+	public void onInit() {
 		for (AutomatorControl automator : automators)
 			automator.init();
 	}
 
 	@Override
-	public void update() {
+	public void onUpdate() {
 		for (AutomatorControl automator : automators)
 			automator.update();
 	}
 
 	@Override
-	public void stop() {
+	public void onStop() {
 
 	}
 

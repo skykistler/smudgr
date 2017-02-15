@@ -1,4 +1,4 @@
-package io.smudgr.extensions.cef.util;
+package io.smudgr.api;
 
 import java.net.InetSocketAddress;
 
@@ -6,31 +6,33 @@ import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
-import io.smudgr.api.ApiInvoker;
-import io.smudgr.api.ApiMessage;
-
 /**
- * The {@link CommandServer} uses an underlying {@link WebSocketServer} to allow
+ * The {@link ApiServer} uses an underlying {@link WebSocketServer} to allow
  * front-end JavaScript to execute API commands via the {@link ApiInvoker}
  */
-public class CommandServer extends WebSocketServer {
+public class ApiServer extends WebSocketServer {
+
+	/**
+	 * Default API_PORT to use when not mutexing.
+	 */
+	public static final int API_PORT = 45455;
 
 	private volatile WebSocket client;
 	private ApiInvoker invoker;
 
 	/**
-	 * Create a new {@link CommandServer} on a random open port using the given
+	 * Create a new {@link ApiServer} on a random open port using the given
 	 * {@link ApiInvoker}
 	 *
 	 * @param invoker
 	 *            {@link ApiInvoker}
 	 */
-	public CommandServer(ApiInvoker invoker) {
+	public ApiServer(ApiInvoker invoker) {
 		this(invoker, 0);
 	}
 
 	/**
-	 * Create a new {@link CommandServer} using the given {@link ApiInvoker} on
+	 * Create a new {@link ApiServer} using the given {@link ApiInvoker} on
 	 * a specific port
 	 *
 	 * @param invoker
@@ -38,7 +40,7 @@ public class CommandServer extends WebSocketServer {
 	 * @param port
 	 *            {@code int}
 	 */
-	public CommandServer(ApiInvoker invoker, int port) {
+	public ApiServer(ApiInvoker invoker, int port) {
 		super(new InetSocketAddress(port));
 		this.invoker = invoker;
 	}

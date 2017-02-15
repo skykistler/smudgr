@@ -1,5 +1,6 @@
 package io.smudgr.app.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -7,6 +8,7 @@ import java.util.HashMap;
 import io.smudgr.api.ApiCommand;
 import io.smudgr.api.ApiInvoker;
 import io.smudgr.api.ApiMessage;
+import io.smudgr.api.ApiServer;
 import io.smudgr.app.project.Project;
 import io.smudgr.app.project.reflect.TypeLibrary;
 import io.smudgr.app.project.util.ProjectLoader;
@@ -56,9 +58,12 @@ public class Controller {
 		return instance;
 	}
 
-	// Delegators
+	// Model
 	private Project project;
+
+	// API services
 	private ApiInvoker apiInvoker;
+	private ApiServer apiServer;
 
 	// Threads
 	private UpdateThread updater;
@@ -106,10 +111,15 @@ public class Controller {
 			return;
 		}
 
-		System.out.println("Starting controller extensions...");
+		System.out.println("Starting API...");
 		apiInvoker.init();
+		apiServer = new ApiServer(apiInvoker, ApiServer.API_PORT);
+		apiServer.start();
+
+		System.out.println("Starting controller extensions...");
+
 		for (ControllerExtension ext : getExtensions())
-			ext.init();
+			ext.onInit();
 
 		project.init();
 
@@ -135,7 +145,7 @@ public class Controller {
 	/**
 	 * Run one update loop for the application.
 	 *
-	 * @see ControllerExtension#update()
+	 * @see ControllerExtension#onUpdate()
 	 * @see Project#update()
 	 */
 	public void update() {
@@ -145,7 +155,7 @@ public class Controller {
 		setUpdateSpeed();
 
 		for (ControllerExtension ext : getExtensions())
-			ext.update();
+			ext.onUpdate();
 
 		project.update();
 	}
@@ -195,7 +205,14 @@ public class Controller {
 
 		System.out.println("Stopping controller extensions...");
 		for (ControllerExtension ext : getExtensions())
-			ext.stop();
+			ext.onStop();
+
+		System.out.println("Stopping API...");
+		try {
+			apiServer.stop();
+		} catch (IOException | InterruptedException e) {
+			e.printStackTrace();
+		}
 
 		started = false;
 		System.out.println("Stopping...");
@@ -218,7 +235,9 @@ public class Controller {
 	}
 
 	/**
-	 * Sends an {@link ApiMessage} to every {@link ControllerExtension}.
+	 * Sends an {@link ApiMessage} to every client connected to the
+	 * {@link ApiServer}. This also broadcasts the message to every
+	 * {@link ControllerExtension}.
 	 * <p>
 	 * This is used to synchronize outgoing API messages between <i>all</i>
 	 * extensions. Do not use this method if an {@link ApiMessage} should only
@@ -230,6 +249,8 @@ public class Controller {
 	 * @see Controller#getApiInvoker()
 	 */
 	public void broadcastMessage(ApiMessage message) {
+		apiServer.sendMessage(message);
+
 		for (ControllerExtension e : extensions.values())
 			e.onMessage(message);
 	}
@@ -402,7 +423,7 @@ public class Controller {
 		if (!getExtensions().contains(ext)) {
 
 			if (started)
-				ext.init();
+				ext.onInit();
 
 			extensions.put(ext.getTypeIdentifier(), ext);
 		}
