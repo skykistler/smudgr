@@ -2,6 +2,7 @@ package io.smudgr.test;
 
 import io.smudgr.app.AppStart;
 import io.smudgr.app.controller.Controller;
+import io.smudgr.app.project.util.ProjectSaver;
 import io.smudgr.engine.Rack;
 import io.smudgr.engine.alg.Algorithm;
 import io.smudgr.engine.alg.coord.ConvergeCoords;
@@ -15,6 +16,7 @@ import io.smudgr.engine.alg.op.PixelSort;
 import io.smudgr.engine.alg.op.SpectralShift;
 import io.smudgr.engine.alg.select.RangeSelect;
 import io.smudgr.engine.param.NumberParameter;
+import io.smudgr.extensions.cef.view.WebsocketView;
 
 /**
  * Test file for large rack used in multiple live shows before.
@@ -23,7 +25,7 @@ public class PizzaBoxShow extends AppStart {
 
 	static String projectPath = "data/pizzabox/pizza.sproj";
 
-	static boolean overwriteProject = false;
+	static boolean overwriteProject = true;
 
 	static String sourcePath = "data/pizzabox";
 
@@ -33,7 +35,7 @@ public class PizzaBoxShow extends AppStart {
 	static boolean deviceServer = false;
 
 	static int fullscreenDisplay = -1;
-	static boolean monitor = true;
+	static boolean monitor = false;
 
 	@Override
 	public void buildRack() {
@@ -81,7 +83,7 @@ public class PizzaBoxShow extends AppStart {
 
 		bind(pixel_shift.getParameter("Reverse"));
 		bind(pixel_shift.getParameter("Intervals"));
-		bind(addAutomator("Animate", pixel_shift.getParameter("Amount")));
+		bind(addAutomator("step", pixel_shift.getParameter("Amount")));
 	}
 
 	/**
@@ -98,7 +100,7 @@ public class PizzaBoxShow extends AppStart {
 
 		bind(pixel_shift.getParameter("Reverse"));
 		bind(pixel_shift.getParameter("Intervals"));
-		bind(addAutomator("Animate", pixel_shift.getParameter("Amount")));
+		bind(addAutomator("step", pixel_shift.getParameter("Amount")));
 	}
 
 	/**
@@ -165,7 +167,7 @@ public class PizzaBoxShow extends AppStart {
 		databend_range.getParameter("Range Length").setValue(1);
 		alg.add(databend_range);
 
-		bind(addAutomator("Animate", databend.getParameter("Target")));
+		bind(addAutomator("step", databend.getParameter("Target")));
 		bind(databend.getParameter("Amount"));
 		bind(coords.getParameter("Vertical"));
 	}
@@ -181,7 +183,7 @@ public class PizzaBoxShow extends AppStart {
 
 		spectral_shift.getParameter("Colors").setValue(6);
 
-		bind(addAutomator("Beat Sync", spectral_shift.getParameter("Shift")));
+		bind(addAutomator("beat-sync", spectral_shift.getParameter("Shift")));
 
 		bind(spectral_shift.getParameter("Colors"));
 		bind(spectral_shift.getParameter("Palette"));
@@ -248,9 +250,12 @@ public class PizzaBoxShow extends AppStart {
 		if (monitor)
 			monitorView();
 
-		// Controller.getInstance().add(new WebsocketView());
+		Controller.getInstance().add(new WebsocketView());
 
 		start();
+
+		ProjectSaver project = new ProjectSaver();
+		project.save();
 	}
 
 	/**

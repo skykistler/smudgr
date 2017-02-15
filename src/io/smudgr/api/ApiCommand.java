@@ -26,6 +26,14 @@ public interface ApiCommand extends ReflectableType {
 	public String getCommand();
 
 	/**
+	 * Called when the command is instantiated. Any instantiation logic should
+	 * be run in this method.
+	 */
+	public default void onInit() {
+
+	}
+
+	/**
 	 * Behavior of command when a packet is received.
 	 *
 	 * @param data

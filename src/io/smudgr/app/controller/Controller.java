@@ -112,8 +112,9 @@ public class Controller {
 		}
 
 		System.out.println("Starting API...");
+		apiServer = new ApiServer(ApiServer.API_PORT);
 		apiInvoker.init();
-		apiServer = new ApiServer(apiInvoker, ApiServer.API_PORT);
+		apiServer.setInvoker(apiInvoker);
 		apiServer.start();
 
 		System.out.println("Starting controller extensions...");

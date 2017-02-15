@@ -34,9 +34,12 @@ public class ParameterSet implements ApiCommand, ParameterObserver {
 	/**
 	 * Attach this command as an observer of all parameter changes.
 	 */
-	public ParameterSet() {
+	@Override
+	public void onInit() {
 		getProject().getParameterObserverNotifier().attach(this);
+
 		nextBatch = new ArrayList<Parameter>();
+		currentBatch = new ArrayList<Parameter>();
 
 		ParameterBatchThread batchUpdater = new ParameterBatchThread();
 		batchUpdater.start();
@@ -70,6 +73,9 @@ public class ParameterSet implements ApiCommand, ParameterObserver {
 
 		@Override
 		protected void execute() {
+			if (nextBatch.size() == 0)
+				return;
+
 			// Thread-safe batch swap
 			synchronized (ParameterSet.class) {
 				ArrayList<Parameter> swap = nextBatch;

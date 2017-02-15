@@ -21,8 +21,6 @@ public class FrameServer extends WebSocketServer {
 	private volatile boolean dimensionsChanged;
 	private volatile ArrayList<WebSocket> activeSockets = new ArrayList<WebSocket>();
 
-	private volatile boolean writing;
-
 	private ByteBuffer buffer = null;
 	private int bufferSize, i, color;
 
@@ -49,7 +47,7 @@ public class FrameServer extends WebSocketServer {
 	 * @param f
 	 *            current {@link Frame}
 	 */
-	public void setFrame(Frame f) {
+	public synchronized void setFrame(Frame f) {
 		Frame resized = f.fitToSize(600, 600, false);
 
 		if (frame == null || resized.getWidth() != frame.getWidth() || resized.getHeight() != frame.getHeight())
@@ -71,12 +69,8 @@ public class FrameServer extends WebSocketServer {
 	 * Write out the current {@link Frame} to all clients
 	 */
 	public synchronized void writeFrame() {
-		if (writing || frame == null || activeSockets.size() == 0)
+		if (frame == null || activeSockets.size() == 0)
 			return;
-
-		writing = true;
-
-		Frame toDraw = frame.copy();
 
 		if (dimensionsChanged) {
 			updateSize();
@@ -85,8 +79,8 @@ public class FrameServer extends WebSocketServer {
 
 		buffer.position(0);
 
-		for (i = 0; i < toDraw.pixels.length; i++) {
-			color = (toDraw.pixels[i] << 8) | 0xFF;
+		for (i = 0; i < frame.pixels.length; i++) {
+			color = (frame.pixels[i] << 8) | 0xFF;
 			buffer.putInt(color);
 		}
 
@@ -97,10 +91,6 @@ public class FrameServer extends WebSocketServer {
 			buffer.flip();
 			ws.send(buffer);
 		}
-
-		toDraw.dispose();
-
-		writing = false;
 	}
 
 	private synchronized void updateSize() {

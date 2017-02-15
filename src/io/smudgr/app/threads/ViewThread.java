@@ -54,8 +54,8 @@ public class ViewThread extends AppThread {
 			 */
 		} catch (IllegalStateException e) {
 			/*
-			 * Frame was probably disposed too fast, skip it.
-			 * If frames are being disposed too fast, skipping a frame probably
+			 * Last frame was probably disposed before .copy(), skip it.
+			 * If frames are being disposed that fast, skipping a frame probably
 			 * isn't a big deal.
 			 */
 		}

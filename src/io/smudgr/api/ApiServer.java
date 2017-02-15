@@ -21,27 +21,30 @@ public class ApiServer extends WebSocketServer {
 	private ApiInvoker invoker;
 
 	/**
-	 * Create a new {@link ApiServer} on a random open port using the given
-	 * {@link ApiInvoker}
+	 * Create a new {@link ApiServer} on a random open port.
 	 *
-	 * @param invoker
-	 *            {@link ApiInvoker}
 	 */
-	public ApiServer(ApiInvoker invoker) {
-		this(invoker, 0);
+	public ApiServer() {
+		this(0);
 	}
 
 	/**
-	 * Create a new {@link ApiServer} using the given {@link ApiInvoker} on
-	 * a specific port
+	 * Create a new {@link ApiServer} on a specific port
 	 *
-	 * @param invoker
-	 *            {@link ApiInvoker}
 	 * @param port
 	 *            {@code int}
 	 */
-	public ApiServer(ApiInvoker invoker, int port) {
+	public ApiServer(int port) {
 		super(new InetSocketAddress(port));
+	}
+
+	/**
+	 * Set the {@link ApiInvoker} to use for this {@link ApiServer}
+	 *
+	 * @param invoker
+	 *            {@link ApiInvoker}
+	 */
+	public void setInvoker(ApiInvoker invoker) {
 		this.invoker = invoker;
 	}
 

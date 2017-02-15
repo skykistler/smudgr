@@ -31,7 +31,9 @@ public class ApiInvoker {
 		TypeLibrary<ApiCommand> commandLibrary = new TypeLibrary<ApiCommand>(ApiCommand.class);
 
 		for (String id : commandLibrary.getIdList()) {
-			commands.put(id, commandLibrary.getNewInstance(id));
+			ApiCommand command = commandLibrary.getNewInstance(id);
+			commands.put(id, command);
+			command.onInit();
 		}
 	}
 
