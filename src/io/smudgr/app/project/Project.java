@@ -357,7 +357,7 @@ public class Project {
 	 * Gets the library for managing currently loaded {@link Smudge} types
 	 *
 	 * @return {@link TypeLibrary}
-	 * @see Project#getComponentLibrary()
+	 * @see Project#getSmudgeComponentLibrary()
 	 */
 	public TypeLibrary<Smudge> getSmudgeLibrary() {
 		return smudgeLibrary;
@@ -370,7 +370,7 @@ public class Project {
 	 * @return {@link SmudgeComponentLibrary}
 	 * @see Project#getSmudgeLibrary()
 	 */
-	public SmudgeComponentLibrary<SmudgeComponent> getComponentLibrary() {
+	public SmudgeComponentLibrary<SmudgeComponent> getSmudgeComponentLibrary() {
 		return componentLibrary;
 	}
 
@@ -379,7 +379,7 @@ public class Project {
 	 * for this project.
 	 *
 	 * @return {@link SourceLibrary}
-	 * @see Project#getComponentLibrary()
+	 * @see Project#getSmudgeComponentLibrary()
 	 */
 	public SourceLibrary getSourceLibrary() {
 		return sourceLibrary;

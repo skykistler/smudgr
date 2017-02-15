@@ -66,7 +66,7 @@ public abstract class Smudge extends Parametric {
 	 * @return {@link SmudgeComponent} or {@code null}
 	 */
 	public SmudgeComponent add(PropertyMap state) {
-		SmudgeComponent component = getProject().getComponentLibrary().getNewInstance(this, state);
+		SmudgeComponent component = getProject().getSmudgeComponentLibrary().getNewInstance(this, state);
 
 		if (component == null)
 			return null;
@@ -138,7 +138,7 @@ public abstract class Smudge extends Parametric {
 	public void load(PropertyMap pm) {
 		super.load(pm);
 
-		for (PropertyMap component : pm.getChildren(getProject().getComponentLibrary()))
+		for (PropertyMap component : pm.getChildren(getProject().getSmudgeComponentLibrary()))
 			add(component);
 	}
 
