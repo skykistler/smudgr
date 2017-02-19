@@ -1,6 +1,8 @@
 package io.smudgr.engine;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import io.smudgr.app.project.util.PropertyMap;
 import io.smudgr.engine.param.BooleanParameter;
@@ -38,7 +40,7 @@ public class Rack extends Parametric {
 	}
 
 	// Currently active smudges
-	private ArrayList<Smudge> smudges = new ArrayList<Smudge>();
+	private List<Smudge> smudges = Collections.synchronizedList(new ArrayList<Smudge>());
 
 	/* These parameters control runtime settings for the rack */
 	private BooleanParameter enabled = new BooleanParameter("Enable", this, true);
@@ -98,9 +100,11 @@ public class Rack extends Parametric {
 		nextFrame = nextFrame.resize(downsample.getValue());
 
 		// Render each smudge successively
-		for (Smudge s : getSmudges())
-			if (s.isEnabled())
-				nextFrame = s.smudge(nextFrame);
+		synchronized (smudges) {
+			for (Smudge s : smudges)
+				if (s.isEnabled())
+					nextFrame = s.smudge(nextFrame);
+		}
 
 		setLastFrame(nextFrame);
 	}
@@ -133,6 +137,21 @@ public class Rack extends Parametric {
 		getSmudges().add(smudge);
 
 		smudge.onInit();
+	}
+
+	/**
+	 * Move a {@link Smudge} from the first index to the second index.
+	 *
+	 * @param fromIndex
+	 *            first index
+	 * @param toIndex
+	 *            second index
+	 */
+	public void moveSmudge(int fromIndex, int toIndex) {
+		synchronized (smudges) {
+			Smudge toMove = smudges.remove(fromIndex);
+			smudges.add(toIndex, toMove);
+		}
 	}
 
 	@Override
@@ -173,9 +192,9 @@ public class Rack extends Parametric {
 	/**
 	 * Gets all of the smudges contained by this {@link Rack}
 	 *
-	 * @return {@code ArrayList<Smudge>}
+	 * @return {@code List<Smudge>}
 	 */
-	public ArrayList<Smudge> getSmudges() {
+	public List<Smudge> getSmudges() {
 		return smudges;
 	}
 

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="smudgr" default="launch" basedir=".">
 	
+	<property name="class" value="io.smudgr.test.SkyShowApp"/> 
+	
 	<path id="classpath">
 		<fileset dir="." includes="**/*.jar"/>
 	</path>
@@ -15,7 +17,7 @@
 	</target>
 	
 	<target depends="compile" name="run">
-		<java classname="io.smudgr.test.SkyShowApp" 
+		<java classname="${class}" 
 			  fork="true"
 			  classpath="bin:lib/*:builds/win64/bin/*"/>
 	</target>

@@ -5,7 +5,7 @@ import io.smudgr.api.ApiMessage;
 
 /**
  * Pause execution of the current application instance.
- * 
+ *
  * @see ControlPlay
  */
 public class ControlPause implements ApiCommand {
