@@ -6,6 +6,10 @@ import java.nio.ByteOrder;
 import java.util.ArrayList;
 
 import org.java_websocket.WebSocket;
+import org.java_websocket.exceptions.InvalidDataException;
+import org.java_websocket.framing.FrameBuilder;
+import org.java_websocket.framing.Framedata.Opcode;
+import org.java_websocket.framing.FramedataImpl1;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
@@ -23,6 +27,7 @@ public class FrameServer extends WebSocketServer {
 
 	private ByteBuffer buffer = null;
 	private int bufferSize, i, color;
+	private FrameBuilder curframe = new FramedataImpl1();
 
 	/**
 	 * Create a new {@link FrameServer} on any open port
@@ -39,6 +44,10 @@ public class FrameServer extends WebSocketServer {
 	 */
 	public FrameServer(int port) {
 		super(new InetSocketAddress(port));
+
+		curframe.setFin(true);
+		curframe.setOptcode(Opcode.BINARY);
+		curframe.setTransferemasked(false);
 	}
 
 	/**
@@ -89,7 +98,13 @@ public class FrameServer extends WebSocketServer {
 				continue;
 
 			buffer.flip();
-			ws.send(buffer);
+
+			try {
+				curframe.setPayload(buffer);
+				ws.sendFrame(curframe);
+			} catch (InvalidDataException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

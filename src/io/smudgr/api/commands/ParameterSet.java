@@ -87,6 +87,7 @@ public class ParameterSet implements ApiCommand, ParameterObserver {
 			}
 
 			// Serialize every parameter
+			// TODO: reuse property maps for some mem improvement
 			PropertyMap batch = new PropertyMap("batch");
 			for (Parameter param : currentBatch) {
 				batch.add(new PropertyMap(param));
