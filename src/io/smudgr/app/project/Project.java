@@ -218,6 +218,8 @@ public class Project {
 			return;
 
 		File output = new File(path);
+		output.mkdirs();
+
 		if (!output.exists()) {
 			outputPath = null;
 			return;
