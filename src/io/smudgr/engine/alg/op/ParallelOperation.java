@@ -51,7 +51,7 @@ public abstract class ParallelOperation extends Operation {
 		// Otherwise, invoke all the tasks
 		else {
 			try {
-				pool.invokeAll(tasks, 30, TimeUnit.SECONDS);
+				pool.invokeAll(tasks.subList(0, selectedPixelLists.size()), 30, TimeUnit.SECONDS);
 			} catch (InterruptedException e) {
 			}
 		}
