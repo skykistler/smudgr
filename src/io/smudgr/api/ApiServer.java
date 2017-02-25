@@ -82,6 +82,5 @@ public class ApiServer extends WebSocketServer {
 
 	@Override
 	public void onError(WebSocket conn, Exception ex) {
-		connections.remove(conn);
 	}
 }

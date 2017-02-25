@@ -27,7 +27,7 @@ public class LumaFunction implements UnivariateFunction {
 
 	/**
 	 * Tester method that provides a more precise value but slower calculation
-	 * 
+	 *
 	 * @param value
 	 *            color
 	 * @return luma

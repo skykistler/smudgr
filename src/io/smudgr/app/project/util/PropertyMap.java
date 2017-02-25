@@ -192,13 +192,70 @@ public class PropertyMap {
 	}
 
 	/**
-	 * Get all the tag types of children on this map.
+	 * Gets whether the given child {@link PropertyMap} is contained in this
+	 * map.
+	 *
+	 * @param child
+	 *            {@link PropertyMap}
+	 * @return {@code true} if this map contains the given child
+	 */
+	public boolean contains(PropertyMap child) {
+		if (child == null || !hasChildren(child.getTag()))
+			return false;
+
+		ArrayList<PropertyMap> children = getChildren(child.getTag());
+		return children.contains(child);
+	}
+
+	/**
+	 * Gets all the tag types of children on this map.
 	 *
 	 * @return all children tags
 	 * @see PropertyMap#getChildren(String)
 	 */
 	public Collection<String> getChildrenTags() {
 		return children.keySet();
+	}
+
+	/**
+	 * Removes the given child {@link PropertyMap} if it's contained in this
+	 * map.
+	 *
+	 * @param child
+	 *            {@link PropertyMap}
+	 */
+	public void removeChild(PropertyMap child) {
+		if (!contains(child))
+			return;
+
+		ArrayList<PropertyMap> children = getChildren(child.getTag());
+		children.remove(child);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this)
+			return true;
+
+		if (!(o instanceof PropertyMap))
+			return false;
+
+		PropertyMap pm = (PropertyMap) o;
+
+		// Must have project IDs
+		if (!pm.hasAttribute(PROJECT_ID_ATTR) || !this.hasAttribute(PROJECT_ID_ATTR))
+			return false;
+
+		// Must have same project ID
+		if (pm.getAttribute(PROJECT_ID_ATTR) != this.getAttribute(PROJECT_ID_ATTR))
+			return false;
+
+		// If they have type IDs, must be the same type ID
+		if (pm.hasAttribute(TYPE_ID_ATTR) && this.hasAttribute(TYPE_ID_ATTR))
+			if (pm.getAttribute(TYPE_ID_ATTR) != this.getAttribute(TYPE_ID_ATTR))
+				return false;
+
+		return true;
 	}
 
 }

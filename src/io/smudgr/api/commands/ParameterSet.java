@@ -63,6 +63,9 @@ public class ParameterSet implements ApiCommand, ParameterObserver {
 
 	class ParameterBatchThread extends AppThread {
 
+		private PropertyMap batch = new PropertyMap("batch");
+		private String parameterTypeId;
+
 		/**
 		 * Instantiate the {@link ParameterBatchThread}
 		 */
@@ -86,12 +89,47 @@ public class ParameterSet implements ApiCommand, ParameterObserver {
 				currentBatch = swap;
 			}
 
-			// Serialize every parameter
-			// TODO: reuse property maps for some mem improvement
-			PropertyMap batch = new PropertyMap("batch");
+			// Store the parameter type id for map mgmt
+			if (currentBatch.size() > 0)
+				parameterTypeId = currentBatch.get(0).getTypeCategoryIdentifier();
+
+			// Remove any parameters that haven't been updated
 			for (Parameter param : currentBatch) {
-				batch.add(new PropertyMap(param));
+				PropertyMap existing = null;
+
+				for (PropertyMap map : batch.getChildren(parameterTypeId)) {
+					// If the ID matches, use that existing map
+					if (mapIsParam(map, param)) {
+						existing = map;
+						break;
+					}
+				}
+
+				if (existing == null) {
+					batch.add(new PropertyMap(param));
+				} else {
+					param.save(existing);
+				}
 			}
+
+			// Remove any children that weren't updated
+			ArrayList<PropertyMap> toRemove = new ArrayList<PropertyMap>();
+			for (PropertyMap map : batch.getChildren(parameterTypeId)) {
+				boolean contains = false;
+
+				for (Parameter param : currentBatch) {
+					if (mapIsParam(map, param)) {
+						contains = true;
+						break;
+					}
+				}
+
+				if (!contains)
+					toRemove.add(map);
+			}
+
+			for (PropertyMap remove : toRemove)
+				batch.removeChild(remove);
 
 			// Send the batch packet
 			ApiMessage batchPacket = ApiMessage.normalize(batch);
@@ -100,6 +138,10 @@ public class ParameterSet implements ApiCommand, ParameterObserver {
 
 		@Override
 		protected void printStatus() {
+		}
+
+		private boolean mapIsParam(PropertyMap map, Parameter param) {
+			return map.getAttribute(PropertyMap.PROJECT_ID_ATTR).equals(getProject().getId(param) + "");
 		}
 
 	}

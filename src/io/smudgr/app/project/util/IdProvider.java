@@ -1,7 +1,9 @@
 package io.smudgr.app.project.util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import io.smudgr.app.project.Project;
@@ -12,12 +14,12 @@ import io.smudgr.app.project.ProjectItem;
  * {@link ProjectItem} map paired with unique integer IDs.
  */
 public class IdProvider {
-	private static final int MAX_ID = 1000000;
+	private static final int MAX_ID = 10000;
 
 	private HashMap<Integer, ProjectItem> idToItem = new HashMap<Integer, ProjectItem>();
 	private HashMap<ProjectItem, Integer> itemToId = new HashMap<ProjectItem, Integer>();
 
-	private ArrayList<Integer> available_ids = new ArrayList<Integer>(MAX_ID);
+	private List<Integer> available_ids = Collections.synchronizedList(new ArrayList<Integer>(MAX_ID));
 	private Random idPicker = new Random();
 
 	private ArrayList<ProjectItem> toAdd = new ArrayList<ProjectItem>();
@@ -169,11 +171,13 @@ public class IdProvider {
 	}
 
 	private void consumeId(int id) {
-		for (int i = 0; i < available_ids.size(); i++)
-			if (available_ids.get(i) == id) {
-				available_ids.remove(i);
-				return;
-			}
+		synchronized (available_ids) {
+			for (int i = 0; i < available_ids.size(); i++)
+				if (available_ids.get(i) == id) {
+					available_ids.remove(i);
+					return;
+				}
+		}
 	}
 
 }

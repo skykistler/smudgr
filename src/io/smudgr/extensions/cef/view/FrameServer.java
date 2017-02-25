@@ -132,8 +132,6 @@ public class FrameServer extends WebSocketServer {
 
 	@Override
 	public void onError(WebSocket conn, Exception ex) {
-		ex.printStackTrace();
-		connections.remove(conn);
 	}
 
 	private void sendIfOpen(WebSocket client, String message) {
