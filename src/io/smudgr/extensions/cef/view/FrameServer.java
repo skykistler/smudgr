@@ -4,14 +4,13 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.java_websocket.WebSocket;
-import org.java_websocket.exceptions.InvalidDataException;
-import org.java_websocket.framing.FrameBuilder;
-import org.java_websocket.framing.Framedata.Opcode;
-import org.java_websocket.framing.FramedataImpl1;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
+import org.java_websocket.util.DisposedBytesProvider;
 
 import io.smudgr.util.Frame;
 
@@ -21,13 +20,13 @@ import io.smudgr.util.Frame;
  */
 public class FrameServer extends WebSocketServer {
 
+	private List<WebSocket> connections = Collections.synchronizedList(new ArrayList<WebSocket>());
+
 	private volatile Frame frame = null;
 	private volatile boolean dimensionsChanged;
-	private volatile ArrayList<WebSocket> activeSockets = new ArrayList<WebSocket>();
 
 	private ByteBuffer buffer = null;
 	private int bufferSize, i, color;
-	private FrameBuilder curframe = new FramedataImpl1();
 
 	/**
 	 * Create a new {@link FrameServer} on any open port
@@ -44,10 +43,6 @@ public class FrameServer extends WebSocketServer {
 	 */
 	public FrameServer(int port) {
 		super(new InetSocketAddress(port));
-
-		curframe.setFin(true);
-		curframe.setOptcode(Opcode.BINARY);
-		curframe.setTransferemasked(false);
 	}
 
 	/**
@@ -69,7 +64,12 @@ public class FrameServer extends WebSocketServer {
 
 		bufferSize = frame.pixels.length * 4;
 		if (buffer == null || buffer.capacity() != bufferSize) {
-			buffer = ByteBuffer.allocate(bufferSize);
+
+			// It ain't easy.. bein cheesy
+			if (buffer != null)
+				DisposedBytesProvider.getInstance().disposeBytes(buffer);
+
+			buffer = DisposedBytesProvider.getInstance().getDisposedBytes(bufferSize, true);
 			buffer.order(ByteOrder.BIG_ENDIAN);
 		}
 	}
@@ -78,7 +78,7 @@ public class FrameServer extends WebSocketServer {
 	 * Write out the current {@link Frame} to all clients
 	 */
 	public synchronized void writeFrame() {
-		if (frame == null || activeSockets.size() == 0)
+		if (frame == null || connections.size() == 0)
 			return;
 
 		if (dimensionsChanged) {
@@ -93,49 +93,57 @@ public class FrameServer extends WebSocketServer {
 			buffer.putInt(color);
 		}
 
-		for (WebSocket ws : activeSockets) {
-			if (ws.hasBufferedData())
-				continue;
-
-			buffer.flip();
-
-			try {
-				curframe.setPayload(buffer);
-				ws.sendFrame(curframe);
-			} catch (InvalidDataException e) {
-				e.printStackTrace();
+		synchronized (connections) {
+			for (WebSocket client : connections) {
+				buffer.flip();
+				sendIfReady(client, buffer);
 			}
 		}
 	}
 
 	private synchronized void updateSize() {
-		for (WebSocket ws : activeSockets) {
-			ws.send("w:" + frame.getWidth());
-			ws.send("h:" + frame.getHeight());
+		synchronized (connections) {
+			for (WebSocket client : connections) {
+				sendIfOpen(client, "w:" + frame.getWidth());
+				sendIfOpen(client, "h:" + frame.getHeight());
+			}
 		}
 	}
 
 	@Override
-	public synchronized void onOpen(WebSocket arg0, ClientHandshake arg1) {
-		activeSockets.add(arg0);
+	public synchronized void onOpen(WebSocket conn, ClientHandshake handshake) {
+		connections.add(conn);
 
 		updateSize();
 		writeFrame();
 	}
 
 	@Override
-	public void onMessage(WebSocket arg0, String arg1) {
+	public void onMessage(WebSocket conn, String message) {
+		// Don't care about the message, just respond with frame data
 		updateSize();
 		writeFrame();
 	}
 
 	@Override
-	public synchronized void onClose(WebSocket arg0, int arg1, String arg2, boolean arg3) {
-		activeSockets.remove(arg0);
+	public synchronized void onClose(WebSocket conn, int arg1, String arg2, boolean arg3) {
+		connections.remove(conn);
 	}
 
 	@Override
-	public void onError(WebSocket arg0, Exception arg1) {
+	public void onError(WebSocket conn, Exception ex) {
+		ex.printStackTrace();
+		connections.remove(conn);
+	}
+
+	private void sendIfOpen(WebSocket client, String message) {
+		if (client.isOpen())
+			client.send(message);
+	}
+
+	private void sendIfReady(WebSocket client, ByteBuffer buffer) {
+		if (client.isOpen() && !client.hasBufferedData())
+			client.send(buffer);
 	}
 
 }

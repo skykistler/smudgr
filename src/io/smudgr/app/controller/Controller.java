@@ -179,6 +179,8 @@ public class Controller {
 		paused = true;
 		updater.setPaused(true);
 		renderer.setPaused(true);
+
+		System.gc();
 	}
 
 	/**

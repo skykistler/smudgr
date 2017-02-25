@@ -1,6 +1,9 @@
 package io.smudgr.api;
 
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
@@ -17,7 +20,7 @@ public class ApiServer extends WebSocketServer {
 	 */
 	public static final int API_PORT = 45455;
 
-	private volatile WebSocket client;
+	private List<WebSocket> connections = Collections.synchronizedList(new ArrayList<WebSocket>());
 	private ApiInvoker invoker;
 
 	/**
@@ -50,7 +53,7 @@ public class ApiServer extends WebSocketServer {
 
 	@Override
 	public void onOpen(WebSocket conn, ClientHandshake handshake) {
-		client = conn;
+		connections.add(conn);
 	}
 
 	@Override
@@ -65,18 +68,20 @@ public class ApiServer extends WebSocketServer {
 	 *            {@link ApiMessage}
 	 */
 	public void sendMessage(ApiMessage message) {
-		if (client == null)
-			return;
-
-		client.send(message.toString());
+		synchronized (connections) {
+			for (WebSocket client : connections)
+				if (client.isOpen())
+					client.send(message.toString());
+		}
 	}
 
 	@Override
 	public void onClose(WebSocket conn, int code, String reason, boolean remote) {
+		connections.remove(conn);
 	}
 
 	@Override
 	public void onError(WebSocket conn, Exception ex) {
-
+		connections.remove(conn);
 	}
 }
