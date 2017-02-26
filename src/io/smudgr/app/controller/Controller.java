@@ -516,7 +516,7 @@ public class Controller {
 	 * @return amount of FPS last second
 	 */
 	public int getActualFPS() {
-		return renderer.getLastFPS();
+		return renderer.getActual();
 	}
 
 	/**

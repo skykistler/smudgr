@@ -13,10 +13,11 @@ public abstract class AppThread implements Runnable {
 	private Thread thread;
 	protected long targetTickNs, preTickNs, ticks, timerMs;
 	private volatile boolean running, paused, finished;
+	private double runningAvg;
 
 	/**
 	 * Instantiate a new {@link AppThread} with the given name.
-	 * 
+	 *
 	 * @param name
 	 *            {@link String}
 	 */
@@ -26,7 +27,7 @@ public abstract class AppThread implements Runnable {
 
 	/**
 	 * Start execution of the thread loop.
-	 * 
+	 *
 	 * @see AppThread#setPaused(boolean)
 	 * @see AppThread#stop()
 	 */
@@ -42,7 +43,7 @@ public abstract class AppThread implements Runnable {
 
 	/**
 	 * Set the paused state of the {@link AppThread}
-	 * 
+	 *
 	 * @param paused
 	 *            {@code boolean}
 	 * @see AppThread#stop()
@@ -53,7 +54,7 @@ public abstract class AppThread implements Runnable {
 
 	/**
 	 * Completely halt execution of the thread.
-	 * 
+	 *
 	 * @see AppThread#setPaused(boolean)
 	 */
 	public void stop() {
@@ -63,7 +64,7 @@ public abstract class AppThread implements Runnable {
 
 	/**
 	 * Gets whether this thread has been permanently halted.
-	 * 
+	 *
 	 * @return {@code true} if thread has permanently halted.
 	 */
 	public boolean isFinished() {
@@ -72,7 +73,7 @@ public abstract class AppThread implements Runnable {
 
 	/**
 	 * Sets the target amount of executions per second.
-	 * 
+	 *
 	 * @param ticksPerSecond
 	 *            {@code int}
 	 */
@@ -82,11 +83,20 @@ public abstract class AppThread implements Runnable {
 
 	/**
 	 * Gets the target amount of executions per second.
-	 * 
+	 *
 	 * @return target amount of executions per second
 	 */
 	public int getTarget() {
 		return (int) Math.floor(1000000000.0 / targetTickNs);
+	}
+
+	/**
+	 * Gets the actual rate of executions per second.
+	 *
+	 * @return actual current rate of executions per second
+	 */
+	public int getActual() {
+		return (int) Math.floor(1000000000.0 / runningAvg);
 	}
 
 	@Override
@@ -136,6 +146,8 @@ public abstract class AppThread implements Runnable {
 
 	protected void slowdown() {
 		long diff = System.nanoTime() - preTickNs;
+		runningAvg = runningAvg == 0 ? diff : (runningAvg + diff) / 2;
+
 		if (diff < targetTickNs) {
 			diff = targetTickNs - diff;
 			long ms = (long) Math.floor(diff / 1000000.0) - 1;

@@ -27,12 +27,12 @@ public class DownsampleAutomator implements AutomatorControl {
 	private Parameter downsample;
 	private boolean enabled = true;
 
-	private double maxDownsample = .9;
-	private double currentDownsample = 0;
+	private double reactivity = .8;
+	private double currentDownsample = 1;
 
 	@Override
 	public void inputValue(int value) {
-		maxDownsample = 1 - value / 127.0;
+		reactivity = value / 127.0;
 	}
 
 	@Override
@@ -47,18 +47,18 @@ public class DownsampleAutomator implements AutomatorControl {
 
 	@Override
 	public void increment() {
-		maxDownsample += .01;
+		reactivity += .01;
 
-		if (maxDownsample > 1)
-			maxDownsample = 1;
+		if (reactivity > 1)
+			reactivity = 1;
 	}
 
 	@Override
 	public void decrement() {
-		maxDownsample -= .01;
+		reactivity -= .01;
 
-		if (maxDownsample < 0)
-			maxDownsample = 0;
+		if (reactivity < 0)
+			reactivity = 0;
 	}
 
 	@Override
@@ -73,19 +73,16 @@ public class DownsampleAutomator implements AutomatorControl {
 		if (!enabled)
 			return;
 
-		if (Controller.getInstance().getActualFPS() < Controller.getInstance().getTargetFPS() / 2.0) {
-			currentDownsample -= .01;
+		if (Controller.getInstance().getActualFPS() < Controller.getInstance().getTargetFPS() / (1.5 + 2.5 * (1 - reactivity))) {
+			currentDownsample *= .9999 - (reactivity * .02);
 		} else
-			currentDownsample += .01;
+			currentDownsample *= 1.02;
 
 		if (currentDownsample < 0)
 			currentDownsample = 0;
 
 		if (currentDownsample > 1)
 			currentDownsample = 1;
-
-		if (currentDownsample < 1 - maxDownsample)
-			currentDownsample = 1 - maxDownsample;
 
 		downsample.setValue(currentDownsample);
 	}
@@ -99,7 +96,7 @@ public class DownsampleAutomator implements AutomatorControl {
 	public void save(PropertyMap pm) {
 		AutomatorControl.super.save(pm);
 
-		pm.setAttribute("max", maxDownsample);
+		pm.setAttribute("reactivity", reactivity);
 		pm.setAttribute("current", currentDownsample);
 		pm.setAttribute("enabled", enabled ? "true" : "false");
 	}
@@ -108,8 +105,8 @@ public class DownsampleAutomator implements AutomatorControl {
 	public void load(PropertyMap pm) {
 		AutomatorControl.super.load(pm);
 
-		if (pm.hasAttribute("max"))
-			maxDownsample = Double.parseDouble(pm.getAttribute("max"));
+		if (pm.hasAttribute("reactivity"))
+			reactivity = Double.parseDouble(pm.getAttribute("reactivity"));
 
 		if (pm.hasAttribute("current"))
 			currentDownsample = Double.parseDouble(pm.getAttribute("current"));
