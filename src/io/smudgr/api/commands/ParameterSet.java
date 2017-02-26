@@ -6,6 +6,7 @@ import io.smudgr.api.ApiCommand;
 import io.smudgr.api.ApiMessage;
 import io.smudgr.app.project.util.PropertyMap;
 import io.smudgr.app.threads.AppThread;
+import io.smudgr.engine.param.BooleanParameter;
 import io.smudgr.engine.param.Parameter;
 import io.smudgr.engine.param.ParameterObserver;
 
@@ -49,6 +50,10 @@ public class ParameterSet implements ApiCommand, ParameterObserver {
 	public ApiMessage execute(ApiMessage data) {
 		Parameter param = (Parameter) getProject().getItem((int) data.getNumber(PropertyMap.PROJECT_ID_ATTR));
 		param.setValue(data.get("value"), this);
+
+		// Why not
+		if (param instanceof BooleanParameter)
+			System.gc();
 
 		return null;
 	}

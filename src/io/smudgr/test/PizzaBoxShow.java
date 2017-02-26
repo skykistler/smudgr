@@ -64,6 +64,8 @@ public class PizzaBoxShow extends AppStart {
 		bind(Controller.getInstance().getAppControl("Source Switcher"));
 		// bind(Controller.getInstance().getAppControl("Source Set Switcher"));
 		bind(Controller.getInstance().getAppControl("Save Project"));
+
+		addAutomator("auto-downsampler", null);
 	}
 
 	/**

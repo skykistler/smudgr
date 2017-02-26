@@ -26,7 +26,7 @@ public class FrameServer extends WebSocketServer {
 	private volatile boolean dimensionsChanged;
 
 	private ByteBuffer buffer = null;
-	private int bufferSize, i, color;
+	private int bufferSize, i, color, r, g;
 
 	/**
 	 * Create a new {@link FrameServer} on any open port
@@ -62,7 +62,7 @@ public class FrameServer extends WebSocketServer {
 
 		frame = resized;
 
-		bufferSize = frame.pixels.length * 4;
+		bufferSize = 8 + frame.pixels.length * 4;
 		if (buffer == null || buffer.capacity() != bufferSize) {
 
 			// It ain't easy.. bein cheesy
@@ -70,7 +70,7 @@ public class FrameServer extends WebSocketServer {
 				DisposedBytesProvider.getInstance().disposeBytes(buffer);
 
 			buffer = DisposedBytesProvider.getInstance().getDisposedBytes(bufferSize, true);
-			buffer.order(ByteOrder.BIG_ENDIAN);
+			buffer.order(ByteOrder.LITTLE_ENDIAN);
 		}
 	}
 
@@ -88,26 +88,34 @@ public class FrameServer extends WebSocketServer {
 
 		buffer.position(0);
 
+		buffer.putInt(frame.getWidth());
+		buffer.putInt(frame.getHeight());
+
 		for (i = 0; i < frame.pixels.length; i++) {
-			color = (frame.pixels[i] << 8) | 0xFF;
+			color = frame.pixels[i];
+
+			color = ((color & 0xFF00FF00)) |
+					((color & 0x00FF0000) >> 16) |
+					((color & 0x000000FF) << 16);
+
 			buffer.putInt(color);
 		}
 
 		synchronized (connections) {
 			for (WebSocket client : connections) {
-				buffer.flip();
+				buffer.rewind();
 				sendIfReady(client, buffer);
 			}
 		}
 	}
 
 	private synchronized void updateSize() {
-		synchronized (connections) {
-			for (WebSocket client : connections) {
-				sendIfOpen(client, "w:" + frame.getWidth());
-				sendIfOpen(client, "h:" + frame.getHeight());
-			}
-		}
+		// synchronized (connections) {
+		// for (WebSocket client : connections) {
+		// sendIfOpen(client, "{\"w\":" + frame.getWidth() + ",\"h\":" +
+		// frame.getHeight() + "}");
+		// }
+		// }
 	}
 
 	@Override
@@ -134,10 +142,10 @@ public class FrameServer extends WebSocketServer {
 	public void onError(WebSocket conn, Exception ex) {
 	}
 
-	private void sendIfOpen(WebSocket client, String message) {
-		if (client.isOpen())
-			client.send(message);
-	}
+	// private void sendIfOpen(WebSocket client, String message) {
+	// if (client.isOpen())
+	// client.send(message);
+	// }
 
 	private void sendIfReady(WebSocket client, ByteBuffer buffer) {
 		if (client.isOpen() && !client.hasBufferedData())

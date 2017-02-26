@@ -511,6 +511,24 @@ public class Controller {
 	}
 
 	/**
+	 * Gets the amount of frames rendered last second.
+	 *
+	 * @return amount of FPS last second
+	 */
+	public int getActualFPS() {
+		return renderer.getLastFPS();
+	}
+
+	/**
+	 * Gets the target frames per second
+	 *
+	 * @return target FPS
+	 */
+	public int getTargetFPS() {
+		return renderer.getTarget();
+	}
+
+	/**
 	 * Starts output using a given {@link FrameOutput} class.
 	 * <p>
 	 * If the application {@link #isOutputting()}, this method does nothing.

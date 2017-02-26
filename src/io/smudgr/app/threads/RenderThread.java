@@ -14,6 +14,7 @@ public class RenderThread extends AppThread {
 
 	private FrameOutput output;
 	private int everyXTicks;
+	private int lastFPS;
 
 	/**
 	 * Instantiate a new {@link RenderThread} with the target set to
@@ -68,7 +69,17 @@ public class RenderThread extends AppThread {
 
 	@Override
 	protected void printStatus() {
-		System.out.println(ticks + " fps");
+		lastFPS = (int) ticks;
+		System.out.println(lastFPS + " fps");
+	}
+
+	/**
+	 * Gets the amount of frames rendered in the previous second.
+	 *
+	 * @return last FPS
+	 */
+	public int getLastFPS() {
+		return lastFPS;
 	}
 
 }
