@@ -110,10 +110,10 @@ public class Algorithm extends Smudge {
 		ArrayList<SmudgeComponent> otherBounds = new ArrayList<SmudgeComponent>();
 
 		for (SmudgeComponent component : getComponents())
-			if (component instanceof CoordFunction)
+			if (component instanceof CoordFunction && component != bound)
 				otherBounds.add(component);
 
-		getComponents().remove(otherBounds);
+		getComponents().removeAll(otherBounds);
 
 		this.bound = bound;
 
@@ -137,10 +137,10 @@ public class Algorithm extends Smudge {
 		ArrayList<SmudgeComponent> otherCoordFunctions = new ArrayList<SmudgeComponent>();
 
 		for (SmudgeComponent component : getComponents())
-			if (component instanceof CoordFunction)
+			if (component instanceof CoordFunction && component != cf)
 				otherCoordFunctions.add(component);
 
-		getComponents().remove(otherCoordFunctions);
+		getComponents().removeAll(otherCoordFunctions);
 
 		coordFunction = cf;
 
