@@ -1,7 +1,7 @@
-package io.smudgr.extensions.cef.view;
+package io.smudgr.app.view;
 
+import io.smudgr.api.FrameServer;
 import io.smudgr.app.controller.Controller;
-import io.smudgr.app.view.View;
 import io.smudgr.util.Frame;
 
 /**

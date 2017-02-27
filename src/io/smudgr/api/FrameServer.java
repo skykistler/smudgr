@@ -1,4 +1,4 @@
-package io.smudgr.extensions.cef.view;
+package io.smudgr.api;
 
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -23,10 +23,9 @@ public class FrameServer extends WebSocketServer {
 	private List<WebSocket> connections = Collections.synchronizedList(new ArrayList<WebSocket>());
 
 	private volatile Frame frame = null;
-	private volatile boolean dimensionsChanged;
 
 	private ByteBuffer buffer = null;
-	private int bufferSize, i, color, r, g;
+	private int bufferSize, i, color;
 
 	/**
 	 * Create a new {@link FrameServer} on any open port
@@ -54,9 +53,6 @@ public class FrameServer extends WebSocketServer {
 	public synchronized void setFrame(Frame f) {
 		Frame resized = f.fitToSize(600, 600, false);
 
-		if (frame == null || resized.getWidth() != frame.getWidth() || resized.getHeight() != frame.getHeight())
-			dimensionsChanged = true;
-
 		if (frame != null)
 			frame.dispose();
 
@@ -81,11 +77,6 @@ public class FrameServer extends WebSocketServer {
 		if (frame == null || connections.size() == 0)
 			return;
 
-		if (dimensionsChanged) {
-			updateSize();
-			dimensionsChanged = false;
-		}
-
 		buffer.position(0);
 
 		buffer.putInt(frame.getWidth());
@@ -104,32 +95,21 @@ public class FrameServer extends WebSocketServer {
 		synchronized (connections) {
 			for (WebSocket client : connections) {
 				buffer.rewind();
-				sendIfReady(client, buffer);
+
+				if (client.isOpen() && !client.hasBufferedData())
+					client.send(buffer);
 			}
 		}
-	}
-
-	private synchronized void updateSize() {
-		// synchronized (connections) {
-		// for (WebSocket client : connections) {
-		// sendIfOpen(client, "{\"w\":" + frame.getWidth() + ",\"h\":" +
-		// frame.getHeight() + "}");
-		// }
-		// }
 	}
 
 	@Override
 	public void onOpen(WebSocket conn, ClientHandshake handshake) {
 		connections.add(conn);
-
-		updateSize();
 		writeFrame();
 	}
 
 	@Override
 	public void onMessage(WebSocket conn, String message) {
-		// Don't care about the message, just respond with frame data
-		updateSize();
 		writeFrame();
 	}
 
@@ -140,16 +120,6 @@ public class FrameServer extends WebSocketServer {
 
 	@Override
 	public void onError(WebSocket conn, Exception ex) {
-	}
-
-	// private void sendIfOpen(WebSocket client, String message) {
-	// if (client.isOpen())
-	// client.send(message);
-	// }
-
-	private void sendIfReady(WebSocket client, ByteBuffer buffer) {
-		if (client.isOpen() && !client.hasBufferedData())
-			client.send(buffer);
 	}
 
 }

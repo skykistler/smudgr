@@ -2,12 +2,12 @@ package io.smudgr.test;
 
 import io.smudgr.app.AppStart;
 import io.smudgr.app.controller.Controller;
+import io.smudgr.app.view.WebsocketView;
 import io.smudgr.engine.Rack;
 import io.smudgr.engine.alg.Algorithm;
 import io.smudgr.engine.alg.op.ChannelSort;
 import io.smudgr.engine.alg.op.ParticlePush;
 import io.smudgr.engine.alg.select.RangeSelect;
-import io.smudgr.extensions.cef.view.WebsocketView;
 
 /**
  * Eric's class for testing UI

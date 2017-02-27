@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 
 import io.smudgr.app.controller.Controller;
+import io.smudgr.app.view.WebsocketView;
 import io.smudgr.engine.Rack;
 import io.smudgr.engine.alg.Algorithm;
 import io.smudgr.engine.alg.coord.ConvergeCoords;
@@ -18,8 +19,6 @@ import io.smudgr.engine.alg.op.PixelSort;
 import io.smudgr.engine.alg.op.SpectralShift;
 import io.smudgr.engine.alg.select.RangeSelect;
 import io.smudgr.engine.param.NumberParameter;
-import io.smudgr.extensions.cef.view.CefView;
-import io.smudgr.extensions.cef.view.WebsocketView;
 
 /**
  * Garbage test class that bootstraps a bundled CEF smudgr build
@@ -62,7 +61,6 @@ public class smudgr extends AppStart {
 		super("", "data", "", "Arturia BeatStep Pro", true, false);
 
 		Controller.getInstance().add(new WebsocketView());
-		Controller.getInstance().add(new CefView(debug));
 
 		start();
 	}
