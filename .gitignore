@@ -3,16 +3,16 @@
 **/smudgr_errors.log
 **/smudgr.log
 
-node_modules
+/node_modules/
 builds/osx/*
 builds/win/*
 builds/linux/*
 /bin/
 /output/
-data/*
 **/.DS_Store
 **/hs_err_pid*
 **/debug.log
 **/smudgr.jar
 .idea/*
 .settings/*
+/data/
