@@ -1,17 +1,23 @@
 package io.smudgr.app;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.net.URLDecoder;
 
 import io.smudgr.app.controller.Controller;
 import io.smudgr.engine.Rack;
 import io.smudgr.engine.alg.Algorithm;
+import io.smudgr.engine.alg.coord.ConvergeCoords;
+import io.smudgr.engine.alg.coord.StraightCoords;
+import io.smudgr.engine.alg.op.ChannelBleed;
 import io.smudgr.engine.alg.op.DataBend;
+import io.smudgr.engine.alg.op.Marbeler;
+import io.smudgr.engine.alg.op.Operation;
+import io.smudgr.engine.alg.op.PixelShift;
+import io.smudgr.engine.alg.op.PixelSort;
+import io.smudgr.engine.alg.op.SpectralShift;
 import io.smudgr.engine.alg.select.RangeSelect;
-import io.smudgr.extensions.automate.controls.AutomatorControl;
+import io.smudgr.engine.param.NumberParameter;
 import io.smudgr.extensions.cef.view.CefView;
 import io.smudgr.extensions.cef.view.WebsocketView;
 
@@ -30,12 +36,11 @@ public class smudgr extends AppStart {
 		boolean debug = true;
 		try {
 			if (debug) {
-				String this_path = URLDecoder
-						.decode(smudgr.class.getProtectionDomain().getCodeSource().getLocation().getPath(), "UTF-8");
-				String parent_path = (new File(this_path)).getParentFile().getAbsolutePath();
+				FileOutputStream err = new FileOutputStream(Controller.getInstance().getAppPath() + "/smudgr_errors.log");
+				System.setErr(new PrintStream(err));
 
-				System.setErr(new PrintStream(new FileOutputStream(parent_path + "/smudgr_errors.log")));
-				System.setOut(new PrintStream(new FileOutputStream(parent_path + "/smudgr.log")));
+				FileOutputStream out = new FileOutputStream(Controller.getInstance().getAppPath() + "/smudgr.log");
+				System.setOut(new PrintStream(out));
 			} else {
 				PrintStream nullStream = new PrintStream(new OutputStream() {
 					@Override
@@ -54,48 +59,179 @@ public class smudgr extends AppStart {
 	}
 
 	private smudgr(boolean debug) {
-		super("", "", "", "Arturia BeatStep Pro", true, false);
+		super("", "data", "", "Arturia BeatStep Pro", true, false);
 
-		Controller.getInstance().add(new CefView(debug));
 		Controller.getInstance().add(new WebsocketView());
+		Controller.getInstance().add(new CefView(debug));
 
 		start();
 	}
 
 	@Override
 	public void buildRack() {
-		// Pro-tip: In eclipse, you can Ctrl+Click on a class name to quickly
-		// open that class
-		// There, you can see the names of available parameters
 		Rack rack = Controller.getInstance().getProject().getRack();
 
-		// Put algorithm/smudge building stuff here
+		// addStraightPixelShift(rack, true);
+		// addStraightPixelShift(rack, false);
+
+		addSpectralShift(rack);
+
+		addConvergePixelShift(rack);
+
+		addDatabend(rack);
+
+		addStraightPixelSort(rack);
+
+		// addChannelBleed(rack);
+
+		addMarbeler(rack);
+
+		addStraightPixelSort(rack);
+
+		addAutomator("auto-downsampler", null);
+	}
+
+	/**
+	 * @param rack
+	 *            Rack
+	 * @param columns
+	 *            boolean
+	 */
+	public void addStraightPixelShift(Rack rack, boolean columns) {
+		PixelShift pixel_shift = new PixelShift();
+		Algorithm shift_alg = getOperationAlgorithm(rack, pixel_shift);
+
+		StraightCoords shift_coords = new StraightCoords();
+		shift_alg.add(shift_coords);
+		shift_coords.getParameter("Vertical").setValue(columns);
+		shift_coords.getParameter("Continuous").setValue(false);
+	}
+
+	/**
+	 * @param rack
+	 *            Rack
+	 */
+	public void addConvergePixelShift(Rack rack) {
+		PixelShift pixel_shift = new PixelShift();
+		Algorithm shift_alg = getOperationAlgorithm(rack, pixel_shift);
+
+		ConvergeCoords shift_coords = new ConvergeCoords();
+		shift_alg.add(shift_coords);
+		shift_coords.getParameter("Continuous").setValue(false);
+	}
+
+	/**
+	 *
+	 * @param rack
+	 *            Rack
+	 */
+	public void addStraightPixelSort(Rack rack) {
+		PixelSort sort = new PixelSort();
+		Algorithm alg = getOperationAlgorithm(rack, sort);
+
+		RangeSelect pixelsort_range = new RangeSelect();
+		alg.add(pixelsort_range);
+		pixelsort_range.getParameter("Range Length").setValue(0);
+
+		StraightCoords coords = new StraightCoords();
+		alg.add(coords);
+		coords.getParameter("Vertical").setValue(true);
+		coords.getParameter("Continuous").setValue(false);
+	}
+
+	/**
+	 *
+	 * @param rack
+	 *            Rack
+	 */
+	public void addConvergePixelSort(Rack rack) {
+		PixelSort sort = new PixelSort();
+		Algorithm alg = getOperationAlgorithm(rack, sort);
+
+		RangeSelect pixelsort_range = new RangeSelect();
+		alg.add(pixelsort_range);
+		pixelsort_range.getParameter("Range Length").setValue(0);
+
+		ConvergeCoords coords = new ConvergeCoords();
+		alg.add(coords);
+		coords.getParameter("Continuous").setValue(false);
+	}
+
+	/**
+	 *
+	 * @param rack
+	 *            Rack
+	 */
+	public void addDatabend(Rack rack) {
+		DataBend databend = new DataBend();
+		databend.getParameter("Amount").setValue(2);
+
+		Algorithm alg = getOperationAlgorithm(rack, databend);
+
+		StraightCoords coords = new StraightCoords();
+		alg.add(coords);
+		coords.getParameter("Vertical").setValue(true);
+		coords.getParameter("Continuous").setValue(false);
+
+		RangeSelect databend_range = new RangeSelect();
+		databend_range.getParameter("Range Length").setValue(1);
+		alg.add(databend_range);
+	}
+
+	/**
+	 *
+	 * @param rack
+	 *            Rack
+	 */
+	public void addSpectralShift(Rack rack) {
+		SpectralShift spectral_shift = new SpectralShift();
+		getOperationAlgorithm(rack, spectral_shift);
+
+		spectral_shift.getParameter("Colors").setValue(6);
+	}
+
+	/**
+	 *
+	 * @param rack
+	 *            Rack
+	 */
+	public void addChannelBleed(Rack rack) {
+		ChannelBleed bleed = new ChannelBleed();
+		((NumberParameter) bleed.getParameter("Shift Amount")).setContinuous(true);
+
+		getOperationAlgorithm(rack, bleed);
+	}
+
+	/**
+	 *
+	 * @param rack
+	 *            Rack
+	 */
+	public void addMarbeler(Rack rack) {
+		Marbeler marb = new Marbeler();
+		getOperationAlgorithm(rack, marb);
+	}
+
+	/**
+	 * Get a new algorithm wrapping the given operation
+	 *
+	 * @param rack
+	 *            {@link Rack}
+	 * @param op
+	 *            {@link Operation}
+	 * @return {@link Algorithm}
+	 */
+	public Algorithm getOperationAlgorithm(Rack rack, Operation op) {
 		Algorithm alg = new Algorithm();
 
-		// Example Selector
-		RangeSelect range = new RangeSelect();
-		alg.add(range);
+		alg.getParameter("Enable").setValue(false);
+		bind(alg.getParameter("Enable"));
 
-		// Example operation
-		DataBend databend = new DataBend();
-		alg.add(databend);
+		alg.add(op);
 
-		// Make sure to add any new algorithms to the smudge
 		rack.add(alg);
 
-		// This is how you make an automated thingy, I've included a method
-		// writing this easier
-		AutomatorControl automator1 = addAutomator("Animate", databend.getParameter("Target"));
-
-		bind(rack.getParameter("Downsample"));
-		bind(databend.getParameter("Amount"));
-		bind(automator1);
-		bind(range.getParameter("Range Length"));
-
-		bind(Controller.getInstance().getAppControl("Source Set Switcher"));
-		bind(Controller.getInstance().getAppControl("Source Switcher"));
-		bind(Controller.getInstance().getAppControl("Record GIF"));
-		bind(Controller.getInstance().getAppControl("Save Project"));
+		return alg;
 	}
 
 }

@@ -215,6 +215,7 @@ public abstract class ReflectionLibrary<T extends ReflectableType> {
 
 				try {
 					tryAdd(Class.forName(className, false, contextClassLoader));
+				} catch (NoClassDefFoundError e) {
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}

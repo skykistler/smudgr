@@ -1,7 +1,6 @@
 package io.smudgr.extensions.cef.util;
 
 import org.cef.CefApp;
-import org.cef.CefApp.CefAppState;
 import org.cef.browser.CefBrowser;
 import org.cef.callback.CefSchemeHandlerFactory;
 import org.cef.callback.CefSchemeRegistrar;
@@ -45,8 +44,8 @@ public class CefAppHandler extends CefAppHandlerAdapter {
 	}
 
 	@Override
-	public void stateHasChanged(CefAppState state) {
-		if (state == CefAppState.TERMINATED)
-			Controller.getInstance().stop();
+	public boolean onBeforeTerminate() {
+		Controller.getInstance().stop();
+		return true;
 	}
 }

@@ -1,7 +1,5 @@
 package io.smudgr.app.threads;
 
-import javax.swing.SwingUtilities;
-
 import io.smudgr.app.controller.Controller;
 import io.smudgr.app.project.Project;
 import io.smudgr.app.view.View;
@@ -28,16 +26,15 @@ public class ViewThread extends AppThread {
 	 *            {@link View}
 	 */
 	public ViewThread(View view) {
-		super("View Thread - " + view);
+		super("View Thread - " + view.getName());
 
 		this.view = view;
 		setTarget(view.getTargetFPS());
 	}
 
 	@Override
-	public void start() {
+	public void onStart() {
 		view.start();
-		super.start();
 	}
 
 	@Override
@@ -69,12 +66,7 @@ public class ViewThread extends AppThread {
 
 	@Override
 	protected void onStop() {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				view.stop();
-			}
-		});
+		view.stop();
 	}
 
 }

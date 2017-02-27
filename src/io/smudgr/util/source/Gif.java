@@ -120,6 +120,7 @@ public class Gif implements AnimatedSource {
 
 		public void start() {
 			Thread t = new Thread(this);
+			t.setName("GIF Reader: " + filename);
 			t.start();
 		}
 

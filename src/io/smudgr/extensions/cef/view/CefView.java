@@ -5,22 +5,24 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.DisplayMode;
 import java.awt.GraphicsEnvironment;
-import java.awt.Insets;
 import java.awt.Toolkit;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.Vector;
 
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 
 import org.cef.CefApp;
 import org.cef.CefClient;
 import org.cef.CefSettings;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefMessageRouter;
+import org.cef.network.CefCookieManager;
 
+import io.smudgr.app.smudgr;
 import io.smudgr.app.controller.Controller;
 import io.smudgr.app.view.View;
 import io.smudgr.extensions.cef.util.CefAppHandler;
@@ -35,9 +37,13 @@ import io.smudgr.util.Frame;
  */
 public class CefView extends JFrame implements View {
 
-	private boolean debug;
+	@Override
+	public String getName() {
+		return "CEF";
+	}
 
-	private RenderFrame renderFrame;
+	private boolean cefLogging = false;
+	private boolean debug;
 
 	private CefApp cefApp;
 	private CefClient cefClient;
@@ -53,9 +59,6 @@ public class CefView extends JFrame implements View {
 	public CefView(boolean debug) {
 		super("smudgr");
 		this.debug = debug;
-
-		renderFrame = new RenderFrame(this);
-		Controller.getInstance().add(renderFrame);
 	}
 
 	@Override
@@ -76,69 +79,48 @@ public class CefView extends JFrame implements View {
 
 		addWindowListener(new WindowAdapter() {
 			@Override
-			public void windowActivated(WindowEvent e) {
-				if (e.getOppositeWindow() != renderFrame)
-					renderFrame.updateIsVisible();
-			}
-
-			@Override
-			public void windowDeactivated(WindowEvent e) {
-				if (e.getOppositeWindow() != renderFrame)
-					renderFrame.updateIsVisible();
-			}
-
-			@Override
-			public void windowIconified(WindowEvent e) {
-				renderFrame.updateIsVisible();
-			}
-
-			@Override
-			public void windowDeiconified(WindowEvent e) {
-				renderFrame.updateIsVisible();
-			}
-
-			@Override
 			public void windowClosing(WindowEvent e) {
 				Controller.getInstance().stop();
 			}
 		});
 
-		addComponentListener(new ComponentListener() {
-			@Override
-			public void componentResized(ComponentEvent e) {
-				Insets inset = getInsets();
-				cefBrowserUI.setSize(getWidth() - inset.left - inset.right, getHeight() - inset.top - inset.bottom);
-				renderFrame.updateDimensions();
-			}
-
-			@Override
-			public void componentMoved(ComponentEvent e) {
-				renderFrame.updateDimensions();
-			}
-
-			@Override
-			public void componentShown(ComponentEvent e) {
-				renderFrame.updateIsVisible();
-			}
-
-			@Override
-			public void componentHidden(ComponentEvent e) {
-				renderFrame.updateIsVisible();
-			}
-		});
+		// addComponentListener(new ComponentListener() {
+		// @Override
+		// public void componentResized(ComponentEvent e) {
+		// Insets inset = getInsets();
+		// cefBrowserUI.setSize(getWidth() - inset.left - inset.right,
+		// getHeight() - inset.top - inset.bottom);
+		//
+		// cefBrowserUI.setIgnoreRepaint(false);
+		// cefBrowserUI.repaint();
+		// }
+		//
+		// @Override
+		// public void componentMoved(ComponentEvent e) {
+		// }
+		//
+		// @Override
+		// public void componentShown(ComponentEvent e) {
+		// }
+		//
+		// @Override
+		// public void componentHidden(ComponentEvent e) {
+		// }
+		// });
 
 		add(cefBrowserUI);
 
-		renderFrame.setVisible(true);
 		setVisible(true);
 
-		setSize(width - 100, height);
+		// setSize(width - 100, height);
+		setSize(width, height);
 		try {
 			Thread.sleep(200);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-		setSize(width, height);
+
+		repaint();
 
 		// if (OS.isWindows())
 		// setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
@@ -154,8 +136,24 @@ public class CefView extends JFrame implements View {
 		CefSettings settings = new CefSettings();
 		settings.background_color = settings.new ColorType(255, 0, 0, 0);
 
-		if (debug)
+		if (debug) {
 			settings.remote_debugging_port = 54321;
+
+			if (cefLogging) {
+				settings.log_severity = CefSettings.LogSeverity.LOGSEVERITY_VERBOSE;
+
+				String parent_path = "";
+				try {
+					String this_path = URLDecoder
+							.decode(smudgr.class.getProtectionDomain().getCodeSource().getLocation().getPath(), "UTF-8");
+
+					parent_path = (new File(this_path)).getParentFile().getAbsolutePath() + "/";
+				} catch (UnsupportedEncodingException e) {
+				}
+
+				settings.log_file = parent_path + "cef_debug.log";
+			}
+		}
 
 		cefApp = CefApp.getInstance(settings);
 
@@ -166,24 +164,23 @@ public class CefView extends JFrame implements View {
 
 		cefClient.addDialogHandler(new DialogHandler());
 
-		cefBrowser = cefClient.createBrowser("smudgr://ui/index.html", false, false);
+		CefCookieManager cookieManager = CefCookieManager.getGlobalManager();
+
+		Vector<String> cookieSchemas = new Vector<String>();
+		cookieSchemas.add("http");
+		cookieSchemas.add("https");
+		cookieSchemas.add("smudgr");
+		cookieManager.setSupportedSchemes(cookieSchemas);
+
+		cefBrowser = cefClient.createBrowser("smudgr://ui", false, false);
 
 		cefBrowserUI = cefBrowser.getUIComponent();
 	}
 
 	@Override
 	public void stop() {
-		renderFrame.setVisible(false);
 		setVisible(false);
-
-		super.dispose();
-
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				CefApp.getInstance().dispose();
-			}
-		});
+		CefApp.getInstance().dispose();
 	}
 
 	private static final long serialVersionUID = 6622012878252406208L;

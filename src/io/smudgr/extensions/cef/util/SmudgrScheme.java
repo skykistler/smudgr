@@ -31,10 +31,20 @@ public class SmudgrScheme extends CefResourceHandlerAdapter {
 	@Override
 	public synchronized boolean processRequest(CefRequest request, CefCallback callback) {
 		String url = request.getURL();
-		String path = url.substring(url.indexOf("://") + 3);
-		String ext = path.substring(path.lastIndexOf(".") + 1);
+		System.out.println("Frontend requested: " + url);
 
-		System.out.println("Frontend requested: " + path);
+		String path = url.substring(url.indexOf("://ui/") + 6);
+
+		if (path.endsWith("#/"))
+			path = path.substring(0, path.length() - 2);
+
+		if (path.endsWith("/"))
+			path = path.substring(0, path.length() - 1);
+
+		if (path.isEmpty())
+			path = "index.html";
+
+		String ext = path.substring(path.lastIndexOf(".") + 1);
 
 		SmudgrJar resource = new SmudgrJar(basePath + path);
 		data = resource.getData();
@@ -58,7 +68,7 @@ public class SmudgrScheme extends CefResourceHandlerAdapter {
 					break;
 
 				case "css":
-					mime_type = "application/css";
+					mime_type = "text/css";
 					break;
 
 				default:
@@ -73,7 +83,7 @@ public class SmudgrScheme extends CefResourceHandlerAdapter {
 			data = html.getBytes();
 			mime_type = "text/html";
 
-			System.out.println("Could not find: " + path);
+			System.out.println("Could not find: " + basePath + path);
 		}
 
 		callback.Continue();

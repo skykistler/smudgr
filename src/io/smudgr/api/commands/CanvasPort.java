@@ -16,7 +16,7 @@ public class CanvasPort implements ApiCommand {
 	@Override
 	public ApiMessage execute(ApiMessage data) {
 		ApiMessage response = new ApiMessage();
-		response.put("port", "8887");
+		response.put("port", 8887);
 
 		return response;
 	}

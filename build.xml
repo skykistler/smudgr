@@ -14,6 +14,9 @@
 	<target depends="clean" name="compile">
 		<mkdir dir="bin"/>
 		<javac srcdir="src" destdir="bin" classpathref="classpath"/>
+		<copy todir="bin/io/smudgr/ui" >  
+		        <fileset dir="src/io/smudgr/ui" includes="**"/>  
+		 </copy> 
 	</target>
 	
 	<target depends="compile" name="run">
@@ -22,7 +25,7 @@
 			  classpath="bin:lib/*:builds/win64/bin/*"/>
 	</target>
 
-	<target depends="makejar, windowsLaunch, macLaunch" name="launch" />
+	<target depends="compile, makejar, windowsLaunch, macLaunch" name="launch" />
 	
 	<target name="makejar">
 		<jar jarfile="builds/smudgr.jar" includes="**/**" basedir="bin" />

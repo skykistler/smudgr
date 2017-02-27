@@ -26,14 +26,14 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="builds/win64/bin/jcef.jar">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/smudgr-java/lib/jcef_docs.zip!/"/>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="smudgr-java/builds/win64/bin/lib/win64"/>
+			<attribute name="javadoc_location" value="jar:platform:/resource/smudgr/lib/jcef_docs.zip!/"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="smudgr/lib"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="builds/macosx64/bin/smudgr.app/Contents/Java/jcef.jar">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/smudgr-java/lib/jcef_docs.zip!/"/>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="smudgr-java/lib"/>
+			<attribute name="javadoc_location" value="jar:platform:/resource/smudgr/lib/jcef_docs.zip!/"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="smudgr/lib"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/trove.jar">
@@ -41,7 +41,11 @@
 			<attribute name="javadoc_location" value="http://trove4j.sourceforge.net/javadocs/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/java_websocket.jar" sourcepath="/Users/skykistler/Documents/java_websocket"/>
+	<classpathentry kind="lib" path="lib/java_websocket.jar" sourcepath="/Users/skykistler/Documents/java_websocket">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/Users/sky/git/java-websocket/doc/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="lib/freenect.jar">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="smudgr-java/lib"/>

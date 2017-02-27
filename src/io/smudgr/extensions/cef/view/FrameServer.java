@@ -119,7 +119,7 @@ public class FrameServer extends WebSocketServer {
 	}
 
 	@Override
-	public synchronized void onOpen(WebSocket conn, ClientHandshake handshake) {
+	public void onOpen(WebSocket conn, ClientHandshake handshake) {
 		connections.add(conn);
 
 		updateSize();
@@ -134,7 +134,7 @@ public class FrameServer extends WebSocketServer {
 	}
 
 	@Override
-	public synchronized void onClose(WebSocket conn, int arg1, String arg2, boolean arg3) {
+	public void onClose(WebSocket conn, int arg1, String arg2, boolean arg3) {
 		connections.remove(conn);
 	}
 

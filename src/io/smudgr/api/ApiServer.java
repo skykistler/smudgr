@@ -53,6 +53,7 @@ public class ApiServer extends WebSocketServer {
 
 	@Override
 	public void onOpen(WebSocket conn, ClientHandshake handshake) {
+		System.out.println("Connected to client: " + conn.getRemoteSocketAddress());
 		connections.add(conn);
 	}
 

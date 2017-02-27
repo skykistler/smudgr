@@ -1,6 +1,7 @@
 package io.smudgr.app.controller;
 
-import java.io.IOException;
+import java.io.File;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import io.smudgr.api.ApiCommand;
 import io.smudgr.api.ApiInvoker;
 import io.smudgr.api.ApiMessage;
 import io.smudgr.api.ApiServer;
+import io.smudgr.app.smudgr;
 import io.smudgr.app.project.Project;
 import io.smudgr.app.project.reflect.TypeLibrary;
 import io.smudgr.app.project.util.ProjectLoader;
@@ -88,6 +90,8 @@ public class Controller {
 	private FrameOutput frameOutput;
 
 	private Controller() {
+		Thread.currentThread().setName("smudgr");
+
 		instance = this;
 		apiInvoker = new ApiInvoker();
 	}
@@ -212,8 +216,8 @@ public class Controller {
 
 		System.out.println("Stopping API...");
 		try {
-			apiServer.stop();
-		} catch (IOException | InterruptedException e) {
+			apiServer.stop(100);
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 
@@ -229,7 +233,7 @@ public class Controller {
 		project.disposeSources();
 
 		try {
-			Thread.sleep(300);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} finally {
@@ -526,6 +530,23 @@ public class Controller {
 	 */
 	public int getTargetFPS() {
 		return renderer.getTarget();
+	}
+
+	/**
+	 * Gets the current directory the application is running in.
+	 *
+	 * @return {@link String}
+	 */
+	public String getAppPath() {
+		try {
+			String this_path = URLDecoder
+					.decode(smudgr.class.getProtectionDomain().getCodeSource().getLocation().getPath(), "UTF-8");
+			String parent_path = (new File(this_path)).getParentFile().getAbsolutePath();
+
+			return parent_path;
+		} catch (Exception e) {
+			return "";
+		}
 	}
 
 	/**
