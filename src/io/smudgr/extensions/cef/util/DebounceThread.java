@@ -12,7 +12,7 @@ public class DebounceThread implements Runnable {
 
 	/**
 	 * Start a debounce for the specified amount of milliseconds
-	 * 
+	 *
 	 * @param millis
 	 *            {@code long}
 	 */
@@ -24,7 +24,9 @@ public class DebounceThread implements Runnable {
 	 * Start the debounce
 	 */
 	public void start() {
-		(new Thread(this)).start();
+		Thread t = new Thread(this);
+		t.setName("Debounce Thread");
+		t.start();
 	}
 
 	@Override

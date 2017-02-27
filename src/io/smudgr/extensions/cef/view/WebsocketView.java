@@ -1,7 +1,5 @@
 package io.smudgr.extensions.cef.view;
 
-import java.io.IOException;
-
 import io.smudgr.app.controller.Controller;
 import io.smudgr.app.view.View;
 import io.smudgr.util.Frame;
@@ -37,8 +35,8 @@ public class WebsocketView implements View {
 	@Override
 	public void stop() {
 		try {
-			server.stop();
-		} catch (IOException | InterruptedException e) {
+			server.stop(100);
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}

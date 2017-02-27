@@ -43,8 +43,13 @@ public class SourceLibrary {
 		File directory = new File(location);
 
 		if (!directory.exists()) {
-			System.out.println("File " + location + " does not exist!");
-			return;
+			location = Controller.getInstance().getAppPath() + "/" + location;
+			directory = new File(location);
+
+			if (!directory.exists()) {
+				System.out.println("Source directory " + location + " can't be found!");
+				return;
+			}
 		}
 
 		// If not a directory, just add the one file

@@ -26,6 +26,15 @@ public abstract class AppThread implements Runnable {
 	}
 
 	/**
+	 * Gets the name of this thread
+	 *
+	 * @return {@link String}
+	 */
+	public String getName() {
+		return threadName;
+	}
+
+	/**
 	 * Start execution of the thread loop.
 	 *
 	 * @see AppThread#setPaused(boolean)
@@ -101,6 +110,8 @@ public abstract class AppThread implements Runnable {
 
 	@Override
 	public void run() {
+		onStart();
+
 		timerMs = System.currentTimeMillis();
 
 		long prevTicks = 0;
@@ -136,6 +147,7 @@ public abstract class AppThread implements Runnable {
 		}
 
 		onStop();
+		System.out.println("Stopped: " + getName());
 
 		finished = true;
 	}
@@ -169,8 +181,10 @@ public abstract class AppThread implements Runnable {
 		ticks = 0;
 	}
 
+	protected void onStart() {
+	}
+
 	protected void onStop() {
-		System.out.println("A smudgr process stopped");
 	}
 
 }
