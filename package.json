@@ -1,0 +1,25 @@
+{
+  "name": "smudgr",
+  "version": "1.0.0",
+  "description": "Algorithmic visual manipulation",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skykistler/smudgr.git"
+  },
+  "author": "Skyler Kistler, Eric Voorhis",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/skykistler/smudgr/issues"
+  },
+  "homepage": "https://github.com/skykistler/smudgr#readme",
+  "dependencies": {
+    "electron": "^1.4.15"
+  }
+}

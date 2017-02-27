@@ -3,6 +3,7 @@
 **/smudgr_errors.log
 **/smudgr.log
 
+node_modules
 /bin/
 /output/
 data/*
