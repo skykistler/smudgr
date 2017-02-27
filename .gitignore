@@ -4,6 +4,9 @@
 **/smudgr.log
 
 node_modules
+builds/osx/*
+builds/win/*
+builds/linux/*
 /bin/
 /output/
 data/*
