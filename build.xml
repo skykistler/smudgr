@@ -3,41 +3,61 @@
 	
 	<property name="class" value="io.smudgr.test.SkyShowApp"/> 
 	
+	<condition property="isMac">
+			<os family="mac" />
+		</condition>
+
+		<condition property="isWindows">
+			<os family="windows" />
+		</condition>
+	
 	<path id="classpath">
 		<fileset dir="." includes="**/*.jar"/>
 	</path>
 	
 	<target name="clean">
 		<delete dir="bin"/>
+		<delete dir="builds"/>
 	</target>
 	
-	<target depends="clean" name="compile">
+	<target name="compile">
+		<delete dir="bin"/>
 		<mkdir dir="bin"/>
-		<javac srcdir="src" destdir="bin" classpathref="classpath"/>
-		<copy todir="bin/io/smudgr/ui" >  
-		        <fileset dir="src/io/smudgr/ui" includes="**"/>  
-		 </copy> 
+		<javac srcdir="src" destdir="bin" classpathref="classpath" includeantruntime="false"/>
 	</target>
 	
-	<target depends="compile" name="run">
+	<target name="run" depends="compile">
 		<java classname="${class}" 
 			  fork="true"
 			  classpath="bin:lib/*:builds/win64/bin/*"/>
 	</target>
-
-	<target depends="compile, makejar, windowsLaunch, macLaunch" name="launch" />
 	
-	<target name="makejar">
-		<jar jarfile="builds/smudgr.jar" includes="**/**" basedir="bin" />
+	<target name="winBuild" if="isWindows">
+		<mkdir dir="builds/win" />
 	</target>
 	
-	<condition property="isMac">
-		<os family="mac" />
-	</condition>
+	<target name="osxBuild" if="isMac">
+		<mkdir dir="builds/osx" />
+		<exec dir="./app" executable="npm">
+			<arg line="install" />
+		</exec>
+		<exec dir="." executable="ditto">
+			<arg line="app/node_modules/electron/dist/Electron.app" />
+			<arg line="builds/osx/smudgr.app" />
+		</exec>
+		<exec dir="." executable="ditto">
+			<arg line="app/ui" />
+			<arg line="builds/osx/smudgr.app/Contents/Resources/app/ui" />
+		</exec>
+		<copy file="app/package.json" todir="builds/osx/smudgr.app/Contents/Resources/app" />
+		<copy file="app/index.js" todir="builds/osx/smudgr.app/Contents/Resources/app" />
+	</target>
 
-	<condition property="isWindows">
-		<os family="windows" />
-	</condition>
+	<target name="build" depends="compile, winBuild, osxBuild">
+		<jar jarfile="builds/smudgr.jar" includes="**/**" basedir="bin" />
+	</target>
+
+	<target depends="build, windowsLaunch, macLaunch" name="launch" />
 
 	<target name="windowsLaunch" if="isWindows">
 		<echo>Running Windows scripts...</echo>

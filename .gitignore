@@ -3,7 +3,7 @@
 **/smudgr_errors.log
 **/smudgr.log
 
-/node_modules/
+**/node_modules/
 builds/osx/*
 builds/win/*
 builds/linux/*

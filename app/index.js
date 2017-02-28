@@ -17,10 +17,8 @@ app.on('ready', () => {
     center: true
   })
 
-  win.openDevTools()
-
   win.loadURL(url.format({
-    pathname: path.join(__dirname, 'bin/io/smudgr/ui/index.html'),
+    pathname: path.join(__dirname, 'ui/index.html'),
     protocol: 'file:',
     slashes: true
   }))
