@@ -6,7 +6,7 @@ smudgr is a different image manipulation program for producing and performing al
 + Smudges are musically reactive, tightly controlled, or beautifully expressive.
 + Process and expression compliment and contrast each other.
 
-# Building
+# Build/Launch
 
 Requires JRE/JDK 1.8. Eclipse or IntelliJ recommended.
 
@@ -18,11 +18,12 @@ Requires [Ant] (https://ant.apache.org/manual/install.html), which may be includ
 
 This should install dependencies, compile code, and bundle an executable in builds/your_os
 
-## Launch
+Alternatively,
+
 `ant launch` will build and launch the executable for your platform.
 
 # Headless
 
-Alternatively, you can run a test class with ant using:
+You can run a test class without launching the front-end using:
 
 `ant run -Dclass=io.smudgr.PizzaBoxShow`
