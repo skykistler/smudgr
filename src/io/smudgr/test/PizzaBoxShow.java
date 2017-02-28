@@ -185,7 +185,7 @@ public class PizzaBoxShow extends AppStart {
 
 		spectral_shift.getParameter("Colors").setValue(6);
 
-		bind(addAutomator("beat-sync", spectral_shift.getParameter("Shift")));
+		bind(addAutomator("step", spectral_shift.getParameter("Shift")));
 
 		bind(spectral_shift.getParameter("Colors"));
 		bind(spectral_shift.getParameter("Palette"));

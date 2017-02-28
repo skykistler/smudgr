@@ -27,7 +27,7 @@ public class StepAutomator implements AutomatorControl {
 	private NumberParameter parameter;
 	private boolean run = true;
 
-	private double increment = .05, speed = increment;
+	private double increment = .05, speed = increment * 2;
 
 	@Override
 	public void init() {
