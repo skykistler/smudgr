@@ -21,7 +21,7 @@ import io.smudgr.engine.alg.select.RangeSelect;
 import io.smudgr.engine.param.NumberParameter;
 
 /**
- * Garbage test class that bootstraps a bundled CEF smudgr build
+ * Garbage test class that bootstraps a bundled smudgr build
  */
 public class smudgr extends AppStart {
 

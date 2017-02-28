@@ -18,11 +18,21 @@ app.on('ready', () => {
   win = new BrowserWindow({
     width: width - 200,
     height: height - 100,
-    center: true
+    center: true,
+    backgroundColor: '#2b292c'
   })
 
-  javaProcess = child_process.exec('java -jar java/smudgr.jar')
+  javaProcess = child_process.exec(
+    'java -Dapple.awt.UIElement="true" -jar java/smudgr.jar',
+    {
+      cwd: __dirname,
+      killSignal: 'SIGINT'
+  })
 
+  setTimeout(initWindow, 1000)
+})
+
+function initWindow() {
   win.loadURL(url.format({
     pathname: path.join(__dirname, 'ui/index.html'),
     protocol: 'file:',
@@ -35,11 +45,11 @@ app.on('ready', () => {
     // when you should delete the corresponding element.
     win = null
   })
-})
+}
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
-  javaProcess.kill()
+  javaProcess.kill();
   app.quit()
 })
 

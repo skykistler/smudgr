@@ -17,7 +17,9 @@
 	
 	<target name="clean">
 		<delete dir="bin"/>
-		<delete dir="builds"/>
+		<delete dir="builds/osx"/>
+		<delete dir="builds/win"/>
+		<delete file="builds/smudgr.jar"/>
 	</target>
 	
 	<target name="compile">
@@ -39,7 +41,7 @@
 		        <include name="*.jar"/>
 		    </fileset>
 		</path>
-		<manifestclasspath property="lib.list" jarfile="builds/smudgr.jar">
+		<manifestclasspath property="lib.list" jarfile="smudgr.jar">
 		    <classpath refid="build-classpath"/>
 		</manifestclasspath>
 		<jar jarfile="builds/smudgr.jar"
@@ -72,10 +74,17 @@
 		<copy file="app/package.json" todir="builds/osx/smudgr.app/Contents/Resources/app" />
 		<copy file="app/index.js" todir="builds/osx/smudgr.app/Contents/Resources/app" />
 		<copy file="builds/smudgr.jar" todir="builds/osx/smudgr.app/Contents/Resources/app/java" />
-		<copy todir="builds/osx/smudgr.app/Contents/Resources/app/java">
+		<copy todir="builds/osx/smudgr.app/Contents/Resources/app/java/lib">
 			<path>
 			    <fileset dir="lib">
-			        <include name="*.dylib"/>
+			        <include name="*"/>
+			    </fileset>
+			</path>
+		</copy>
+		<copy todir="builds/osx/smudgr.app/Contents/Resources/app/data">
+			<path>
+			    <fileset dir="data/included">
+			        <include name="*"/>
 			    </fileset>
 			</path>
 		</copy>
