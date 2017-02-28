@@ -24,12 +24,32 @@
 		<delete dir="bin"/>
 		<mkdir dir="bin"/>
 		<javac srcdir="src" destdir="bin" classpathref="classpath" includeantruntime="false"/>
+		<jar jarfile="builds/smudgr.jar" includes="**/**" basedir="bin" />
 	</target>
 	
 	<target name="run" depends="compile">
 		<java classname="${class}" 
 			  fork="true"
 			  classpath="bin:lib/*:builds/win64/bin/*"/>
+	</target>
+	
+	<target name="buildJar" depends="compile">
+		<path id="build-classpath">
+		    <fileset dir="lib">
+		        <include name="*.jar"/>
+		    </fileset>
+		</path>
+		<manifestclasspath property="lib.list" jarfile="builds/smudgr.jar">
+		    <classpath refid="build-classpath"/>
+		</manifestclasspath>
+		<jar jarfile="builds/smudgr.jar"
+			 basedir="bin"
+		     includes="**/**" >
+		    <manifest>
+		        <attribute name="Main-Class" value="io.smudgr.app.smudgr"/>
+		        <attribute name="Class-Path" value="${lib.list}"/>
+		    </manifest>
+		</jar>
 	</target>
 	
 	<target name="winBuild" if="isWindows">
@@ -51,27 +71,25 @@
 		</exec>
 		<copy file="app/package.json" todir="builds/osx/smudgr.app/Contents/Resources/app" />
 		<copy file="app/index.js" todir="builds/osx/smudgr.app/Contents/Resources/app" />
+		<copy file="builds/smudgr.jar" todir="builds/osx/smudgr.app/Contents/Resources/app/java" />
+		<copy todir="builds/osx/smudgr.app/Contents/Resources/app/java">
+			<path>
+			    <fileset dir="lib">
+			        <include name="*.dylib"/>
+			    </fileset>
+			</path>
+		</copy>
 	</target>
 
-	<target name="build" depends="compile, winBuild, osxBuild">
-		<jar jarfile="builds/smudgr.jar" includes="**/**" basedir="bin" />
-	</target>
+	<target name="build" depends="clean, buildJar, winBuild, osxBuild" />
 
-	<target depends="build, windowsLaunch, macLaunch" name="launch" />
+	<target name="launch" depends="build, windowsLaunch, macLaunch" />
 
 	<target name="windowsLaunch" if="isWindows">
-		<echo>Running Windows scripts...</echo>
-		<copy file="./builds/smudgr.jar" todir="./builds/win64/bin" />
-		<exec dir="./builds/win64/" executable="cmd">
-	        <arg line="/c" />
-			<arg line="run.bat" />
-		</exec>
+		<echo>Not yet implemented..</echo>
 	</target>
 
 	<target name="macLaunch" if="isMac">
-		<echo>Running Mac scripts...</echo>
-		<exec dir="." executable="/bin/sh">
-			<arg line="builds/macosx64/compile.sh" />
-		</exec>
+		<echo>Not yet implemented...</echo>
 	</target>
 </project>

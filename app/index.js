@@ -3,10 +3,14 @@ const {app, BrowserWindow} = electron
 
 const path = require('path')
 const url = require('url')
+const child_process = require('child_process')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win
+
+// smudgr jar
+let javaProcess
 
 app.on('ready', () => {
   const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
@@ -16,6 +20,8 @@ app.on('ready', () => {
     height: height - 100,
     center: true
   })
+
+  javaProcess = child_process.exec('java -jar java/smudgr.jar')
 
   win.loadURL(url.format({
     pathname: path.join(__dirname, 'ui/index.html'),
@@ -33,7 +39,8 @@ app.on('ready', () => {
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
-    app.quit()
+  javaProcess.kill()
+  app.quit()
 })
 
 // In this file you can include the rest of your app's specific main process
