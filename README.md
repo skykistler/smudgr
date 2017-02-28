@@ -1,6 +1,6 @@
 # smudgr
 
-smudgr is a different image manipulation program for producing and performing algorithmic visuals.
+smudgr is a unique visuals app for designing, producing, and performing algorithmic manipulations.
 
 + Visual instruments, called "smudges", are sequenced and layered.
 + Smudges are musically reactive, tightly controlled, or beautifully expressive.
