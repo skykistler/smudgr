@@ -22,14 +22,14 @@ app.on('ready', () => {
     backgroundColor: '#2b292c'
   })
 
-  javaProcess = child_process.exec(
+  javaProcess = child_process.spawn(
     'java -Dapple.awt.UIElement="true" -jar java/smudgr.jar',
     {
       cwd: __dirname,
-      killSignal: 'SIGINT'
+      shell: true
   })
 
-  setTimeout(initWindow, 1000)
+  initWindow()
 })
 
 function initWindow() {
@@ -49,7 +49,7 @@ function initWindow() {
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
-  javaProcess.kill();
+  javaProcess.kill('SIGINT');
   app.quit()
 })
 
