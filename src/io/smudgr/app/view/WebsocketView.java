@@ -12,7 +12,7 @@ public class WebsocketView implements View {
 
 	@Override
 	public String getName() {
-		return "WebSocket server";
+		return "WebSocket frame server";
 	}
 
 	private FrameServer server;
