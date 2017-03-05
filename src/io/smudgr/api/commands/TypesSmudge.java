@@ -15,7 +15,7 @@ public class TypesSmudge implements ApiCommand {
 
 	@Override
 	public String getCommand() {
-		return "smudge.types";
+		return "types.smudge";
 	}
 
 	@Override

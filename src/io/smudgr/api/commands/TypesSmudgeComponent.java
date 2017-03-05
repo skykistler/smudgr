@@ -5,6 +5,7 @@ import java.util.Set;
 import io.smudgr.api.ApiCommand;
 import io.smudgr.api.ApiMessage;
 import io.smudgr.app.project.Project;
+import io.smudgr.engine.SmudgeComponent;
 
 /**
  * Gets available smudge component types for a particular smudge type, as
@@ -18,12 +19,12 @@ public class TypesSmudgeComponent implements ApiCommand {
 
 	@Override
 	public String getCommand() {
-		return "smudge.component.types";
+		return "types.smudge.component";
 	}
 
 	@Override
 	public ApiMessage execute(ApiMessage data) {
-		if (!data.hasKey(SMUDGE_TYPE_ID_KEY)) {
+		if (data == null || !data.hasKey(SMUDGE_TYPE_ID_KEY)) {
 			return ApiMessage.failed(getCommand(), new ApiMessage("message", "Must include 'smudge-type' of desired smudge components."));
 		}
 
@@ -33,8 +34,16 @@ public class TypesSmudgeComponent implements ApiCommand {
 
 		ApiMessage types = new ApiMessage();
 
-		for (String id : typeIds)
-			types.put(id, getProject().getSmudgeComponentLibrary().getNameById(smudgeTypeId, id));
+		for (String id : typeIds) {
+			SmudgeComponent component = getProject().getSmudgeComponentLibrary().getNewInstance(smudgeTypeId, id);
+
+			ApiMessage component_data = new ApiMessage();
+			component_data.put("id", id);
+			component_data.put("name", component.getTypeName());
+			component_data.put("type", component.getComponentTypeIdentifier());
+
+			types.put(id, component_data);
+		}
 
 		return ApiMessage.ok(getCommand(), types);
 	}
