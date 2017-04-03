@@ -11,6 +11,21 @@ import io.smudgr.util.source.Source;
 public class DepthSource extends KinectSource {
 
 	@Override
+	public String getTypeIdentifier() {
+		return "kinect-depth-buffer";
+	}
+
+	@Override
+	public String getTypeName() {
+		return "Kinect Depth Buffer";
+	}
+
+	@Override
+	public String getName() {
+		return getTypeName();
+	}
+
+	@Override
 	public KinectBuffer getKinectBuffer(KinectExtension extension) {
 		return extension.getDepthBuffer();
 	}

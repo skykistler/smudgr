@@ -62,7 +62,7 @@ public class Frame {
 	 * @return duplicate {@link Frame}
 	 */
 	public synchronized Frame copy() {
-		checkDisposed();
+		assertNotDisposed();
 
 		Frame copy = new Frame(width, height);
 
@@ -80,7 +80,7 @@ public class Frame {
 	 *            {@link Frame} of equal dimensions (ideally)
 	 */
 	public synchronized void copyTo(Frame f) {
-		checkDisposed();
+		assertNotDisposed();
 
 		System.arraycopy(pixels, 0, f.pixels, 0, Math.min(f.pixels.length, pixels.length));
 	}
@@ -95,7 +95,7 @@ public class Frame {
 	 *            {@link BufferedImage}
 	 */
 	public synchronized void drawTo(BufferedImage image) {
-		checkDisposed();
+		assertNotDisposed();
 
 		Frame fittedFrame = fitToSize(image.getWidth(), image.getHeight());
 
@@ -129,19 +129,21 @@ public class Frame {
 	}
 
 	/**
-	 * Without changing dimension ratios, fit this {@link Frame} to the given
-	 * size and fill blank space with black.
+	 * Without changing dimension ratios, return a copy of this {@link Frame}
+	 * fitted to the given size, optionally filling blank space with black.
 	 *
 	 * @param toSizeW
 	 *            new width
 	 * @param toSizeH
 	 *            new height
 	 * @param fill
-	 *            with black
+	 *            If true, to return a frame of exactly toSizeW x toSizeH with
+	 *            blank space filled with black. Otherwise, a frame with scaled
+	 *            dimensions of the original ratio is returned.
 	 * @return fitted {@link Frame}
 	 */
 	public Frame fitToSize(int toSizeW, int toSizeH, boolean fill) {
-		checkDisposed();
+		assertNotDisposed();
 
 		double newWidth = width;
 		double newHeight = height;
@@ -167,7 +169,16 @@ public class Frame {
 	}
 
 	/**
-	 * Resize this frame by a given factor
+	 * Generates a small preview of this frame with a maximum size of 200x200
+	 * 
+	 * @return {@link Frame} thumbnail
+	 */
+	public Frame generateThumbnail() {
+		return fitToSize(200, 200, false);
+	}
+
+	/**
+	 * Returns a copy of this frame resized by a given factor.
 	 *
 	 * @param factor
 	 *            multiplier
@@ -184,7 +195,8 @@ public class Frame {
 	}
 
 	/**
-	 * Resize this frame to a given width and height
+	 * Returns a copy of this frame resized to a given width and
+	 * height.
 	 *
 	 * @param w
 	 *            width
@@ -197,8 +209,8 @@ public class Frame {
 	}
 
 	/**
-	 * Resize this frame to the given width and height, using given offsets and
-	 * new frame dimensions
+	 * Returns a copy of this frame resized to the given width and height, using
+	 * offsets and new frame dimensions.
 	 *
 	 * @param xOffset
 	 *            x shift
@@ -300,16 +312,30 @@ public class Frame {
 	 * Throws an exception if this {@link Frame} has been flagged as disposed
 	 * memory.
 	 */
-	public void checkDisposed() {
+	public void assertNotDisposed() {
 		if (disposedTime > 0)
 			throw new IllegalStateException("Trying to operate on a disposed frame. Unsafe!");
 	}
 
 	/**
-	 * Mark this {@link Frame} as disposed to allow the immediate reuse of its
-	 * backing memory.
+	 * Gets whether this frame has been marked as disposed.
+	 * 
+	 * @return {@code true} if this {@link Frame} has been marked for disposal,
+	 *         {@code false} if otherwise
+	 */
+	public boolean isDisposed() {
+		return disposedTime > 0;
+	}
+
+	/**
+	 * Mark this frame as disposed to allow the immediate reuse of its
+	 * backing memory. If this frame has already been marked for disposal, this
+	 * method does nothing.
 	 */
 	public synchronized void dispose() {
+		if (isDisposed())
+			return;
+
 		disposedTime = System.currentTimeMillis();
 		DisposedFrameProvider.getInstance().disposeFrame(this);
 	}

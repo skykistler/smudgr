@@ -121,9 +121,7 @@ public class Rack extends Parametric {
 		Smudge smudge = getProject().getSmudgeLibrary().getNewInstance(state);
 		smudge.load(state);
 
-		getSmudges().add(smudge);
-
-		smudge.onInit();
+		add(smudge);
 	}
 
 	/**

@@ -32,7 +32,8 @@ public abstract class Parametric implements ProjectItem {
 	}
 
 	/**
-	 * Gets a {@link Parameter} added to this {@link Parametric} by identifier.
+	 * Gets a {@link Parameter} added to this {@link Parametric} using its
+	 * identifier.
 	 *
 	 * @param identifier
 	 *            {@link String}
@@ -44,7 +45,8 @@ public abstract class Parametric implements ProjectItem {
 	}
 
 	/**
-	 * Gets a {@link Parameter} added to this {@link Parametric} by identifier.
+	 * Gets a {@link Parameter} added to this {@link Parametric} using its
+	 * identifier.
 	 *
 	 * @param state
 	 *            {@link PropertyMap} with {@link Parameter#PARAMETER_ID_ATTR}
@@ -52,7 +54,7 @@ public abstract class Parametric implements ProjectItem {
 	 * @see Parameter#getTypeIdentifier()
 	 */
 	public Parameter getParameter(PropertyMap state) {
-		return parameters.get(state.getAttribute(Parameter.PARAMETER_ID_ATTR));
+		return getParameter(state.getAttribute(Parameter.PARAMETER_ID_ATTR));
 	}
 
 	/**
@@ -86,10 +88,8 @@ public abstract class Parametric implements ProjectItem {
 	public void save(PropertyMap pm) {
 		ProjectItem.super.save(pm);
 
-		for (Parameter param : getParameters()) {
-			PropertyMap map = new PropertyMap(param);
-			pm.add(map);
-		}
+		for (Parameter param : getParameters())
+			pm.add(new PropertyMap(param));
 	}
 
 	@Override
@@ -99,16 +99,12 @@ public abstract class Parametric implements ProjectItem {
 		for (PropertyMap map : pm.getChildren(parameterLibrary)) {
 			Parameter param = getParameter(map);
 
+			// If this Parametric doesn't have a Parameter instance with ID from
+			// this map, don't load it.
 			if (param == null)
 				continue;
 
 			param.load(map);
-		}
-
-		// Add any unloaded parameters to the project
-		for (Parameter param : getParameters()) {
-			if (getProject().contains(param))
-				getProject().add(param);
 		}
 	}
 

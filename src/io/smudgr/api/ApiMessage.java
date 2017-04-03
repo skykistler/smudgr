@@ -86,7 +86,7 @@ public class ApiMessage {
 	 *            The value to set the key to.
 	 */
 	@SuppressWarnings("unchecked")
-	public void put(String key, Object value) {
+	public void put(Object key, Object value) {
 		payload.put(key, value);
 	}
 

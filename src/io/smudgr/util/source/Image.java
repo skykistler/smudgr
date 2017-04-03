@@ -14,8 +14,25 @@ import io.smudgr.util.Frame;
  */
 public class Image implements Source {
 
+	@Override
+	public String getTypeIdentifier() {
+		return "image";
+	}
+
+	@Override
+	public String getTypeName() {
+		return "Image";
+	}
+
+	@Override
+	public String getName() {
+		return filename;
+	}
+
 	private String filename;
+
 	private Frame frame;
+	private Frame thumbnail;
 
 	/**
 	 * Create a new {@link Image} loaded from the given filename.
@@ -52,6 +69,17 @@ public class Image implements Source {
 	@Override
 	public Frame getFrame() {
 		return frame;
+	}
+
+	@Override
+	public Frame getThumbnail() {
+		if (thumbnail != null)
+			return thumbnail;
+
+		if (frame == null || frame.isDisposed())
+			return null;
+
+		return thumbnail = frame.generateThumbnail();
 	}
 
 	@Override

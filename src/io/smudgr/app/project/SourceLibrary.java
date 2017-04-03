@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import io.smudgr.app.controller.Controller;
+import io.smudgr.app.project.reflect.TypeLibrary;
 import io.smudgr.app.project.util.PropertyMap;
 import io.smudgr.util.source.Gif;
 import io.smudgr.util.source.Image;
@@ -13,6 +14,8 @@ import io.smudgr.util.source.SourceSet;
 import io.smudgr.util.source.Video;
 
 /**
+ * TODO: Refactor {@link SourceLibrary} into a {@link TypeLibrary}
+ * <p>
  * Managed collection of sources for manipulation and mixing. Sources are
  * aggregated in a {@link SourceSet} for organization and efficiency. This
  * system will hopefully change soon as the UI is developed.
@@ -24,7 +27,7 @@ public class SourceLibrary {
 
 	private String location;
 	private int currentSet = -1;
-	private ArrayList<String> files = new ArrayList<String>();;
+	private ArrayList<String> files = new ArrayList<String>();
 	private ArrayList<SourceSet> sourceSets = new ArrayList<SourceSet>();
 
 	/**
@@ -65,7 +68,34 @@ public class SourceLibrary {
 			}
 		}
 
-		load();
+		System.out.println("Loading " + files.size() + " source files...");
+
+		for (String path : files) {
+			SourceSet set = new SourceSet(path);
+			if (set.size() > 0) {
+				add(set);
+			}
+		}
+
+		setCurrentSet(0);
+		System.out.println("Successfully loaded " + sourceSets.size() + " source sets");
+	}
+
+	/**
+	 * Adds the given {@link SourceSet} to this {@link SourceLibrary}.
+	 * 
+	 * @param set
+	 *            {@link SourceSet}
+	 */
+	public void add(SourceSet set) {
+		if (set == null)
+			return;
+
+		// TODO: refactor SourceLibrary.add() to be like other reflectable types
+		// This adds the set to the project
+		set.load(new PropertyMap(set));
+
+		getSourceSets().add(set);
 	}
 
 	/**
@@ -84,19 +114,6 @@ public class SourceLibrary {
 	 */
 	public void previousSet() {
 		setCurrentSet(currentSet - 1);
-	}
-
-	private void load() {
-		System.out.println("Loading " + files.size() + " source files...");
-
-		for (String path : files) {
-			SourceSet set = new SourceSet(path);
-			if (set.size() > 0)
-				sourceSets.add(set);
-		}
-
-		setCurrentSet(0);
-		System.out.println("Successfully loaded " + sourceSets.size() + " source sets");
 	}
 
 	private SourceSet getCurrentSet() {
@@ -133,6 +150,16 @@ public class SourceLibrary {
 	}
 
 	/**
+	 * Gets all of the currently managed {@link SourceSet} instances in this
+	 * {@link SourceLibrary}
+	 * 
+	 * @return {@code ArrayList<SourceSet>}
+	 */
+	public ArrayList<SourceSet> getSourceSets() {
+		return sourceSets;
+	}
+
+	/**
 	 * Save this {@link SourceLibrary} location to the given
 	 * {@link PropertyMap}
 	 *
@@ -141,6 +168,9 @@ public class SourceLibrary {
 	 */
 	public void save(PropertyMap pm) {
 		pm.setAttribute("location", (new File(location)).getAbsolutePath());
+
+		for (SourceSet set : sourceSets)
+			pm.add(new PropertyMap(set));
 	}
 
 	/**
@@ -152,6 +182,8 @@ public class SourceLibrary {
 	public void load(PropertyMap pm) {
 		if (pm.hasAttribute("location"))
 			setLocation(pm.getAttribute("location"));
+
+		// TODO: load sources from property map
 	}
 
 	/**
@@ -165,7 +197,7 @@ public class SourceLibrary {
 	 * @see Gif
 	 * @see Video
 	 */
-	public Source getSource(String path) {
+	public Source loadSource(String path) {
 		if (path.contains("/."))
 			return null;
 

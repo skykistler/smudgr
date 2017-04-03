@@ -77,4 +77,5 @@ public interface ReflectableType {
 	 * @see #getTypeIdentifier()
 	 */
 	public String getTypeName();
+
 }

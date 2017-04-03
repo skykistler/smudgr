@@ -47,8 +47,10 @@ public class DisposedFrameProvider {
 
 			ArrayList<Frame> toRemove = new ArrayList<Frame>();
 			for (Frame frame : stack)
-				if (System.currentTimeMillis() - frame.getDiposedTime() > 1000)
+				if (System.currentTimeMillis() - frame.getDiposedTime() > 1000) {
 					toRemove.add(frame);
+					frame.pixels = null;
+				}
 
 			stack.removeAll(toRemove);
 		}

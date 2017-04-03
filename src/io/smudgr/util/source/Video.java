@@ -18,6 +18,22 @@ import io.smudgr.util.Frame;
  * the video, in time with the application.
  */
 public class Video implements Source {
+
+	@Override
+	public String getTypeIdentifier() {
+		return "Video";
+	}
+
+	@Override
+	public String getTypeName() {
+		return "Video";
+	}
+
+	@Override
+	public String getName() {
+		return filename;
+	}
+
 	private String filename;
 	private int start;
 
@@ -71,6 +87,12 @@ public class Video implements Source {
 		Frame f = buffer.poll();
 
 		return f;
+	}
+
+	@Override
+	public Frame getThumbnail() {
+		// TODO generate thumbnail for video
+		return null;
 	}
 
 	@Override
@@ -131,11 +153,6 @@ public class Video implements Source {
 			buffer = null;
 		}
 
-	}
-
-	@Override
-	public String toString() {
-		return filename;
 	}
 
 }

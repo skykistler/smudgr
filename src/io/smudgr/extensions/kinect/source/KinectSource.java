@@ -51,6 +51,11 @@ public abstract class KinectSource implements Source {
 	}
 
 	@Override
+	public Frame getThumbnail() {
+		return null;
+	}
+
+	@Override
 	public void dispose() {
 		lastFrame.dispose();
 	}

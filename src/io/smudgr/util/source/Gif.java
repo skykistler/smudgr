@@ -27,10 +27,29 @@ import io.smudgr.util.Frame;
  * time with the application.
  */
 public class Gif implements AnimatedSource {
+
+	@Override
+	public String getTypeIdentifier() {
+		return "gif";
+	}
+
+	@Override
+	public String getTypeName() {
+		return "Gif";
+	}
+
+	@Override
+	public String getName() {
+		return filename;
+	}
+
 	private String filename;
 
 	private BufferThread bufferer;
-	private volatile ArrayList<GifFrame> buffer = new ArrayList<GifFrame>();;
+	private volatile ArrayList<GifFrame> buffer = new ArrayList<GifFrame>();
+
+	private Frame thumbnail;
+	private boolean generatedFinalThumbnail;
 
 	private int ticks;
 	private volatile int currentFrame;
@@ -85,6 +104,39 @@ public class Gif implements AnimatedSource {
 	}
 
 	@Override
+	public Frame getThumbnail() {
+		// If no frames loaded yet, no preview
+		if (buffer.size() == 0)
+			return null;
+
+		// Preview the latest frame while buffering
+		if (bufferer.loading) {
+			if (thumbnail != null)
+				thumbnail.dispose();
+
+			thumbnail = buffer.get(buffer.size() - 1).getFrame().generateThumbnail();
+		}
+		// Otherwise, make a thumbnail of the middle frame
+		else if (!generatedFinalThumbnail) {
+			if (thumbnail != null)
+				thumbnail.dispose();
+
+			/*
+			 * If there's two frames or less, this will select just the first
+			 * frame.
+			 */
+			int frameIndex = Math.max(2, buffer.size()) / 2 - 1;
+
+			thumbnail = buffer.get(frameIndex).getFrame().generateThumbnail();
+
+			// Prevent further thumbnail generation
+			generatedFinalThumbnail = true;
+		}
+
+		return thumbnail;
+	}
+
+	@Override
 	public void dispose() {
 		bufferer.stop();
 
@@ -107,16 +159,11 @@ public class Gif implements AnimatedSource {
 		return speedFactor;
 	}
 
-	@Override
-	public String toString() {
-		return filename;
-	}
-
 	static ImageReader reader = ImageIO.getImageReadersByFormatName("gif").next();
 
 	class BufferThread implements Runnable {
 
-		private boolean started;
+		private boolean loading;
 
 		public void start() {
 			Thread t = new Thread(this);
@@ -125,13 +172,13 @@ public class Gif implements AnimatedSource {
 		}
 
 		public void stop() {
-			started = false;
+			loading = false;
 		}
 
 		// This is just absolutely terrifying
 		@Override
 		public void run() {
-			started = true;
+			loading = true;
 
 			synchronized (reader) {
 				try {
@@ -190,7 +237,7 @@ public class Gif implements AnimatedSource {
 					boolean hasBackround = false;
 					int frameIndex = 0;
 
-					while (started) {
+					while (loading) {
 						BufferedImage image;
 						try {
 							image = reader.read(frameIndex);
@@ -294,6 +341,14 @@ public class Gif implements AnimatedSource {
 					for (GifFrame frame : buffer) {
 						frame.reduce();
 					}
+
+					loading = false;
+
+					/*
+					 * Generate a thumbnail to keep in memory even if this
+					 * source is disposed
+					 */
+					getThumbnail();
 
 					System.gc();
 				}

@@ -22,8 +22,8 @@ public interface ProjectItem extends ReflectableType {
 	 * Save this item to the given {@link PropertyMap}.
 	 * <p>
 	 * Implementers of this method <b>must</b> call the parent
-	 * {@code ProjectItem.save()} method in order for this {@link ProjectItem}
-	 * to persist correctly.
+	 * {@code ProjectItem.super.save()} method in order for this
+	 * {@link ProjectItem} to persist correctly.
 	 *
 	 * @param pm
 	 *            The property map to save to.
@@ -42,8 +42,8 @@ public interface ProjectItem extends ReflectableType {
 	 * Load this item from the given {@link PropertyMap}.
 	 * <p>
 	 * Implementers of this method <b>must</b> call the parent
-	 * {@code ProjectItem.load()} method in order for this {@link ProjectItem}
-	 * to load correctly.
+	 * {@code ProjectItem.super.load(pm)} method in order for this
+	 * {@link ProjectItem} to load correctly.
 	 *
 	 * @param pm
 	 *            The property map to load from.

@@ -1,7 +1,7 @@
 package io.smudgr.engine.alg.math.univariate;
 
 /**
- * TODO: Refactor
+ * TODO: Refactor to just Function
  * <p>
  * The {@link UnivariateFunction} interface defines a single method for
  * returning the {@code double} result of an implemented function given an

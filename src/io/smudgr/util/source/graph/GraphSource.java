@@ -8,6 +8,22 @@ import io.smudgr.util.source.Source;
  * returns rendered frames of a {@link Graph}
  */
 public class GraphSource implements Source {
+
+	@Override
+	public String getTypeIdentifier() {
+		return "graph";
+	}
+
+	@Override
+	public String getTypeName() {
+		return "Graph";
+	}
+
+	@Override
+	public String getName() {
+		return "Graph";
+	}
+
 	private Graph graph;
 	private GraphRenderer renderer;
 
@@ -25,6 +41,11 @@ public class GraphSource implements Source {
 	@Override
 	public Frame getFrame() {
 		return renderer.drawGraph();
+	}
+
+	@Override
+	public Frame getThumbnail() {
+		return null;
 	}
 
 	@Override

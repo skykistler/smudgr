@@ -237,8 +237,8 @@ public class Project {
 	}
 
 	/**
-	 * Add a {@link ProjectItem} to the {@link Project}. This method should be
-	 * used for items that do not yet have an ID for this project.
+	 * Add a {@link ProjectItem} to the {@link Project}. If the item is
+	 * already added to the project, this method does nothing.
 	 *
 	 * @param item
 	 *            {@link ProjectItem}
@@ -286,7 +286,7 @@ public class Project {
 	 *         otherwise
 	 */
 	public boolean contains(ProjectItem item) {
-		return idProvider.getId(item) > -1;
+		return idProvider.contains(item);
 	}
 
 	/**

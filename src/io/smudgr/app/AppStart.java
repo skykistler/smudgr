@@ -166,7 +166,6 @@ public abstract class AppStart {
 		return (MidiExtension) Controller.getInstance().getExtension("midi");
 	}
 
-	// TODO: write a better way of handling binding metadata
 	private class MidiBinding {
 		private Controllable control;
 		private boolean absolute;

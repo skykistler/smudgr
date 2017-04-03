@@ -14,12 +14,15 @@ import io.smudgr.app.project.ProjectItem;
  * {@link ProjectItem} map paired with unique integer IDs.
  */
 public class IdProvider {
-	private static final int MAX_ID = 10000;
+	private static final int ID_START = 1000;
+	private static final int ID_BATCH_SIZE = 100;
+
+	private int highestId = 0;
 
 	private HashMap<Integer, ProjectItem> idToItem = new HashMap<Integer, ProjectItem>();
 	private HashMap<ProjectItem, Integer> itemToId = new HashMap<ProjectItem, Integer>();
 
-	private List<Integer> available_ids = Collections.synchronizedList(new ArrayList<Integer>(MAX_ID));
+	private List<Integer> available_ids = Collections.synchronizedList(new ArrayList<Integer>(ID_BATCH_SIZE));
 	private Random idPicker = new Random();
 
 	private ArrayList<ProjectItem> toAdd = new ArrayList<ProjectItem>();
@@ -29,9 +32,14 @@ public class IdProvider {
 	 * Instantiate a new {@link IdProvider}
 	 */
 	public IdProvider() {
-		for (int i = 1; i <= MAX_ID; i++)
-			available_ids.add(i);
 
+		/*
+		 * Make sure to start at least from ID_START. Nothing should break if
+		 * the project contains IDs lower than this, but generation should
+		 * always start at ID_START
+		 */
+
+		consumeId(ID_START);
 		loading = true;
 	}
 
@@ -61,7 +69,7 @@ public class IdProvider {
 	 * @see Project#add(ProjectItem)
 	 */
 	public void add(ProjectItem item) {
-		if (getId(item) > -1)
+		if (contains(item))
 			return;
 
 		if (loading) {
@@ -117,8 +125,8 @@ public class IdProvider {
 	}
 
 	/**
-	 * Remove a {@link ProjectItem} item from the ID map. The old item ID is
-	 * made available for use again.
+	 * Remove a {@link ProjectItem} item from the ID map. The old ID won't be
+	 * used again.
 	 *
 	 * @param item
 	 *            {@link ProjectItem}
@@ -129,10 +137,7 @@ public class IdProvider {
 		itemToId.remove(item);
 		idToItem.remove(id);
 
-		if (id < 0 || available_ids.contains(id))
-			return;
-
-		available_ids.add(id);
+		consumeId(id);
 	}
 
 	/**
@@ -163,6 +168,23 @@ public class IdProvider {
 		return itemToId.get(item);
 	}
 
+	/**
+	 * Gets whether the given {@link ProjectItem} is already contained.
+	 *
+	 * @param item
+	 *            {@link ProjectItem}
+	 * @return {@code true} if the project contains this item, {@code false} if
+	 *         otherwise
+	 */
+	public boolean contains(ProjectItem item) {
+		return getId(item) > -1;
+	}
+
+	/**
+	 * Gets an available ID never used in this project.
+	 * 
+	 * @return
+	 */
 	private int getNewId() {
 		int index = idPicker.nextInt(available_ids.size());
 		int id = available_ids.get(index);
@@ -170,13 +192,47 @@ public class IdProvider {
 		return id;
 	}
 
+	/**
+	 * Manages a list of available/unused IDs, and ensures the given ID will not
+	 * be used again. If the given ID is higher than the current highest unused
+	 * ID (i.e. a project file was loaded), then all available IDs are discarded
+	 * and regenerated, starting after that ID.
+	 * <p>
+	 * Because no new IDs are actually assigned until all previous IDs are
+	 * loaded, this is a quick and easy way to manage a small number of unique
+	 * IDs while avoiding collisions with previously used IDs.
+	 * 
+	 * @param id
+	 *            Must be greater than -1
+	 */
 	private void consumeId(int id) {
+		if (id < 0)
+			return;
+
 		synchronized (available_ids) {
+			/*
+			 * If an ID higher than the highest available ID was used, clear
+			 * available IDs and generate higher IDs to avoid collisions.
+			 */
+			if (id > highestId) {
+				highestId = id;
+				available_ids.clear();
+			}
+
+			// Remove the id from the list of available ids, if it exists
 			for (int i = 0; i < available_ids.size(); i++)
 				if (available_ids.get(i) == id) {
 					available_ids.remove(i);
-					return;
+					break;
 				}
+
+			// Generate next batch of IDs if none left or cleared
+			if (available_ids.size() == 0) {
+				for (int i = 1; i <= ID_BATCH_SIZE; i++)
+					available_ids.add(highestId + i);
+
+				highestId = available_ids.get(available_ids.size() - 1);
+			}
 		}
 	}
 

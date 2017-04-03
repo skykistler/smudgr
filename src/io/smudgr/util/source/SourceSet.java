@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import io.smudgr.app.project.util.PropertyMap;
 import io.smudgr.util.Frame;
 
 /**
@@ -12,6 +13,22 @@ import io.smudgr.util.Frame;
  * {@link SourceSet#getFrame()}
  */
 public class SourceSet implements Source {
+
+	@Override
+	public String getTypeIdentifier() {
+		return "source-set";
+	}
+
+	@Override
+	public String getTypeName() {
+		return "Source Set";
+	}
+
+	@Override
+	public String getName() {
+		return "Set of " + sources.size() + " source(s)";
+	}
+
 	private ArrayList<String> files = new ArrayList<String>();
 	private ArrayList<Source> sources = new ArrayList<Source>();
 	private int currentSource;
@@ -44,10 +61,7 @@ public class SourceSet implements Source {
 		for (int i = 0; i < files.size(); i++) {
 			String path = files.get(i);
 
-			Source s = getSourceLibrary().getSource(path);
-			if (s != null) {
-				sources.add(s);
-			}
+			add(getSourceLibrary().loadSource(path));
 		}
 	}
 
@@ -83,6 +97,17 @@ public class SourceSet implements Source {
 		return s.getFrame();
 	}
 
+	@Override
+	public Frame getThumbnail() {
+		// TODO: generate some kind of composite preview of sources in this set
+		Source s = getCurrentSource();
+
+		if (s != null)
+			return s.getThumbnail();
+
+		return null;
+	}
+
 	/**
 	 * Gets how many sources are contained in this {@link SourceSet}
 	 *
@@ -90,6 +115,20 @@ public class SourceSet implements Source {
 	 */
 	public int size() {
 		return sources.size();
+	}
+
+	/**
+	 * Adds the given {@link Source} to this {@link SourceSet}.
+	 * 
+	 * @param source
+	 *            {@link Source}
+	 */
+	public void add(Source source) {
+		if (source == null)
+			return;
+
+		getProject().add(source);
+		getSources().add(source);
 	}
 
 	/**
@@ -150,6 +189,31 @@ public class SourceSet implements Source {
 			currentSource %= sources.size();
 		else if (currentSource < 0)
 			currentSource += sources.size();
+	}
+
+	/**
+	 * Gets a list of {@link Source} instances contained in this set. These may
+	 * or may not be fully loaded into memory.
+	 * 
+	 * @return {@code ArrayList<Source>}
+	 * @see #init()
+	 * @see Source#getThumbnail()
+	 */
+	public ArrayList<Source> getSources() {
+		return sources;
+	}
+
+	@Override
+	public void save(PropertyMap pm) {
+		Source.super.save(pm);
+
+		for (Source source : sources)
+			pm.add(new PropertyMap(source));
+	}
+
+	@Override
+	public void load(PropertyMap pm) {
+		// TODO: Load sources from property map
 	}
 
 }

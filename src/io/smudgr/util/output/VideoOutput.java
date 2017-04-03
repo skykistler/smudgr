@@ -7,6 +7,8 @@ import io.smudgr.app.controller.Controller;
 import io.smudgr.util.Frame;
 
 /**
+ * TODO: Implement outputting frames with FFMPEG
+ * <p>
  * The {@link VideoOutput} class streams frames to a video file using FFMPEG.
  */
 public class VideoOutput implements FrameOutput {
@@ -30,20 +32,15 @@ public class VideoOutput implements FrameOutput {
 
 	@Override
 	public void open() {
-		// TODO Auto-generated method stub
-
+		System.out.println("View output not implemented. Would begin outputting to: " + path);
 	}
 
 	@Override
 	public void addFrame(Frame f) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void close() {
-		// TODO Auto-generated method stub
-
 	}
 
 }

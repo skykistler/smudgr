@@ -11,6 +11,21 @@ import io.smudgr.util.source.Source;
 public class VideoSource extends KinectSource {
 
 	@Override
+	public String getTypeIdentifier() {
+		return "kinect-video-feed";
+	}
+
+	@Override
+	public String getTypeName() {
+		return "Kinect Video Feed";
+	}
+
+	@Override
+	public String getName() {
+		return getTypeName();
+	}
+
+	@Override
 	public KinectBuffer getKinectBuffer(KinectExtension extension) {
 		return extension.getVideoBuffer();
 	}
