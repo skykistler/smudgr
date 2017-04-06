@@ -162,28 +162,44 @@ public class SourceSet implements Source {
 	}
 
 	/**
+	 * Selects the given {@link Source} as the current {@link Source}. If this
+	 * {@link SourceSet} does not contain the given {@link Source}, no action is
+	 * taken.
+	 * 
+	 * @param source
+	 *            {@link Source}
+	 */
+	public void setCurrentSource(Source source) {
+		int index = sources.indexOf(source);
+		if (index < 0)
+			return;
+
+		setCurrentSource(index);
+	}
+
+	/**
 	 * Selects the given source index as the current {@link Source}.
 	 * <p>
 	 * If {@code i} is negative or larger than {@link SourceSet#size()}, the
 	 * value is wrapped.
 	 *
-	 * @param i
+	 * @param index
 	 *            index
 	 */
-	public void setCurrentSource(int i) {
+	private void setCurrentSource(int index) {
 		if (sources.size() == 0) {
 			currentSource = 0;
 			return;
 		}
 
-		if (i == currentSource)
+		if (index == currentSource)
 			return;
 
 		Source current = getCurrentSource();
 		if (current instanceof Video)
 			current.dispose();
 
-		currentSource = i;
+		currentSource = index;
 
 		if (currentSource >= sources.size())
 			currentSource %= sources.size();

@@ -116,6 +116,17 @@ public class SourceLibrary {
 		setCurrentSet(currentSet - 1);
 	}
 
+	/**
+	 * Set the current live source to the given {@link Source}.
+	 * 
+	 * @param source
+	 *            {@link Source}
+	 */
+	public void setSource(Source source) {
+		// TODO find the set containing the source and switch sets
+		sourceSets.get(currentSet).setCurrentSource(source);
+	}
+
 	private SourceSet getCurrentSet() {
 		if (sourceSets.size() == 0 || currentSet == -1)
 			return null;
