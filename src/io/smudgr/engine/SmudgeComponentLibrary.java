@@ -39,7 +39,7 @@ public class SmudgeComponentLibrary<T extends SmudgeComponent> extends Reflectio
 	 * {@link SmudgeComponentLibrary} represents, using the given implementation
 	 * identifier.
 	 *
-	 * @param smudgeIdentifier
+	 * @param smudgeTypeIdentifier
 	 *            The identifier returned by
 	 *            {@link Smudge#getTypeIdentifier()}
 	 * @param identifier
@@ -48,9 +48,9 @@ public class SmudgeComponentLibrary<T extends SmudgeComponent> extends Reflectio
 	 * @return A new instance of the given identifier, or {@code null} if it
 	 *         can't be found or instantiated.
 	 */
-	public T getNewInstance(String smudgeIdentifier, String identifier) {
+	public T getNewInstance(String smudgeTypeIdentifier, String identifier) {
 		try {
-			return implementationsBySmudge.get(smudgeIdentifier).get(identifier).newInstance();
+			return implementationsBySmudge.get(smudgeTypeIdentifier).get(identifier).newInstance();
 		} catch (NullPointerException | InstantiationException | IllegalAccessException e) {
 			System.out.println("Failed to instantiate a " + getTypeName() + ":" + identifier);
 			return null;

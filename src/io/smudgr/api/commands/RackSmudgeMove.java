@@ -8,11 +8,11 @@ import io.smudgr.engine.Smudge;
  * Take the {@link Smudge} at the {@code fromIndex} and insert it at the
  * {@code toIndex}
  */
-public class RackMoveSmudge implements ApiCommand {
+public class RackSmudgeMove implements ApiCommand {
 
 	@Override
 	public String getCommand() {
-		return "rack.move";
+		return "rack.smudge.move";
 	}
 
 	@Override

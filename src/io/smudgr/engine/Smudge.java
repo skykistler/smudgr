@@ -1,6 +1,8 @@
 package io.smudgr.engine;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import io.smudgr.app.project.Project;
 import io.smudgr.app.project.util.PropertyMap;
@@ -27,7 +29,7 @@ public abstract class Smudge extends Parametric {
 
 	private BooleanParameter enabled = new BooleanParameter("Enable", this, true);
 
-	private ArrayList<SmudgeComponent> components = new ArrayList<SmudgeComponent>();
+	private List<SmudgeComponent> components = Collections.synchronizedList(new ArrayList<SmudgeComponent>());
 
 	/**
 	 * Initialize the smudge. This will be run when the {@link Smudge} is added
@@ -106,9 +108,9 @@ public abstract class Smudge extends Parametric {
 	 * Gets all {@link SmudgeComponent}s added to this
 	 * {@link Smudge}
 	 *
-	 * @return {@code ArrayList<SmudgeComponent>}
+	 * @return {@code List<SmudgeComponent>}
 	 */
-	public ArrayList<SmudgeComponent> getComponents() {
+	public List<SmudgeComponent> getComponents() {
 		return components;
 	}
 
