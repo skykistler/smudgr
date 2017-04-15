@@ -9,7 +9,7 @@ import io.smudgr.engine.utility.scale.Scaler;
 import io.smudgr.util.Frame;
 
 /**
- * The {@link Utility} class is a container for {@link UtilityComponent}
+ * The {@link Utility} smudge is a container for {@link UtilityComponent}
  * instances. Each {@link UtilityComponent} serves a role in determining the
  * entire {@link Utility} behavior.
  */
