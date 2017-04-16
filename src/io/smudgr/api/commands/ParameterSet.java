@@ -26,7 +26,7 @@ public class ParameterSet implements ApiCommand, ParameterObserver {
 		return "parameter.set";
 	}
 
-	// Send out the batch every 10 seconds
+	// Send out the batch every 10 ticks
 	private static final int PARAMETER_UPDATE_RATE = 10;
 
 	private ArrayList<Parameter> nextBatch;
@@ -71,6 +71,8 @@ public class ParameterSet implements ApiCommand, ParameterObserver {
 		private PropertyMap batch = new PropertyMap("batch");
 		private String parameterTypeId;
 
+		private ArrayList<PropertyMap> toRemove = new ArrayList<PropertyMap>();
+
 		/**
 		 * Instantiate the {@link ParameterBatchThread}
 		 */
@@ -98,7 +100,7 @@ public class ParameterSet implements ApiCommand, ParameterObserver {
 			if (currentBatch.size() > 0)
 				parameterTypeId = currentBatch.get(0).getTypeCategoryIdentifier();
 
-			// Remove any parameters that haven't been updated
+			// Serialize parameters to property maps
 			for (Parameter param : currentBatch) {
 				PropertyMap existing = null;
 
@@ -118,7 +120,7 @@ public class ParameterSet implements ApiCommand, ParameterObserver {
 			}
 
 			// Remove any children that weren't updated
-			ArrayList<PropertyMap> toRemove = new ArrayList<PropertyMap>();
+			toRemove.clear();
 			for (PropertyMap map : batch.getChildren(parameterTypeId)) {
 				boolean contains = false;
 

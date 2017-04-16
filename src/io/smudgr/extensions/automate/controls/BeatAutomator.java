@@ -30,6 +30,9 @@ public class BeatAutomator implements AutomatorControl {
 
 	private int speed = 5;
 
+	// memory reuse
+	private double val, step;
+
 	@Override
 	public void init() {
 
@@ -40,8 +43,8 @@ public class BeatAutomator implements AutomatorControl {
 		if (!run)
 			return;
 
-		double val = parameter.getValue();
-		double step = parameter.getStep();
+		val = parameter.getValue();
+		step = parameter.getStep();
 		val = val + step / (Controller.TICKS_PER_BEAT * SPEEDS[speed]);
 
 		parameter.setValue(val);

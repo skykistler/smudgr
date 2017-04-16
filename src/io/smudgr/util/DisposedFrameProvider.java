@@ -33,6 +33,7 @@ public class DisposedFrameProvider {
 	private static volatile DisposedFrameProvider instance;
 
 	private HashMap<String, Stack<Frame>> disposed = new HashMap<String, Stack<Frame>>();
+	private ArrayList<Frame> toRemove = new ArrayList<Frame>();
 
 	/**
 	 * Updates the {@link DisposedFrameProvider}, which removes stale
@@ -45,9 +46,9 @@ public class DisposedFrameProvider {
 			if (stack == null)
 				continue;
 
-			ArrayList<Frame> toRemove = new ArrayList<Frame>();
+			toRemove.clear();
 			for (Frame frame : stack)
-				if (System.currentTimeMillis() - frame.getDiposedTime() > 1000) {
+				if (System.currentTimeMillis() - frame.getDiposedTime() > 10000) {
 					toRemove.add(frame);
 					frame.pixels = null;
 				}

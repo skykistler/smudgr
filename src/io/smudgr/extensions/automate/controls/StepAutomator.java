@@ -29,6 +29,9 @@ public class StepAutomator implements AutomatorControl {
 
 	private double increment = .05, speed = increment * 2;
 
+	// memory reuse
+	private double val, step;
+
 	@Override
 	public void init() {
 
@@ -39,8 +42,8 @@ public class StepAutomator implements AutomatorControl {
 		if (!run)
 			return;
 
-		double val = parameter.getValue();
-		double step = parameter.getStep();
+		val = parameter.getValue();
+		step = parameter.getStep();
 		val = val + step * speed;
 
 		parameter.setValue(val);
