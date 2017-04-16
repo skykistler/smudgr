@@ -20,9 +20,9 @@ public class RackSmudgeMove implements ApiCommand {
 		int fromIndex = Integer.parseInt(data.get("fromIndex"));
 		int toIndex = Integer.parseInt(data.get("toIndex"));
 
-		getProject().getRack().moveSmudge(fromIndex, toIndex);
+		getProject().getRack().move(fromIndex, toIndex);
 
-		return null;
+		return ApiMessage.ok(getCommand(), data);
 	}
 
 }

@@ -50,10 +50,6 @@ public class PixelSort extends ParallelOperation {
 		private int lt, gt, i, swap, sortSize, ret;
 		private double o1l, o2l;
 
-		public PixelSortTask() {
-			toSort = new int[1024];
-		}
-
 		@Override
 		public void executeParallel(Frame img, PixelIndexList coords) {
 			sortList(img, coords);
@@ -67,7 +63,7 @@ public class PixelSort extends ParallelOperation {
 			 * make
 			 * a bigger one
 			 */
-			if (toSort.length < sortSize)
+			if (toSort == null || toSort.length < sortSize)
 				toSort = new int[sortSize];
 
 			/*

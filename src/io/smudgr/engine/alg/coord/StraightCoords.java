@@ -11,6 +11,10 @@ public class StraightCoords extends CoordFunction {
 
 	private BooleanParameter vertical = new BooleanParameter("Vertical", this, false);
 
+	// memory reuse
+	private boolean isVertical;
+	private int firstDirection, secondDirection, i, j, x, y;
+
 	@Override
 	public String getTypeName() {
 		return "Straight Lines";
@@ -23,17 +27,17 @@ public class StraightCoords extends CoordFunction {
 
 	@Override
 	protected void generateCoordinates(int imageWidth, int imageHeight, int boundX, int boundY, int boundWidth, int boundHeight) {
-		boolean isVertical = vertical.getValue();
+		isVertical = vertical.getValue();
 
-		int firstDirection = isVertical ? boundWidth : boundHeight;
-		int secondDirection = isVertical ? boundHeight : boundWidth;
+		firstDirection = isVertical ? boundWidth : boundHeight;
+		secondDirection = isVertical ? boundHeight : boundWidth;
 
-		for (int i = 0; i < firstDirection; i++) {
+		for (i = 0; i < firstDirection; i++) {
 			nextSet();
 
-			for (int j = 0; j < secondDirection; j++) {
-				int x = boundX + (isVertical ? i : j);
-				int y = boundY + (isVertical ? j : i);
+			for (j = 0; j < secondDirection; j++) {
+				x = boundX + (isVertical ? i : j);
+				y = boundY + (isVertical ? j : i);
 
 				nextPoint(x, y);
 			}

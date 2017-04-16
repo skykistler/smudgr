@@ -32,6 +32,7 @@ public abstract class Selector extends AlgorithmComponent {
 	protected Stack<PixelIndexList> disposedLists = new Stack<PixelIndexList>();
 
 	private Frame frame;
+	private int i, index, coord, x, y;
 
 	/**
 	 * Generates the selected pixel list.
@@ -49,13 +50,13 @@ public abstract class Selector extends AlgorithmComponent {
 
 		PixelIndexList currentSet = getNewSet();
 
-		for (int i = 0; i < selected.size(); i++) {
+		for (i = 0; i < selected.size(); i++) {
 			PixelIndexList coords = selected.get(i);
 
-			for (int index = 0; index < coords.size(); index++) {
-				int coord = coords.get(index);
-				int x = coord % frame.getWidth();
-				int y = (coord - x) / frame.getWidth();
+			for (index = 0; index < coords.size(); index++) {
+				coord = coords.get(index);
+				x = coord % frame.getWidth();
+				y = (coord - x) / frame.getWidth();
 
 				if (selectsPoint(frame, x, y))
 					currentSet.add(coord);

@@ -131,10 +131,12 @@ public class Rack extends Parametric {
 	 *            {@link Smudge}
 	 */
 	public void add(Smudge smudge) {
-		getProject().add(smudge);
-		getSmudges().add(smudge);
+		synchronized (smudges) {
+			getProject().add(smudge);
+			getSmudges().add(smudge);
 
-		smudge.onInit();
+			smudge.onInit();
+		}
 	}
 
 	/**
@@ -145,10 +147,30 @@ public class Rack extends Parametric {
 	 * @param toIndex
 	 *            second index
 	 */
-	public void moveSmudge(int fromIndex, int toIndex) {
+	public void move(int fromIndex, int toIndex) {
 		synchronized (smudges) {
 			Smudge toMove = smudges.remove(fromIndex);
 			smudges.add(toIndex, toMove);
+		}
+	}
+
+	/**
+	 * Remove a {@link Smudge} instance from this {@link Rack}. This will remove
+	 * the instance from the project.
+	 * 
+	 * @param smudge
+	 *            {@link Smudge}
+	 * @return {@code true} if {@link Rack} contained {@link Smudge} and removed
+	 *         successfully, {@code false} if otherwise
+	 */
+	public boolean remove(Smudge smudge) {
+		synchronized (smudges) {
+			boolean removed = smudges.remove(smudge);
+
+			if (removed)
+				getProject().remove(smudge);
+
+			return removed;
 		}
 	}
 

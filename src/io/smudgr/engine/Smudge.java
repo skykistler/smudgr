@@ -73,15 +73,17 @@ public abstract class Smudge extends Parametric {
 		if (component == null)
 			return null;
 
-		component.setParent(this);
-		component.load(state);
+		synchronized (components) {
+			component.setParent(this);
+			component.load(state);
 
-		component.onInit();
+			component.onInit();
 
-		components.add(component);
-		onAdd(component);
+			components.add(component);
+			onAdd(component);
 
-		return component;
+			return component;
+		}
 	}
 
 	/**
@@ -95,13 +97,51 @@ public abstract class Smudge extends Parametric {
 		if (this.getTypeIdentifier() != component.getSmudgeTypeIdentifier())
 			return;
 
-		component.setParent(this);
-		getProject().add(component);
+		synchronized (components) {
+			component.setParent(this);
+			getProject().add(component);
 
-		component.onInit();
+			component.onInit();
 
-		components.add(component);
-		onAdd(component);
+			components.add(component);
+			onAdd(component);
+		}
+	}
+
+	/**
+	 * Move a {@link SmudgeComponent} from the first index to the second index.
+	 *
+	 * @param fromIndex
+	 *            first index
+	 * @param toIndex
+	 *            second index
+	 */
+	public void move(int fromIndex, int toIndex) {
+		synchronized (components) {
+			SmudgeComponent toMove = components.remove(fromIndex);
+			components.add(toIndex, toMove);
+		}
+	}
+
+	/**
+	 * Remove a {@link SmudgeComponent} instance from this
+	 * {@link SmudgeComponent}. This will remove the instance from the project.
+	 * 
+	 * @param component
+	 *            {@link SmudgeComponent}
+	 * @return {@code true} if {@link Rack} contained {@link SmudgeComponent}
+	 *         and removed
+	 *         successfully, {@code false} if otherwise
+	 */
+	public boolean remove(SmudgeComponent component) {
+		synchronized (components) {
+			boolean success = components.remove(component);
+
+			if (success)
+				getProject().remove(component);
+
+			return success;
+		}
 	}
 
 	/**
