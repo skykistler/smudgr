@@ -12,6 +12,7 @@ public class Scaler extends UtilityComponent {
 
 	// Start at normal resolution.
 	private NumberParameter scale = new NumberParameter("Scale Factor", this, 1, 0.01, 1.5, 0.01);
+	private double currentZoom;
 
 	@Override
 	public String getTypeName() {
@@ -45,7 +46,7 @@ public class Scaler extends UtilityComponent {
 	 * @return {@link Frame}
 	 */
 	public Frame scale(Frame f) {
-		double currentZoom = scale.getValue();
+		currentZoom = scale.getValue();
 
 		if (currentZoom == 1.0)
 			return f;
