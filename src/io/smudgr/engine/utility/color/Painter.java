@@ -50,6 +50,9 @@ public class Painter extends UtilityComponent {
 		val = brightness.getValue();
 		deg = degree.getIntValue();
 
+		if (sat == 0.5 && val == 0 && deg == 0)
+			return;
+
 		// After testing, the for loop is definitely slower
 
 		// for (int i = 0; i < f.pixels.length; i++) {
