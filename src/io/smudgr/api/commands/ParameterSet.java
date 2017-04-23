@@ -26,8 +26,8 @@ public class ParameterSet implements ApiCommand, ParameterObserver {
 		return "parameter.set";
 	}
 
-	// Send out the batch every 10 ticks
-	private static final int PARAMETER_UPDATE_RATE = 10;
+	// Set the batch updates per second
+	private static final int PARAMETER_UPDATE_RATE = 8;
 
 	private ArrayList<Parameter> nextBatch;
 	private ArrayList<Parameter> currentBatch;

@@ -119,9 +119,16 @@ public abstract class AppThread implements Runnable {
 
 		while (running) {
 
-			while (paused)
+			while (paused) {
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+
 				if (!running)
 					break;
+			}
 
 			preTickNs = System.nanoTime();
 
