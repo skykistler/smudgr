@@ -31,6 +31,8 @@ public class Cropper extends UtilityComponent {
 	protected NumberParameter width = new NumberParameter("X Width", this, 1, 0.005, 1, 0.005);
 	protected NumberParameter height = new NumberParameter("Y Height", this, 1, 0.005, 1, 0.005);
 
+	private int frameWidth, frameHeight, xOffset, yOffset, w, h;
+
 	/**
 	 * Crops the given frame.
 	 * 
@@ -40,13 +42,13 @@ public class Cropper extends UtilityComponent {
 	 */
 	public Frame crop(Frame f) {
 
-		int frameWidth = f.getWidth();
-		int frameHeight = f.getHeight();
+		frameWidth = f.getWidth();
+		frameHeight = f.getHeight();
 
-		int xOffset = (int) (offsetX.getValue() * frameWidth);
-		int yOffset = (int) (offsetY.getValue() * frameHeight);
-		int w = (int) (width.getValue() * frameWidth);
-		int h = (int) (height.getValue() * frameHeight);
+		xOffset = (int) (offsetX.getValue() * frameWidth);
+		yOffset = (int) (offsetY.getValue() * frameHeight);
+		w = (int) (width.getValue() * frameWidth);
+		h = (int) (height.getValue() * frameHeight);
 
 		if (xOffset == 0 && yOffset == 0 && w == frameWidth && h == frameHeight)
 			return f;
