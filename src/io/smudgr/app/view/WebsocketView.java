@@ -43,7 +43,7 @@ public class WebsocketView implements View {
 
 	@Override
 	public int getTargetFPS() {
-		return 30;
+		return 60;
 	}
 
 }

@@ -49,7 +49,7 @@ public class ParameterSet implements ApiCommand, ParameterObserver {
 	@Override
 	public ApiMessage execute(ApiMessage data) {
 		Parameter param = (Parameter) getProject().getItem((int) data.getNumber(PropertyMap.PROJECT_ID_ATTR));
-		param.setValue(data.get("value"), this);
+		param.setValue(data.get("value"));
 
 		// Why not
 		if (param instanceof BooleanParameter)

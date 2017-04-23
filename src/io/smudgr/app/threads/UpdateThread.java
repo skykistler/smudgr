@@ -17,7 +17,8 @@ public class UpdateThread extends AppThread {
 		super("Update Thread");
 	}
 
-	private long now, lastTickNs;
+	private Runtime runtime = Runtime.getRuntime();
+	private long now, lastTickNs, maxHeapSize, currentHeapSize, freeHeapSize, usedMemory;
 
 	/**
 	 * Convert an amount of milliseconds to ideal application update cycles,
@@ -61,8 +62,18 @@ public class UpdateThread extends AppThread {
 
 	@Override
 	protected void printStatus() {
-		if (ticks != getTarget())
-			System.out.println(ticks + " updates (should be " + getTarget() + ")");
+		if (ticks == getTarget())
+			return;
+
+		System.out.println(ticks + " updates (should be " + getTarget() + ")");
+
+		maxHeapSize = runtime.maxMemory() / 1048576;
+		currentHeapSize = runtime.totalMemory() / 1048576;
+		freeHeapSize = runtime.freeMemory() / 1048576;
+
+		usedMemory = maxHeapSize - (freeHeapSize + (maxHeapSize - currentHeapSize));
+
+		System.out.println(usedMemory + "MB used / " + maxHeapSize + "MB");
 	}
 
 	@Override
