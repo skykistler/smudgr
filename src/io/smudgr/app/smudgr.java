@@ -60,9 +60,9 @@ public class smudgr extends AppStart {
 	private smudgr(boolean debug) {
 		super("", "data", "", "Arturia BeatStep Pro", true, false);
 
-		Controller.getInstance().add(new WebsocketView());
-
 		start();
+
+		Controller.getInstance().add(new WebsocketView());
 	}
 
 	@Override

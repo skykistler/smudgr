@@ -38,7 +38,7 @@ public class SkyTestApp extends AppStart {
 	static boolean overwriteProject = true;
 
 	// where to load source files from
-	static String sourcePath = "data/pizzabox";
+	static String sourcePath = "data/testing";
 
 	// where to output gifs and stuff
 	static String outputPath = "data/output";
