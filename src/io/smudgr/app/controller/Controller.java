@@ -60,30 +60,30 @@ public class Controller {
 		return instance;
 	}
 
-	// Model
+	// Current model
 	private Project project;
 
 	// API services
 	private ApiInvoker apiInvoker;
 	private ApiServer apiServer;
 
-	// Threads
+	// App threads
 	private UpdateThread updater;
 	private RenderThread renderer;
 	private ArrayList<ViewThread> viewThreads = new ArrayList<ViewThread>();
 
-	// States
+	// App states
 	private volatile boolean started;
 	private volatile boolean paused;
 
-	// Views
+	// Views (rendering outputs)
 	private ArrayList<View> views = new ArrayList<View>();
 
-	// Type libraries
+	// Type libraries encapsulating app-wide behavior
 	private TypeLibrary<ControllerExtension> extensionLibrary;
 	private TypeLibrary<AppControl> appControlLibrary;
 
-	// Loaded instances
+	// Loaded type instances
 	private HashMap<String, AppControl> appControls;
 	private HashMap<String, ControllerExtension> extensions;
 
