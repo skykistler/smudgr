@@ -24,6 +24,8 @@ public class SmudgeComponentRemove implements ApiCommand {
 		SmudgeComponent component = (SmudgeComponent) getProject().getItem(id);
 		boolean success = component.getParent().remove(component);
 
+		data.put("smudge", getProject().getId(component.getParent()));
+
 		if (success)
 			return ApiMessage.success(getCommand(), data);
 		else

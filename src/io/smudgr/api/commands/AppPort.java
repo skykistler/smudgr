@@ -5,13 +5,13 @@ import io.smudgr.api.ApiMessage;
 import io.smudgr.api.ApiServer;
 
 /**
- * Get the current listening port of the smudgr WebSocket API
+ * Get the current listening port of the WebSocket API
  */
-public class SmudgrPort implements ApiCommand {
+public class AppPort implements ApiCommand {
 
 	@Override
 	public String getCommand() {
-		return "smudgr.port";
+		return "app.port";
 	}
 
 	@Override
