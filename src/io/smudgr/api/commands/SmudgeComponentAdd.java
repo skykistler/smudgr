@@ -3,7 +3,6 @@ package io.smudgr.api.commands;
 import io.smudgr.api.ApiCommand;
 import io.smudgr.api.ApiMessage;
 import io.smudgr.app.project.Project;
-import io.smudgr.app.project.util.PropertyMap;
 import io.smudgr.engine.Smudge;
 import io.smudgr.engine.SmudgeComponent;
 import io.smudgr.engine.SmudgeComponentLibrary;
@@ -28,7 +27,8 @@ public class SmudgeComponentAdd implements ApiCommand {
 
 		smudge.add(component);
 
-		return ApiMessage.success("smudge.get", ApiMessage.normalize(new PropertyMap(smudge)));
+		data.put("smudge", getProject().getId(smudge));
+		return ApiMessage.success(getCommand(), data);
 	}
 
 }
