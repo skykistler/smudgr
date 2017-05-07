@@ -22,6 +22,8 @@ public class RackSmudgeRemove implements ApiCommand {
 		Smudge smudge = (Smudge) getProject().getItem(id);
 		boolean success = getProject().getRack().remove(smudge);
 
+		data.put("rack", getProject().getId(getProject().getRack()));
+
 		if (success)
 			return ApiMessage.success(getCommand(), data);
 		else

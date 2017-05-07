@@ -27,7 +27,7 @@ public class PizzaBoxShow extends AppStart {
 
 	static boolean overwriteProject = true;
 
-	static String sourcePath = "data/pizzabox";
+	static String sourcePath = "data/testing";
 
 	static String outputPath = "data/output/pizzabox";
 
