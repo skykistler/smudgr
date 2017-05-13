@@ -12,7 +12,7 @@ public class WebsocketView implements View {
 
 	@Override
 	public String getName() {
-		return "WebSocket frame server";
+		return "WebSocket Frame Server";
 	}
 
 	private FrameServer server;
@@ -43,7 +43,7 @@ public class WebsocketView implements View {
 
 	@Override
 	public int getTargetFPS() {
-		return 60;
+		return 30;
 	}
 
 }

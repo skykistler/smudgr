@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import io.smudgr.app.project.util.PropertyMap;
+import io.smudgr.util.DisposedFrameProvider;
 import io.smudgr.util.Frame;
 
 /**
@@ -198,6 +199,8 @@ public class SourceSet implements Source {
 		Source current = getCurrentSource();
 		if (current instanceof Video)
 			current.dispose();
+
+		DisposedFrameProvider.getInstance().dump();
 
 		currentSource = index;
 

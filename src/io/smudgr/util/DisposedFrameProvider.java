@@ -32,7 +32,7 @@ public class DisposedFrameProvider {
 
 	private static volatile DisposedFrameProvider instance;
 
-	private HashMap<String, Stack<Frame>> disposed = new HashMap<String, Stack<Frame>>();
+	private HashMap<Integer, Stack<Frame>> disposed = new HashMap<Integer, Stack<Frame>>();
 	private ArrayList<Frame> toRemove = new ArrayList<Frame>();
 
 	/**
@@ -40,7 +40,7 @@ public class DisposedFrameProvider {
 	 * {@link Frame} instances from the cache.
 	 */
 	public synchronized void update() {
-		for (String key : disposed.keySet()) {
+		for (int key : disposed.keySet()) {
 			Stack<Frame> stack = disposed.get(key);
 
 			if (stack == null)
@@ -71,7 +71,7 @@ public class DisposedFrameProvider {
 	 * @return {@code int[]}
 	 */
 	public synchronized int[] getDisposedFrame(int width, int height, boolean cleanUp) {
-		String hash = getHash(width, height);
+		int hash = getHash(width, height);
 
 		// If we don't have any unused frames of the same size, not much we can
 		// do
@@ -104,7 +104,7 @@ public class DisposedFrameProvider {
 	 *            to dispose
 	 */
 	public synchronized void disposeFrame(Frame frame) {
-		String hash = getHash(frame.getWidth(), frame.getHeight());
+		int hash = getHash(frame.getWidth(), frame.getHeight());
 
 		Stack<Frame> disposedFrames = disposed.get(hash);
 
@@ -116,7 +116,30 @@ public class DisposedFrameProvider {
 		disposedFrames.push(frame);
 	}
 
-	private String getHash(int width, int height) {
-		return width + ":" + height;
+	/**
+	 * Dump all disposed frames and notify garbage collector.
+	 * Band-aid on the issue of downsample automator quickly allocating many
+	 * similarly-sized large frames.
+	 */
+	public synchronized void dump() {
+		for (int key : disposed.keySet()) {
+			Stack<Frame> stack = disposed.get(key);
+
+			if (stack == null)
+				continue;
+
+			for (Frame frame : stack)
+				frame.pixels = null;
+
+			stack.clear();
+
+			stack.removeAll(toRemove);
+		}
+
+		System.gc();
+	}
+
+	private int getHash(int width, int height) {
+		return (width << 16) + height;
 	}
 }

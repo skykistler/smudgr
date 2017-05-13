@@ -14,6 +14,10 @@ import io.smudgr.util.Frame;
  */
 public class Image implements Source {
 
+	// Rudimentary limits on max pixel resolution allowed for live processing.
+	private static final int MAX_LIVE_WIDTH = 2000;
+	private static final int MAX_LIVE_HEIGHT = 2000;
+
 	@Override
 	public String getTypeIdentifier() {
 		return "image";
@@ -32,6 +36,7 @@ public class Image implements Source {
 	private String filename;
 
 	private Frame frame;
+	private Frame liveScaled;
 	private Frame thumbnail;
 
 	/**
@@ -55,6 +60,10 @@ public class Image implements Source {
 			}
 
 			frame = new Frame(loaded);
+
+			if (frame.getWidth() > MAX_LIVE_WIDTH || frame.getHeight() > MAX_LIVE_HEIGHT)
+				liveScaled = frame.fitToSize(MAX_LIVE_WIDTH, MAX_LIVE_HEIGHT, false);
+
 		} catch (IOException e) {
 			System.out.println("Error loading: " + filename);
 			e.printStackTrace();
@@ -68,6 +77,10 @@ public class Image implements Source {
 
 	@Override
 	public Frame getFrame() {
+		// If there is a downsampled version for live processing, return that
+		if (liveScaled != null)
+			return liveScaled;
+
 		return frame;
 	}
 
@@ -85,6 +98,7 @@ public class Image implements Source {
 	@Override
 	public void dispose() {
 		frame.dispose();
+		liveScaled.dispose();
 	}
 
 	@Override

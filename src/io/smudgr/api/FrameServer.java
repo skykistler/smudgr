@@ -12,6 +12,7 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 import org.java_websocket.util.DisposedBytesProvider;
 
+import io.smudgr.app.controller.Controller;
 import io.smudgr.util.Frame;
 
 /**
@@ -51,12 +52,10 @@ public class FrameServer extends WebSocketServer {
 	 *            current {@link Frame}
 	 */
 	public synchronized void setFrame(Frame f) {
-		Frame resized = f.fitToSize(600, 600, false);
-
 		if (frame != null)
 			frame.dispose();
 
-		frame = resized;
+		frame = f.fitToSize(600, 600, false);
 
 		bufferSize = 8 + frame.pixels.length * 4;
 		if (buffer == null || buffer.capacity() != bufferSize) {
@@ -103,23 +102,29 @@ public class FrameServer extends WebSocketServer {
 	}
 
 	@Override
-	public void onOpen(WebSocket conn, ClientHandshake handshake) {
+	public synchronized void onOpen(WebSocket conn, ClientHandshake handshake) {
 		connections.add(conn);
 		writeFrame();
 	}
 
 	@Override
-	public void onMessage(WebSocket conn, String message) {
+	public synchronized void onMessage(WebSocket conn, String message) {
 		writeFrame();
 	}
 
 	@Override
-	public void onClose(WebSocket conn, int arg1, String arg2, boolean arg3) {
+	public synchronized void onClose(WebSocket conn, int arg1, String arg2, boolean arg3) {
 		connections.remove(conn);
+
+		if (connections.size() == 0)
+			Controller.getInstance().pause();
 	}
 
 	@Override
-	public void onError(WebSocket conn, Exception ex) {
+	public synchronized void onError(WebSocket conn, Exception ex) {
+		connections.remove(conn);
+		if (connections.size() == 0)
+			Controller.getInstance().pause();
 	}
 
 }
