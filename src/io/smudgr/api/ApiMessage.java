@@ -1,5 +1,7 @@
 package io.smudgr.api;
 
+import java.util.Set;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -39,7 +41,7 @@ public class ApiMessage {
 	}
 
 	/**
-	 * Get the value of a given key.
+	 * Get the string value of a given key.
 	 * 
 	 * @param key
 	 *            The key to lookup.
@@ -51,6 +53,22 @@ public class ApiMessage {
 			return null;
 
 		return payload.get(key).toString();
+	}
+
+	/**
+	 * Get the {@link JSONObject} value of a given key.
+	 * 
+	 * @param key
+	 *            The key to lookup.
+	 * @return The {@link JSONObject} value of the key, or {@code null} if the
+	 *         key doesn't
+	 *         exist.
+	 */
+	public JSONObject object(String key) {
+		if (!hasKey(key))
+			return null;
+
+		return (JSONObject) payload.get(key);
 	}
 
 	/**
@@ -66,6 +84,14 @@ public class ApiMessage {
 			return Double.NaN;
 
 		return Double.parseDouble(get(key));
+	}
+
+	/**
+	 * @return A set of keys contained in this map
+	 */
+	@SuppressWarnings("unchecked")
+	public Set<String> keySet() {
+		return payload.keySet();
 	}
 
 	/**
