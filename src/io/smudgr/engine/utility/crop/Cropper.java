@@ -2,11 +2,11 @@ package io.smudgr.engine.utility.crop;
 
 import io.smudgr.engine.param.NumberParameter;
 import io.smudgr.engine.utility.UtilityComponent;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * The {@link Cropper} class defines a {@link UtilityComponent} that allows
- * parameterized cropping on the {@link Frame} passed in (Basically has a
+ * parameterized cropping on the {@link PixelFrame} passed in (Basically has a
  * Parameter and calls Frame.resize).
  */
 public class Cropper extends UtilityComponent {
@@ -37,10 +37,10 @@ public class Cropper extends UtilityComponent {
 	 * Crops the given frame.
 	 * 
 	 * @param f
-	 *            {@link Frame}
-	 * @return new {@link Frame}
+	 *            {@link PixelFrame}
+	 * @return new {@link PixelFrame}
 	 */
-	public Frame crop(Frame f) {
+	public PixelFrame crop(PixelFrame f) {
 
 		frameWidth = f.getWidth();
 		frameHeight = f.getHeight();
@@ -56,7 +56,7 @@ public class Cropper extends UtilityComponent {
 		w = Math.min(frameWidth, w + xOffset);
 		h = Math.min(frameHeight, h + yOffset);
 
-		Frame croppedFrame = f.resize(xOffset, yOffset, w, h, w, h);
+		PixelFrame croppedFrame = f.resize(xOffset, yOffset, w, h, w, h);
 		f.dispose();
 
 		return croppedFrame;

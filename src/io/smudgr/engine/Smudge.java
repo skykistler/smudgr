@@ -8,12 +8,12 @@ import io.smudgr.app.project.Project;
 import io.smudgr.app.project.util.PropertyMap;
 import io.smudgr.engine.param.BooleanParameter;
 import io.smudgr.engine.param.Parametric;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
- * A {@link Smudge} is a {@link Parametric} image manipulation. The application
- * instance attempts to render each {@link Smudge} at a constant
- * frame-rate.
+ * A {@link Smudge} is a {@link Parametric} {@link SmudgeComponent} container.
+ * The application instance attempts to process each {@link Smudge} at a
+ * constant rate.
  */
 public abstract class Smudge extends Parametric {
 
@@ -39,13 +39,13 @@ public abstract class Smudge extends Parametric {
 
 	/**
 	 * {@link Smudge} types implement this method to apply their image
-	 * manipulations using any given {@link Frame}
+	 * manipulations using any given {@link PixelFrame}
 	 *
 	 * @param image
-	 *            {@link Frame}
+	 *            {@link PixelFrame}
 	 * @return resulting frame
 	 */
-	public abstract Frame smudge(Frame image);
+	public abstract PixelFrame smudge(PixelFrame image);
 
 	/**
 	 * Called when a {@link SmudgeComponent} has been added to this
@@ -156,7 +156,7 @@ public abstract class Smudge extends Parametric {
 
 	/**
 	 * Gets whether this {@link Smudge} is currently enabled. If false,
-	 * {@link Smudge#smudge(Frame)} won't be executed and any manipulations
+	 * {@link Smudge#smudge(PixelFrame)} won't be executed and any manipulations
 	 * won't be applied.
 	 *
 	 * @return {@code true} if this {@link Smudge} is enabled, {@code false} if

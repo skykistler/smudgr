@@ -2,7 +2,7 @@ package io.smudgr.api.commands;
 
 import io.smudgr.api.ApiCommand;
 import io.smudgr.api.ApiMessage;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 import io.smudgr.util.output.ImageOutput;
 
 /**
@@ -20,7 +20,7 @@ public class ControlSaveFrame implements ApiCommand {
 	@Override
 	public ApiMessage execute(ApiMessage data) {
 
-		Frame frame = getProject().getRack().getLastFrame();
+		PixelFrame frame = getProject().getRack().getLastFrame();
 
 		if (frame == null)
 			return null;

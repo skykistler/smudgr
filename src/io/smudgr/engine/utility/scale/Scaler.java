@@ -2,7 +2,7 @@ package io.smudgr.engine.utility.scale;
 
 import io.smudgr.engine.param.NumberParameter;
 import io.smudgr.engine.utility.UtilityComponent;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * The {@link Scaler} class defines a {@link UtilityComponent} that allows
@@ -42,17 +42,17 @@ public class Scaler extends UtilityComponent {
 	 * Over or under samples the given Frame based on a scale parameter.
 	 * 
 	 * @param f
-	 *            {@link Frame}
-	 * @return {@link Frame}
+	 *            {@link PixelFrame}
+	 * @return {@link PixelFrame}
 	 */
-	public Frame scale(Frame f) {
+	public PixelFrame scale(PixelFrame f) {
 		currentZoom = scale.getValue();
 
 		if (currentZoom == 1.0)
 			return f;
 
 		// God bless
-		Frame scaledFrame = f.resize(currentZoom);
+		PixelFrame scaledFrame = f.resize(currentZoom);
 		f.dispose();
 
 		return scaledFrame;

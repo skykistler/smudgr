@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * The {@link Image} source represents a static frame from a loaded image file
@@ -35,9 +35,9 @@ public class Image implements Source {
 
 	private String filename;
 
-	private Frame frame;
-	private Frame liveScaled;
-	private Frame thumbnail;
+	private PixelFrame frame;
+	private PixelFrame liveScaled;
+	private PixelFrame thumbnail;
 
 	/**
 	 * Create a new {@link Image} loaded from the given filename.
@@ -59,7 +59,7 @@ public class Image implements Source {
 				return;
 			}
 
-			frame = new Frame(loaded);
+			frame = new PixelFrame(loaded);
 
 			if (frame.getWidth() > MAX_LIVE_WIDTH || frame.getHeight() > MAX_LIVE_HEIGHT)
 				liveScaled = frame.fitToSize(MAX_LIVE_WIDTH, MAX_LIVE_HEIGHT, false);
@@ -76,7 +76,7 @@ public class Image implements Source {
 	}
 
 	@Override
-	public Frame getFrame() {
+	public PixelFrame getFrame() {
 		// If there is a downsampled version for live processing, return that
 		if (liveScaled != null)
 			return liveScaled;
@@ -85,7 +85,7 @@ public class Image implements Source {
 	}
 
 	@Override
-	public Frame getThumbnail() {
+	public PixelFrame getThumbnail() {
 		if (thumbnail != null)
 			return thumbnail;
 

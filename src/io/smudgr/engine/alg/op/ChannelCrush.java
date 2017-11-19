@@ -3,7 +3,7 @@ package io.smudgr.engine.alg.op;
 import io.smudgr.engine.alg.PixelIndexList;
 import io.smudgr.engine.alg.math.ColorHelper;
 import io.smudgr.engine.param.NumberParameter;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * Channel Crush uses a configurable bitwise function to squash RGB layer
@@ -35,7 +35,7 @@ public class ChannelCrush extends ParallelOperation {
 	}
 
 	@Override
-	public void preParallel(Frame img) {
+	public void preParallel(PixelFrame img) {
 		redMaskShift = redMaskShiftParam.getIntValue();
 		greenMaskShift = greenMaskShiftParam.getIntValue();
 		blueMaskShift = blueMaskShiftParam.getIntValue();
@@ -55,12 +55,12 @@ public class ChannelCrush extends ParallelOperation {
 		private int index, color, red_op, red, green_op, green, blue_op, blue, c, newC;
 
 		@Override
-		public void executeParallel(Frame img, PixelIndexList coords) {
+		public void executeParallel(PixelFrame img, PixelIndexList coords) {
 			for (index = 0; index < coords.size(); index++)
 				smear(coords.get(index), img);
 		}
 
-		private void smear(int coord, Frame img) {
+		private void smear(int coord, PixelFrame img) {
 			color = img.pixels[coord];
 
 			red_op = operate(0xFF0000, redMaskShift, redShift, color);

@@ -6,7 +6,7 @@ import java.nio.IntBuffer;
 
 import org.tw.pi.framebuffer.FrameBuffer;
 
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * The {@link PiFullscreenView} implementation uses native Linux magic to
@@ -68,10 +68,10 @@ public class PiFullscreenView implements View {
 	}
 
 	// declared to avoid repetitive memory consumption
-	private Frame fittedFrame;
+	private PixelFrame fittedFrame;
 
 	@Override
-	public synchronized void update(Frame frame) {
+	public synchronized void update(PixelFrame frame) {
 		fittedFrame = frame.fitToSize(frameBuffer.getWidth(), frameBuffer.getHeight());
 
 		// if the frame dimensions have changed, fill with black

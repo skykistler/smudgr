@@ -8,11 +8,11 @@ import io.smudgr.engine.alg.PixelIndexList;
 import io.smudgr.engine.alg.bound.Bound;
 import io.smudgr.engine.alg.op.Operation;
 import io.smudgr.engine.param.BooleanParameter;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * The abstract {@link CoordFunction} is an {@link AlgorithmComponent} that
- * specifies in what order an {@link Operation} should act on the {@link Frame}.
+ * specifies in what order an {@link Operation} should act on the {@link PixelFrame}.
  * <p>
  * Depending on the {@link Operation}, ordering may make no visual difference.
  * In many operations though, order will dramatically change the form of the

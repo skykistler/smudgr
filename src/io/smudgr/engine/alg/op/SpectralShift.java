@@ -13,7 +13,7 @@ import io.smudgr.engine.alg.math.univariate.UnivariateFunction;
 import io.smudgr.engine.param.BooleanParameter;
 import io.smudgr.engine.param.NumberParameter;
 import io.smudgr.engine.param.UnivariateParameter;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * Spectral Shift buckets pixels using their value as calculated by a function,
@@ -56,7 +56,7 @@ public class SpectralShift extends ParallelOperation {
 	}
 
 	@Override
-	public void preParallel(Frame img) {
+	public void preParallel(PixelFrame img) {
 		function = functionParam.getValue();
 		negate = reverse.getValue();
 
@@ -101,7 +101,7 @@ public class SpectralShift extends ParallelOperation {
 		private int index, coord, val, bucket_index, pixel, red, blue, green, r, g, b;
 
 		@Override
-		public void executeParallel(Frame img, PixelIndexList coords) {
+		public void executeParallel(PixelFrame img, PixelIndexList coords) {
 			for (index = 0; index < coords.size(); index++) {
 				coord = coords.get(index);
 				val = getBucket(img.pixels[coord]);

@@ -2,7 +2,7 @@ package io.smudgr.app.view;
 
 import java.awt.Rectangle;
 
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * The {@link MonitorView} is for creating non-fullscreen windows to 'monitor'
@@ -26,7 +26,7 @@ public class MonitorView implements View {
 	}
 
 	@Override
-	public void update(Frame frame) {
+	public void update(PixelFrame frame) {
 		window.update(frame);
 	}
 

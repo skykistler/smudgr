@@ -11,7 +11,7 @@ import org.jcodec.api.awt.FrameGrab;
 import org.jcodec.common.FileChannelWrapper;
 import org.jcodec.common.NIOUtils;
 
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * The {@link Video} source loads a video file and returns the current frame of
@@ -39,7 +39,7 @@ public class Video implements Source {
 
 	private BufferThread bufferer;
 	private final int bufferCap = 1000;
-	private volatile Queue<Frame> buffer;
+	private volatile Queue<PixelFrame> buffer;
 
 	/**
 	 * Create a new {@link Video} loaded from the given file
@@ -77,20 +77,20 @@ public class Video implements Source {
 	}
 
 	@Override
-	public Frame getFrame() {
+	public PixelFrame getFrame() {
 		if (!bufferer.started)
 			return null;
 
 		while (buffer.size() == 0)
 			;
 
-		Frame f = buffer.poll();
+		PixelFrame f = buffer.poll();
 
 		return f;
 	}
 
 	@Override
-	public Frame getThumbnail() {
+	public PixelFrame getThumbnail() {
 		// TODO generate thumbnail for video
 		return null;
 	}
@@ -108,7 +108,7 @@ public class Video implements Source {
 		private volatile boolean started;
 
 		public BufferThread() {
-			buffer = new LinkedList<Frame>();
+			buffer = new LinkedList<PixelFrame>();
 		}
 
 		public void start() {
@@ -139,7 +139,7 @@ public class Video implements Source {
 							break;
 						}
 
-						buffer.add(new Frame(frame));
+						buffer.add(new PixelFrame(frame));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}

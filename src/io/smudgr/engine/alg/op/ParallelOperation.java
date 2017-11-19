@@ -8,7 +8,7 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 
 import io.smudgr.engine.alg.PixelIndexList;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * The abstract {@link ParallelOperation} class allows implementors to easily
@@ -24,7 +24,7 @@ public abstract class ParallelOperation extends Operation {
 	private ArrayList<PixelIndexList> selectedPixelLists;
 
 	@Override
-	public void execute(Frame img) {
+	public void execute(PixelFrame img) {
 		// Pre-parallel operations
 		preParallel(img);
 
@@ -65,9 +65,9 @@ public abstract class ParallelOperation extends Operation {
 	 * operations.
 	 *
 	 * @param img
-	 * @see ParallelOperation#postParallel(Frame)
+	 * @see ParallelOperation#postParallel(PixelFrame)
 	 */
-	protected void preParallel(Frame img) {
+	protected void preParallel(PixelFrame img) {
 		// Optional implementation
 	}
 
@@ -85,9 +85,9 @@ public abstract class ParallelOperation extends Operation {
 	 * Implementations of this method will be run after the parallel operations.
 	 *
 	 * @param img
-	 * @see ParallelOperation#preParallel(Frame)
+	 * @see ParallelOperation#preParallel(PixelFrame)
 	 */
-	protected void postParallel(Frame img) {
+	protected void postParallel(PixelFrame img) {
 		// Optional implementation
 	}
 

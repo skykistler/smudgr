@@ -8,7 +8,7 @@ import io.smudgr.app.project.util.PropertyMap;
 import io.smudgr.engine.param.BooleanParameter;
 import io.smudgr.engine.param.NumberParameter;
 import io.smudgr.engine.param.Parametric;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 import io.smudgr.util.source.AnimatedSource;
 import io.smudgr.util.source.Source;
 import io.smudgr.util.source.SourceSet;
@@ -51,7 +51,7 @@ public class Rack extends Parametric {
 	 * The rack manages the current source and keeps a buffer of the last frame
 	 */
 	private Source source;
-	private volatile Frame lastFrame;
+	private volatile PixelFrame lastFrame;
 
 	/**
 	 * Initialize the smudge rack.
@@ -88,7 +88,7 @@ public class Rack extends Parametric {
 		if (!enabled.getValue())
 			return;
 
-		Frame nextFrame = null;
+		PixelFrame nextFrame = null;
 
 		// If source is null or gives a null frame, clear last frame and return
 		if (source == null || (nextFrame = source.getFrame()) == null) {
@@ -196,13 +196,13 @@ public class Rack extends Parametric {
 	/**
 	 * Get the latest finished rendered frame.
 	 *
-	 * @return {@link Frame}
+	 * @return {@link PixelFrame}
 	 */
-	public Frame getLastFrame() {
+	public PixelFrame getLastFrame() {
 		return lastFrame;
 	}
 
-	protected void setLastFrame(Frame nextFrame) {
+	protected void setLastFrame(PixelFrame nextFrame) {
 		if (lastFrame != null)
 			lastFrame.dispose();
 

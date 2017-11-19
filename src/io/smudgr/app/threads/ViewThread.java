@@ -4,7 +4,7 @@ import io.smudgr.app.controller.Controller;
 import io.smudgr.app.project.Project;
 import io.smudgr.app.view.View;
 import io.smudgr.engine.Rack;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * The {@link ViewThread} is responsible for taking the last frame rendered
@@ -40,7 +40,7 @@ public class ViewThread extends AppThread {
 	@Override
 	protected void execute() {
 		try {
-			Frame frame = Controller.getInstance().getProject().getRack().getLastFrame().copy();
+			PixelFrame frame = Controller.getInstance().getProject().getRack().getLastFrame().copy();
 
 			view.update(frame);
 

@@ -8,7 +8,7 @@ import io.smudgr.engine.alg.math.univariate.SinFunction;
 import io.smudgr.engine.param.BooleanParameter;
 import io.smudgr.engine.param.NumberParameter;
 import io.smudgr.engine.param.UnivariateParameter;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * {@link RangeSelect} selects pixels based on their value within a range of
@@ -47,7 +47,7 @@ public class RangeSelect extends Selector {
 	}
 
 	@Override
-	public boolean selectsPoint(Frame img, int x, int y) {
+	public boolean selectsPoint(PixelFrame img, int x, int y) {
 		return inRange(img.get(x, y));
 	}
 

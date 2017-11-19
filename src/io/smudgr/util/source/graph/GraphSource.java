@@ -1,6 +1,6 @@
 package io.smudgr.util.source.graph;
 
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 import io.smudgr.util.source.Source;
 
 /**
@@ -39,12 +39,12 @@ public class GraphSource implements Source {
 	}
 
 	@Override
-	public Frame getFrame() {
+	public PixelFrame getFrame() {
 		return renderer.drawGraph();
 	}
 
 	@Override
-	public Frame getThumbnail() {
+	public PixelFrame getThumbnail() {
 		return null;
 	}
 

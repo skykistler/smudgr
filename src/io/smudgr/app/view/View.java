@@ -3,7 +3,7 @@ package io.smudgr.app.view;
 import io.smudgr.app.controller.Controller;
 import io.smudgr.app.threads.ViewThread;
 import io.smudgr.engine.Smudge;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * The {@link View} interface defines methods for passing frames to a viewport
@@ -49,13 +49,13 @@ public interface View {
 	public void start();
 
 	/**
-	 * Implementations of the {@link View#update(Frame)} method should update
+	 * Implementations of the {@link View#update(PixelFrame)} method should update
 	 * the view with the new frame.
 	 *
 	 * @param frame
 	 *            Passed frame
 	 */
-	public void update(Frame frame);
+	public void update(PixelFrame frame);
 
 	/**
 	 * Implementations of the {@link View#stop()} method should properly dispose

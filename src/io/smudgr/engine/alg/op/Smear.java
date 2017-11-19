@@ -2,7 +2,7 @@ package io.smudgr.engine.alg.op;
 
 import io.smudgr.engine.alg.PixelIndexList;
 import io.smudgr.engine.param.NumberParameter;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * I honestly haven't played with this so who knows
@@ -18,12 +18,12 @@ public class Smear extends ParallelOperation {
 	private NumberParameter start = new NumberParameter("Start", this, 0, 0, 1, 0.01);
 	private NumberParameter length = new NumberParameter("Length", this, 1, 0, 1, 0.01);
 
-	private Frame stretched;
+	private PixelFrame stretched;
 	private int ints, n0, nLength;
 	private double startPos, len;
 
 	@Override
-	public void preParallel(Frame img) {
+	public void preParallel(PixelFrame img) {
 		if (stretched == null || stretched.getWidth() != img.getWidth() || stretched.getHeight() != img.getHeight()) {
 			if (stretched != null)
 				stretched.dispose();
@@ -43,7 +43,7 @@ public class Smear extends ParallelOperation {
 	}
 
 	@Override
-	public void postParallel(Frame img) {
+	public void postParallel(PixelFrame img) {
 		stretched.copyTo(img);
 	}
 
@@ -58,12 +58,12 @@ public class Smear extends ParallelOperation {
 		private double intervalWidth;
 
 		@Override
-		public void executeParallel(Frame img, PixelIndexList coords) {
+		public void executeParallel(PixelFrame img, PixelIndexList coords) {
 			size = coords.size();
 			stretch(coords, img);
 		}
 
-		private void stretch(PixelIndexList coords, Frame orig) {
+		private void stretch(PixelIndexList coords, PixelFrame orig) {
 			intervalWidth = size / ints;
 
 			if (intervalWidth <= 1) {

@@ -7,7 +7,7 @@ import java.util.Queue;
 import org.openkinect.freenect.Device;
 import org.openkinect.freenect.FrameMode;
 
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * The abstract {@link KinectBuffer} class represents a stream of data being
@@ -15,7 +15,7 @@ import io.smudgr.util.Frame;
  */
 public abstract class KinectBuffer {
 
-	protected volatile Queue<Frame> buffer = new LinkedList<Frame>();
+	protected volatile Queue<PixelFrame> buffer = new LinkedList<PixelFrame>();
 	private final int bufferCap = 100;
 	protected Device device = null;
 
@@ -38,18 +38,18 @@ public abstract class KinectBuffer {
 	}
 
 	/**
-	 * Gets the next {@link Frame} from the buffer queue.
+	 * Gets the next {@link PixelFrame} from the buffer queue.
 	 *
-	 * @return {@link Frame} or {@code null} if the queue is empty
+	 * @return {@link PixelFrame} or {@code null} if the queue is empty
 	 */
-	public synchronized Frame getFrame() {
+	public synchronized PixelFrame getFrame() {
 		if (buffer.size() == 0)
 			return null;
 
 		return buffer.poll();
 	}
 
-	protected synchronized void addFrame(Frame frame) {
+	protected synchronized void addFrame(PixelFrame frame) {
 		if (buffer.size() == bufferCap) {
 			getFrame().dispose();
 		}

@@ -13,45 +13,45 @@ import org.java_websocket.server.WebSocketServer;
 import org.java_websocket.util.DisposedBytesProvider;
 
 import io.smudgr.app.controller.Controller;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
- * The {@link FrameServer} provides a {@link WebSocketServer} for streaming
+ * The {@link PixelFrameServer} provides a {@link WebSocketServer} for streaming
  * video data out of smudgr.
  */
-public class FrameServer extends WebSocketServer {
+public class PixelFrameServer extends WebSocketServer {
 
 	private List<WebSocket> connections = Collections.synchronizedList(new ArrayList<WebSocket>());
 
-	private volatile Frame frame = null;
+	private volatile PixelFrame frame = null;
 
 	private ByteBuffer buffer = null;
 	private int bufferSize, i, color;
 
 	/**
-	 * Create a new {@link FrameServer} on any open port
+	 * Create a new {@link PixelFrameServer} on any open port
 	 */
-	public FrameServer() {
+	public PixelFrameServer() {
 		this(0);
 	}
 
 	/**
-	 * Create a new {@link FrameServer} on the given port
+	 * Create a new {@link PixelFrameServer} on the given port
 	 *
 	 * @param port
 	 *            Desired port to start the server on
 	 */
-	public FrameServer(int port) {
+	public PixelFrameServer(int port) {
 		super(new InetSocketAddress(port));
 	}
 
 	/**
-	 * Sets the current {@link Frame} to stream
+	 * Sets the current {@link PixelFrame} to stream
 	 *
 	 * @param f
-	 *            current {@link Frame}
+	 *            current {@link PixelFrame}
 	 */
-	public synchronized void setFrame(Frame f) {
+	public synchronized void setFrame(PixelFrame f) {
 		if (frame != null)
 			frame.dispose();
 
@@ -70,7 +70,7 @@ public class FrameServer extends WebSocketServer {
 	}
 
 	/**
-	 * Write out the current {@link Frame} to all clients
+	 * Write out the current {@link PixelFrame} to all clients
 	 */
 	public synchronized void writeFrame() {
 		if (frame == null || connections.size() == 0)

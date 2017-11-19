@@ -3,7 +3,7 @@ package io.smudgr.engine.alg.op;
 import io.smudgr.engine.alg.PixelIndexList;
 import io.smudgr.engine.alg.math.ColorHelper;
 import io.smudgr.engine.param.NumberParameter;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * Channel Drift shifts image RGB layers separately by parameterized amounts.
@@ -22,7 +22,7 @@ public class ChannelDrift extends ParallelOperation {
 	NumberParameter blueX = new NumberParameter("Blue Offset - X", this, 0, 0, 1, 0.001);
 	NumberParameter blueY = new NumberParameter("Blue Offset - Y", this, 0, 0, 1, 0.001);
 
-	private Frame buffer;
+	private PixelFrame buffer;
 	private int boundWidth, boundHeight;
 	private int redShiftX, redShiftY, greenShiftX, greenShiftY, blueShiftX, blueShiftY;
 
@@ -41,7 +41,7 @@ public class ChannelDrift extends ParallelOperation {
 	}
 
 	@Override
-	public void preParallel(Frame img) {
+	public void preParallel(PixelFrame img) {
 		boundWidth = getAlgorithm().getBound().getTranslatedWidth(img.getWidth());
 		boundHeight = getAlgorithm().getBound().getTranslatedHeight(img.getHeight());
 
@@ -63,7 +63,7 @@ public class ChannelDrift extends ParallelOperation {
 	}
 
 	@Override
-	public void postParallel(Frame img) {
+	public void postParallel(PixelFrame img) {
 		buffer.copyTo(img);
 	}
 
@@ -77,7 +77,7 @@ public class ChannelDrift extends ParallelOperation {
 		private int index, coord, x, y, r, g, b, x1, y1;
 
 		@Override
-		public void executeParallel(Frame img, PixelIndexList coords) {
+		public void executeParallel(PixelFrame img, PixelIndexList coords) {
 			for (index = 0; index < coords.size(); index++) {
 				coord = coords.get(index);
 
@@ -92,7 +92,7 @@ public class ChannelDrift extends ParallelOperation {
 			}
 		}
 
-		private int getShifted(Frame orig, int x, int y, int shiftX, int shiftY) {
+		private int getShifted(PixelFrame orig, int x, int y, int shiftX, int shiftY) {
 			x1 = (x + shiftX) % boundWidth;
 			y1 = (y + shiftY) % boundHeight;
 

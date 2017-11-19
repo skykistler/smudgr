@@ -1,8 +1,8 @@
 package io.smudgr.app.view;
 
-import io.smudgr.api.FrameServer;
+import io.smudgr.api.PixelFrameServer;
 import io.smudgr.app.controller.Controller;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * The {@link WebsocketView} implementation of {@link View} streams frames
@@ -15,16 +15,16 @@ public class WebsocketView implements View {
 		return "WebSocket Frame Server";
 	}
 
-	private FrameServer server;
+	private PixelFrameServer server;
 
 	@Override
 	public void start() {
-		server = new FrameServer(8887);
+		server = new PixelFrameServer(8887);
 		server.start();
 	}
 
 	@Override
-	public void update(Frame frame) {
+	public void update(PixelFrame frame) {
 		if (Controller.getInstance().isPaused())
 			return;
 

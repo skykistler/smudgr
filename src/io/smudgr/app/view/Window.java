@@ -16,7 +16,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 
 import io.smudgr.app.controller.Controller;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * Instances of the {@link Window} class create an empty {@link JFrame} to flush
@@ -83,7 +83,7 @@ public class Window extends JFrame implements KeyListener, WindowListener {
 	 * @param frame
 	 *            New frame.
 	 */
-	public void update(Frame frame) {
+	public void update(PixelFrame frame) {
 		boolean viewChanged = nativeImage == null || getWidth() != nativeImage.getWidth() || getHeight() != nativeImage.getHeight();
 		boolean needsRefresh = bufferStrategy == null || bufferStrategy.contentsLost();
 		boolean needsClear = lastFrameW != frame.getWidth() || lastFrameH != frame.getHeight();

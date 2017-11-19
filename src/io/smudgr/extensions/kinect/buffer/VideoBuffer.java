@@ -8,7 +8,7 @@ import org.openkinect.freenect.VideoFormat;
 import org.openkinect.freenect.VideoHandler;
 
 import io.smudgr.engine.alg.math.ColorHelper;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * Processes and stores the video information received from the Kinect
@@ -58,7 +58,7 @@ public class VideoBuffer extends KinectBuffer {
 		// byte[] imgData = ((DataBufferByte)
 		// bImage.getRaster().getDataBuffer()).getData();
 
-		Frame imageFrame = new Frame(640, 480);
+		PixelFrame imageFrame = new PixelFrame(640, 480);
 
 		int remaining = frame.remaining();
 		int index = 0;

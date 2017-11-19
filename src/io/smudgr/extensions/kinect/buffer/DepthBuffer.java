@@ -9,7 +9,7 @@ import org.openkinect.freenect.DepthHandler;
 import org.openkinect.freenect.Device;
 import org.openkinect.freenect.FrameMode;
 
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * Processes and stores the depth information received from the Kinect
@@ -53,7 +53,7 @@ public class DepthBuffer extends KinectBuffer {
 			imgData[i] = frame.get(i);
 		}
 
-		addFrame(new Frame(bImage));
+		addFrame(new PixelFrame(bImage));
 
 	}
 

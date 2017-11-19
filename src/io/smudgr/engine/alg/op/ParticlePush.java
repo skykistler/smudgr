@@ -4,7 +4,7 @@ import io.smudgr.engine.alg.PixelIndexList;
 import io.smudgr.engine.alg.math.univariate.LumaFunction;
 import io.smudgr.engine.alg.math.univariate.UnivariateFunction;
 import io.smudgr.engine.param.NumberParameter;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * Particle Push takes pixels and displaces them by a univariate scaled shift
@@ -16,7 +16,7 @@ public class ParticlePush extends ParallelOperation {
 	private NumberParameter shift = new NumberParameter("Shift", this, 50, 0, 1000, 1);
 
 	private UnivariateFunction univariate = new LumaFunction();
-	private Frame buffer;
+	private PixelFrame buffer;
 	private int shiftParam;
 	private double scaleParam;
 
@@ -26,7 +26,7 @@ public class ParticlePush extends ParallelOperation {
 	}
 
 	@Override
-	protected void preParallel(Frame img) {
+	protected void preParallel(PixelFrame img) {
 		shiftParam = shift.getIntValue();
 		scaleParam = scale.getValue();
 
@@ -41,7 +41,7 @@ public class ParticlePush extends ParallelOperation {
 	}
 
 	@Override
-	public void postParallel(Frame img) {
+	public void postParallel(PixelFrame img) {
 		buffer.copyTo(img);
 	}
 
@@ -56,12 +56,12 @@ public class ParticlePush extends ParallelOperation {
 		private double currentScale;
 
 		@Override
-		public void executeParallel(Frame img, PixelIndexList coords) {
+		public void executeParallel(PixelFrame img, PixelIndexList coords) {
 			coordsLen = coords.size();
 			shiftPixels(coords, img);
 		}
 
-		private void shiftPixels(PixelIndexList coords, Frame img) {
+		private void shiftPixels(PixelIndexList coords, PixelFrame img) {
 			for (i = 0; i < coordsLen; i++) {
 				index = coords.get(i);
 				pixel = img.pixels[index];

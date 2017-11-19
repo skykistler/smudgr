@@ -5,7 +5,7 @@ import java.util.Arrays;
 import io.smudgr.engine.alg.PixelIndexList;
 import io.smudgr.engine.param.BooleanParameter;
 import io.smudgr.engine.param.NumberParameter;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * ChannelSort sorts pixels but on a masked portion of the pixel.
@@ -31,7 +31,7 @@ public class ChannelSort extends ParallelOperation {
 	}
 
 	@Override
-	public void preParallel(Frame img) {
+	public void preParallel(PixelFrame img) {
 		reverseVal = reverse.getValue();
 
 		quality = 7 - sortQuality.getIntValue();
@@ -53,7 +53,7 @@ public class ChannelSort extends ParallelOperation {
 		private int sortSize, i, pixel, index;
 
 		@Override
-		public void executeParallel(Frame img, PixelIndexList coords) {
+		public void executeParallel(PixelFrame img, PixelIndexList coords) {
 			sortSize = coords.size();
 
 			if (toSort.length < sortSize)
@@ -62,7 +62,7 @@ public class ChannelSort extends ParallelOperation {
 			sortList(img, coords, mask);
 		}
 
-		private void sortList(Frame img, PixelIndexList coords, int mask) {
+		private void sortList(PixelFrame img, PixelIndexList coords, int mask) {
 
 			for (i = 0; i < sortSize; i++)
 				toSort[i] = img.pixels[coords.get(i)] & mask;

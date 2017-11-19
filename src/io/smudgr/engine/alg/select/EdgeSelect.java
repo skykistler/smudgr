@@ -8,7 +8,7 @@ import io.smudgr.engine.alg.math.univariate.SinFunction;
 import io.smudgr.engine.alg.math.univariate.UnivariateFunction;
 import io.smudgr.engine.param.NumberParameter;
 import io.smudgr.engine.param.UnivariateParameter;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * {@link EdgeSelect} attempts to only select pixels based on their proximity to
@@ -34,7 +34,7 @@ public class EdgeSelect extends Selector {
 	}
 
 	@Override
-	public boolean selectsPoint(Frame img, int x, int y) {
+	public boolean selectsPoint(PixelFrame img, int x, int y) {
 		int d = direction.getIntValue();
 		UnivariateFunction f = function.getValue();
 

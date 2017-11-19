@@ -6,7 +6,7 @@ import io.smudgr.engine.utility.color.Painter;
 import io.smudgr.engine.utility.crop.Cropper;
 import io.smudgr.engine.utility.rotate.Rotator;
 import io.smudgr.engine.utility.scale.Scaler;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * The {@link Utility} smudge is a container for {@link UtilityComponent}
@@ -40,8 +40,8 @@ public class Utility extends Smudge {
 			add(new Cropper());
 	}
 
-	protected Frame lastFrame;
-	protected Frame lastProcessedFrame;
+	protected PixelFrame lastFrame;
+	protected PixelFrame lastProcessedFrame;
 
 	private Rotator rotator;
 	private Scaler scaler;
@@ -49,7 +49,7 @@ public class Utility extends Smudge {
 	private Cropper cropper;
 
 	@Override
-	public Frame smudge(Frame image) {
+	public PixelFrame smudge(PixelFrame image) {
 		double currentZoomFactor = scaler.getZoomFactor();
 
 		// Need to optimize this to reuse the last croppedFrame so that we don't

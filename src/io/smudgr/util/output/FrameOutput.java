@@ -1,7 +1,7 @@
 package io.smudgr.util.output;
 
 import io.smudgr.app.controller.Controller;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * The {@link FrameOutput} interface defines methods for interacting with an
@@ -27,9 +27,9 @@ public interface FrameOutput {
 	 * Add a frame to the output stream.
 	 *
 	 * @param f
-	 *            {@link Frame}
+	 *            {@link PixelFrame}
 	 */
-	public void addFrame(Frame f);
+	public void addFrame(PixelFrame f);
 
 	/**
 	 * Closes the output stream.

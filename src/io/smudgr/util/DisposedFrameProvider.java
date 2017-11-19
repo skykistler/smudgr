@@ -5,15 +5,15 @@ import java.util.HashMap;
 import java.util.Stack;
 
 /**
- * The {@link DisposedFrameProvider} singleton contains {@link Frame} instances
+ * The {@link DisposedFrameProvider} singleton contains {@link PixelFrame} instances
  * that have been marked as disposed and allows the immediate reuse of their
  * memory.
  * <p>
  * This prevents the JVM garbage collector from working too hard to free and
- * reallocate {@link Frame} instances of the same size that are being used
+ * reallocate {@link PixelFrame} instances of the same size that are being used
  * multiple times a second.
  * <p>
- * The disposed frame cache removes {@link Frame} instances that are over a
+ * The disposed frame cache removes {@link PixelFrame} instances that are over a
  * second old.
  */
 public class DisposedFrameProvider {
@@ -32,22 +32,22 @@ public class DisposedFrameProvider {
 
 	private static volatile DisposedFrameProvider instance;
 
-	private HashMap<Integer, Stack<Frame>> disposed = new HashMap<Integer, Stack<Frame>>();
-	private ArrayList<Frame> toRemove = new ArrayList<Frame>();
+	private HashMap<Integer, Stack<PixelFrame>> disposed = new HashMap<Integer, Stack<PixelFrame>>();
+	private ArrayList<PixelFrame> toRemove = new ArrayList<PixelFrame>();
 
 	/**
 	 * Updates the {@link DisposedFrameProvider}, which removes stale
-	 * {@link Frame} instances from the cache.
+	 * {@link PixelFrame} instances from the cache.
 	 */
 	public synchronized void update() {
 		for (int key : disposed.keySet()) {
-			Stack<Frame> stack = disposed.get(key);
+			Stack<PixelFrame> stack = disposed.get(key);
 
 			if (stack == null)
 				continue;
 
 			toRemove.clear();
-			for (Frame frame : stack)
+			for (PixelFrame frame : stack)
 				if (System.currentTimeMillis() - frame.getDiposedTime() > 10000) {
 					toRemove.add(frame);
 					frame.pixels = null;
@@ -59,7 +59,7 @@ public class DisposedFrameProvider {
 
 	/**
 	 * Get a piece of memory with the given dimensions, optionally clearing it
-	 * first. If no disposed {@link Frame} exists to satisfy the dimensions, a
+	 * first. If no disposed {@link PixelFrame} exists to satisfy the dimensions, a
 	 * new piece of memory is allocated.
 	 *
 	 * @param width
@@ -78,13 +78,13 @@ public class DisposedFrameProvider {
 		if (!disposed.containsKey(hash))
 			return new int[width * height];
 
-		Stack<Frame> disposedOfEqualSize = disposed.get(hash);
+		Stack<PixelFrame> disposedOfEqualSize = disposed.get(hash);
 
 		// No frames to reuse, have to make a new one
 		if (disposedOfEqualSize.isEmpty())
 			return new int[width * height];
 
-		Frame disposedFrame = disposedOfEqualSize.pop();
+		PixelFrame disposedFrame = disposedOfEqualSize.pop();
 		int[] pixels = disposedFrame.pixels;
 
 		// If the caller doesn't like dirty data, we have to use a O(n)
@@ -98,18 +98,18 @@ public class DisposedFrameProvider {
 	}
 
 	/**
-	 * Mark a given {@link Frame} as disposed, and ready for reuse.
+	 * Mark a given {@link PixelFrame} as disposed, and ready for reuse.
 	 *
 	 * @param frame
 	 *            to dispose
 	 */
-	public synchronized void disposeFrame(Frame frame) {
+	public synchronized void disposeFrame(PixelFrame frame) {
 		int hash = getHash(frame.getWidth(), frame.getHeight());
 
-		Stack<Frame> disposedFrames = disposed.get(hash);
+		Stack<PixelFrame> disposedFrames = disposed.get(hash);
 
 		if (disposedFrames == null) {
-			disposedFrames = new Stack<Frame>();
+			disposedFrames = new Stack<PixelFrame>();
 			disposed.put(hash, disposedFrames);
 		}
 
@@ -123,12 +123,12 @@ public class DisposedFrameProvider {
 	 */
 	public synchronized void dump() {
 		for (int key : disposed.keySet()) {
-			Stack<Frame> stack = disposed.get(key);
+			Stack<PixelFrame> stack = disposed.get(key);
 
 			if (stack == null)
 				continue;
 
-			for (Frame frame : stack)
+			for (PixelFrame frame : stack)
 				frame.pixels = null;
 
 			stack.clear();

@@ -6,26 +6,26 @@ package io.smudgr.engine.alg.op;
 import java.util.concurrent.Callable;
 
 import io.smudgr.engine.alg.PixelIndexList;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  *
  */
 public abstract class ParallelOperationTask implements Callable<Boolean> {
 
-	private Frame toImg;
+	private PixelFrame toImg;
 	private PixelIndexList forList;
 
 	/**
 	 * Updates the data to work on for the next
-	 * {@link ParallelOperationTask#executeParallel(Frame, PixelIndexList)} call
+	 * {@link ParallelOperationTask#executeParallel(PixelFrame, PixelIndexList)} call
 	 *
 	 * @param img
-	 *            {@link Frame}
+	 *            {@link PixelFrame}
 	 * @param coords
 	 *            {@link PixelIndexList}
 	 */
-	public void setData(Frame img, PixelIndexList coords) {
+	public void setData(PixelFrame img, PixelIndexList coords) {
 		toImg = img;
 		forList = coords;
 	}
@@ -43,10 +43,10 @@ public abstract class ParallelOperationTask implements Callable<Boolean> {
 	 * Execute this task on the given image and coordinate list
 	 *
 	 * @param img
-	 *            {@link Frame}
+	 *            {@link PixelFrame}
 	 * @param coords
 	 *            {@link PixelIndexList}
 	 */
-	public abstract void executeParallel(Frame img, PixelIndexList coords);
+	public abstract void executeParallel(PixelFrame img, PixelIndexList coords);
 
 }

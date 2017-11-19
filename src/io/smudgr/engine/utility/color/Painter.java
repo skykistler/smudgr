@@ -5,7 +5,7 @@ import java.util.stream.IntStream;
 import io.smudgr.engine.alg.math.ColorHelper;
 import io.smudgr.engine.param.NumberParameter;
 import io.smudgr.engine.utility.UtilityComponent;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * The {@link Painter} class defines a {@link UtilityComponent} that can, pixel
@@ -43,9 +43,9 @@ public class Painter extends UtilityComponent {
 	 * parameters.
 	 * 
 	 * @param f
-	 *            {@link Frame}
+	 *            {@link PixelFrame}
 	 */
-	public void color(Frame f) {
+	public void color(PixelFrame f) {
 		sat = saturation.getValue();
 		val = brightness.getValue();
 		deg = degree.getIntValue();

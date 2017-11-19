@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 import io.smudgr.api.ApiCommand;
 import io.smudgr.api.ApiMessage;
 import io.smudgr.app.project.ProjectItem;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 import io.smudgr.util.source.Source;
 
 /**
@@ -40,7 +40,7 @@ public class SourceThumbnail implements ApiCommand {
 
 		// Get thumbnail from source
 		Source source = (Source) item;
-		Frame thumbnail = source.getThumbnail();
+		PixelFrame thumbnail = source.getThumbnail();
 
 		// Fail if source hasn't generated a thumbnail
 		if (thumbnail == null) {

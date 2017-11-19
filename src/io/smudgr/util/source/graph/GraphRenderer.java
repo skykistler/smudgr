@@ -5,12 +5,12 @@ import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * The {@link GraphRenderer} class uses Java libraries to draw the
  * {@link Vertex}, {@link Edge}, and {@link Shape} components of a {@link Graph}
- * onto a {@link Frame}
+ * onto a {@link PixelFrame}
  */
 public class GraphRenderer {
 	private Graph graph;
@@ -26,12 +26,12 @@ public class GraphRenderer {
 	}
 
 	/**
-	 * Draw the graph and return the {@link Frame}
+	 * Draw the graph and return the {@link PixelFrame}
 	 *
-	 * @return {@link Frame}
+	 * @return {@link PixelFrame}
 	 * @see GraphRenderer#GraphRenderer(Graph)
 	 */
-	public Frame drawGraph() {
+	public PixelFrame drawGraph() {
 		BufferedImage graphImage = new BufferedImage(graph.getWidth(), graph.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Graphics g = graphImage.getGraphics();
 
@@ -44,7 +44,7 @@ public class GraphRenderer {
 		for (Edge e : graph.getEdges())
 			drawEdge(e, g);
 
-		return new Frame(graphImage);
+		return new PixelFrame(graphImage);
 	}
 
 	private void drawPolygon(Shape p, Graphics g) {

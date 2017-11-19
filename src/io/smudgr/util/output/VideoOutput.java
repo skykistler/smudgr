@@ -4,7 +4,7 @@
 package io.smudgr.util.output;
 
 import io.smudgr.app.controller.Controller;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * TODO: Implement outputting frames with FFMPEG
@@ -36,7 +36,7 @@ public class VideoOutput implements FrameOutput {
 	}
 
 	@Override
-	public void addFrame(Frame f) {
+	public void addFrame(PixelFrame f) {
 	}
 
 	@Override

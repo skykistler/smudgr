@@ -7,7 +7,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import io.smudgr.app.controller.Controller;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * The {@link ImageOutput} stream records a single PNG file for every frame
@@ -41,10 +41,10 @@ public class ImageOutput implements FrameOutput {
 	}
 
 	@Override
-	public void addFrame(Frame f) {
+	public void addFrame(PixelFrame f) {
 		System.out.println("Saving image to " + path);
 
-		Frame toSave = f.resize(width, height);
+		PixelFrame toSave = f.resize(width, height);
 
 		try {
 			BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);

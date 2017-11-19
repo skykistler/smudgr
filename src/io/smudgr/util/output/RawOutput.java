@@ -1,6 +1,6 @@
 package io.smudgr.util.output;
 
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * TODO: Implement outputting to indestructible raw files
@@ -17,7 +17,7 @@ public class RawOutput implements FrameOutput {
 	}
 
 	@Override
-	public void addFrame(Frame f) {
+	public void addFrame(PixelFrame f) {
 	}
 
 	@Override

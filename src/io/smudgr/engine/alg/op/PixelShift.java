@@ -4,7 +4,7 @@ import io.smudgr.engine.alg.Algorithm;
 import io.smudgr.engine.alg.PixelIndexList;
 import io.smudgr.engine.param.BooleanParameter;
 import io.smudgr.engine.param.NumberParameter;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * Pixel Shift simply shifts pixels by a given amount, within interval offsets,
@@ -40,13 +40,13 @@ public class PixelShift extends Operation {
 	}
 
 	@Override
-	public void execute(Frame img) {
+	public void execute(PixelFrame img) {
 		int size = getSelectedPixels().size();
 
 		selectedShiftType = shiftType.getIntValue();
 		isReversed = reverse.getValue();
 
-		Frame shifted = img.copy();
+		PixelFrame shifted = img.copy();
 
 		double shift = amount.getValue();
 
@@ -87,7 +87,7 @@ public class PixelShift extends Operation {
 		shifted.dispose();
 	}
 
-	private void shift(Frame shifted, Frame orig, PixelIndexList coords, int currentInterval, double amount,
+	private void shift(PixelFrame shifted, PixelFrame orig, PixelIndexList coords, int currentInterval, double amount,
 			int indexIntoCurrentInt, double totalInts) {
 
 		double shiftScale = 1;

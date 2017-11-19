@@ -20,7 +20,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import io.smudgr.app.controller.Controller;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * The {@link Gif} source loads an animate GIF and returns the current frame in
@@ -48,7 +48,7 @@ public class Gif implements AnimatedSource {
 	private BufferThread bufferer;
 	private volatile ArrayList<GifFrame> buffer = new ArrayList<GifFrame>();
 
-	private Frame thumbnail;
+	private PixelFrame thumbnail;
 	private boolean generatedFinalThumbnail;
 
 	private int ticks;
@@ -95,7 +95,7 @@ public class Gif implements AnimatedSource {
 	}
 
 	@Override
-	public Frame getFrame() {
+	public PixelFrame getFrame() {
 		if (buffer.size() == 0)
 			return null;
 
@@ -104,7 +104,7 @@ public class Gif implements AnimatedSource {
 	}
 
 	@Override
-	public Frame getThumbnail() {
+	public PixelFrame getThumbnail() {
 		// If no frames loaded yet, no preview
 		if (buffer.size() == 0)
 			return null;
@@ -302,7 +302,7 @@ public class Gif implements AnimatedSource {
 
 							} else if (disposal.equals("restoreToBackgroundColor") && backgroundColor != null) {
 								if (!hasBackround || frameIndex > 1) {
-									Frame last = buffer.get(frameIndex - 1).getFrame();
+									PixelFrame last = buffer.get(frameIndex - 1).getFrame();
 
 									Graphics g = master.createGraphics();
 									g.fillRect(lastx, lasty, last.getWidth(), last.getHeight());
@@ -358,13 +358,13 @@ public class Gif implements AnimatedSource {
 	}
 
 	private class GifFrame {
-		private Frame frame;
+		private PixelFrame frame;
 		private BufferedImage image;
 		private String disposal;
 		private int delay;
 
 		public GifFrame(BufferedImage image, String disposal, int delay) {
-			frame = new Frame(image);
+			frame = new PixelFrame(image);
 
 			this.image = image;
 
@@ -379,7 +379,7 @@ public class Gif implements AnimatedSource {
 			return image;
 		}
 
-		public Frame getFrame() {
+		public PixelFrame getFrame() {
 			return frame;
 		}
 

@@ -3,37 +3,37 @@ package io.smudgr.util;
 import java.awt.image.BufferedImage;
 
 /**
- * Instances of the {@link Frame} class are used to store the pixel data of an
+ * Instances of the {@link PixelFrame} class are used to store the pixel data of an
  * image.
  * <p>
  * The
- * {@link DisposedFrameProvider} allows {@link Frame} instances to reuse memory
+ * {@link DisposedFrameProvider} allows {@link PixelFrame} instances to reuse memory
  * efficiently and avoid unnecessary string on the JVM garbage collector.
  */
-public class Frame {
+public class PixelFrame {
 	private int width;
 	private int height;
 	private long disposedTime = 0;
 
 	/**
 	 * Direct access array of the ARGB color integers backing this
-	 * {@link Frame}
+	 * {@link PixelFrame}
 	 */
 	public int[] pixels;
 
 	/**
-	 * Create a new {@link Frame} with the given dimensions, without clearing
+	 * Create a new {@link PixelFrame} with the given dimensions, without clearing
 	 * the backing memory.
 	 * <p>
-	 * The new {@link Frame} may contain disposed pixel data. If this is a
-	 * problem, use {@link Frame#Frame(BufferedImage)} instead.
+	 * The new {@link PixelFrame} may contain disposed pixel data. If this is a
+	 * problem, use {@link PixelFrame#PixelFrame(BufferedImage)} instead.
 	 *
 	 * @param w
 	 *            width
 	 * @param h
 	 *            height
 	 */
-	public Frame(int w, int h) {
+	public PixelFrame(int w, int h) {
 		width = w;
 		height = h;
 
@@ -41,12 +41,12 @@ public class Frame {
 	}
 
 	/**
-	 * Create a new {@link Frame} from the given {@link BufferedImage}
+	 * Create a new {@link PixelFrame} from the given {@link BufferedImage}
 	 *
 	 * @param image
 	 *            {@link BufferedImage}
 	 */
-	public Frame(BufferedImage image) {
+	public PixelFrame(BufferedImage image) {
 		width = image.getWidth();
 		height = image.getHeight();
 
@@ -56,15 +56,15 @@ public class Frame {
 	}
 
 	/**
-	 * Creates a duplicate of this {@link Frame}, using new memory space (or
+	 * Creates a duplicate of this {@link PixelFrame}, using new memory space (or
 	 * disposed memory if disposed frames of this size exist)
 	 *
-	 * @return duplicate {@link Frame}
+	 * @return duplicate {@link PixelFrame}
 	 */
-	public synchronized Frame copy() {
+	public synchronized PixelFrame copy() {
 		assertNotDisposed();
 
-		Frame copy = new Frame(width, height);
+		PixelFrame copy = new PixelFrame(width, height);
 
 		System.arraycopy(pixels, 0, copy.pixels, 0, pixels.length);
 
@@ -72,14 +72,14 @@ public class Frame {
 	}
 
 	/**
-	 * Copy this {@link Frame} to the given {@link Frame}, copying only until
-	 * this {@link Frame} length is reached, or the given {@link Frame} length
+	 * Copy this {@link PixelFrame} to the given {@link PixelFrame}, copying only until
+	 * this {@link PixelFrame} length is reached, or the given {@link PixelFrame} length
 	 * is reached.
 	 *
 	 * @param f
-	 *            {@link Frame} of equal dimensions (ideally)
+	 *            {@link PixelFrame} of equal dimensions (ideally)
 	 */
-	public synchronized void copyTo(Frame f) {
+	public synchronized void copyTo(PixelFrame f) {
 		assertNotDisposed();
 
 		System.arraycopy(pixels, 0, f.pixels, 0, Math.min(f.pixels.length, pixels.length));
@@ -97,7 +97,7 @@ public class Frame {
 	public synchronized void drawTo(BufferedImage image) {
 		assertNotDisposed();
 
-		Frame fittedFrame = fitToSize(image.getWidth(), image.getHeight());
+		PixelFrame fittedFrame = fitToSize(image.getWidth(), image.getHeight());
 
 		try {
 			image.setRGB(0, 0, fittedFrame.getWidth(), fittedFrame.getHeight(), fittedFrame.pixels, 0, fittedFrame.getWidth());
@@ -115,21 +115,21 @@ public class Frame {
 	}
 
 	/**
-	 * Without changing dimension ratios, fit this {@link Frame} to the given
+	 * Without changing dimension ratios, fit this {@link PixelFrame} to the given
 	 * size and fill blank space with black.
 	 *
 	 * @param toSizeW
 	 *            new width
 	 * @param toSizeH
 	 *            new height
-	 * @return fitted {@link Frame}
+	 * @return fitted {@link PixelFrame}
 	 */
-	public Frame fitToSize(int toSizeW, int toSizeH) {
+	public PixelFrame fitToSize(int toSizeW, int toSizeH) {
 		return fitToSize(toSizeW, toSizeH, true);
 	}
 
 	/**
-	 * Without changing dimension ratios, return a copy of this {@link Frame}
+	 * Without changing dimension ratios, return a copy of this {@link PixelFrame}
 	 * fitted to the given size, optionally filling blank space with black.
 	 *
 	 * @param toSizeW
@@ -140,9 +140,9 @@ public class Frame {
 	 *            If true, to return a frame of exactly toSizeW x toSizeH with
 	 *            blank space filled with black. Otherwise, a frame with scaled
 	 *            dimensions of the original ratio is returned.
-	 * @return fitted {@link Frame}
+	 * @return fitted {@link PixelFrame}
 	 */
-	public Frame fitToSize(int toSizeW, int toSizeH, boolean fill) {
+	public PixelFrame fitToSize(int toSizeW, int toSizeH, boolean fill) {
 		assertNotDisposed();
 
 		double newWidth = width;
@@ -171,9 +171,9 @@ public class Frame {
 	/**
 	 * Generates a small preview of this frame with a maximum size of 200x200
 	 * 
-	 * @return {@link Frame} thumbnail
+	 * @return {@link PixelFrame} thumbnail
 	 */
-	public Frame generateThumbnail() {
+	public PixelFrame generateThumbnail() {
 		return fitToSize(200, 200, false);
 	}
 
@@ -182,9 +182,9 @@ public class Frame {
 	 *
 	 * @param factor
 	 *            multiplier
-	 * @return new {@link Frame}
+	 * @return new {@link PixelFrame}
 	 */
-	public Frame resize(double factor) {
+	public PixelFrame resize(double factor) {
 		if (factor < 0 || factor == 1)
 			return copy();
 
@@ -202,9 +202,9 @@ public class Frame {
 	 *            width
 	 * @param h
 	 *            height
-	 * @return new {@link Frame} of given dimensions
+	 * @return new {@link PixelFrame} of given dimensions
 	 */
-	public Frame resize(int w, int h) {
+	public PixelFrame resize(int w, int h) {
 		return resize(0, 0, w, h, w, h);
 	}
 
@@ -221,16 +221,16 @@ public class Frame {
 	 * @param h
 	 *            new height
 	 * @param wSize
-	 *            new {@link Frame} width
+	 *            new {@link PixelFrame} width
 	 * @param hSize
-	 *            new {@link Frame} height
-	 * @return new {@link Frame}
+	 *            new {@link PixelFrame} height
+	 * @return new {@link PixelFrame}
 	 */
-	public synchronized Frame resize(int xOffset, int yOffset, int w, int h, int wSize, int hSize) {
+	public synchronized PixelFrame resize(int xOffset, int yOffset, int w, int h, int wSize, int hSize) {
 		if (xOffset == 0 && yOffset == 0 && w == width && h == height)
 			return copy();
 
-		Frame scaled = new Frame(wSize, hSize);
+		PixelFrame scaled = new PixelFrame(wSize, hSize);
 
 		int x_ratio = ((width << 16) / w) + 1;
 		int y_ratio = ((height << 16) / h) + 1;
@@ -264,7 +264,7 @@ public class Frame {
 	}
 
 	/**
-	 * Gets the width of this {@link Frame}
+	 * Gets the width of this {@link PixelFrame}
 	 *
 	 * @return width
 	 */
@@ -273,7 +273,7 @@ public class Frame {
 	}
 
 	/**
-	 * Gets the height of this {@link Frame}
+	 * Gets the height of this {@link PixelFrame}
 	 *
 	 * @return height
 	 */
@@ -309,7 +309,7 @@ public class Frame {
 	}
 
 	/**
-	 * Throws an exception if this {@link Frame} has been flagged as disposed
+	 * Throws an exception if this {@link PixelFrame} has been flagged as disposed
 	 * memory.
 	 */
 	public void assertNotDisposed() {
@@ -320,7 +320,7 @@ public class Frame {
 	/**
 	 * Gets whether this frame has been marked as disposed.
 	 * 
-	 * @return {@code true} if this {@link Frame} has been marked for disposal,
+	 * @return {@code true} if this {@link PixelFrame} has been marked for disposal,
 	 *         {@code false} if otherwise
 	 */
 	public boolean isDisposed() {

@@ -4,11 +4,11 @@ import io.smudgr.app.controller.Controller;
 import io.smudgr.app.project.ProjectItem;
 import io.smudgr.app.project.SourceLibrary;
 import io.smudgr.app.project.util.PropertyMap;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * The {@link Source} interface defines methods for interacting with a
- * {@link Frame} input source.
+ * {@link PixelFrame} input source.
  */
 public interface Source extends ProjectItem {
 
@@ -35,11 +35,11 @@ public interface Source extends ProjectItem {
 	public void update();
 
 	/**
-	 * Gets the current {@link Frame} of this {@link Source}
+	 * Gets the current {@link PixelFrame} of this {@link Source}
 	 *
-	 * @return {@link Frame}
+	 * @return {@link PixelFrame}
 	 */
-	public Frame getFrame();
+	public PixelFrame getFrame();
 
 	/**
 	 * Dispose of this {@link Source}, its frames, and any allocated resources.
@@ -51,9 +51,9 @@ public interface Source extends ProjectItem {
 	 * source is
 	 * currently disposed or not.
 	 * 
-	 * @return {@link Frame}
+	 * @return {@link PixelFrame}
 	 */
-	public Frame getThumbnail();
+	public PixelFrame getThumbnail();
 
 	/**
 	 * Gets user-identifying name of this {@link Source} instance.

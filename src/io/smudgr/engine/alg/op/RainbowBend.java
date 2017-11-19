@@ -4,7 +4,7 @@ import gnu.trove.list.array.TByteArrayList;
 import io.smudgr.engine.alg.PixelIndexList;
 import io.smudgr.engine.alg.math.ColorHelper;
 import io.smudgr.engine.param.NumberParameter;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * I actually have no idea what this does. :)
@@ -36,7 +36,7 @@ public class RainbowBend extends ParallelOperation {
 	}
 
 	@Override
-	public void preParallel(Frame img) {
+	public void preParallel(PixelFrame img) {
 		targetByte = (byte) target.getIntValue();
 		subAmount = amount.getIntValue();
 
@@ -75,7 +75,7 @@ public class RainbowBend extends ParallelOperation {
 		private int index, color, r, g, b;
 
 		@Override
-		public void executeParallel(Frame img, PixelIndexList coords) {
+		public void executeParallel(PixelFrame img, PixelIndexList coords) {
 			redByteList.ensureCapacity(coords.size());
 			greenByteList.ensureCapacity(coords.size());
 			blueByteList.ensureCapacity(coords.size());
@@ -83,7 +83,7 @@ public class RainbowBend extends ParallelOperation {
 			process(coords, targetByte, img);
 		}
 
-		private void process(PixelIndexList coords, byte target, Frame img) {
+		private void process(PixelIndexList coords, byte target, PixelFrame img) {
 			redByteList.resetQuick();
 			greenByteList.resetQuick();
 			blueByteList.resetQuick();

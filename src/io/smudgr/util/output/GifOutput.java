@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 import org.java_websocket.util.DisposedBytesProvider;
 
 import io.smudgr.app.controller.Controller;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * The {@link GifOutput} output stream records an animated GIF at this ideal GIF
@@ -27,7 +27,7 @@ public class GifOutput implements FrameOutput {
 	private String path;
 
 	private int maxWidth, maxHeight;
-	private BlockingQueue<Frame> frames = new LinkedBlockingQueue<Frame>();
+	private BlockingQueue<PixelFrame> frames = new LinkedBlockingQueue<PixelFrame>();
 
 	private File cache;
 	private FileOutputStream cacheOut;
@@ -73,7 +73,7 @@ public class GifOutput implements FrameOutput {
 	}
 
 	@Override
-	public void addFrame(Frame f) {
+	public void addFrame(PixelFrame f) {
 		if (closed)
 			return;
 
@@ -145,7 +145,7 @@ public class GifOutput implements FrameOutput {
 			while (!closed) {
 
 				try {
-					Frame frame = frames.poll(2, TimeUnit.SECONDS);
+					PixelFrame frame = frames.poll(2, TimeUnit.SECONDS);
 					if (frame == null)
 						continue;
 
@@ -221,7 +221,7 @@ public class GifOutput implements FrameOutput {
 				cacheIn.read(frameData.array());
 				frameData.position(0);
 
-				Frame frame = new Frame(width, height);
+				PixelFrame frame = new PixelFrame(width, height);
 				frameData.asIntBuffer().get(frame.pixels);
 
 				frame.drawTo(gifFrame);

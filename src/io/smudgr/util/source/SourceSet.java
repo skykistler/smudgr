@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 import io.smudgr.app.project.util.PropertyMap;
 import io.smudgr.util.DisposedFrameProvider;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * The {@link SourceSet} source is a container of {@link Source} instances,
@@ -90,7 +90,7 @@ public class SourceSet implements Source {
 	}
 
 	@Override
-	public Frame getFrame() {
+	public PixelFrame getFrame() {
 		Source s = getCurrentSource();
 		if (s == null || s == this)
 			return null;
@@ -99,7 +99,7 @@ public class SourceSet implements Source {
 	}
 
 	@Override
-	public Frame getThumbnail() {
+	public PixelFrame getThumbnail() {
 		// TODO: generate some kind of composite preview of sources in this set
 		Source s = getCurrentSource();
 

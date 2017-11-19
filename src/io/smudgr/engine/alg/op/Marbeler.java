@@ -5,7 +5,7 @@ import java.util.Random;
 import io.smudgr.engine.alg.math.lerp.CubicInterpolator;
 import io.smudgr.engine.alg.math.lerp.Interpolator;
 import io.smudgr.engine.param.NumberParameter;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * Marbeler iteratively shifts pixel columns in alternating directions for a
@@ -47,7 +47,7 @@ public class Marbeler extends Operation {
 	}
 
 	@Override
-	public void execute(Frame img) {
+	public void execute(PixelFrame img) {
 		imgWidth = img.getWidth();
 		imgHeight = img.getHeight();
 
@@ -125,7 +125,7 @@ public class Marbeler extends Operation {
 		}
 	}
 
-	private void pushPixels(Frame img, double amount) {
+	private void pushPixels(PixelFrame img, double amount) {
 		offset = (int) Math.abs(Math.floor(k * (offsetXYParam + o + amount * modParam)));
 
 		for (l = 0; l < k; l++) {

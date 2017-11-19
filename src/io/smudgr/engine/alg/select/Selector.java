@@ -8,7 +8,7 @@ import io.smudgr.engine.alg.AlgorithmComponent;
 import io.smudgr.engine.alg.PixelIndexList;
 import io.smudgr.engine.alg.coord.CoordFunction;
 import io.smudgr.engine.alg.op.Operation;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * The abstract {@link Selector} class defines an {@link AlgorithmComponent}
@@ -31,7 +31,7 @@ public abstract class Selector extends AlgorithmComponent {
 	protected ArrayList<PixelIndexList> selectedList = new ArrayList<PixelIndexList>();
 	protected Stack<PixelIndexList> disposedLists = new Stack<PixelIndexList>();
 
-	private Frame frame;
+	private PixelFrame frame;
 	private int i, index, coord, x, y;
 
 	/**
@@ -91,10 +91,10 @@ public abstract class Selector extends AlgorithmComponent {
 
 	/**
 	 * Gets whether the given point is selected for operation given an image
-	 * {@link Frame}
+	 * {@link PixelFrame}
 	 *
 	 * @param img
-	 *            {@link Frame}
+	 *            {@link PixelFrame}
 	 * @param x
 	 *            coordinate of pixel
 	 * @param y
@@ -102,15 +102,15 @@ public abstract class Selector extends AlgorithmComponent {
 	 * @return {@code true} if the pixel should be acted upon, {@code false} if
 	 *         otherwise
 	 */
-	public abstract boolean selectsPoint(Frame img, int x, int y);
+	public abstract boolean selectsPoint(PixelFrame img, int x, int y);
 
 	/**
 	 * Sets the frame to use when selecting pixels.
 	 *
 	 * @param f
-	 *            {@link Frame}
+	 *            {@link PixelFrame}
 	 */
-	public void setFrame(Frame f) {
+	public void setFrame(PixelFrame f) {
 		this.frame = f;
 	}
 

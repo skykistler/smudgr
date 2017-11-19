@@ -3,7 +3,7 @@ package io.smudgr.engine.alg.bound;
 import io.smudgr.engine.alg.Algorithm;
 import io.smudgr.engine.alg.AlgorithmComponent;
 import io.smudgr.engine.param.NumberParameter;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * The {@link Bound} class is an {@link AlgorithmComponent} that defines
@@ -43,16 +43,16 @@ public class Bound extends AlgorithmComponent {
 
 	/**
 	 * Checks whether a given point is contained within the current state of
-	 * this {@link Bound}, given {@link Frame} dimensions
+	 * this {@link Bound}, given {@link PixelFrame} dimensions
 	 *
 	 * @param x
 	 *            coordinate to test
 	 * @param y
 	 *            coordinate to test
 	 * @param w
-	 *            width of {@link Frame}
+	 *            width of {@link PixelFrame}
 	 * @param h
-	 *            height of {@link Frame}
+	 *            height of {@link PixelFrame}
 	 * @return {@code true} if this {@link Bound} contains the given point,
 	 *         {@code false} if otherwise
 	 */

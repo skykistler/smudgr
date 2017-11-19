@@ -7,7 +7,7 @@ import io.smudgr.engine.alg.math.univariate.LumaFunction;
 import io.smudgr.engine.alg.math.univariate.UnivariateFunction;
 import io.smudgr.engine.param.BooleanParameter;
 import io.smudgr.engine.param.UnivariateParameter;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * Pixel Sort, as implied by its name, sorts pixels in forward or reverse order
@@ -33,7 +33,7 @@ public class PixelSort extends ParallelOperation {
 	}
 
 	@Override
-	protected void preParallel(Frame img) {
+	protected void preParallel(PixelFrame img) {
 		comparator = function.getValue();
 		reverse = reverseParam.getValue();
 	}
@@ -51,11 +51,11 @@ public class PixelSort extends ParallelOperation {
 		private double o1l, o2l;
 
 		@Override
-		public void executeParallel(Frame img, PixelIndexList coords) {
+		public void executeParallel(PixelFrame img, PixelIndexList coords) {
 			sortList(img, coords);
 		}
 
-		private void sortList(Frame img, PixelIndexList coords) {
+		private void sortList(PixelFrame img, PixelIndexList coords) {
 			sortSize = coords.size();
 
 			/*

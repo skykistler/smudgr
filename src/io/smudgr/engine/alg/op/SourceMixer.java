@@ -12,13 +12,13 @@ import io.smudgr.engine.alg.math.blend.MinBlender;
 import io.smudgr.engine.alg.math.blend.NormalBlender;
 import io.smudgr.engine.param.BlendParameter;
 import io.smudgr.engine.param.NumberParameter;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 import io.smudgr.util.source.Image;
 import io.smudgr.util.source.Source;
 
 /**
  * Source Mixer allows the traditional blending of two images, one being the
- * passed in {@link Frame} and another being a configurable {@link Source}
+ * passed in {@link PixelFrame} and another being a configurable {@link Source}
  */
 public class SourceMixer extends ParallelOperation {
 
@@ -32,7 +32,7 @@ public class SourceMixer extends ParallelOperation {
 	NumberParameter translateY = new NumberParameter("Translation Y", this, 0, -1, 1, 0.01);
 	BlendParameter blenders = new BlendParameter("Blender", this, new NormalBlender());
 
-	private Frame mixFrame;
+	private PixelFrame mixFrame;
 	private Source mixSource = new Image("data/mix/firemix.png");
 
 	private int MAX_HEIGHT = 4000;
@@ -73,7 +73,7 @@ public class SourceMixer extends ParallelOperation {
 	}
 
 	@Override
-	public void preParallel(Frame img) {
+	public void preParallel(PixelFrame img) {
 		blender = blenders.getValue();
 
 		baseW = img.getWidth();
@@ -82,7 +82,7 @@ public class SourceMixer extends ParallelOperation {
 		if (mixFrame != null)
 			mixFrame.dispose();
 
-		Frame frameFromSource = mixSource.getFrame();
+		PixelFrame frameFromSource = mixSource.getFrame();
 		if (frameFromSource != null) {
 			frameWidth = frameFromSource.getWidth();
 			frameHeight = frameFromSource.getHeight();
@@ -141,7 +141,7 @@ public class SourceMixer extends ParallelOperation {
 		private int index, coord, x, y, baseColor, mixInColor;
 
 		@Override
-		public void executeParallel(Frame img, PixelIndexList coords) {
+		public void executeParallel(PixelFrame img, PixelIndexList coords) {
 			for (index = 0; index < coords.size(); index++) {
 				coord = coords.get(index);
 				x = (coord % baseW) - dx;

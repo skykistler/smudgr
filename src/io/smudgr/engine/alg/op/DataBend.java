@@ -4,7 +4,7 @@ import gnu.trove.list.array.TByteArrayList;
 import io.smudgr.engine.alg.PixelIndexList;
 import io.smudgr.engine.alg.math.ColorHelper;
 import io.smudgr.engine.param.NumberParameter;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * Data Bend mimics the popular Wordpad effect, with a configurable 'Target'
@@ -31,7 +31,7 @@ public class DataBend extends ParallelOperation {
 	}
 
 	@Override
-	public void preParallel(Frame img) {
+	public void preParallel(PixelFrame img) {
 		targetByte = (byte) target.getIntValue();
 		subAmount = amount.getIntValue();
 	}
@@ -48,13 +48,13 @@ public class DataBend extends ParallelOperation {
 		private byte temp;
 
 		@Override
-		public void executeParallel(Frame img, PixelIndexList coords) {
+		public void executeParallel(PixelFrame img, PixelIndexList coords) {
 			byteList.ensureCapacity(coords.size() * 3);
 
 			process(coords, targetByte, img, replaceByte, subAmount);
 		}
 
-		private void process(PixelIndexList coords, byte target, Frame img, byte sub, int subAmount) {
+		private void process(PixelIndexList coords, byte target, PixelFrame img, byte sub, int subAmount) {
 			byteList.resetQuick();
 
 			for (index = 0; index < coords.size(); index++) {

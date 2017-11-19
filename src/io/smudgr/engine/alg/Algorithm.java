@@ -9,7 +9,7 @@ import io.smudgr.engine.alg.coord.CoordFunction;
 import io.smudgr.engine.alg.coord.StraightCoords;
 import io.smudgr.engine.alg.op.Operation;
 import io.smudgr.engine.alg.select.Selector;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * The {@link Algorithm} class is a container for {@link AlgorithmComponent}
@@ -38,7 +38,7 @@ public class Algorithm extends Smudge {
 
 	private ArrayList<PixelIndexList> selectedPixels = new ArrayList<PixelIndexList>();
 
-	protected Frame lastFrame;
+	protected PixelFrame lastFrame;
 	private double lastBoundX, lastBoundY, lastBoundW, lastBoundH;
 
 	/**
@@ -58,7 +58,7 @@ public class Algorithm extends Smudge {
 	}
 
 	@Override
-	public Frame smudge(Frame img) {
+	public PixelFrame smudge(PixelFrame img) {
 		boolean boundChanged = lastBoundX != bound.getOffsetX() || lastBoundY != bound.getOffsetY() || lastBoundW != bound.getWidth() || lastBoundH != bound.getHeight();
 		boolean dimensionsChanged = lastFrame == null || (img.getWidth() != this.lastFrame.getWidth() || img.getHeight() != this.lastFrame.getHeight());
 

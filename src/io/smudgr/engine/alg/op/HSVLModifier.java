@@ -3,7 +3,7 @@ package io.smudgr.engine.alg.op;
 import io.smudgr.engine.alg.PixelIndexList;
 import io.smudgr.engine.alg.math.ColorHelper;
 import io.smudgr.engine.param.NumberParameter;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * HSV/L Modifier provides a traditional manipulation for saturation, hue, and
@@ -25,7 +25,7 @@ public class HSVLModifier extends ParallelOperation {
 	private int deg, colorSpace, index, coord;
 
 	@Override
-	public void preParallel(Frame img) {
+	public void preParallel(PixelFrame img) {
 		sat = saturation.getValue();
 		val = value.getValue();
 		deg = degree.getIntValue();
@@ -40,7 +40,7 @@ public class HSVLModifier extends ParallelOperation {
 	class HSVLTask extends ParallelOperationTask {
 
 		@Override
-		public void executeParallel(Frame img, PixelIndexList coords) {
+		public void executeParallel(PixelFrame img, PixelIndexList coords) {
 			for (index = 0; index < coords.size(); index++) {
 				coord = coords.get(index);
 				img.pixels[coord] = manipulate(img.pixels[coord], deg, sat, val);

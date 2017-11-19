@@ -4,6 +4,7 @@ io.smudgr.app
 io.smudgr.app.controller
 io.smudgr.app.controller.controls
 io.smudgr.app.project
+io.smudgr.app.project.reflect
 io.smudgr.app.project.util
 io.smudgr.app.threads
 io.smudgr.app.view
@@ -17,13 +18,14 @@ io.smudgr.engine.alg.math.lerp
 io.smudgr.engine.alg.math.univariate
 io.smudgr.engine.alg.op
 io.smudgr.engine.alg.select
-io.smudgr.engine.element
 io.smudgr.engine.param
+io.smudgr.engine.utility
+io.smudgr.engine.utility.color
+io.smudgr.engine.utility.crop
+io.smudgr.engine.utility.rotate
+io.smudgr.engine.utility.scale
 io.smudgr.extensions.automate
 io.smudgr.extensions.automate.controls
-io.smudgr.extensions.cef
-io.smudgr.extensions.cef.util
-io.smudgr.extensions.cef.view
 io.smudgr.extensions.kinect
 io.smudgr.extensions.kinect.buffer
 io.smudgr.extensions.kinect.source

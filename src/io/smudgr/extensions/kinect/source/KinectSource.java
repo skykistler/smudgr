@@ -5,7 +5,7 @@ import io.smudgr.extensions.kinect.KinectExtension;
 import io.smudgr.extensions.kinect.buffer.DepthBuffer;
 import io.smudgr.extensions.kinect.buffer.KinectBuffer;
 import io.smudgr.extensions.kinect.buffer.VideoBuffer;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 import io.smudgr.util.source.Source;
 
 /**
@@ -15,8 +15,8 @@ import io.smudgr.util.source.Source;
 public abstract class KinectSource implements Source {
 
 	private KinectBuffer buffer;
-	private Frame lastFrame;
-	private Frame frame;
+	private PixelFrame lastFrame;
+	private PixelFrame frame;
 
 	@Override
 	public void init() {
@@ -37,7 +37,7 @@ public abstract class KinectSource implements Source {
 	public abstract KinectBuffer getKinectBuffer(KinectExtension extension);
 
 	@Override
-	public synchronized Frame getFrame() {
+	public synchronized PixelFrame getFrame() {
 		frame = buffer.getFrame();
 		if (frame == null)
 			return lastFrame;
@@ -51,7 +51,7 @@ public abstract class KinectSource implements Source {
 	}
 
 	@Override
-	public Frame getThumbnail() {
+	public PixelFrame getThumbnail() {
 		return null;
 	}
 

@@ -2,7 +2,7 @@ package io.smudgr.engine.alg.op;
 
 import io.smudgr.engine.alg.PixelIndexList;
 import io.smudgr.engine.param.NumberParameter;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * Channel Bleed rotates colors using a bitwise function for a weird digi-acid
@@ -20,7 +20,7 @@ public class ChannelBleed extends ParallelOperation {
 	private int rotateAmount;
 
 	@Override
-	public void preParallel(Frame img) {
+	public void preParallel(PixelFrame img) {
 		rotateAmount = shift.getIntValue();
 	}
 
@@ -34,11 +34,11 @@ public class ChannelBleed extends ParallelOperation {
 		private int i, index, pixel, k;
 
 		@Override
-		public void executeParallel(Frame img, PixelIndexList coords) {
+		public void executeParallel(PixelFrame img, PixelIndexList coords) {
 			rotatePixels(img, coords);
 		}
 
-		private void rotatePixels(Frame img, PixelIndexList coords) {
+		private void rotatePixels(PixelFrame img, PixelIndexList coords) {
 			for (i = 0; i < coords.size(); i++) {
 				index = coords.get(i);
 				pixel = img.pixels[index] & 0x00ffffff;

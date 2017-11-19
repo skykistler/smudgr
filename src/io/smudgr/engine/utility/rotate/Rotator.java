@@ -2,7 +2,7 @@ package io.smudgr.engine.utility.rotate;
 
 import io.smudgr.engine.param.NumberParameter;
 import io.smudgr.engine.utility.UtilityComponent;
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * The {@link Rotator} class defines a {@link UtilityComponent} that allows
@@ -25,7 +25,7 @@ public class Rotator extends UtilityComponent {
 		return "rotator";
 	}
 
-	private Frame lastRotatedImage = null;
+	private PixelFrame lastRotatedImage = null;
 	private NumberParameter rotationDegree = new NumberParameter("Rotation Degree", this, 0, 0, 270, 90);
 	private int lastWidth, lastHeight, toWidth, toHeight, frameWidth, frameHeight;
 	private int currentRotationDegree, toY, toX, x, y, temp;
@@ -35,10 +35,10 @@ public class Rotator extends UtilityComponent {
 	 * 270 degrees.
 	 * 
 	 * @param f
-	 *            {@link Frame}
-	 * @return {@link Frame}
+	 *            {@link PixelFrame}
+	 * @return {@link PixelFrame}
 	 */
-	public Frame rotate(Frame f) {
+	public PixelFrame rotate(PixelFrame f) {
 		currentRotationDegree = rotationDegree.getIntValue();
 
 		if (currentRotationDegree == 0)
@@ -61,12 +61,12 @@ public class Rotator extends UtilityComponent {
 			toHeight = frameWidth;
 
 			if (lastRotatedImage == null) {
-				lastRotatedImage = new Frame(toWidth, toHeight);
+				lastRotatedImage = new PixelFrame(toWidth, toHeight);
 			}
 
 			if (lastRotatedImage != null || lastHeight != toHeight || lastWidth != toWidth) {
 				lastRotatedImage.dispose();
-				lastRotatedImage = new Frame(toWidth, toHeight);
+				lastRotatedImage = new PixelFrame(toWidth, toHeight);
 			}
 
 			// Use the lastRotatedImage frame to return the argument image

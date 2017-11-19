@@ -1,6 +1,6 @@
 package io.smudgr.app.view;
 
-import io.smudgr.util.Frame;
+import io.smudgr.util.PixelFrame;
 
 /**
  * The {@link FullscreenView} creates a natively fullscreen {@link Window} on
@@ -32,7 +32,7 @@ public class FullscreenView implements View {
 	}
 
 	@Override
-	public void update(Frame frame) {
+	public void update(PixelFrame frame) {
 		window.update(frame);
 	}
 
