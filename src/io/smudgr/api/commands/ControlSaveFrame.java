@@ -6,7 +6,7 @@ import io.smudgr.util.PixelFrame;
 import io.smudgr.util.output.ImageOutput;
 
 /**
- * Capture and save the most recent frame.
+ * Capture and save the most recent {@link PixelFrame}.
  *
  * @see ControlRecord
  */
@@ -19,8 +19,7 @@ public class ControlSaveFrame implements ApiCommand {
 
 	@Override
 	public ApiMessage execute(ApiMessage data) {
-
-		PixelFrame frame = getProject().getRack().getLastFrame();
+		PixelFrame frame = (PixelFrame) getProject().getRack().getLastFrame();
 
 		if (frame == null)
 			return null;

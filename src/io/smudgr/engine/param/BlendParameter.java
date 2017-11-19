@@ -2,7 +2,7 @@ package io.smudgr.engine.param;
 
 import java.util.ArrayList;
 
-import io.smudgr.engine.alg.math.blend.Blender;
+import io.smudgr.extensions.image.alg.math.blend.Blender;
 
 /**
  * The {@link BlendParameter} class is used to parameterize specifically

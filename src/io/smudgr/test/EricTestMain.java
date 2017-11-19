@@ -3,9 +3,9 @@ package io.smudgr.test;
 import io.smudgr.app.AppStart;
 import io.smudgr.app.controller.Controller;
 import io.smudgr.engine.Rack;
-import io.smudgr.engine.alg.Algorithm;
-import io.smudgr.engine.alg.op.SourceMixer;
-import io.smudgr.engine.alg.select.RangeSelect;
+import io.smudgr.extensions.image.alg.Algorithm;
+import io.smudgr.extensions.image.alg.op.SourceMixer;
+import io.smudgr.extensions.image.alg.select.RangeSelect;
 
 /**
  * Eric's class for testing functionality.

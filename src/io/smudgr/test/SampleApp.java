@@ -4,18 +4,18 @@ import io.smudgr.app.AppStart;
 import io.smudgr.app.controller.Controller;
 import io.smudgr.app.view.WebsocketView;
 import io.smudgr.engine.Rack;
-import io.smudgr.engine.alg.Algorithm;
-import io.smudgr.engine.alg.coord.ConvergeCoords;
-import io.smudgr.engine.alg.coord.StraightCoords;
-import io.smudgr.engine.alg.op.ChannelBleed;
-import io.smudgr.engine.alg.op.DataBend;
-import io.smudgr.engine.alg.op.Marbeler;
-import io.smudgr.engine.alg.op.Operation;
-import io.smudgr.engine.alg.op.PixelShift;
-import io.smudgr.engine.alg.op.PixelSort;
-import io.smudgr.engine.alg.op.SpectralShift;
-import io.smudgr.engine.alg.select.RangeSelect;
 import io.smudgr.engine.param.NumberParameter;
+import io.smudgr.extensions.image.alg.Algorithm;
+import io.smudgr.extensions.image.alg.coord.ConvergeCoords;
+import io.smudgr.extensions.image.alg.coord.StraightCoords;
+import io.smudgr.extensions.image.alg.op.ChannelBleed;
+import io.smudgr.extensions.image.alg.op.DataBend;
+import io.smudgr.extensions.image.alg.op.Marbeler;
+import io.smudgr.extensions.image.alg.op.Operation;
+import io.smudgr.extensions.image.alg.op.PixelShift;
+import io.smudgr.extensions.image.alg.op.PixelSort;
+import io.smudgr.extensions.image.alg.op.SpectralShift;
+import io.smudgr.extensions.image.alg.select.RangeSelect;
 
 /**
  * Example class for creating a test {@link AppStart} main class

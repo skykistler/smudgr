@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.Stack;
 
 /**
- * The {@link DisposedFrameProvider} singleton contains {@link PixelFrame} instances
+ * The {@link DisposedFrameProvider} singleton contains {@link PixelFrame}
+ * instances
  * that have been marked as disposed and allows the immediate reuse of their
  * memory.
  * <p>
@@ -59,7 +60,8 @@ public class DisposedFrameProvider {
 
 	/**
 	 * Get a piece of memory with the given dimensions, optionally clearing it
-	 * first. If no disposed {@link PixelFrame} exists to satisfy the dimensions, a
+	 * first. If no disposed {@link PixelFrame} exists to satisfy the
+	 * dimensions, a
 	 * new piece of memory is allocated.
 	 *
 	 * @param width
@@ -98,13 +100,19 @@ public class DisposedFrameProvider {
 	}
 
 	/**
-	 * Mark a given {@link PixelFrame} as disposed, and ready for reuse.
+	 * Mark a given {@link Frame} as disposed, and ready for reuse.
 	 *
 	 * @param frame
 	 *            to dispose
 	 */
-	public synchronized void disposeFrame(PixelFrame frame) {
-		int hash = getHash(frame.getWidth(), frame.getHeight());
+	public synchronized void disposeFrame(Frame frame) {
+		if (!(frame instanceof PixelFrame)) {
+			return;
+		}
+
+		PixelFrame pixelFrame = (PixelFrame) frame;
+
+		int hash = getHash(pixelFrame.getWidth(), pixelFrame.getHeight());
 
 		Stack<PixelFrame> disposedFrames = disposed.get(hash);
 
@@ -113,7 +121,7 @@ public class DisposedFrameProvider {
 			disposed.put(hash, disposedFrames);
 		}
 
-		disposedFrames.push(frame);
+		disposedFrames.push(pixelFrame);
 	}
 
 	/**

@@ -3,11 +3,11 @@ package io.smudgr.test;
 import io.smudgr.app.AppStart;
 import io.smudgr.app.controller.Controller;
 import io.smudgr.engine.Rack;
-import io.smudgr.engine.utility.Utility;
-import io.smudgr.engine.utility.color.Painter;
-import io.smudgr.engine.utility.crop.Cropper;
-import io.smudgr.engine.utility.rotate.Rotator;
-import io.smudgr.engine.utility.scale.Scaler;
+import io.smudgr.extensions.image.utility.Utility;
+import io.smudgr.extensions.image.utility.color.Painter;
+import io.smudgr.extensions.image.utility.crop.Cropper;
+import io.smudgr.extensions.image.utility.rotate.Rotator;
+import io.smudgr.extensions.image.utility.scale.Scaler;
 
 /**
  * Eric's class for testing the UtilitySmudge

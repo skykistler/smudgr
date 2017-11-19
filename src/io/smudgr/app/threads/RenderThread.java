@@ -3,6 +3,7 @@ package io.smudgr.app.threads;
 import io.smudgr.app.controller.Controller;
 import io.smudgr.app.project.Project;
 import io.smudgr.engine.Smudge;
+import io.smudgr.util.PixelFrame;
 import io.smudgr.util.output.FrameOutput;
 
 /**
@@ -64,7 +65,7 @@ public class RenderThread extends AppThread {
 		}
 
 		if (output != null)
-			output.addFrame(Controller.getInstance().getProject().getRack().getLastFrame().copy());
+			output.addFrame((PixelFrame) Controller.getInstance().getProject().getRack().getLastFrame().copy());
 	}
 
 	@Override

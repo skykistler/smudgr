@@ -2,7 +2,7 @@ package io.smudgr.engine.param;
 
 import java.util.ArrayList;
 
-import io.smudgr.engine.alg.math.univariate.UnivariateFunction;
+import io.smudgr.extensions.image.alg.math.univariate.UnivariateFunction;
 
 /**
  * The {@link UnivariateParameter} class is a {@link Parameter} implementation

@@ -8,6 +8,7 @@ import io.smudgr.app.project.util.PropertyMap;
 import io.smudgr.engine.param.BooleanParameter;
 import io.smudgr.engine.param.NumberParameter;
 import io.smudgr.engine.param.Parametric;
+import io.smudgr.util.Frame;
 import io.smudgr.util.PixelFrame;
 import io.smudgr.util.source.AnimatedSource;
 import io.smudgr.util.source.Source;
@@ -51,7 +52,7 @@ public class Rack extends Parametric {
 	 * The rack manages the current source and keeps a buffer of the last frame
 	 */
 	private Source source;
-	private volatile PixelFrame lastFrame;
+	private volatile Frame lastFrame;
 
 	/**
 	 * Initialize the smudge rack.
@@ -88,7 +89,7 @@ public class Rack extends Parametric {
 		if (!enabled.getValue())
 			return;
 
-		PixelFrame nextFrame = null;
+		Frame nextFrame = null;
 
 		// If source is null or gives a null frame, clear last frame and return
 		if (source == null || (nextFrame = source.getFrame()) == null) {
@@ -96,8 +97,12 @@ public class Rack extends Parametric {
 			return;
 		}
 
-		// Downsample according to the downsample parameter
-		nextFrame = nextFrame.resize(downsample.getValue());
+		// TODO: Desperately need to get rid of this and make PixelFrameRack
+		// implementation
+		if (nextFrame instanceof PixelFrame) {
+			// Downsample according to the downsample parameter
+			nextFrame = ((PixelFrame) nextFrame).resize(downsample.getValue());
+		}
 
 		// Render each smudge successively
 		synchronized (smudges) {
@@ -194,15 +199,15 @@ public class Rack extends Parametric {
 	}
 
 	/**
-	 * Get the latest finished rendered frame.
+	 * Get the latest finished processed frame.
 	 *
-	 * @return {@link PixelFrame}
+	 * @return {@link Frame}
 	 */
-	public PixelFrame getLastFrame() {
+	public Frame getLastFrame() {
 		return lastFrame;
 	}
 
-	protected void setLastFrame(PixelFrame nextFrame) {
+	protected void setLastFrame(Frame nextFrame) {
 		if (lastFrame != null)
 			lastFrame.dispose();
 

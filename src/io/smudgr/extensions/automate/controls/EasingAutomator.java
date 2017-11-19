@@ -1,10 +1,10 @@
 package io.smudgr.extensions.automate.controls;
 
 import io.smudgr.app.project.util.PropertyMap;
-import io.smudgr.engine.alg.math.univariate.BezierFunction;
-import io.smudgr.engine.alg.math.univariate.UnivariateFunction;
 import io.smudgr.engine.param.NumberParameter;
 import io.smudgr.engine.param.Parameter;
+import io.smudgr.extensions.image.alg.math.univariate.BezierFunction;
+import io.smudgr.extensions.image.alg.math.univariate.UnivariateFunction;
 
 /**
  * The {@link EasingAutomator} attempts to smoothen sharp value changes by

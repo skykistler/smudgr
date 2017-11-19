@@ -40,7 +40,7 @@ public class ViewThread extends AppThread {
 	@Override
 	protected void execute() {
 		try {
-			PixelFrame frame = Controller.getInstance().getProject().getRack().getLastFrame().copy();
+			PixelFrame frame = (PixelFrame) Controller.getInstance().getProject().getRack().getLastFrame().copy();
 
 			view.update(frame);
 

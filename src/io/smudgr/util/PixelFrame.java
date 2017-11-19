@@ -3,17 +3,16 @@ package io.smudgr.util;
 import java.awt.image.BufferedImage;
 
 /**
- * Instances of the {@link PixelFrame} class are used to store the pixel data of an
- * image.
+ * Instances of the {@link PixelFrame} class are used to store the pixel data of
+ * an image.
  * <p>
- * The
- * {@link DisposedFrameProvider} allows {@link PixelFrame} instances to reuse memory
- * efficiently and avoid unnecessary string on the JVM garbage collector.
+ * The {@link DisposedFrameProvider} allows {@link PixelFrame} instances to
+ * reuse memory efficiently and avoid unnecessary string on the JVM garbage
+ * collector.
  */
-public class PixelFrame {
+public class PixelFrame extends Frame {
 	private int width;
 	private int height;
-	private long disposedTime = 0;
 
 	/**
 	 * Direct access array of the ARGB color integers backing this
@@ -22,7 +21,8 @@ public class PixelFrame {
 	public int[] pixels;
 
 	/**
-	 * Create a new {@link PixelFrame} with the given dimensions, without clearing
+	 * Create a new {@link PixelFrame} with the given dimensions, without
+	 * clearing
 	 * the backing memory.
 	 * <p>
 	 * The new {@link PixelFrame} may contain disposed pixel data. If this is a
@@ -56,11 +56,13 @@ public class PixelFrame {
 	}
 
 	/**
-	 * Creates a duplicate of this {@link PixelFrame}, using new memory space (or
+	 * Creates a duplicate of this {@link PixelFrame}, using new memory space
+	 * (or
 	 * disposed memory if disposed frames of this size exist)
 	 *
 	 * @return duplicate {@link PixelFrame}
 	 */
+	@Override
 	public synchronized PixelFrame copy() {
 		assertNotDisposed();
 
@@ -72,8 +74,10 @@ public class PixelFrame {
 	}
 
 	/**
-	 * Copy this {@link PixelFrame} to the given {@link PixelFrame}, copying only until
-	 * this {@link PixelFrame} length is reached, or the given {@link PixelFrame} length
+	 * Copy this {@link PixelFrame} to the given {@link PixelFrame}, copying
+	 * only until
+	 * this {@link PixelFrame} length is reached, or the given
+	 * {@link PixelFrame} length
 	 * is reached.
 	 *
 	 * @param f
@@ -115,7 +119,8 @@ public class PixelFrame {
 	}
 
 	/**
-	 * Without changing dimension ratios, fit this {@link PixelFrame} to the given
+	 * Without changing dimension ratios, fit this {@link PixelFrame} to the
+	 * given
 	 * size and fill blank space with black.
 	 *
 	 * @param toSizeW
@@ -129,7 +134,8 @@ public class PixelFrame {
 	}
 
 	/**
-	 * Without changing dimension ratios, return a copy of this {@link PixelFrame}
+	 * Without changing dimension ratios, return a copy of this
+	 * {@link PixelFrame}
 	 * fitted to the given size, optionally filling blank space with black.
 	 *
 	 * @param toSizeW
@@ -306,42 +312,6 @@ public class PixelFrame {
 	 */
 	public void set(int x, int y, int color) {
 		pixels[x + y * width] = color;
-	}
-
-	/**
-	 * Throws an exception if this {@link PixelFrame} has been flagged as disposed
-	 * memory.
-	 */
-	public void assertNotDisposed() {
-		if (disposedTime > 0)
-			throw new IllegalStateException("Trying to operate on a disposed frame. Unsafe!");
-	}
-
-	/**
-	 * Gets whether this frame has been marked as disposed.
-	 * 
-	 * @return {@code true} if this {@link PixelFrame} has been marked for disposal,
-	 *         {@code false} if otherwise
-	 */
-	public boolean isDisposed() {
-		return disposedTime > 0;
-	}
-
-	/**
-	 * Mark this frame as disposed to allow the immediate reuse of its
-	 * backing memory. If this frame has already been marked for disposal, this
-	 * method does nothing.
-	 */
-	public synchronized void dispose() {
-		if (isDisposed())
-			return;
-
-		disposedTime = System.currentTimeMillis();
-		DisposedFrameProvider.getInstance().disposeFrame(this);
-	}
-
-	protected long getDiposedTime() {
-		return disposedTime;
 	}
 
 	private int[] getDirtyPixels() {

@@ -5,7 +5,7 @@ import io.smudgr.util.PixelFrame;
 import io.smudgr.util.output.ImageOutput;
 
 /**
- * Capture and save the currently rendered frame.
+ * Capture and save the currently rendered {@link PixelFrame}.
  *
  * @see ImageOutput
  */
@@ -35,7 +35,7 @@ public class SaveFrameControl implements AppControl {
 	 */
 	@Override
 	public void inputOn() {
-		PixelFrame frame = getProject().getRack().getLastFrame();
+		PixelFrame frame = (PixelFrame) getProject().getRack().getLastFrame();
 
 		// TODO project wide output folder
 		ImageOutput out = new ImageOutput("frame", frame.getWidth(), frame.getHeight());

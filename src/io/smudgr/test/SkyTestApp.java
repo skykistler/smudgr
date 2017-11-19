@@ -5,21 +5,21 @@ import io.smudgr.app.controller.Controller;
 import io.smudgr.app.project.util.ProjectSaver;
 import io.smudgr.app.view.WebsocketView;
 import io.smudgr.engine.Rack;
-import io.smudgr.engine.alg.Algorithm;
-import io.smudgr.engine.alg.op.ChannelBleed;
-import io.smudgr.engine.alg.op.ChannelCrush;
-import io.smudgr.engine.alg.op.ChannelDrift;
-import io.smudgr.engine.alg.op.ChannelSort;
-import io.smudgr.engine.alg.op.DataBend;
-import io.smudgr.engine.alg.op.HSVLModifier;
-import io.smudgr.engine.alg.op.Marbeler;
-import io.smudgr.engine.alg.op.Operation;
-import io.smudgr.engine.alg.op.ParticlePush;
-import io.smudgr.engine.alg.op.PixelShift;
-import io.smudgr.engine.alg.op.PixelSort;
-import io.smudgr.engine.alg.op.RainbowBend;
-import io.smudgr.engine.alg.op.Smear;
-import io.smudgr.engine.alg.op.SpectralShift;
+import io.smudgr.extensions.image.alg.Algorithm;
+import io.smudgr.extensions.image.alg.op.ChannelBleed;
+import io.smudgr.extensions.image.alg.op.ChannelCrush;
+import io.smudgr.extensions.image.alg.op.ChannelDrift;
+import io.smudgr.extensions.image.alg.op.ChannelSort;
+import io.smudgr.extensions.image.alg.op.DataBend;
+import io.smudgr.extensions.image.alg.op.HSVLModifier;
+import io.smudgr.extensions.image.alg.op.Marbeler;
+import io.smudgr.extensions.image.alg.op.Operation;
+import io.smudgr.extensions.image.alg.op.ParticlePush;
+import io.smudgr.extensions.image.alg.op.PixelShift;
+import io.smudgr.extensions.image.alg.op.PixelSort;
+import io.smudgr.extensions.image.alg.op.RainbowBend;
+import io.smudgr.extensions.image.alg.op.Smear;
+import io.smudgr.extensions.image.alg.op.SpectralShift;
 
 /**
  * Example class for creating a test {@link AppStart} main class
@@ -54,7 +54,7 @@ public class SkyTestApp extends AppStart {
 	static int fullscreenDisplay = -1;
 
 	// non-fullscreen window
-	static boolean monitor = false;
+	static boolean monitor = true;
 
 	// whether to allow front-end streaming connections
 	static boolean streaming = true;
