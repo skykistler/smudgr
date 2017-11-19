@@ -4,7 +4,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import io.smudgr.app.project.util.PropertyMap;
 
@@ -25,21 +24,6 @@ public class ApiMessage {
 	 * Instantiate an empty {@link ApiMessage}
 	 */
 	public ApiMessage() {
-	}
-
-	/**
-	 * Instantiate an {@link ApiMessage} by parsing a JSON string
-	 * 
-	 * @param json
-	 *            JSON-formatted object to parse
-	 */
-	public ApiMessage(String json) {
-		try {
-			payload = (JSONObject) parser.parse(json);
-		} catch (ParseException e) {
-			e.printStackTrace();
-			System.out.println("Failed to parse JSON: " + json);
-		}
 	}
 
 	/**
