@@ -10,9 +10,9 @@ import io.smudgr.engine.param.NumberParameter;
 import io.smudgr.engine.param.Parametric;
 import io.smudgr.util.Frame;
 import io.smudgr.util.PixelFrame;
-import io.smudgr.util.source.AnimatedSource;
 import io.smudgr.util.source.Source;
 import io.smudgr.util.source.SourceSet;
+import io.smudgr.util.source.image.AnimatedSource;
 
 /**
  * The {@link Rack} stores a deliberately ordered list of {@link Smudge} items

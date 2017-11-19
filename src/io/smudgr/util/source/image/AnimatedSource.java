@@ -1,4 +1,6 @@
-package io.smudgr.util.source;
+package io.smudgr.util.source.image;
+
+import io.smudgr.util.source.Source;
 
 /**
  * The {@link AnimatedSource} interface defines behavior for manipulating the

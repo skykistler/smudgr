@@ -1,4 +1,4 @@
-package io.smudgr.util.source;
+package io.smudgr.util.source.image;
 
 import java.awt.Color;
 import java.awt.Graphics;

@@ -38,3 +38,4 @@ io.smudgr.util.output
 io.smudgr.util.source
 io.smudgr.util.source.graph
 io.smudgr.util.source.graph.alg
+io.smudgr.util.source.image

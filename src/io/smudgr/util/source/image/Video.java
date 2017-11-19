@@ -1,4 +1,4 @@
-package io.smudgr.util.source;
+package io.smudgr.util.source.image;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -12,6 +12,7 @@ import org.jcodec.common.FileChannelWrapper;
 import org.jcodec.common.NIOUtils;
 
 import io.smudgr.util.PixelFrame;
+import io.smudgr.util.source.Source;
 
 /**
  * The {@link Video} source loads a video file and returns the current frame of

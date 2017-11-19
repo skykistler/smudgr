@@ -13,8 +13,8 @@ import io.smudgr.extensions.image.alg.math.blend.MaxBlender;
 import io.smudgr.extensions.image.alg.math.blend.MinBlender;
 import io.smudgr.extensions.image.alg.math.blend.NormalBlender;
 import io.smudgr.util.PixelFrame;
-import io.smudgr.util.source.Image;
 import io.smudgr.util.source.Source;
+import io.smudgr.util.source.image.Image;
 
 /**
  * Source Mixer allows the traditional blending of two images, one being the
@@ -82,7 +82,7 @@ public class SourceMixer extends ParallelOperation {
 		if (mixFrame != null)
 			mixFrame.dispose();
 
-		PixelFrame frameFromSource = mixSource.getFrame();
+		PixelFrame frameFromSource = (PixelFrame) mixSource.getFrame();
 		if (frameFromSource != null) {
 			frameWidth = frameFromSource.getWidth();
 			frameHeight = frameFromSource.getHeight();

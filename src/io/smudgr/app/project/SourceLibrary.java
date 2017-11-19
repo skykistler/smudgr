@@ -7,11 +7,11 @@ import java.util.Arrays;
 import io.smudgr.app.controller.Controller;
 import io.smudgr.app.project.reflect.TypeLibrary;
 import io.smudgr.app.project.util.PropertyMap;
-import io.smudgr.util.source.Gif;
-import io.smudgr.util.source.Image;
 import io.smudgr.util.source.Source;
 import io.smudgr.util.source.SourceSet;
-import io.smudgr.util.source.Video;
+import io.smudgr.util.source.image.Gif;
+import io.smudgr.util.source.image.Image;
+import io.smudgr.util.source.image.Video;
 
 /**
  * TODO: Refactor {@link SourceLibrary} into a {@link TypeLibrary}

@@ -40,7 +40,7 @@ public class SourceThumbnail implements ApiCommand {
 
 		// Get thumbnail from source
 		Source source = (Source) item;
-		PixelFrame thumbnail = source.getThumbnail();
+		PixelFrame thumbnail = (PixelFrame) source.getThumbnail();
 
 		// Fail if source hasn't generated a thumbnail
 		if (thumbnail == null) {

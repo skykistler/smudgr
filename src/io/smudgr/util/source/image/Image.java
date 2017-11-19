@@ -1,4 +1,4 @@
-package io.smudgr.util.source;
+package io.smudgr.util.source.image;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -7,6 +7,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import io.smudgr.util.PixelFrame;
+import io.smudgr.util.source.Source;
 
 /**
  * The {@link Image} source represents a static frame from a loaded image file
