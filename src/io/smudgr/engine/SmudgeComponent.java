@@ -9,7 +9,6 @@ import io.smudgr.engine.param.Parametric;
 /**
  * {@link SmudgeComponent} types diversify the configuration ability of a
  * {@link Smudge} type by allowing user composition of overall behavior.
- * <p>
  *
  */
 public abstract class SmudgeComponent extends Parametric {

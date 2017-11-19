@@ -65,6 +65,7 @@ public abstract class ParallelOperation extends Operation {
 	 * operations.
 	 *
 	 * @param img
+	 *            {@link PixelFrame} to act on in parallel
 	 * @see ParallelOperation#postParallel(PixelFrame)
 	 */
 	protected void preParallel(PixelFrame img) {
@@ -78,6 +79,7 @@ public abstract class ParallelOperation extends Operation {
 	 * {@link ParallelOperationTask} with this method.
 	 *
 	 * @see ParallelOperationTask
+	 * @return ParallelOperationTask
 	 */
 	protected abstract ParallelOperationTask getParallelTask();
 
@@ -85,6 +87,7 @@ public abstract class ParallelOperation extends Operation {
 	 * Implementations of this method will be run after the parallel operations.
 	 *
 	 * @param img
+	 *            {@link PixelFrame} that was acted on in parallel
 	 * @see ParallelOperation#preParallel(PixelFrame)
 	 */
 	protected void postParallel(PixelFrame img) {
