@@ -60,6 +60,7 @@
 	
 	<target name="osxBuild" if="isMac">
 		<mkdir dir="builds/osx" />
+ 		<mkdir dir="data/included" />
 		<exec dir="./app" executable="npm">
 			<arg line="install" />
 		</exec>
