@@ -17,10 +17,9 @@ Requires [Ant] (https://ant.apache.org/manual/install.html), which may be includ
 `ant build`
 
 This should install dependencies, compile code, and bundle an executable in builds/your_os
+After this completes, drop a few small images or gifs into the data/included directory and re-run `ant build`.
 
-Alternatively,
-
-`ant launch` will build and launch the executable for your platform.
+Run the executable in builds/your_os and the application should launch.
 
 # Headless
 
