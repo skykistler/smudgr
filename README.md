@@ -22,8 +22,16 @@ After this completes, drop a few small images or gifs into the data/included dir
 
 Run the executable in builds/your_os and the application should launch.
 
-# Headless
+On macOS: `open builds/osx/smudgr.app`
 
-You can run a test class without launching the front-end using:
+# Headless / Browser UI
 
-`ant run -Dclass=io.smudgr.PizzaBoxShow`
+Run the Java engine without the Electron shell:
+
+`ant run -Dclass=io.smudgr.test.PizzaBoxShow`
+
+Then open the UI in a browser (in a second terminal):
+
+`cd app/ui && python3 -m http.server 8080`
+
+Visit http://localhost:8080 — the UI connects to the engine on ports 45455 (API) and 8887 (canvas).
